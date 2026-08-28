@@ -1,0 +1,125 @@
+///
+/// Layer 1 - Primitives sourced from the shared library file.
+///
+/// These ramps are NOT in the local `Primitives` collection. They live in the
+/// linked library collections ("Brand" and "Tailwind"/"Colors") and reach this
+/// file through the Brand collection's alias chains, which resolve to
+/// `blue/*`, `lightblue/*`, `orange/*`, `indigo/*`, `teal/*` and `rose/*`.
+///
+/// The first six ramps below were read back through those alias chains, so all
+/// ten steps are verified. `red`, `sky` and `neutral` could not be enumerated -
+/// they are only reachable through the semantic documentation board - so only
+/// the steps the semantic layer actually consumes are defined, and they are
+/// marked as such. Fill the gaps once the library file can be read directly.
+///
+
+:root {
+  /* blue - drives the default "Blue" brand theme */
+  --ev-blue-50: #e8f3ff;
+  --ev-blue-100: #d1e6ff;
+  --ev-blue-200: #a4ceff;
+  --ev-blue-300: #76b5ff;
+  --ev-blue-400: #499dff;
+  --ev-blue-500: #1b84ff;
+  --ev-blue-600: #166acc;
+  --ev-blue-700: #104f99;
+  --ev-blue-800: #0b3566;
+  --ev-blue-900: #08284d;
+
+  /* lightblue - "Light Blue" brand theme */
+  --ev-lightblue-50: #f2f6f8;
+  --ev-lightblue-100: #e9f1f4;
+  --ev-lightblue-200: #d6e6ed;
+  --ev-lightblue-300: #b6d7e4;
+  --ev-lightblue-400: #80c3de;
+  --ev-lightblue-500: #30aee1;
+  --ev-lightblue-600: #1f8cb8;
+  --ev-lightblue-700: #1a6583;
+  --ev-lightblue-800: #134357;
+  --ev-lightblue-900: #0b2530;
+
+  /* orange - "Orange" brand theme, and the secondary of the "Blue" theme */
+  --ev-orange-50: #f9ede8;
+  --ev-orange-100: #f3dbd0;
+  --ev-orange-200: #e8b7a2;
+  --ev-orange-300: #dc9273;
+  --ev-orange-400: #d16e45;
+  --ev-orange-500: #c54a16;
+  --ev-orange-600: #9e3b12;
+  --ev-orange-700: #762c0d;
+  --ev-orange-800: #4f1e09;
+  --ev-orange-900: #3b1607;
+
+  /* indigo - secondary of the "Light Blue" theme */
+  --ev-indigo-50: #f3f3f9;
+  --ev-indigo-100: #ececf6;
+  --ev-indigo-200: #dedef2;
+  --ev-indigo-300: #c7c7ed;
+  --ev-indigo-400: #9fa0eb;
+  --ev-indigo-500: #6366f1;
+  --ev-indigo-600: #2328e6;
+  --ev-indigo-700: #181ba7;
+  --ev-indigo-800: #12146b;
+  --ev-indigo-900: #0a0b36;
+
+  /* teal - secondary of the "Green" theme */
+  --ev-teal-50: #f0f8f7;
+  --ev-teal-100: #e2f2f0;
+  --ev-teal-200: #c4e8e5;
+  --ev-teal-300: #93ddd7;
+  --ev-teal-400: #3ed8ca;
+  --ev-teal-500: #0d9488;
+  --ev-teal-600: #0d766c;
+  --ev-teal-700: #0c5852;
+  --ev-teal-800: #0a403b;
+  --ev-teal-900: #082a27;
+
+  /* rose - secondary of the "Orange" theme */
+  --ev-rose-50: #feeaef;
+  --ev-rose-100: #fed4de;
+  --ev-rose-200: #fca9bd;
+  --ev-rose-300: #fb7e9c;
+  --ev-rose-400: #f9537b;
+  --ev-rose-500: #f8285a;
+  --ev-rose-600: #c62048;
+  --ev-rose-700: #951836;
+  --ev-rose-800: #631024;
+  --ev-rose-900: #4a0c1b;
+
+  /*
+   * PARTIAL - only the steps the semantic layer references are known. Values
+   * come from the "Design Token" documentation board, not from the variable
+   * collection, so treat them as the documented value rather than the source.
+   * `red` is close to but distinct from `rose` (red/500 #f82a5b vs
+   * rose/500 #f8285a).
+   */
+  --ev-red-50: #feeaef;
+  --ev-red-100: #fed4de;
+  --ev-red-200: #fcaabd;
+  --ev-red-400: #f9557c;
+  --ev-red-500: #f82a5b;
+  --ev-red-600: #c62249;
+  --ev-red-700: #951937;
+  --ev-red-800: #631124;
+
+  /* PARTIAL. sky/500 is the only step read from the Tailwind collection. */
+  --ev-sky-50: #f1f6f9;
+  --ev-sky-400: #69bee4;
+  --ev-sky-500: #0ea5e9;
+  --ev-sky-700: #0f5e81;
+  --ev-sky-800: #0c3f57;
+
+  /*
+   * PARTIAL. Note that the board documents neutral/50 and neutral/100 with the
+   * same value (#ebedf1) - one of the two labels is likely wrong upstream.
+   */
+  --ev-neutral-50: #ebedf1;
+  --ev-neutral-100: #ebedf1;
+  --ev-neutral-200: #d7dbe3;
+  --ev-neutral-300: #c4c8d5;
+  --ev-neutral-400: #b0b6c7;
+  --ev-neutral-500: #9ca4b9;
+  --ev-neutral-600: #7d8394;
+  --ev-neutral-700: #5e626f;
+  --ev-neutral-800: #3e424a;
+}

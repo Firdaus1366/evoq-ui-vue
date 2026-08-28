@@ -1,0 +1,193 @@
+///
+/// Layer 2 - Semantic colours.
+///
+/// 63 role tokens across 7 groups, mirroring the `Semantic Color` collection
+/// (modes: Light / Dark). This is the only colour layer components should
+/// consume - never reach past it into a ramp.
+///
+/// Every value is an alias onto layer 1, exactly as the Figma collection has
+/// it, so re-pointing a primitive re-themes everything downstream.
+///
+/// Themes:
+///   `<html data-ev-theme="dark">`  - force dark
+///   `<html data-ev-theme="light">` - force light
+///   `<html data-ev-theme="auto">`  - follow the OS
+/// With no attribute the light palette applies.
+///
+
+@mixin light {
+  /* Backgrounds */
+  --ev-bg-primary: var(--ev-white);
+  --ev-bg-secondary: var(--ev-grey-100);
+  --ev-bg-tertiary: var(--ev-grey-200);
+  --ev-bg-subtle: var(--ev-neutral-50);
+  --ev-bg-subtler: var(--ev-neutral-200);
+  --ev-bg-subtlest: var(--ev-neutral-300);
+  --ev-bg-inverse: var(--ev-neutral-800);
+  --ev-bg-overlay: var(--ev-modal-scrim);
+
+  /* Typography */
+  --ev-text-primary: var(--ev-grey-900);
+  --ev-text-secondary: var(--ev-grey-600);
+  --ev-text-tertiary: var(--ev-grey-400);
+  --ev-text-disabled: var(--ev-grey-300);
+  --ev-text-inverse: var(--ev-white);
+  --ev-text-link: var(--ev-brand-primary-500);
+  --ev-text-error: var(--ev-red-600);
+  --ev-text-success: var(--ev-green-600);
+  --ev-text-warning: var(--ev-yellow-600);
+  --ev-text-info: var(--ev-blue-500);
+
+  /* Icons */
+  --ev-icon-primary: var(--ev-grey-600);
+  --ev-icon-secondary: var(--ev-grey-500);
+  --ev-icon-tertiary: var(--ev-grey-400);
+  --ev-icon-disabled: var(--ev-grey-300);
+  --ev-icon-inverse: var(--ev-white);
+  --ev-icon-link: var(--ev-brand-primary-500);
+  --ev-icon-error: var(--ev-red-500);
+  --ev-icon-success: var(--ev-green-500);
+  --ev-icon-warning: var(--ev-yellow-500);
+  --ev-icon-info: var(--ev-blue-500);
+
+  /*
+   * Borders. The board labels border/inverse as `grey/50`, but that ramp has
+   * no 50 step and the documented value (#99a1b7) is grey/500 - aliased here
+   * to the step that actually carries the value.
+   */
+  --ev-border-primary: var(--ev-grey-300);
+  --ev-border-secondary: var(--ev-grey-200);
+  --ev-border-tertiary: var(--ev-grey-400);
+  --ev-border-disabled: var(--ev-grey-300);
+  --ev-border-inverse: var(--ev-grey-500);
+
+  /* Brand accents */
+  --ev-brand-primary: var(--ev-brand-primary-500);
+  --ev-brand-primary-bold: var(--ev-brand-primary-600);
+  --ev-brand-primary-subtle: var(--ev-brand-primary-50);
+  --ev-brand-secondary: var(--ev-brand-secondary-500);
+  --ev-brand-secondary-bold: var(--ev-brand-secondary-600);
+  --ev-brand-secondary-subtle: var(--ev-brand-secondary-50);
+
+  /* Extended semantics */
+  --ev-ext-error: var(--ev-red-500);
+  --ev-ext-error-bold: var(--ev-red-600);
+  --ev-ext-error-subtle: var(--ev-red-200);
+  --ev-ext-error-subtler: var(--ev-red-100);
+  --ev-ext-success: var(--ev-green-500);
+  --ev-ext-success-bold: var(--ev-green-600);
+  --ev-ext-success-subtle: var(--ev-green-200);
+  --ev-ext-success-subtler: var(--ev-green-100);
+  --ev-ext-warning: var(--ev-yellow-500);
+  --ev-ext-warning-bold: var(--ev-yellow-600);
+  --ev-ext-warning-subtle: var(--ev-yellow-200);
+  --ev-ext-warning-subtler: var(--ev-yellow-100);
+  --ev-ext-info: var(--ev-blue-500);
+  --ev-ext-info-bold: var(--ev-blue-600);
+  --ev-ext-info-subtle: var(--ev-blue-200);
+  --ev-ext-info-subtler: var(--ev-blue-100);
+
+  /* Visual hierarchy trees */
+  --ev-tree-lv1: var(--ev-white);
+  --ev-tree-lv2: var(--ev-lgrey-50);
+  --ev-tree-lv3: var(--ev-lgrey-100);
+  --ev-tree-lv4: var(--ev-lgrey-150);
+  --ev-tree-lv5: var(--ev-lgrey-200);
+  --ev-tree-lv6: var(--ev-lgrey-300);
+  --ev-tree-lv7: var(--ev-lgrey-400);
+  --ev-tree-lv8: var(--ev-lgrey-500);
+}
+
+@mixin dark {
+  /* Backgrounds */
+  --ev-bg-primary: var(--ev-neutral-800);
+  --ev-bg-secondary: var(--ev-neutral-700);
+  --ev-bg-tertiary: var(--ev-neutral-100);
+  --ev-bg-subtle: var(--ev-neutral-800);
+  --ev-bg-subtler: var(--ev-neutral-600);
+  --ev-bg-subtlest: var(--ev-neutral-500);
+  --ev-bg-inverse: var(--ev-neutral-100);
+  --ev-bg-overlay: var(--ev-modal-scrim);
+
+  /* Typography */
+  --ev-text-primary: var(--ev-neutral-100);
+  --ev-text-secondary: var(--ev-neutral-400);
+  --ev-text-tertiary: var(--ev-neutral-500);
+  --ev-text-disabled: var(--ev-neutral-600);
+  --ev-text-inverse: var(--ev-neutral-800);
+  --ev-text-link: var(--ev-brand-primary-500);
+  --ev-text-error: var(--ev-red-500);
+  --ev-text-success: var(--ev-green-500);
+  --ev-text-warning: var(--ev-yellow-500);
+  --ev-text-info: var(--ev-blue-600);
+
+  /* Icons */
+  --ev-icon-primary: var(--ev-neutral-100);
+  --ev-icon-secondary: var(--ev-neutral-400);
+  --ev-icon-tertiary: var(--ev-neutral-500);
+  --ev-icon-disabled: var(--ev-neutral-600);
+  --ev-icon-inverse: var(--ev-neutral-800);
+  --ev-icon-link: var(--ev-brand-primary-600);
+  --ev-icon-error: var(--ev-red-600);
+  --ev-icon-success: var(--ev-green-600);
+  --ev-icon-warning: var(--ev-yellow-600);
+  --ev-icon-info: var(--ev-blue-600);
+
+  /* Borders */
+  --ev-border-primary: var(--ev-neutral-600);
+  --ev-border-secondary: var(--ev-neutral-500);
+  --ev-border-tertiary: var(--ev-neutral-200);
+  --ev-border-disabled: var(--ev-neutral-700);
+  --ev-border-inverse: var(--ev-neutral-100);
+
+  /* Brand accents */
+  --ev-brand-primary: var(--ev-brand-primary-400);
+  --ev-brand-primary-bold: var(--ev-brand-primary-200);
+  --ev-brand-primary-subtle: var(--ev-brand-primary-800);
+  --ev-brand-secondary: var(--ev-brand-secondary-400);
+  --ev-brand-secondary-bold: var(--ev-brand-secondary-200);
+  --ev-brand-secondary-subtle: var(--ev-brand-secondary-800);
+
+  /* Extended semantics */
+  --ev-ext-error: var(--ev-red-400);
+  --ev-ext-error-bold: var(--ev-red-50);
+  --ev-ext-error-subtle: var(--ev-red-700);
+  --ev-ext-error-subtler: var(--ev-red-800);
+  --ev-ext-success: var(--ev-green-400);
+  --ev-ext-success-bold: var(--ev-green-50);
+  --ev-ext-success-subtle: var(--ev-green-700);
+  --ev-ext-success-subtler: var(--ev-green-800);
+  --ev-ext-warning: var(--ev-yellow-400);
+  --ev-ext-warning-bold: var(--ev-yellow-50);
+  --ev-ext-warning-subtle: var(--ev-yellow-700);
+  --ev-ext-warning-subtler: var(--ev-yellow-800);
+  --ev-ext-info: var(--ev-sky-400);
+  --ev-ext-info-bold: var(--ev-sky-50);
+  --ev-ext-info-subtle: var(--ev-sky-700);
+  --ev-ext-info-subtler: var(--ev-sky-800);
+
+  /* Visual hierarchy trees */
+  --ev-tree-lv1: var(--ev-neutral-800);
+  --ev-tree-lv2: var(--ev-dgrey-500);
+  --ev-tree-lv3: var(--ev-dgrey-400);
+  --ev-tree-lv4: var(--ev-dgrey-300);
+  --ev-tree-lv5: var(--ev-dgrey-200);
+  --ev-tree-lv6: var(--ev-dgrey-150);
+  --ev-tree-lv7: var(--ev-dgrey-100);
+  --ev-tree-lv8: var(--ev-dgrey-50);
+}
+
+:root,
+[data-ev-theme='light'] {
+  @include light;
+}
+
+[data-ev-theme='dark'] {
+  @include dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-ev-theme='auto'] {
+    @include dark;
+  }
+}

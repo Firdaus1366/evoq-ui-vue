@@ -1,0 +1,6 @@
+# `files` in package.json is the source of truth; this is only a safety net.
+src
+playground
+index.html
+*.config.ts
+tsconfig*.json

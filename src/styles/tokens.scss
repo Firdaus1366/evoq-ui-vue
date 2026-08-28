@@ -1,0 +1,29 @@
+///
+/// Evoq design tokens.
+///
+/// Scraped from the "EVOQ - Design System" Figma file (Introduction page) via
+/// the Figma Desktop Bridge. The raw scrape lives in
+/// `design/figma-introduction-tokens.json`.
+///
+/// The layering mirrors Figma's own collections, and the order below matters -
+/// each layer aliases the one above it:
+///
+///   1. primitives     the 8 local ramps + absolutes        (83 variables)
+///   2. library ramps  blue/orange/teal/... from the library
+///   3. brand          brand/primary/* + brand/secondary/*, 4 brand modes
+///   4. semantic       63 role tokens, light + dark   <- components use this
+///   5. scales         spacing, radius, stroke, type scale  (50 variables)
+///   6. elevation      the 8 effect styles
+///   7. chart series   the 5 series colours, aliased onto the semantic layer
+///
+/// Everything resolves through CSS custom properties, so a consuming app can
+/// re-point any layer at runtime without rebuilding the library.
+///
+
+@use './primitives';
+@use './library-ramps';
+@use './brand';
+@use './semantic';
+@use './scales';
+@use './elevation';
+@use './chart-series';

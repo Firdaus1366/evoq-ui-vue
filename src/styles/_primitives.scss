@@ -1,0 +1,117 @@
+///
+/// Layer 1 - Primitives.
+///
+/// Raw palette steps. Nothing in a component should reference these directly:
+/// they exist only so the semantic layer in `_semantic.scss` has something to
+/// alias. Source of truth is the `Primitives` variable collection in the
+/// "EVOQ - Design System" Figma file (83 variables across 8 ramps), read via
+/// the Figma Desktop Bridge.
+///
+
+:root {
+  /* Absolutes */
+  --ev-white: #ffffff;
+  --ev-black: #000000;
+
+  /* Scrim used by bg/overlay. Not part of a ramp. */
+  --ev-modal-scrim: #181c20;
+
+  /* lgrey - light neutral ramp, 12 steps (has 150 and 850) */
+  --ev-lgrey-50: #f9f9fa;
+  --ev-lgrey-100: #f3f4f5;
+  --ev-lgrey-150: #eceef0;
+  --ev-lgrey-200: #e6e8eb;
+  --ev-lgrey-300: #dadde1;
+  --ev-lgrey-400: #cdd1d7;
+  --ev-lgrey-500: #c1c6cd;
+  --ev-lgrey-600: #9a9ea4;
+  --ev-lgrey-700: #74777b;
+  --ev-lgrey-800: #4d4f52;
+  --ev-lgrey-850: #3a3b3d;
+  --ev-lgrey-900: #272829;
+
+  /* dgrey - dark neutral ramp, 12 steps (has 150 and 850) */
+  --ev-dgrey-50: #78879a;
+  --ev-dgrey-100: #707e90;
+  --ev-dgrey-150: #687586;
+  --ev-dgrey-200: #606d7c;
+  --ev-dgrey-300: #586472;
+  --ev-dgrey-400: #49525f;
+  --ev-dgrey-500: #39414b;
+  --ev-dgrey-600: #292f37;
+  --ev-dgrey-700: #21262c;
+  --ev-dgrey-800: #191c21;
+  --ev-dgrey-850: #101316;
+  --ev-dgrey-900: #0c0e10;
+
+  /* grey - UI neutral ramp, 9 steps (starts at 100, no 50) */
+  --ev-grey-100: #f9f9f9;
+  --ev-grey-200: #f1f1f4;
+  --ev-grey-300: #dbdfe9;
+  --ev-grey-400: #c4cada;
+  --ev-grey-500: #99a1b7;
+  --ev-grey-600: #78829d;
+  --ev-grey-700: #4b5675;
+  --ev-grey-800: #252f4a;
+  --ev-grey-900: #071437;
+
+  /* purple */
+  --ev-purple-50: #f4ebfd;
+  --ev-purple-100: #ead7fb;
+  --ev-purple-200: #d5aef7;
+  --ev-purple-300: #bf86f2;
+  --ev-purple-400: #aa5dee;
+  --ev-purple-500: #9535ea;
+  --ev-purple-600: #772abb;
+  --ev-purple-700: #59208c;
+  --ev-purple-800: #3c155e;
+  --ev-purple-900: #2d1046;
+
+  /* green */
+  --ev-green-50: #e8f9ee;
+  --ev-green-100: #d1f4dd;
+  --ev-green-200: #a2e8ba;
+  --ev-green-300: #74dd98;
+  --ev-green-400: #45d175;
+  --ev-green-500: #17c653;
+  --ev-green-600: #129e42;
+  --ev-green-700: #0e7732;
+  --ev-green-800: #094f21;
+  --ev-green-900: #073b19;
+
+  /* cyan */
+  --ev-cyan-50: #e7f5f8;
+  --ev-cyan-100: #d0eaf0;
+  --ev-cyan-200: #a1d5e2;
+  --ev-cyan-300: #71c0d3;
+  --ev-cyan-400: #42abc5;
+  --ev-cyan-500: #1396b6;
+  --ev-cyan-600: #0f7892;
+  --ev-cyan-700: #0b5a6d;
+  --ev-cyan-800: #083c49;
+  --ev-cyan-900: #062d37;
+
+  /* yellow */
+  --ev-yellow-50: #fef9eb;
+  --ev-yellow-100: #fef3d7;
+  --ev-yellow-200: #fde7b0;
+  --ev-yellow-300: #fbdb88;
+  --ev-yellow-400: #facf61;
+  --ev-yellow-500: #f9c339;
+  --ev-yellow-600: #c79c2e;
+  --ev-yellow-700: #957522;
+  --ev-yellow-800: #644e17;
+  --ev-yellow-900: #4b3b11;
+
+  /* maroon */
+  --ev-maroon-50: #f9eaea;
+  --ev-maroon-100: #f2d4d4;
+  --ev-maroon-200: #e5aaaa;
+  --ev-maroon-300: #d87f7f;
+  --ev-maroon-400: #cb5555;
+  --ev-maroon-500: #be2a2a;
+  --ev-maroon-600: #982222;
+  --ev-maroon-700: #721919;
+  --ev-maroon-800: #4c1111;
+  --ev-maroon-900: #390d0d;
+}

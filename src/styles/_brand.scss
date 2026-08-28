@@ -1,0 +1,73 @@
+@use 'sass:map';
+
+///
+/// Layer 1.5 - Brand.
+///
+/// The `Brand` collection in Figma is a re-pointing layer: `brand/primary/*`
+/// and `brand/secondary/*` are pure aliases onto two palette ramps, and the
+/// collection's four modes swap which ramps those are. Reproducing it as an
+/// indirection keeps the whole system re-brandable from one attribute:
+///
+/// ```html
+/// <html data-ev-brand="green">
+/// ```
+///
+/// Defaults to the "Blue" mode, which is what the component boards are drawn
+/// against.
+///
+
+$steps: 50, 100, 200, 300, 400, 500, 600, 700, 800, 900;
+
+/// Resolve one step, honouring any per-step exception.
+@function _step($role, $step, $ramp, $overrides) {
+  $key: '#{$role}-#{$step}';
+
+  @if map.has-key($overrides, $key) {
+    @return var(--ev-#{map.get($overrides, $key)});
+  }
+
+  @return var(--ev-#{$ramp}-#{$step});
+}
+
+/// Point `brand/primary/*` and `brand/secondary/*` at two ramps.
+///
+/// @param {String} $primary - ramp name backing brand/primary
+/// @param {String} $secondary - ramp name backing brand/secondary
+/// @param {Map} $overrides - per-step exceptions, keyed `primary-900` etc.
+@mixin brand-ramps($primary, $secondary, $overrides: ()) {
+  @each $step in $steps {
+    --ev-brand-primary-#{$step}: #{_step('primary', $step, $primary, $overrides)};
+  }
+
+  @each $step in $steps {
+    --ev-brand-secondary-#{$step}: #{_step('secondary', $step, $secondary, $overrides)};
+  }
+}
+
+:root,
+[data-ev-brand='blue'] {
+  @include brand-ramps('blue', 'orange');
+}
+
+[data-ev-brand='lightblue'] {
+  @include brand-ramps('lightblue', 'indigo');
+}
+
+/*
+ * The Green mode resolves brand/primary/900 through brand/secondary/900 to
+ * teal/900 rather than green/900. That looks like an upstream slip, but it is
+ * what the collection actually resolves to, so it is mirrored here.
+ */
+[data-ev-brand='green'] {
+  @include brand-ramps(
+    'green',
+    'teal',
+    (
+      'primary-900': 'teal-900',
+    )
+  );
+}
+
+[data-ev-brand='orange'] {
+  @include brand-ramps('orange', 'rose');
+}

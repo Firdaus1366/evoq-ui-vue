@@ -1,0 +1,62 @@
+@use 'sass:list';
+@use 'sass:map';
+
+///
+/// Type styles - the 19 text styles from the `Typography` board.
+///
+/// These compile to nothing on their own. A component opts in:
+///
+/// ```scss
+/// @use '../../styles/typography' as type;
+///
+/// .ev-card__title {
+///   @include type.style('subheading/h6');
+/// }
+/// ```
+///
+/// Emitting them as a mixin rather than a set of utility classes keeps the
+/// shipped stylesheet down to what components actually use.
+///
+
+/// Figma style name -> `font-size` step, `line-height` step, weight.
+///
+/// Steps are quoted so `2xs`/`5xl` stay strings rather than being read as Sass
+/// numbers carrying an `xs`/`xl` unit, and each spec is a space-separated list
+/// rather than a nested map so the table stays one row per style.
+$styles: (
+  'heading/display': '5xl' '4xl' 'bold',
+  'heading/h1': '4xl' '3xl' 'bold',
+  'heading/h2': '3xl' '2xl' 'bold',
+  'heading/h3': '2xl' 'xl' 'bold',
+  'heading/h4': 'xl' 'lg' 'semibold',
+  'subheading/h5': 'lg' 'md' 'bold',
+  'subheading/h6': 'md' 'sm' 'bold',
+  'subheading/h7': 'sm' 'xs' 'bold',
+  'subheading/h8': 'xs' 'xs' 'semibold',
+  'body/large': 'md' 'sm' 'medium',
+  'body/large-b': 'md' 'sm' 'bold',
+  'body/regular': 'sm' 'xs' 'medium',
+  'body/regular-b': 'sm' 'xs' 'bold',
+  'body/small': 'xs' 'xs' 'medium',
+  'body/small-b': 'xs' 'xs' 'bold',
+  'body/xtrasmall': '2xs' 'xs' 'medium',
+  'body/xtrasmall-b': '2xs' 'xs' 'bold',
+  'body/micro': '3xs' '2xs' 'medium',
+  'body/micro-b': '3xs' '2xs' 'bold',
+);
+
+/// Apply one named text style.
+///
+/// @param {String} $name - a key of `$styles`, e.g. 'body/regular'
+@mixin style($name) {
+  $spec: map.get($styles, $name);
+
+  @if $spec == null {
+    @error 'Unknown text style "#{$name}". Known styles: #{map.keys($styles)}.';
+  }
+
+  font-family: var(--ev-font-family-base);
+  font-size: var(--ev-font-size-#{list.nth($spec, 1)});
+  line-height: var(--ev-line-height-#{list.nth($spec, 2)});
+  font-weight: var(--ev-font-weight-#{list.nth($spec, 3)});
+}

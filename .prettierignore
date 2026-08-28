@@ -1,0 +1,5 @@
+dist
+dist-playground
+coverage
+node_modules
+package-lock.json

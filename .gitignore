@@ -1,0 +1,13 @@
+node_modules
+dist
+dist-playground
+coverage
+*.local
+.DS_Store
+.vite
+.eslintcache
+
+# Editor
+.idea
+.vscode/*
+!.vscode/extensions.json

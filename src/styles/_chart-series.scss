@@ -1,0 +1,35 @@
+///
+/// Chart series palette.
+///
+/// The `PieChart` board draws five slices, and every one of them is already an
+/// EVOQ token - `brand/primary`, `ext/success`, `ext/warning`,
+/// `brand/secondary`, `ext/error`, in that order. They are named here so a
+/// chart can reference "series 3" instead of reaching for a semantic token
+/// that happens to be the right colour.
+///
+/// Because they alias the semantic layer, a series re-colours itself when the
+/// theme or the brand changes, with no work from the chart.
+///
+
+:root {
+  --ev-chart-series-1: var(--ev-brand-primary);
+  --ev-chart-series-2: var(--ev-ext-success);
+  --ev-chart-series-3: var(--ev-ext-warning);
+  --ev-chart-series-4: var(--ev-brand-secondary);
+  --ev-chart-series-5: var(--ev-ext-error);
+
+  /*
+   * The board stops at five. These continue the sequence for data that needs
+   * more, staying inside the palette rather than inventing colours.
+   */
+  --ev-chart-series-6: var(--ev-purple-500);
+  --ev-chart-series-7: var(--ev-cyan-500);
+  --ev-chart-series-8: var(--ev-maroon-500);
+  --ev-chart-series-9: var(--ev-brand-primary-300);
+  --ev-chart-series-10: var(--ev-green-300);
+
+  /* Chart chrome. */
+  --ev-chart-axis: var(--ev-border-primary);
+  --ev-chart-axis-label: var(--ev-text-secondary);
+  --ev-chart-grid: var(--ev-border-secondary);
+}

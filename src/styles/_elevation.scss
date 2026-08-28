@@ -1,0 +1,41 @@
+///
+/// Elevation - the 8 effect styles from the `Shadow` board.
+///
+/// Five elevation levels plus three special-purpose shadows. The tint is
+/// black at low alpha, matching how the styles are authored in Figma; it is
+/// exposed as `--ev-shadow-tint` so a themed surface can warm or cool it
+/// without every level being redefined.
+///
+
+:root {
+  --ev-shadow-tint: 0 0 0;
+
+  /* Static indicators and small badges */
+  --ev-elevation-xs: 0 1px 2px 0 rgb(var(--ev-shadow-tint) / 0.05);
+
+  /* Secondary buttons and small inputs */
+  --ev-elevation-sm:
+    0 1px 3px 0 rgb(var(--ev-shadow-tint) / 0.1), 0 1px 2px -1px rgb(var(--ev-shadow-tint) / 0.06);
+
+  /* The standard for elevated UI cards */
+  --ev-elevation-md:
+    0 4px 6px -1px rgb(var(--ev-shadow-tint) / 0.1),
+    0 2px 4px -2px rgb(var(--ev-shadow-tint) / 0.06);
+
+  /* Dropdowns, popovers and sticky elements */
+  --ev-elevation-lg:
+    0 10px 15px -3px rgb(var(--ev-shadow-tint) / 0.1),
+    0 4px 6px -4px rgb(var(--ev-shadow-tint) / 0.05);
+
+  /* Modal frames */
+  --ev-elevation-xl:
+    0 20px 25px -5px rgb(var(--ev-shadow-tint) / 0.1),
+    0 8px 10px -6px rgb(var(--ev-shadow-tint) / 0.04);
+
+  /* Inset state for a pressed button */
+  --ev-shadow-button-pressed: inset 0 4px 4px 0 rgb(var(--ev-shadow-tint) / 0.25);
+
+  /* Sticky table columns - direction is pinned per side */
+  --ev-shadow-table-left: 4px 0 4px 0 rgb(var(--ev-shadow-tint) / 0.15);
+  --ev-shadow-table-right: -4px 0 4px 0 rgb(var(--ev-shadow-tint) / 0.15);
+}

@@ -1,0 +1,104 @@
+///
+/// Dimension scales - the `Spacing & Radius` collection (50 variables, 4
+/// groups: spacing, radius, typography, stroke).
+///
+/// Figma authors every value in px. Structural tokens (spacing, radius,
+/// stroke) stay in px so a component measures exactly what the board measures.
+/// Font sizes and line heights are emitted in rem against a 16px base so the
+/// type scale still responds to the reader's browser font size - `md` is 16px
+/// either way, the rest follow from it.
+///
+
+:root {
+  /* Spacing - 9 steps, 0 to 48px */
+  --ev-spacing-none: 0;
+  --ev-spacing-2xs: 2px;
+  --ev-spacing-xs: 4px;
+  --ev-spacing-sm: 8px;
+  --ev-spacing-md: 12px;
+  --ev-spacing-lg: 16px;
+  --ev-spacing-xl: 24px;
+  --ev-spacing-2xl: 32px;
+  --ev-spacing-3xl: 48px;
+
+  /* Radius - 10 steps, square through to a full pill */
+  --ev-radius-none: 0;
+  --ev-radius-2xs: 2px;
+  --ev-radius-3xs: 4px;
+  --ev-radius-xs: 6px;
+  --ev-radius-sm: 8px;
+  --ev-radius-md: 12px;
+  --ev-radius-lg: 16px;
+  --ev-radius-xl: 24px;
+  --ev-radius-2xl: 32px;
+  --ev-radius-rd: 9999px;
+
+  /* Stroke - 5 border widths */
+  --ev-stroke-xs: 1px;
+  --ev-stroke-sm: 2px;
+  --ev-stroke-md: 3px;
+  --ev-stroke-lg: 4px;
+  --ev-stroke-xl: 5px;
+
+  /* Font size - 11 steps (8px to 40px) */
+  --ev-font-size-3xs: 0.5rem;
+  --ev-font-size-2xs: 0.625rem;
+  --ev-font-size-xs: 0.75rem;
+  --ev-font-size-sm: 0.875rem;
+  --ev-font-size-md: 1rem;
+  --ev-font-size-lg: 1.125rem;
+  --ev-font-size-xl: 1.25rem;
+  --ev-font-size-2xl: 1.5rem;
+  --ev-font-size-3xl: 1.75rem;
+  --ev-font-size-4xl: 2rem;
+  --ev-font-size-5xl: 2.5rem;
+
+  /* Line height - 9 steps (12px to 48px) */
+  --ev-line-height-2xs: 0.75rem;
+  --ev-line-height-xs: 1rem;
+  --ev-line-height-sm: 1.25rem;
+  --ev-line-height-md: 1.5rem;
+  --ev-line-height-lg: 1.75rem;
+  --ev-line-height-xl: 2rem;
+  --ev-line-height-2xl: 2.25rem;
+  --ev-line-height-3xl: 2.5rem;
+  --ev-line-height-4xl: 3rem;
+
+  /* Letter spacing - 6 steps. Kept in px, as authored. */
+  --ev-letter-spacing-tighter: -0.5px;
+  --ev-letter-spacing-tight: -0.3px;
+  --ev-letter-spacing-snug: -0.2px;
+  --ev-letter-spacing-normal: 0;
+  --ev-letter-spacing-wide: 0.2px;
+  --ev-letter-spacing-wider: 1.5px;
+
+  /*
+   * Type family and weights. The design system specifies Inter in Medium,
+   * Semi Bold and Bold; the stack falls back to the system UI face so the
+   * library stays usable without shipping or requiring the webfont.
+   */
+  --ev-font-family-base:
+    Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --ev-font-family-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --ev-font-weight-medium: 500;
+  --ev-font-weight-semibold: 600;
+  --ev-font-weight-bold: 700;
+
+  /* Motion. Not in the Figma collections - library-level defaults. */
+  --ev-duration-fast: 120ms;
+  --ev-duration-base: 200ms;
+  --ev-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Focus ring, built from the stroke scale. */
+  --ev-focus-ring-width: var(--ev-stroke-sm);
+  --ev-focus-ring-offset: 2px;
+  --ev-focus-ring-color: var(--ev-brand-primary);
+
+  /* Z-index. Not in the Figma collections - library-level defaults. */
+  --ev-z-dropdown: 1000;
+  --ev-z-overlay: 1100;
+  --ev-z-modal: 1200;
+  --ev-z-toast: 1300;
+}

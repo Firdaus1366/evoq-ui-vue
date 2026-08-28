@@ -1,0 +1,51 @@
+///
+/// The bridge between the EVOQ token layer and Unovis.
+///
+/// Unovis is themed through its own CSS variables (`--vis-color0`,
+/// `--vis-font-family`, and so on). Pointing those at EVOQ tokens is the whole
+/// integration: because the tokens themselves re-point under
+/// `data-ev-theme` and `data-ev-brand`, a chart follows a theme or brand change
+/// with no JavaScript, no watcher and no re-render.
+///
+/// This is the reason the library wraps an SVG chart engine rather than a
+/// canvas one - a canvas cannot read a CSS variable, so the same feature would
+/// have meant resolving every colour in JS and redrawing on every change.
+///
+
+@mixin unovis-tokens {
+  --vis-font-family: var(--ev-font-family-base);
+
+  --vis-color0: var(--ev-chart-series-1);
+  --vis-color1: var(--ev-chart-series-2);
+  --vis-color2: var(--ev-chart-series-3);
+  --vis-color3: var(--ev-chart-series-4);
+  --vis-color4: var(--ev-chart-series-5);
+  --vis-color5: var(--ev-chart-series-6);
+  --vis-color6: var(--ev-chart-series-7);
+  --vis-color7: var(--ev-chart-series-8);
+  --vis-color8: var(--ev-chart-series-9);
+  --vis-color9: var(--ev-chart-series-10);
+
+  /*
+   * Unovis swaps to its `--vis-dark-*` palette only when `theme-dark` is on
+   * the body. This library never sets that class - the EVOQ tokens above
+   * already carry the dark values - so the light variables are the only ones
+   * in play, and they are correct in both themes.
+   */
+
+  --vis-axis-tick-color: var(--ev-chart-axis);
+  --vis-axis-domain-color: var(--ev-chart-axis);
+  --vis-axis-grid-color: var(--ev-chart-grid);
+  --vis-axis-tick-label-color: var(--ev-chart-axis-label);
+  --vis-axis-label-color: var(--ev-chart-axis-label);
+
+  --vis-tooltip-background-color: var(--ev-bg-inverse);
+  --vis-tooltip-text-color: var(--ev-text-inverse);
+  --vis-tooltip-border-color: transparent;
+  --vis-tooltip-padding: var(--ev-spacing-sm) var(--ev-spacing-md);
+  --vis-tooltip-border-radius: var(--ev-radius-sm);
+  --vis-tooltip-shadow-color: rgb(var(--ev-shadow-tint) / 0.1);
+
+  --vis-crosshair-line-stroke-color: var(--ev-border-primary);
+  --vis-crosshair-circle-stroke-color: var(--ev-bg-primary);
+}

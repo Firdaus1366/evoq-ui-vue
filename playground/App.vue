@@ -1,0 +1,3535 @@
+<script setup lang="ts">
+import { computed, ref, onMounted } from 'vue'
+import {
+  EvAccordion,
+  EvAlert,
+  EvAlertDialog,
+  EvAspectRatio,
+  EvAvatar,
+  EvAvatarGroup,
+  EvBadge,
+  EvBreadcrumb,
+  EvButton,
+  EvButtonGroup,
+  EvButtonGroupItem,
+  EvButtonLink,
+  EvCalendar,
+  EvTimePicker,
+  EvCard,
+  EvCarousel,
+  EvCarouselSlide,
+  EvChart,
+  EvCheckbox,
+  EvDirection,
+  EvDrawer,
+  EvDropdownItem,
+  EvDropdownList,
+  EvHint,
+  EvInput,
+  EvInputWithLabel,
+  EvInputSearch,
+  EvInputFieldUnit,
+  EvRichEditor,
+  EvTextarea,
+  EvKbd,
+  EvLogo,
+  EvModal,
+  EvNavMenuItem,
+  EvNavigationMenu,
+  EvPopover,
+  EvRadio,
+  EvRadioGroup,
+  EvScrollArea,
+  EvSeparator,
+  EvSlider,
+  EvSwitch,
+  EvTab,
+  EvTabs,
+  EvTag,
+  EvTagGroup,
+  EvToggle,
+  EvToggleGroup,
+  EvTooltip,
+  EvTree,
+  EvTreeItem,
+} from '../src'
+import { EvBarChart, EvLineChart, EvPieChart } from '../src/charts'
+
+import type {
+  AlertVariant,
+  BadgeVariant,
+  BreadcrumbItem,
+  ButtonLinkVariant,
+  ButtonSize,
+  ButtonVariant,
+  AvatarSize,
+  AvatarVariant,
+  HintSize,
+  TagVariant,
+  TooltipPlacement,
+} from '../src'
+
+import PlaygroundSimulator from './components/PlaygroundSimulator.vue'
+import { COMPONENT_PROPS } from './component-props'
+import PlaygroundSidebar, { type CategoryItem } from './components/PlaygroundSidebar.vue'
+import PlaygroundCodeSnippet from './components/PlaygroundCodeSnippet.vue'
+
+// Categories definition for sidebar
+const categories: CategoryItem[] = [
+  {
+    id: 'simulator',
+    name: 'Props Simulator',
+    icon: '🎛️',
+    components: [{ id: 'simulator', name: 'Simulasi Props', tag: 'Semua komponen' }],
+  },
+  {
+    id: 'tokens',
+    name: 'Design Tokens',
+    icon: '🎨',
+    components: [
+      { id: 'colors-primitive', name: 'Primitive Colors', tag: 'Primitives' },
+      { id: 'colors-semantic', name: 'Semantic Colors', tag: 'Semantic' },
+    ],
+  },
+  {
+    id: 'actions',
+    name: 'General & Actions',
+    icon: '⚡',
+    components: [
+      { id: 'button', name: 'Button', tag: 'EvButton' },
+      { id: 'button-group', name: 'Button Group', tag: 'EvButtonGroup' },
+      { id: 'button-link', name: 'Button Link', tag: 'EvButtonLink' },
+      { id: 'toggle', name: 'Toggle & Group', tag: 'EvToggle' },
+    ],
+  },
+  {
+    id: 'form',
+    name: 'Form & Input',
+    icon: '📝',
+    components: [
+      { id: 'input', name: 'Input & Form Family', tag: 'EvInput' },
+      { id: 'checkbox', name: 'Checkbox', tag: 'EvCheckbox' },
+      { id: 'radio', name: 'Radio & Group', tag: 'EvRadioGroup' },
+      { id: 'switch', name: 'Switch & Field', tag: 'EvSwitch' },
+      { id: 'slider', name: 'Slider', tag: 'EvSlider' },
+      { id: 'calendar', name: 'Calendar & Time Picker', tag: 'EvCalendar' },
+      { id: 'dropdown-list', name: 'Dropdown List', tag: 'EvDropdownList' },
+    ],
+  },
+  {
+    id: 'data-display',
+    name: 'Data Display',
+    icon: '📊',
+    components: [
+      { id: 'badge', name: 'Badge', tag: 'EvBadge' },
+      { id: 'tag', name: 'Tag & Group', tag: 'EvTag' },
+      { id: 'hint', name: 'Hint Indicator', tag: 'EvHint' },
+      { id: 'kbd', name: 'Kbd (Keyboard)', tag: 'EvKbd' },
+      { id: 'avatar', name: 'Avatar & Group', tag: 'EvAvatar' },
+      { id: 'card', name: 'Card', tag: 'EvCard' },
+      { id: 'tree', name: 'Tree View', tag: 'EvTree' },
+      { id: 'aspect-ratio', name: 'Aspect Ratio', tag: 'EvAspectRatio' },
+      { id: 'chart', name: 'Charts (Bar, Line, Pie)', tag: 'EvChart' },
+    ],
+  },
+  {
+    id: 'navigation',
+    name: 'Navigation',
+    icon: '🧭',
+    components: [
+      { id: 'breadcrumb', name: 'Breadcrumb', tag: 'EvBreadcrumb' },
+      { id: 'navigation-menu', name: 'Navigation Menu', tag: 'EvNavigationMenu' },
+      { id: 'tabs', name: 'Tabs', tag: 'EvTabs' },
+      { id: 'carousel', name: 'Carousel', tag: 'EvCarousel' },
+    ],
+  },
+  {
+    id: 'feedback',
+    name: 'Feedback & Overlays',
+    icon: '💬',
+    components: [
+      { id: 'accordion', name: 'Accordion', tag: 'EvAccordion' },
+      { id: 'alert', name: 'Alert', tag: 'EvAlert' },
+      { id: 'alert-dialog', name: 'Alert Dialog', tag: 'EvAlertDialog' },
+      { id: 'modal', name: 'Modal', tag: 'EvModal' },
+      { id: 'drawer', name: 'Drawer & Sheet', tag: 'EvDrawer' },
+      { id: 'popover', name: 'Popover', tag: 'EvPopover' },
+      { id: 'tooltip', name: 'Tooltip', tag: 'EvTooltip' },
+      { id: 'direction', name: 'Direction Box', tag: 'EvDirection' },
+    ],
+  },
+  {
+    id: 'layout',
+    name: 'Layout & Identity',
+    icon: '🏗️',
+    components: [
+      { id: 'scroll-area', name: 'Scroll Area', tag: 'EvScrollArea' },
+      { id: 'separator', name: 'Separator', tag: 'EvSeparator' },
+      { id: 'logo', name: 'Logo', tag: 'EvLogo' },
+    ],
+  },
+]
+
+/*
+ * The simulator drives every component from one page: pick a tag, drive its
+ * props from the panel, copy the markup that produced what you see. The prop
+ * list itself is generated by `scripts/extract-props.mjs`.
+ */
+const simulatorTags = Object.keys(COMPONENT_PROPS).sort()
+const simulatorTag = ref('EvButton')
+
+// State for active component view & filters
+const activeId = ref('all')
+const searchQuery = ref('')
+const isMobileOpen = ref(false)
+const toastText = ref('')
+const showToast = ref(false)
+
+function copyToClipboard(text: string, label?: string) {
+  navigator.clipboard.writeText(text)
+  toastText.value = `Tersalin: ${label || text}`
+  showToast.value = true
+  setTimeout(() => {
+    showToast.value = false
+  }, 2200)
+}
+
+const activeComponent = computed(() => {
+  if (activeId.value === 'all') return null
+  for (const cat of categories) {
+    const found = cat.components.find((c) => c.id === activeId.value)
+    if (found) return { ...found, category: cat.name }
+  }
+  return null
+})
+
+// Brand & Theme
+type Brand = 'blue' | 'lightblue' | 'green' | 'orange'
+const theme = ref<'auto' | 'light' | 'dark'>('auto')
+const brand = ref<Brand>('blue')
+
+function setTheme(next: 'auto' | 'light' | 'dark') {
+  theme.value = next
+  document.documentElement.dataset.evTheme = next
+}
+
+function setBrand(next: Brand) {
+  brand.value = next
+  document.documentElement.dataset.evBrand = next
+}
+
+onMounted(() => {
+  document.documentElement.dataset.evTheme = theme.value
+  document.documentElement.dataset.evBrand = brand.value
+})
+
+// Primitive Ramps
+const primitiveRamps = [
+  {
+    name: 'Light Grey (lgrey)',
+    prefix: 'lgrey',
+    steps: [50, 100, 150, 200, 300, 400, 500, 600, 700, 800, 850, 900],
+  },
+  {
+    name: 'Dark Grey (dgrey)',
+    prefix: 'dgrey',
+    steps: [50, 100, 150, 200, 300, 400, 500, 600, 700, 800, 850, 900],
+  },
+  { name: 'UI Grey (grey)', prefix: 'grey', steps: [100, 200, 300, 400, 500, 600, 700, 800, 900] },
+  { name: 'Blue', prefix: 'blue', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+  {
+    name: 'Light Blue',
+    prefix: 'lightblue',
+    steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900],
+  },
+  { name: 'Orange', prefix: 'orange', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+  { name: 'Indigo', prefix: 'indigo', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+  { name: 'Teal', prefix: 'teal', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+  { name: 'Rose', prefix: 'rose', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+  { name: 'Green', prefix: 'green', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+  { name: 'Cyan', prefix: 'cyan', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+  { name: 'Yellow', prefix: 'yellow', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+  { name: 'Maroon', prefix: 'maroon', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+  { name: 'Red', prefix: 'red', steps: [50, 100, 200, 400, 500, 600, 700, 800] },
+  { name: 'Sky', prefix: 'sky', steps: [50, 400, 500, 700, 800] },
+  { name: 'Neutral', prefix: 'neutral', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800] },
+]
+
+// Semantic Tokens Groups
+const semanticBackgrounds = [
+  { token: '--ev-bg-primary', desc: 'Latar belakang utama aplikasi/halaman' },
+  { token: '--ev-bg-secondary', desc: 'Latar kontainer/kartu sekunder' },
+  { token: '--ev-bg-tertiary', desc: 'Latar elemen tersier/input' },
+  { token: '--ev-bg-subtle', desc: 'Latar aksen halus' },
+  { token: '--ev-bg-subtler', desc: 'Latar aksen kontras medium' },
+  { token: '--ev-bg-subtlest', desc: 'Latar aksen kontras tinggi' },
+  { token: '--ev-bg-inverse', desc: 'Latar kontras terbalik (dark/light)' },
+  { token: '--ev-bg-overlay', desc: 'Lapisan tirai modal (scrim)' },
+]
+
+const semanticTypography = [
+  { token: '--ev-text-primary', desc: 'Teks judul & isi utama' },
+  { token: '--ev-text-secondary', desc: 'Teks penjelasan sekunder' },
+  { token: '--ev-text-tertiary', desc: 'Teks petunjuk & placeholder' },
+  { token: '--ev-text-disabled', desc: 'Teks status nonaktif' },
+  { token: '--ev-text-inverse', desc: 'Teks di atas latar kontras' },
+  { token: '--ev-text-link', desc: 'Teks link (mengikuti brand)' },
+  { token: '--ev-text-error', desc: 'Teks status bahaya/kesalahan' },
+  { token: '--ev-text-success', desc: 'Teks status sukses' },
+  { token: '--ev-text-warning', desc: 'Teks status peringatan' },
+  { token: '--ev-text-info', desc: 'Teks status informasi' },
+]
+
+const semanticBorders = [
+  { token: '--ev-border-primary', desc: 'Garis batas utama kartu & input' },
+  { token: '--ev-border-secondary', desc: 'Garis batas sekunder halus' },
+  { token: '--ev-border-tertiary', desc: 'Garis batas tersier' },
+  { token: '--ev-border-disabled', desc: 'Garis batas nonaktif' },
+  { token: '--ev-border-inverse', desc: 'Garis batas kontras terbalik' },
+]
+
+const semanticBrand = [
+  { token: '--ev-brand-primary', desc: 'Warna brand utama (500)' },
+  { token: '--ev-brand-primary-bold', desc: 'Warna brand utama tebal/hover' },
+  { token: '--ev-brand-primary-subtle', desc: 'Warna latar brand halus (50)' },
+  { token: '--ev-brand-secondary', desc: 'Warna aksen brand sekunder' },
+  { token: '--ev-brand-secondary-bold', desc: 'Warna aksen brand sekunder tebal' },
+  { token: '--ev-brand-secondary-subtle', desc: 'Warna latar brand sekunder halus' },
+]
+
+const semanticExtended = [
+  { token: '--ev-ext-success', desc: 'Aksen sukses utama' },
+  { token: '--ev-ext-success-bold', desc: 'Aksen sukses tebal' },
+  { token: '--ev-ext-success-subtle', desc: 'Latar lencana sukses' },
+  { token: '--ev-ext-warning', desc: 'Aksen peringatan utama' },
+  { token: '--ev-ext-warning-bold', desc: 'Aksen peringatan tebal' },
+  { token: '--ev-ext-warning-subtle', desc: 'Latar lencana peringatan' },
+  { token: '--ev-ext-error', desc: 'Aksen kesalahan/bahaya utama' },
+  { token: '--ev-ext-error-bold', desc: 'Aksen kesalahan tebal' },
+  { token: '--ev-ext-error-subtle', desc: 'Latar lencana kesalahan' },
+  { token: '--ev-ext-info', desc: 'Aksen informasi utama' },
+  { token: '--ev-ext-info-bold', desc: 'Aksen informasi tebal' },
+  { token: '--ev-ext-info-subtle', desc: 'Latar lencana informasi' },
+]
+
+const semanticTree = [
+  { token: '--ev-tree-lv1', desc: 'Level 1 (Root node)' },
+  { token: '--ev-tree-lv2', desc: 'Level 2' },
+  { token: '--ev-tree-lv3', desc: 'Level 3' },
+  { token: '--ev-tree-lv4', desc: 'Level 4' },
+  { token: '--ev-tree-lv5', desc: 'Level 5' },
+  { token: '--ev-tree-lv6', desc: 'Level 6' },
+  { token: '--ev-tree-lv7', desc: 'Level 7' },
+  { token: '--ev-tree-lv8', desc: 'Level 8' },
+]
+
+// Props & Demo states
+const buttonVariants: ButtonVariant[] = [
+  'primary',
+  'secondary-light',
+  'secondary-grey',
+  'secondary-white',
+  'destructive',
+  'outline',
+  'ghost',
+]
+const buttonSizes: ButtonSize[] = ['default', 'small']
+const badges: BadgeVariant[] = ['success', 'waiting', 'neutral', 'draft', 'reject', 'custom']
+const tags: TagVariant[] = ['default', 'outline']
+const hintSizes: HintSize[] = ['small', 'medium', 'large']
+const ratios = ['16:9', '1:1', '4:5'] as const
+const links: ButtonLinkVariant[] = ['primary', 'secondary', 'tertiary', 'custom']
+const alerts: AlertVariant[] = ['neutral', 'neutral-dark', 'info', 'success', 'error', 'warning']
+const crumbs: BreadcrumbItem[] = [
+  { label: 'Beranda', href: '#', icon: true },
+  { label: 'Pengadaan', href: '#' },
+  { label: 'Vendor', href: '#' },
+  { label: 'PT Maju Jaya', href: '#' },
+  { label: 'Detail' },
+]
+
+const openDefault = ref(true)
+const openCard = ref(false)
+const modalOpen = ref(false)
+const drawerOpen = ref(false)
+const sheetOpen = ref(false)
+const dialogOpen = ref(false)
+const popoverOpen = ref(false)
+const dontAskAgain = ref(false)
+
+const volume = ref(60)
+const price = ref<[number, number]>([20, 80])
+const risk = ref(35)
+const height = ref(50)
+const slide = ref(0)
+
+const avatarSizes: AvatarSize[] = [24, 32, 40, 48, 64, 96]
+const avatarTints: AvatarVariant[] = ['green', 'blue', 'orange', 'purple', 'teal', 'pink']
+const directionAgree = ref(false)
+
+const navSection = ref('beranda')
+const page = ref(1)
+const vendorName = ref('')
+const emailInput = ref('info@example.com')
+const searchInput = ref('')
+const passwordInput = ref('rahasia123')
+const domainName = ref('mycompany')
+const websiteUrl = ref('google')
+const unitPrice = ref('25000000')
+const selectedCurrency = ref('IDR')
+const richContentSmall = ref('')
+const richContent = ref(
+  '<h1>Pengadaan Server Cloud</h1><p>Berikut adalah <strong>spesifikasi teknis</strong> yang disetujui:</p><ul><li>RAM 128GB ECC</li><li>NVMe Storage 4TB</li><li>Koneksi 10 Gbps Redundant</li></ul>',
+)
+const textareaNotes = ref('Catatan spesifikasi pengadaan barang dan jasa tahap 1.')
+const switchStateLeft = ref(true)
+const switchStateRight = ref(true)
+const pickedDate = ref<Date | null>(new Date())
+const pickedRange = ref<[Date | null, Date | null]>([null, null])
+const pickedTime = ref('09:30')
+const pickedTimeSeconds = ref('14:45:30')
+const pickedTimeAmPm = ref('02:15 PM')
+
+const salesData = [
+  { bulan: 'Jan', realisasi: 120, target: 100 },
+  { bulan: 'Feb', realisasi: 150, target: 130 },
+  { bulan: 'Mar', realisasi: 90, target: 140 },
+  { bulan: 'Apr', realisasi: 170, target: 150 },
+  { bulan: 'Mei', realisasi: 140, target: 160 },
+]
+const costData = [
+  { nama: 'Pengadaan', total: 40 },
+  { nama: 'Operasional', total: 25 },
+  { nama: 'Gaji', total: 20 },
+  { nama: 'Lainnya', total: 15 },
+]
+
+const vendors = ['PT Maju Jaya', 'CV Sentosa', 'PT Bina Karya', 'UD Makmur', 'PT Sinar Abadi']
+const vendorSearch = ref('')
+const pickedVendor = ref('CV Sentosa')
+const filteredVendors = computed(() =>
+  vendors.filter((v) => v.toLowerCase().includes(vendorSearch.value.toLowerCase())),
+)
+
+const tabSegmented = ref<string | number | null>('ringkasan')
+const tabLine = ref<string | number | null>('satu')
+const tooltipPlacements: TooltipPlacement[] = ['top', 'bottom', 'left', 'right']
+
+const selectedNode = ref('keuangan')
+const expandedNodes = ref(new Set(['maju', 'keuangan']))
+const checkedNodes = ref(new Set<string>(['keuangan']))
+
+const treeNodes = [
+  { id: 'maju', label: 'PT Maju Jaya', parent: null },
+  { id: 'keuangan', label: 'Divisi Keuangan', parent: 'maju' },
+  { id: 'anggaran', label: 'Tim Anggaran', parent: 'keuangan' },
+  { id: 'pajak', label: 'Tim Pajak', parent: 'keuangan' },
+  { id: 'pajak-ppn', label: 'PPN', parent: 'pajak' },
+  { id: 'operasional', label: 'Divisi Operasional', parent: 'maju' },
+  { id: 'gudang', label: 'Gudang', parent: 'operasional' },
+]
+
+const nodeLevel = (id: string): number => {
+  const node = treeNodes.find((n) => n.id === id)
+  return node?.parent ? nodeLevel(node.parent) + 1 : 1
+}
+const hasChild = (id: string) => treeNodes.some((n) => n.parent === id)
+
+const visibleTreeNodes = computed(() =>
+  treeNodes
+    .filter((n) => {
+      let parent = n.parent
+      while (parent) {
+        if (!expandedNodes.value.has(parent)) return false
+        parent = treeNodes.find((x) => x.id === parent)?.parent ?? null
+      }
+      return true
+    })
+    .map((n) => ({ ...n, level: nodeLevel(n.id), hasChild: hasChild(n.id) })),
+)
+
+function toggleNode(id: string, open: boolean) {
+  const next = new Set(expandedNodes.value)
+  if (open) next.add(id)
+  else next.delete(id)
+  expandedNodes.value = next
+}
+
+function toggleChecked(id: string, on: boolean) {
+  const next = new Set(checkedNodes.value)
+  if (on) next.add(id)
+  else next.delete(id)
+  checkedNodes.value = next
+}
+
+const agree = ref(false)
+const partial = ref(true)
+const plan = ref<string | number | null>('bulanan')
+const filters = ref<Record<string, boolean>>({ aktif: true, arsip: false, draft: false })
+const clicks = ref(0)
+const removed = ref(0)
+
+function isVisible(id: string) {
+  if (activeId.value === 'all') return true
+  return activeId.value === id
+}
+</script>
+
+<template>
+  <div class="pg-layout">
+    <!-- Copy Toast Notification -->
+    <div v-if="showToast" class="pg-copy-toast">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+      <span>{{ toastText }}</span>
+    </div>
+
+    <!-- Mobile Backdrop -->
+    <div
+      class="pg-layout__backdrop"
+      :class="{ 'pg-layout__backdrop--open': isMobileOpen }"
+      @click="isMobileOpen = false"
+    />
+
+    <!-- Sidebar Explorer -->
+    <PlaygroundSidebar
+      :categories="categories"
+      :active-id="activeId"
+      :search-query="searchQuery"
+      :theme="theme"
+      :brand="brand"
+      :is-mobile-open="isMobileOpen"
+      @update:search-query="searchQuery = $event"
+      @select="activeId = $event"
+      @set-theme="setTheme"
+      @set-brand="setBrand"
+      @close-mobile="isMobileOpen = false"
+    />
+
+    <!-- Main Content Area -->
+    <div class="pg-layout__main">
+      <!-- Topbar Header -->
+      <header class="pg-layout__topbar">
+        <div class="pg-layout__topbar-left">
+          <button
+            type="button"
+            class="pg-layout__mobile-toggle"
+            aria-label="Toggle Menu"
+            @click="isMobileOpen = !isMobileOpen"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div class="pg-layout__topbar-title">
+            <span v-if="activeComponent">{{ activeComponent.name }}</span>
+            <span v-else>Semua Komponen & Tokens</span>
+            <span v-if="activeComponent" class="pg-layout__topbar-tag"
+              >&lt;{{ activeComponent.tag }}&gt;</span
+            >
+          </div>
+        </div>
+
+        <div class="pg-layout__topbar-actions">
+          <EvButton
+            v-if="activeId !== 'all'"
+            size="small"
+            variant="outline"
+            @click="activeId = 'all'"
+          >
+            Tampilkan Semua
+          </EvButton>
+        </div>
+      </header>
+
+      <div class="pg-layout__content">
+        <!-- Hero Banner (Shows when 'all' is selected) -->
+        <div v-if="activeId === 'all'" class="pg-hero">
+          <div class="pg-hero__badge">Evoq UI Design Tokens & Components</div>
+          <h1 class="pg-hero__title">Interactive Component Explorer</h1>
+          <p class="pg-hero__desc">
+            Jelajahi seluruh token warna Primitive, Semantic, dan 35 komponen sistem desain Evoq UI
+            dengan berbagai variasi, ukuran, status, interaktivitas, dan contoh kodenya.
+          </p>
+          <div class="pg-hero__stats">
+            <div class="pg-hero__stat-item">
+              <span class="pg-hero__stat-num">17</span>
+              <span class="pg-hero__stat-label">Color Ramps</span>
+            </div>
+            <div class="pg-hero__stat-item">
+              <span class="pg-hero__stat-num">63</span>
+              <span class="pg-hero__stat-label">Semantic Tokens</span>
+            </div>
+            <div class="pg-hero__stat-item">
+              <span class="pg-hero__stat-num">35</span>
+              <span class="pg-hero__stat-label">Komponen</span>
+            </div>
+            <div class="pg-hero__stat-item">
+              <span class="pg-hero__stat-num">4</span>
+              <span class="pg-hero__stat-label">Warna Brand</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- 0. PRIMITIVE COLORS SECTION -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('simulator')" id="sec-simulator" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">Props Simulator</h2>
+              <code class="pg-section__import">import { {{ simulatorTag }} } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Pilih komponen, ubah propsnya, lihat hasilnya langsung, lalu salin kodenya. Daftar
+              props, slot, dan event di bawah dibaca otomatis dari kode sumber komponen — jadi tidak
+              pernah basi ketika komponennya berubah.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-sim-picker">
+              <label class="pg-sim-picker__label" for="pg-sim-picker">Komponen</label>
+              <select id="pg-sim-picker" v-model="simulatorTag" class="pg-sim-picker__select">
+                <option v-for="tag in simulatorTags" :key="tag" :value="tag">{{ tag }}</option>
+              </select>
+              <span class="pg-sim-picker__count">{{ simulatorTags.length }} komponen</span>
+            </div>
+
+            <PlaygroundSimulator :key="simulatorTag" :tag="simulatorTag" />
+          </div>
+        </section>
+
+        <section v-if="isVisible('colors-primitive')" id="sec-colors-primitive" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Primitive Colors (Layer 1)</span>
+                <span class="pg-section__category-badge">Design Tokens</span>
+              </h2>
+              <code class="pg-section__import">--ev-{color}-{step}</code>
+            </div>
+            <p class="pg-section__desc">
+              Koleksi warna dasar (primitives) murni sebagai fondasi token sistem. Klik pada salah
+              satu kotak warna untuk menyalin CSS variable token.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <!-- Absolutes -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Warna Mutlak (Absolutes)</h3>
+              <div class="pg-section__row">
+                <div
+                  class="pg-semantic-card"
+                  style="min-width: 180px"
+                  @click="copyToClipboard('var(--ev-white)', '--ev-white')"
+                >
+                  <div
+                    class="pg-semantic-card__swatch"
+                    style="background-color: var(--ev-white); border: 1px solid #cbd5e1"
+                  />
+                  <div class="pg-semantic-card__info">
+                    <span class="pg-semantic-card__name">--ev-white</span>
+                    <span class="pg-semantic-card__desc">#ffffff</span>
+                  </div>
+                </div>
+
+                <div
+                  class="pg-semantic-card"
+                  style="min-width: 180px"
+                  @click="copyToClipboard('var(--ev-black)', '--ev-black')"
+                >
+                  <div class="pg-semantic-card__swatch" style="background-color: var(--ev-black)" />
+                  <div class="pg-semantic-card__info">
+                    <span class="pg-semantic-card__name">--ev-black</span>
+                    <span class="pg-semantic-card__desc">#000000</span>
+                  </div>
+                </div>
+
+                <div
+                  class="pg-semantic-card"
+                  style="min-width: 200px"
+                  @click="copyToClipboard('var(--ev-modal-scrim)', '--ev-modal-scrim')"
+                >
+                  <div
+                    class="pg-semantic-card__swatch"
+                    style="background-color: var(--ev-modal-scrim)"
+                  />
+                  <div class="pg-semantic-card__info">
+                    <span class="pg-semantic-card__name">--ev-modal-scrim</span>
+                    <span class="pg-semantic-card__desc">#181c20 (Overlay)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Palette Ramps -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Color Ramps (Skala 50 - 900)</h3>
+              <div class="pg-color-grid">
+                <div v-for="ramp in primitiveRamps" :key="ramp.prefix" class="pg-color-ramp">
+                  <div class="pg-color-ramp__title">
+                    <span>{{ ramp.name }}</span>
+                    <span class="pg-color-ramp__steps-count">{{ ramp.steps.length }} steps</span>
+                  </div>
+                  <div class="pg-color-ramp__swatches">
+                    <div
+                      v-for="step in ramp.steps"
+                      :key="step"
+                      class="pg-color-ramp__swatch-item"
+                      :style="{ backgroundColor: `var(--ev-${ramp.prefix}-${step})` }"
+                      :title="`--ev-${ramp.prefix}-${step} (Klik untuk salin)`"
+                      @click="
+                        copyToClipboard(
+                          `var(--ev-${ramp.prefix}-${step})`,
+                          `--ev-${ramp.prefix}-${step}`,
+                        )
+                      "
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code="/* Contoh Penggunaan Token Warna Primitive dalam CSS */
+.my-custom-badge {
+  background-color: var(--ev-blue-50);
+  color: var(--ev-blue-600);
+  border: 1px solid var(--ev-blue-200);
+}"
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 0.1 SEMANTIC COLORS SECTION -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('colors-semantic')" id="sec-colors-semantic" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Semantic Colors (Layer 2)</span>
+                <span class="pg-section__category-badge">Design Tokens</span>
+              </h2>
+              <code class="pg-section__import">--ev-{role}-{variant}</code>
+            </div>
+            <p class="pg-section__desc">
+              Token warna semantik yang secara dinamis beradaptasi dengan mode tema (Light / Dark)
+              dan tema warna brand aktif.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <!-- Brand Accents -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">
+                Brand Accents (Responsif terhadap Pilihan Brand)
+              </h3>
+              <div class="pg-semantic-grid">
+                <div
+                  v-for="item in semanticBrand"
+                  :key="item.token"
+                  class="pg-semantic-card"
+                  @click="copyToClipboard(`var(${item.token})`, item.token)"
+                >
+                  <div
+                    class="pg-semantic-card__swatch"
+                    :style="{ backgroundColor: `var(${item.token})` }"
+                  />
+                  <div class="pg-semantic-card__info">
+                    <span class="pg-semantic-card__name">{{ item.token }}</span>
+                    <span class="pg-semantic-card__desc">{{ item.desc }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Backgrounds -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Backgrounds (--ev-bg-*)</h3>
+              <div class="pg-semantic-grid">
+                <div
+                  v-for="item in semanticBackgrounds"
+                  :key="item.token"
+                  class="pg-semantic-card"
+                  @click="copyToClipboard(`var(${item.token})`, item.token)"
+                >
+                  <div
+                    class="pg-semantic-card__swatch"
+                    :style="{ backgroundColor: `var(${item.token})` }"
+                  />
+                  <div class="pg-semantic-card__info">
+                    <span class="pg-semantic-card__name">{{ item.token }}</span>
+                    <span class="pg-semantic-card__desc">{{ item.desc }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Typography -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Typography & Teks (--ev-text-*)</h3>
+              <div class="pg-semantic-grid">
+                <div
+                  v-for="item in semanticTypography"
+                  :key="item.token"
+                  class="pg-semantic-card"
+                  @click="copyToClipboard(`var(${item.token})`, item.token)"
+                >
+                  <div
+                    class="pg-semantic-card__swatch"
+                    :style="{ backgroundColor: `var(${item.token})` }"
+                  />
+                  <div class="pg-semantic-card__info">
+                    <span class="pg-semantic-card__name">{{ item.token }}</span>
+                    <span class="pg-semantic-card__desc">{{ item.desc }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Borders -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Borders & Garis Batas (--ev-border-*)</h3>
+              <div class="pg-semantic-grid">
+                <div
+                  v-for="item in semanticBorders"
+                  :key="item.token"
+                  class="pg-semantic-card"
+                  @click="copyToClipboard(`var(${item.token})`, item.token)"
+                >
+                  <div
+                    class="pg-semantic-card__swatch"
+                    :style="{ backgroundColor: `var(${item.token})` }"
+                  />
+                  <div class="pg-semantic-card__info">
+                    <span class="pg-semantic-card__name">{{ item.token }}</span>
+                    <span class="pg-semantic-card__desc">{{ item.desc }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Extended Feedback Status -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Status & Umpan Balik (--ev-ext-*)</h3>
+              <div class="pg-semantic-grid">
+                <div
+                  v-for="item in semanticExtended"
+                  :key="item.token"
+                  class="pg-semantic-card"
+                  @click="copyToClipboard(`var(${item.token})`, item.token)"
+                >
+                  <div
+                    class="pg-semantic-card__swatch"
+                    :style="{ backgroundColor: `var(${item.token})` }"
+                  />
+                  <div class="pg-semantic-card__info">
+                    <span class="pg-semantic-card__name">{{ item.token }}</span>
+                    <span class="pg-semantic-card__desc">{{ item.desc }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tree Hierarchy -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">
+                Hierarki Hirarki Visual Tree (--ev-tree-*)
+              </h3>
+              <div class="pg-semantic-grid">
+                <div
+                  v-for="item in semanticTree"
+                  :key="item.token"
+                  class="pg-semantic-card"
+                  @click="copyToClipboard(`var(${item.token})`, item.token)"
+                >
+                  <div
+                    class="pg-semantic-card__swatch"
+                    :style="{ backgroundColor: `var(${item.token})` }"
+                  />
+                  <div class="pg-semantic-card__info">
+                    <span class="pg-semantic-card__name">{{ item.token }}</span>
+                    <span class="pg-semantic-card__desc">{{ item.desc }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code="/* Contoh Penggunaan Token Semantic dalam Komponen */
+.card-container {
+  background-color: var(--ev-bg-primary);
+  color: var(--ev-text-primary);
+  border: 1px solid var(--ev-border-primary);
+}
+
+.card-title {
+  color: var(--ev-brand-primary);
+}"
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 1. BUTTON -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('button')" id="sec-button" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Button</span>
+                <span class="pg-section__category-badge">General & Actions</span>
+              </h2>
+              <code class="pg-section__import">import { EvButton } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Komponen tombol interaktif dengan berbagai varian estetika, ukuran, status loading,
+              dan dukungan ikon.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <!-- Variants -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Varian Tombol</h3>
+              <div class="pg-section__row">
+                <EvButton v-for="variant in buttonVariants" :key="variant" :variant="variant">
+                  {{ variant }}
+                </EvButton>
+              </div>
+            </div>
+
+            <!-- Sizes -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Ukuran</h3>
+              <div class="pg-section__row">
+                <EvButton v-for="size in buttonSizes" :key="size" :size="size">
+                  Ukuran {{ size }}
+                </EvButton>
+              </div>
+            </div>
+
+            <!-- Icons & States -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Ikon, Status & Interaksi</h3>
+              <div class="pg-section__row">
+                <EvButton>
+                  <template #iconLeft>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    >
+                      <path d="M8 3v10M3 8h10" />
+                    </svg>
+                  </template>
+                  Ikon Kiri
+                </EvButton>
+
+                <EvButton variant="secondary-light">
+                  Ikon Kanan
+                  <template #iconRight>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    >
+                      <path d="M6 3l5 5-5 5" />
+                    </svg>
+                  </template>
+                </EvButton>
+
+                <EvButton
+                  v-for="size in buttonSizes"
+                  :key="`icon-${size}`"
+                  :size="size"
+                  icon-only
+                  aria-label="Tambah"
+                >
+                  <template #iconLeft>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    >
+                      <path d="M8 3v10M3 8h10" />
+                    </svg>
+                  </template>
+                </EvButton>
+
+                <EvButton disabled>Disabled</EvButton>
+                <EvButton loading>Loading</EvButton>
+                <EvButton variant="outline" @click="clicks++">Klik Saya ({{ clicks }})</EvButton>
+              </div>
+              <EvButton block variant="outline">Block Width Button</EvButton>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { EvButton } from &apos;evoq-ui&apos;
+</script>
+
+<template>
+  <!-- Basic Button -->
+  <EvButton variant="primary" size="default">Simpan Data</EvButton>
+
+  <!-- Outline with Left Icon -->
+  <EvButton variant="outline" size="small">
+    <template #iconLeft>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M8 3v10M3 8h10" />
+      </svg>
+    </template>
+    Tambah Item
+  </EvButton>
+
+  <!-- Loading & Disabled -->
+  <EvButton loading>Memproses...</EvButton>
+  <EvButton disabled>Nonaktif</EvButton>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 2. BUTTON GROUP -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('button-group')" id="sec-button-group" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Button Group</span>
+                <span class="pg-section__category-badge">General & Actions</span>
+              </h2>
+              <code class="pg-section__import"
+                >import { EvButtonGroup, EvButtonGroupItem } from 'evoq-ui'</code
+              >
+            </div>
+            <p class="pg-section__desc">
+              Kelompok tombol terhubung untuk navigasi paginasi, pemilihan mode tampilan, atau
+              filter terpadu.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Paginasi Interaktif</h3>
+              <EvButtonGroup label="Paginasi Halaman">
+                <EvButtonGroupItem v-for="n in 5" :key="n" :active="page === n" @click="page = n">
+                  {{ n }}
+                </EvButtonGroupItem>
+              </EvButtonGroup>
+            </div>
+
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Varian & Ukuran Ringkas</h3>
+              <div class="pg-section__row">
+                <EvButtonGroup variant="primary" size="small" label="Tampilan">
+                  <EvButtonGroupItem :active="true">Hari</EvButtonGroupItem>
+                  <EvButtonGroupItem>Minggu</EvButtonGroupItem>
+                  <EvButtonGroupItem>Bulan</EvButtonGroupItem>
+                </EvButtonGroup>
+
+                <EvButtonGroup variant="warning" size="small" label="Peringatan">
+                  <EvButtonGroupItem>Tunda</EvButtonGroupItem>
+                  <EvButtonGroupItem>Abaikan</EvButtonGroupItem>
+                </EvButtonGroup>
+              </div>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvButtonGroup, EvButtonGroupItem } from &apos;evoq-ui&apos;
+
+const page = ref(1)
+</script>
+
+<template>
+  <EvButtonGroup label="Halaman">
+    <EvButtonGroupItem v-for="n in 5" :key="n" :active="page === n" @click="page = n">
+      {{ n }}
+    </EvButtonGroupItem>
+  </EvButtonGroup>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 3. BUTTON LINK -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('button-link')" id="sec-button-link" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Button Link</span>
+                <span class="pg-section__category-badge">General & Actions</span>
+              </h2>
+              <code class="pg-section__import">import { EvButtonLink } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Tautan teks dengan styling tombol untuk navigasi kontekstual atau aksi sekunder yang
+              ringan.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Varian Link</h3>
+              <div class="pg-section__row">
+                <EvButtonLink v-for="v in links" :key="v" :variant="v" href="#">
+                  Link {{ v }}
+                </EvButtonLink>
+                <EvButtonLink disabled>Link Disabled</EvButtonLink>
+              </div>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { EvButtonLink } from &apos;evoq-ui&apos;
+</script>
+
+<template>
+  <EvButtonLink variant="primary" href="/panduan">Baca Panduan</EvButtonLink>
+  <EvButtonLink variant="secondary" href="#">Lihat Riwayat</EvButtonLink>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 4. TOGGLE -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('toggle')" id="sec-toggle" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Toggle & Toggle Group</span>
+                <span class="pg-section__category-badge">General & Actions</span>
+              </h2>
+              <code class="pg-section__import"
+                >import { EvToggle, EvToggleGroup } from 'evoq-ui'</code
+              >
+            </div>
+            <p class="pg-section__desc">
+              Tombol dua status untuk mengaktifkan/menonaktifkan filter atau opsi berganda secara
+              intuitif.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Toggle Filter Interaktif</h3>
+              <EvToggleGroup label="Filter Status">
+                <EvToggle
+                  v-for="(on, key) in filters"
+                  :key="key"
+                  :model-value="on"
+                  @update:model-value="filters[key] = $event"
+                >
+                  {{ key }} ({{ on ? 'Aktif' : 'Mati' }})
+                </EvToggle>
+              </EvToggleGroup>
+            </div>
+
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">
+                Cascading Props (Variant Outline & Size Small)
+              </h3>
+              <!-- Child toggles inherit variant="outline" and size="small" from parent EvToggleGroup -->
+              <EvToggleGroup variant="outline" size="small" label="Filter Ringkas Cascading">
+                <EvToggle>Outline Mati</EvToggle>
+                <EvToggle :model-value="true">Outline Aktif</EvToggle>
+                <EvToggle :model-value="true" disabled>Disabled</EvToggle>
+                <EvToggle variant="default">Override Default</EvToggle>
+              </EvToggleGroup>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvToggle, EvToggleGroup } from &apos;evoq-ui&apos;
+
+const filterAktif = ref(true)
+</script>
+
+<template>
+  <!-- Group cascades variant and size to all child toggles -->
+  <EvToggleGroup variant="outline" size="small" label="Filter Ringkas">
+    <EvToggle v-model="filterAktif">Aktif</EvToggle>
+    <EvToggle>Arsip</EvToggle>
+    <EvToggle variant="default">Override Default</EvToggle>
+  </EvToggleGroup>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 5. INPUT, SEARCH, UNIT, WITH LABEL & RICH TEXT EDITOR -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('input')" id="sec-input" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Input & Form Field Family</span>
+                <span class="pg-section__category-badge">Form & Input</span>
+              </h2>
+              <code class="pg-section__import"
+                >import { EvInput, EvRichEditor, EvInputWithLabel, EvInputSearch, EvInputFieldUnit,
+                EvTextarea } from 'evoq-ui'</code
+              >
+            </div>
+            <p class="pg-section__desc">
+              Ekosistem input formulir terlengkap: InputField (44px/32px), InputSearch (40px),
+              InputWithLabel (addon inline), InputFieldUnit (pemilih unit), InputTextarea
+              (multi-baris), dan InputRichEditor (editor teks kaya dengan toolbar format).
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <!-- Subsection 1: Input Standar & Ukuran -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">
+                InputField Standar & Ukuran (Default 44px vs Small 32px)
+              </h3>
+              <div class="pg-section__row pg-section__row--top" style="gap: 1.5rem">
+                <EvInput
+                  v-model="vendorName"
+                  label="Nama Vendor (Default 44px)"
+                  placeholder="Masukkan nama vendor..."
+                  required
+                  clearable
+                  style="width: 280px"
+                />
+                <EvInput
+                  model-value="PT Maju Jaya"
+                  size="small"
+                  label="Nama Ringkas (Small 32px)"
+                  style="width: 260px"
+                />
+                <EvInput
+                  v-model="emailInput"
+                  label="Email Perusahaan"
+                  error
+                  validation-text="Format email tidak valid"
+                  style="width: 280px"
+                />
+                <EvInput
+                  v-model="passwordInput"
+                  type="password"
+                  label="Kata Sandi"
+                  validation-text="Minimal 8 karakter"
+                  style="width: 240px"
+                />
+              </div>
+            </div>
+
+            <!-- Subsection 2: InputSearch & InputWithLabel -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">
+                InputSearch & InputWithLabel (Prefix / Suffix Addons)
+              </h3>
+              <div class="pg-section__row pg-section__row--top" style="gap: 1.5rem">
+                <!-- Dedicated 40px InputSearch -->
+                <div style="width: 280px">
+                  <EvInputSearch
+                    v-model="searchInput"
+                    placeholder="Cari transaksi (InputSearch 40px)..."
+                    clearable
+                  >
+                    <template #shortcut>
+                      <EvKbd variant="text">⌘K</EvKbd>
+                    </template>
+                  </EvInputSearch>
+                </div>
+
+                <!-- InputWithLabel: Both (https:// and .com) -->
+                <div style="width: 320px">
+                  <EvInputWithLabel
+                    v-model="websiteUrl"
+                    prefix-label="https://"
+                    suffix-label=".com"
+                    placement="both"
+                    label="Alamat Domain"
+                    required
+                  />
+                </div>
+
+                <!-- InputWithLabel: Left Prefix -->
+                <div style="width: 260px">
+                  <EvInputWithLabel v-model="domainName" prefix-label="user@" label="Username" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Subsection 3: InputFieldUnit -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">
+                InputFieldUnit (Dropdown Pemilih Unit + Nilai)
+              </h3>
+              <div class="pg-section__row pg-section__row--top" style="gap: 1.5rem">
+                <div style="width: 340px">
+                  <EvInputFieldUnit
+                    v-model="unitPrice"
+                    v-model:unit="selectedCurrency"
+                    :units="['IDR', 'USD', 'EUR', 'SGD']"
+                    label="Total Anggaran"
+                    required
+                    clearable
+                  />
+                </div>
+                <div style="width: 300px">
+                  <EvInputFieldUnit
+                    model-value="150"
+                    unit="kg"
+                    :units="['kg', 'gram', 'ton', 'meter']"
+                    label="Berat Muatan"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Subsection 4: InputRichEditor -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">
+                InputRichEditor (Toolbar Type=Big — 19 kontrol)
+              </h3>
+              <div style="max-width: 760px">
+                <EvRichEditor
+                  v-model="richContent"
+                  label="Spesifikasi & Dokumen Teknis (Rich Text)"
+                  placeholder="Tulis spesifikasi lengkap di sini..."
+                  required
+                  show-count
+                  :maxlength="2000"
+                  has-scroll
+                />
+              </div>
+
+              <h3 class="pg-section__subsection-title" style="margin-top: 24px">
+                InputRichEditor (Toolbar Type=Small — 13 kontrol)
+              </h3>
+              <div style="max-width: 520px">
+                <EvRichEditor
+                  v-model="richContentSmall"
+                  toolbar="small"
+                  label="Catatan Ringkas (Rich Text)"
+                  show-count
+                  :maxlength="500"
+                  has-scroll
+                />
+              </div>
+            </div>
+
+            <!-- Subsection 5: Input Text Area -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">
+                InputTextarea (Multi-baris & Character Counter)
+              </h3>
+              <div class="pg-section__row pg-section__row--top" style="gap: 1.5rem">
+                <EvTextarea
+                  v-model="textareaNotes"
+                  label="Catatan Pengadaan"
+                  placeholder="Tuliskan catatan teknis..."
+                  show-count
+                  :maxlength="200"
+                  required
+                  clearable
+                  style="width: 380px"
+                />
+                <EvTextarea
+                  model-value="Alamat pengiriman tidak boleh berada di luar wilayah operasional yang telah disetujui."
+                  label="Alamat Pengiriman"
+                  error
+                  validation-text="Wilayah pengiriman di luar jangkauan kurir"
+                  style="width: 380px"
+                />
+              </div>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import {
+  EvInput,
+  EvRichEditor,
+  EvInputWithLabel,
+  EvInputSearch,
+  EvInputFieldUnit,
+  EvTextarea
+} from &apos;evoq-ui&apos;
+
+const query = ref(&apos;&apos;)
+const domain = ref(&apos;google&apos;)
+const harga = ref(&apos;25000000&apos;)
+const currency = ref(&apos;IDR&apos;)
+const konten = ref(&apos;<h1>Judul Dokumen</h1><p>Isi teks tebal: <strong>Disetujui</strong></p>&apos;)
+</script>
+
+<template>
+  <!-- Dedicated Search Bar -->
+  <EvInputSearch v-model="query" placeholder="Cari..." clearable />
+
+  <!-- Input with Prefix/Suffix Addons -->
+  <EvInputWithLabel v-model="domain" prefix-label="https://" suffix-label=".com" placement="both" label="Domain" />
+
+  <!-- Composite Unit Field -->
+  <EvInputFieldUnit v-model="harga" v-model:unit="currency" :units="[&apos;IDR&apos;, &apos;USD&apos;, &apos;EUR&apos;]" label="Harga" />
+
+  <!-- Rich Text Editor with Toolbar -->
+  <EvRichEditor v-model="konten" label="Artikel" :maxlength="2000" has-scroll required />
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 6. CHECKBOX -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('checkbox')" id="sec-checkbox" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Checkbox</span>
+                <span class="pg-section__category-badge">Form & Input</span>
+              </h2>
+              <code class="pg-section__import">import { EvCheckbox } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Kotak centang untuk memilih satu atau beberapa opsi dengan dukungan status
+              indeterminate dan validasi.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row">
+              <EvCheckbox
+                v-model="agree"
+                label="Saya setuju"
+                subtext="Wajib dicentang untuk lanjut"
+              />
+              <EvCheckbox
+                :indeterminate="partial"
+                label="Pilih Sebagian"
+                @update:model-value="partial = false"
+              />
+              <EvCheckbox
+                :model-value="true"
+                error
+                label="Status Error"
+                subtext="Nilai belum diverifikasi"
+              />
+              <EvCheckbox disabled label="Nonaktif Mati" />
+              <EvCheckbox :model-value="true" disabled label="Nonaktif Tercentang" />
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvCheckbox } from &apos;evoq-ui&apos;
+
+const setuju = ref(false)
+</script>
+
+<template>
+  <EvCheckbox
+    v-model="setuju"
+    label="Saya menyetujui syarat & ketentuan"
+    subtext="Wajib disetujui sebelum mengirim formulir"
+  />
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 7. RADIO -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('radio')" id="sec-radio" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Radio & Radio Group</span>
+                <span class="pg-section__category-badge">Form & Input</span>
+              </h2>
+              <code class="pg-section__import"
+                >import { EvRadio, EvRadioGroup } from 'evoq-ui'</code
+              >
+            </div>
+            <p class="pg-section__desc">
+              Pilihan eksklusif tunggal dalam satu grup dengan deskripsi subteks dan dukungan status
+              disabled.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <EvRadioGroup v-model="plan" label="Paket Langganan">
+              <EvRadio
+                value="bulanan"
+                label="Bulanan (Rp 99.000/bln)"
+                subtext="Ditagih setiap awal bulan"
+              />
+              <EvRadio
+                value="tahunan"
+                label="Tahunan (Rp 990.000/thn)"
+                subtext="Hemat 20% + gratis konsultasi"
+              />
+              <EvRadio
+                value="seumur"
+                label="Seumur Hidup"
+                disabled
+                subtext="Kuota pendaftaran telah habis"
+              />
+            </EvRadioGroup>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvRadioGroup, EvRadio } from &apos;evoq-ui&apos;
+
+const paket = ref(&apos;bulanan&apos;)
+</script>
+
+<template>
+  <EvRadioGroup v-model="paket" label="Pilih Paket">
+    <EvRadio value="bulanan" label="Bulanan" subtext="Ditagih tiap bulan" />
+    <EvRadio value="tahunan" label="Tahunan" subtext="Hemat 20%" />
+  </EvRadioGroup>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 8. SWITCH -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('switch')" id="sec-switch" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Switch</span>
+                <span class="pg-section__category-badge">Form & Input</span>
+              </h2>
+              <code class="pg-section__import">import { EvSwitch } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Saklar geser on/off interaktif dengan dukungan SwitchField (label & subtext luar yang
+              dapat diklik), perataan kiri/kanan, teks status dalam track, dan status error.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <!-- Subsection 1: SwitchField dengan Label & Subtext Luar -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">SwitchField (Label & Subtext Interaktif)</h3>
+              <div class="pg-section__row pg-section__row--top" style="gap: 2rem">
+                <EvSwitch
+                  v-model="switchStateRight"
+                  label="Notifikasi Email (Label Kanan)"
+                  subtext="Kirim rangkuman aktivitas mingguan ke inbox"
+                />
+                <EvSwitch
+                  v-model="switchStateLeft"
+                  label-placement="left"
+                  label="Mode Senyap (Label Kiri)"
+                  subtext="Hentikan notifikasi pop-up saat jam kerja"
+                />
+              </div>
+            </div>
+
+            <!-- Subsection 2: Ukuran & Teks Dalam Track -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Ukuran & Label Dalam Track</h3>
+              <div class="pg-section__row" style="gap: 1.5rem">
+                <EvSwitch :model-value="true" label="Default (40px)" />
+                <EvSwitch :model-value="true" size="small" label="Small (24px)" />
+                <EvSwitch :model-value="true" text="ON" label="Track Text ON" />
+                <EvSwitch :model-value="false" text="OFF" label="Track Text OFF" />
+              </div>
+            </div>
+
+            <!-- Subsection 3: Status Validasi & Nonaktif -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Status Error & Disabled</h3>
+              <div class="pg-section__row" style="gap: 1.5rem">
+                <EvSwitch
+                  :model-value="true"
+                  error
+                  label="Status Error"
+                  subtext="Konfigurasi belum disinkronkan"
+                />
+                <EvSwitch :model-value="false" disabled label="Disabled OFF" />
+                <EvSwitch :model-value="true" disabled label="Disabled ON" />
+              </div>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvSwitch } from &apos;evoq-ui&apos;
+
+const aktif = ref(true)
+const senyap = ref(false)
+</script>
+
+<template>
+  <!-- SwitchField with Right Label & Subtext -->
+  <EvSwitch
+    v-model="aktif"
+    label="Notifikasi Email"
+    subtext="Kirim rangkuman mingguan"
+  />
+
+  <!-- SwitchField with Left Label Placement -->
+  <EvSwitch
+    v-model="senyap"
+    label-placement="left"
+    label="Mode Senyap"
+    subtext="Matikan suara notifikasi"
+  />
+
+  <!-- Compact with Track Text -->
+  <EvSwitch v-model="aktif" size="small" text="ON" />
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 9. SLIDER -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('slider')" id="sec-slider" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Slider</span>
+                <span class="pg-section__category-badge">Form & Input</span>
+              </h2>
+              <code class="pg-section__import">import { EvSlider } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Penggeser nilai kontinu atau rentang (range) ganda dengan label nilai, orientasi
+              vertikal, dan varian bahaya.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <!-- Horizontal Sliders -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Slider Tunggal & Rentang (Range)</h3>
+              <div
+                class="pg-section__row pg-section__row--top"
+                style="gap: 2.5rem; padding-bottom: 1rem"
+              >
+                <div style="flex: 1; min-width: 260px">
+                  <div
+                    style="
+                      font-size: 0.85rem;
+                      font-weight: 600;
+                      margin-bottom: 0.5rem;
+                      color: var(--ev-text-primary);
+                    "
+                  >
+                    Volume: {{ volume }}%
+                  </div>
+                  <EvSlider v-model="volume" label="Volume Suara" show-value />
+                </div>
+                <div style="flex: 1; min-width: 260px">
+                  <div
+                    style="
+                      font-size: 0.85rem;
+                      font-weight: 600;
+                      margin-bottom: 0.5rem;
+                      color: var(--ev-text-primary);
+                    "
+                  >
+                    Rentang Harga: Rp {{ price[0] }}jt - Rp {{ price[1] }}jt
+                  </div>
+                  <EvSlider v-model="price" range label="Rentang Harga (Juta)" show-value />
+                </div>
+              </div>
+            </div>
+
+            <!-- Variants & States -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Varian Bahaya & Status Nonaktif</h3>
+              <div
+                class="pg-section__row pg-section__row--top"
+                style="gap: 2.5rem; padding-bottom: 1rem"
+              >
+                <div style="flex: 1; min-width: 260px">
+                  <div
+                    style="
+                      font-size: 0.85rem;
+                      font-weight: 600;
+                      margin-bottom: 0.5rem;
+                      color: var(--ev-text-primary);
+                    "
+                  >
+                    Ambang Risiko: {{ risk }}% (Destructive)
+                  </div>
+                  <EvSlider
+                    v-model="risk"
+                    variant="destructive"
+                    label="Tingkat Risiko"
+                    show-value
+                  />
+                </div>
+                <div style="flex: 1; min-width: 260px">
+                  <div
+                    style="
+                      font-size: 0.85rem;
+                      font-weight: 600;
+                      margin-bottom: 0.5rem;
+                      color: var(--ev-text-secondary);
+                    "
+                  >
+                    Terkunci (Disabled)
+                  </div>
+                  <EvSlider :model-value="40" disabled label="Slider Terkunci" show-value />
+                </div>
+              </div>
+            </div>
+
+            <!-- Vertical Slider -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Orientasi Vertikal</h3>
+              <div style="display: flex; align-items: center; gap: 3rem; padding: 1rem 0">
+                <div
+                  style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem"
+                >
+                  <span style="font-size: 0.85rem; font-weight: 600; color: var(--ev-text-primary)">
+                    Tinggi: {{ height }}%
+                  </span>
+                  <div style="height: 200px; padding: 0 1.5rem">
+                    <EvSlider
+                      v-model="height"
+                      orientation="vertical"
+                      label="Tinggi Vertikal"
+                      show-value
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvSlider } from &apos;evoq-ui&apos;
+
+const volume = ref(75)
+const priceRange = ref<[number, number]>([20, 80])
+</script>
+
+<template>
+  <!-- Single Value Slider -->
+  <EvSlider v-model="volume" label="Volume" show-value />
+
+  <!-- Dual Range Slider -->
+  <EvSlider v-model="priceRange" range label="Rentang Harga" show-value />
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 10. CALENDAR & TIME PICKER -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('calendar')" id="sec-calendar" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Calendar & Time Picker</span>
+                <span class="pg-section__category-badge">Form & Input</span>
+              </h2>
+              <code class="pg-section__import"
+                >import { EvCalendar, EvTimePicker } from 'evoq-ui'</code
+              >
+            </div>
+            <p class="pg-section__desc">
+              Pemilih tanggal dan waktu interaktif dengan mode tanggal tunggal, rentang tanggal
+              (range) + preset cepat, serta pemilih waktu (Time Picker) 24 jam, detik, dan AM/PM.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <!-- Subsection 1: Calendar -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">
+                Calendar (Tunggal & Rentang dengan Presets Cepat)
+              </h3>
+              <div class="pg-section__row pg-section__row--top" style="gap: 2rem">
+                <div>
+                  <h4
+                    style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--ev-text-secondary)"
+                  >
+                    Tanggal Tunggal + Event
+                  </h4>
+                  <EvCalendar v-model="pickedDate" :events="[new Date()]" />
+                </div>
+                <div>
+                  <h4
+                    style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--ev-text-secondary)"
+                  >
+                    Mode Rentang (Range) + Presets
+                  </h4>
+                  <EvCalendar v-model="pickedRange" mode="range" presets />
+                </div>
+              </div>
+            </div>
+
+            <!-- Subsection 2: Time Picker -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">
+                Time Picker (Varian 24 Jam, Detik, dan AM/PM)
+              </h3>
+              <div class="pg-section__row pg-section__row--top" style="gap: 2rem">
+                <div>
+                  <h4
+                    style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--ev-text-secondary)"
+                  >
+                    Format 24 Jam (Default)
+                  </h4>
+                  <EvTimePicker v-model="pickedTime" title="Jam Masuk" />
+                </div>
+                <div>
+                  <h4
+                    style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--ev-text-secondary)"
+                  >
+                    Format dengan Detik
+                  </h4>
+                  <EvTimePicker
+                    v-model="pickedTimeSeconds"
+                    format="with-seconds"
+                    title="Presisi Detik"
+                  />
+                </div>
+                <div>
+                  <h4
+                    style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--ev-text-secondary)"
+                  >
+                    Format 12 Jam (AM / PM)
+                  </h4>
+                  <EvTimePicker v-model="pickedTimeAmPm" format="am-pm" title="Jadwal Meeting" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvCalendar, EvTimePicker } from &apos;evoq-ui&apos;
+
+const tanggal = ref<Date | null>(new Date())
+const rentang = ref<[Date | null, Date | null]>([null, null])
+const jam = ref(&apos;09:30&apos;)
+const jamAmPm = ref(&apos;02:00 PM&apos;)
+</script>
+
+<template>
+  <!-- Calendar with Presets -->
+  <EvCalendar v-model="rentang" mode="range" presets />
+
+  <!-- 24-Hour Time Picker -->
+  <EvTimePicker v-model="jam" title="Pilih Jam" />
+
+  <!-- 12-Hour AM/PM Time Picker -->
+  <EvTimePicker v-model="jamAmPm" format="am-pm" title="Jadwal" />
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 11. DROPDOWN LIST -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('dropdown-list')" id="sec-dropdown-list" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Dropdown List</span>
+                <span class="pg-section__category-badge">Form & Input</span>
+              </h2>
+              <code class="pg-section__import"
+                >import { EvDropdownList, EvDropdownItem } from 'evoq-ui'</code
+              >
+            </div>
+            <p class="pg-section__desc">
+              Daftar menu dropdown dengan pencarian live (searchable), area scrollable, dan varian
+              item list-box.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row pg-section__row--top">
+              <div style="min-width: 260px">
+                <EvDropdownList
+                  v-model:search-value="vendorSearch"
+                  searchable
+                  scrollable
+                  label="Pilih Vendor"
+                >
+                  <EvDropdownItem
+                    v-for="v in filteredVendors"
+                    :key="v"
+                    :label="v"
+                    :active="v === pickedVendor"
+                    @select="pickedVendor = v"
+                  />
+                  <template v-if="!filteredVendors.length" #empty
+                    >Tidak ada vendor yang cocok.</template
+                  >
+                </EvDropdownList>
+              </div>
+
+              <div style="min-width: 220px">
+                <EvDropdownList label="Menu Aksi Cepat">
+                  <EvDropdownItem label="Duplikat Dokumen" @select="pickedVendor = 'Duplikat'" />
+                  <EvDropdownItem variant="list-box" label="Bagikan Tautan" />
+                  <EvDropdownItem label="Hapus Permanen" disabled />
+                </EvDropdownList>
+              </div>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvDropdownList, EvDropdownItem } from &apos;evoq-ui&apos;
+
+const vendor = ref(&apos;PT Maju Jaya&apos;)
+const search = ref(&apos;&apos;)
+</script>
+
+<template>
+  <EvDropdownList v-model:search-value="search" searchable label="Vendor">
+    <EvDropdownItem label="PT Maju Jaya" :active="vendor === &apos;PT Maju Jaya&apos;" @select="vendor = &apos;PT Maju Jaya&apos;" />
+    <EvDropdownItem label="CV Sentosa" :active="vendor === &apos;CV Sentosa&apos;" @select="vendor = &apos;CV Sentosa&apos;" />
+  </EvDropdownList>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 12. BADGE -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('badge')" id="sec-badge" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Badge</span>
+                <span class="pg-section__category-badge">Data Display</span>
+              </h2>
+              <code class="pg-section__import">import { EvBadge } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Lencana status dengan berbagai varian semantik (success, waiting, neutral, draft,
+              reject, custom) dan mode reverse.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Varian Standar</h3>
+              <div class="pg-section__row">
+                <EvBadge v-for="v in badges" :key="v" :variant="v">{{ v }}</EvBadge>
+              </div>
+            </div>
+
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Varian Reverse (Kontras Tinggi)</h3>
+              <div class="pg-section__row">
+                <EvBadge v-for="v in badges" :key="`rev-${v}`" :variant="v" reverse>{{
+                  v
+                }}</EvBadge>
+              </div>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { EvBadge } from &apos;evoq-ui&apos;
+</script>
+
+<template>
+  <EvBadge variant="success">Disetujui</EvBadge>
+  <EvBadge variant="waiting">Menunggu</EvBadge>
+  <EvBadge variant="reject" reverse>Ditolak</EvBadge>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 13. TAG & TAG GROUP -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('tag')" id="sec-tag" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Tag & Tag Group</span>
+                <span class="pg-section__category-badge">Data Display</span>
+              </h2>
+              <code class="pg-section__import">import { EvTag, EvTagGroup } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Tag informasi untuk label kategori atau kata kunci pencarian, dengan wadah EvTagGroup
+              yang mendukung pengaturan jarak (spacing), tipe wrap/scroll, dan tombol hapus
+              (removable).
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <!-- Subsection 1: Standalone Tags -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Varian Tag & Removable</h3>
+              <div class="pg-section__row">
+                <EvTag v-for="v in tags" :key="v" :variant="v">Tag {{ v }}</EvTag>
+                <EvTag removable @remove="removed++">Hapus Saya (dihapus {{ removed }}x)</EvTag>
+              </div>
+            </div>
+
+            <!-- Subsection 2: Tag Group dengan Spacing & Type -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">EvTagGroup (Wrap & Spacing Loose)</h3>
+              <EvTagGroup spacing="loose" label="Kategori Produk">
+                <EvTag>Elektronik</EvTag>
+                <EvTag>Komputer & Laptop</EvTag>
+                <EvTag>Periferal</EvTag>
+                <EvTag>Aksesoris</EvTag>
+                <EvTag removable>Diskon Spesial</EvTag>
+              </EvTagGroup>
+            </div>
+
+            <!-- Subsection 3: Tag Group Scroll & Cascading Variant -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">
+                EvTagGroup (Scroll Horizontal & Outline Variant)
+              </h3>
+              <EvTagGroup
+                type="scroll"
+                variant="outline"
+                label="Topik Populer"
+                style="max-width: 450px; padding: 4px 0"
+              >
+                <EvTag>#Vue3</EvTag>
+                <EvTag>#TypeScript</EvTag>
+                <EvTag>#DesignSystem</EvTag>
+                <EvTag>#FigmaTokens</EvTag>
+                <EvTag>#Vite</EvTag>
+                <EvTag>#EvoqUI</EvTag>
+              </EvTagGroup>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { EvTag, EvTagGroup } from &apos;evoq-ui&apos;
+</script>
+
+<template>
+  <!-- Wrap with Loose Spacing -->
+  <EvTagGroup spacing="loose">
+    <EvTag>Frontend</EvTag>
+    <EvTag>Vue 3</EvTag>
+    <EvTag removable>Design System</EvTag>
+  </EvTagGroup>
+
+  <!-- Horizontal Scroll with Outline Variant -->
+  <EvTagGroup type="scroll" variant="outline">
+    <EvTag>#Web</EvTag>
+    <EvTag>#UI</EvTag>
+    <EvTag>#Components</EvTag>
+  </EvTagGroup>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 14. HINT -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('hint')" id="sec-hint" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Hint Indicator</span>
+                <span class="pg-section__category-badge">Data Display</span>
+              </h2>
+              <code class="pg-section__import">import { EvHint } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Indikator titik notifikasi atau badge angka kecil dengan berbagai ukuran. Sesuai
+              aturan Figma, jika bernilai 0 maka hint otomatis disembunyikan.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row">
+              <EvHint v-for="s in hintSizes" :key="`dot-${s}`" :size="s" />
+              <EvHint v-for="s in hintSizes" :key="`one-${s}`" :size="s" :value="1" />
+              <EvHint v-for="s in hintSizes" :key="`two-${s}`" :size="s" :value="22" />
+              <EvHint v-for="s in hintSizes" :key="`many-${s}`" :size="s" :value="250" />
+              <span style="font-size: 0.8rem; color: var(--ev-text-secondary); margin-left: 0.5rem">
+                (Nilai 0 otomatis hidden: <EvHint :value="0" />)
+              </span>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { EvHint } from &apos;evoq-ui&apos;
+</script>
+
+<template>
+  <!-- Dot Notification -->
+  <EvHint size="small" />
+
+  <!-- Badge with Counter -->
+  <EvHint size="medium" :value="5" />
+  <EvHint size="large" :value="99" />
+
+  <!-- Hidden on 0 (Figma Spec) -->
+  <EvHint :value="0" />
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 15. KBD -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('kbd')" id="sec-kbd" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Kbd (Keyboard Key)</span>
+                <span class="pg-section__category-badge">Data Display</span>
+              </h2>
+              <code class="pg-section__import">import { EvKbd } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Visualisasi tombol pintasan keyboard dengan tema terang, gelap, dan varian ikon.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row">
+              <EvKbd>Ctrl</EvKbd>
+              <span>+</span>
+              <EvKbd>K</EvKbd>
+              <span style="margin: 0 0.5rem">|</span>
+              <EvKbd :light="false">Shift</EvKbd>
+              <span>+</span>
+              <EvKbd variant="icon" :light="false">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor">
+                  <path d="M6 2l4 5H2z" fill="currentColor" />
+                </svg>
+              </EvKbd>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { EvKbd } from &apos;evoq-ui&apos;
+</script>
+
+<template>
+  <div class="flex items-center gap-1">
+    <EvKbd>Ctrl</EvKbd>
+    <span>+</span>
+    <EvKbd>K</EvKbd>
+  </div>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 16. AVATAR -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('avatar')" id="sec-avatar" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Avatar & Avatar Group</span>
+                <span class="pg-section__category-badge">Data Display</span>
+              </h2>
+              <code class="pg-section__import"
+                >import { EvAvatar, EvAvatarGroup } from 'evoq-ui'</code
+              >
+            </div>
+            <p class="pg-section__desc">
+              Komponen profil avatar dengan berbagai ukuran (24 - 96px), varian warna inisial,
+              status error, dan grup bertumpuk.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <!-- Sizes -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Ukuran Avatar (24px - 96px)</h3>
+              <div class="pg-section__row">
+                <EvAvatar v-for="s in avatarSizes" :key="s" :size="s" label="EV" />
+              </div>
+            </div>
+
+            <!-- Tints & States -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Varian Warna & Status Khusus</h3>
+              <div class="pg-section__row">
+                <EvAvatar v-for="t in avatarTints" :key="t" :variant="t" label="EV" />
+                <EvAvatar variant="number" label="+5" />
+                <EvAvatar variant="empty" alt="Belum ada pengguna" />
+                <EvAvatar variant="error" alt="Gambar gagal dimuat" />
+                <EvAvatar src="/tidak-ada.png" alt="Fallback foto rusak" />
+              </div>
+            </div>
+
+            <!-- Avatar Group -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Avatar Group Bertumpuk</h3>
+              <EvAvatarGroup :size="40" label="Tim Pengembang Proyek">
+                <EvAvatar :size="40" variant="green" label="AB" />
+                <EvAvatar :size="40" variant="orange" label="CD" />
+                <EvAvatar :size="40" variant="purple" label="EF" />
+                <EvAvatar :size="40" variant="number" label="+7" />
+              </EvAvatarGroup>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { EvAvatar, EvAvatarGroup } from &apos;evoq-ui&apos;
+</script>
+
+<template>
+  <!-- Single Avatar -->
+  <EvAvatar :size="40" variant="blue" label="FJ" />
+
+  <!-- Avatar Group -->
+  <EvAvatarGroup :size="32" label="Tim Pengembang">
+    <EvAvatar :size="32" variant="green" label="AB" />
+    <EvAvatar :size="32" variant="orange" label="CD" />
+    <EvAvatar :size="32" variant="number" label="+3" />
+  </EvAvatarGroup>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 17. CARD -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('card')" id="sec-card" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Card</span>
+                <span class="pg-section__category-badge">Data Display</span>
+              </h2>
+              <code class="pg-section__import">import { EvCard } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Wadah kartu konten terstruktur dengan slot header, headerAction, body, dan footer
+              aksi.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row pg-section__row--top">
+              <EvCard
+                title="Kartu Kontrak Vendor"
+                description="Ringkasan status perjanjian kerja sama"
+                style="width: 340px"
+              >
+                <template #headerSlot>
+                  <EvBadge variant="draft">Aktif</EvBadge>
+                </template>
+                <template #headerAction>
+                  <EvButton variant="ghost" size="small" icon-only aria-label="Menu Opsi">
+                    <template #iconLeft>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <circle cx="3" cy="8" r="1.5" />
+                        <circle cx="8" cy="8" r="1.5" />
+                        <circle cx="13" cy="8" r="1.5" />
+                      </svg>
+                    </template>
+                  </EvButton>
+                </template>
+                <div style="font-size: 0.85rem; color: var(--ev-text-secondary)">
+                  Kontrak nomor #2025-EVQ-88 aktif sampai 31 Desember 2026.
+                </div>
+                <template #footer>
+                  <EvButton variant="secondary-light" size="small">Batal</EvButton>
+                  <EvButton size="small">Perpanjang</EvButton>
+                </template>
+              </EvCard>
+
+              <EvCard
+                type="small"
+                title="Kartu Ringkas (Small)"
+                description="Footer otomatis diblokir pada tipe small"
+                style="width: 280px"
+              >
+                <div style="font-size: 0.85rem; color: var(--ev-text-secondary)">
+                  Isi ringkas tanpa footer aksi sesuai spesifikasi Figma.
+                </div>
+              </EvCard>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { EvCard, EvButton, EvBadge } from &apos;evoq-ui&apos;
+</script>
+
+<template>
+  <EvCard title="Judul Kartu" description="Deskripsi singkat informasi">
+    <!-- Slot 1: Header Slot beside title -->
+    <template #headerSlot>
+      <EvBadge variant="draft">Aktif</EvBadge>
+    </template>
+
+    <p>Konten utama di dalam body kartu.</p>
+
+    <template #footer>
+      <EvButton variant="secondary-light" size="small">Batal</EvButton>
+      <EvButton size="small">Simpan</EvButton>
+    </template>
+  </EvCard>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 18. TREE -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('tree')" id="sec-tree" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Tree View</span>
+                <span class="pg-section__category-badge">Data Display</span>
+              </h2>
+              <code class="pg-section__import">import { EvTree, EvTreeItem } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Tampilan hirarki pohon folder/organisasi interaktif dengan fitur collapse, checkbox
+              selection, dan ikon.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <EvTree label="Struktur Hirarki Organisasi">
+              <EvTreeItem
+                v-for="node in visibleTreeNodes"
+                :key="node.id"
+                :level="node.level"
+                :label="node.label"
+                :has-child="node.hasChild"
+                :expanded="expandedNodes.has(node.id)"
+                :selected="selectedNode === node.id"
+                has-checkbox
+                :checked="checkedNodes.has(node.id)"
+                :checkbox-label="`Pilih ${node.label}`"
+                @select="selectedNode = node.id"
+                @update:expanded="toggleNode(node.id, $event)"
+                @update:checked="toggleChecked(node.id, $event)"
+              >
+                <template #icon>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.3"
+                  >
+                    <path d="M2 4.5h4l1.5 1.5H14v6.5H2z" stroke-linejoin="round" />
+                  </svg>
+                </template>
+              </EvTreeItem>
+            </EvTree>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvTree, EvTreeItem } from &apos;evoq-ui&apos;
+
+const selected = ref(&apos;keuangan&apos;)
+</script>
+
+<template>
+  <EvTree label="Struktur Organisasi">
+    <EvTreeItem
+      :level="1"
+      label="PT Maju Jaya"
+      has-child
+      :expanded="true"
+      :selected="selected === &apos;maju&apos;"
+      @select="selected = &apos;maju&apos;"
+    />
+  </EvTree>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 19. ASPECT RATIO -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('aspect-ratio')" id="sec-aspect-ratio" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Aspect Ratio</span>
+                <span class="pg-section__category-badge">Data Display</span>
+              </h2>
+              <code class="pg-section__import">import { EvAspectRatio } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Pembungkus proporsi rasio gambar/media responsif (16:9, 1:1, 4:5).
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row">
+              <EvAspectRatio v-for="r in ratios" :key="r" :ratio="r" style="width: 160px">
+                <div class="pg-ratio-box">{{ r }}</div>
+              </EvAspectRatio>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { EvAspectRatio } from &apos;evoq-ui&apos;
+</script>
+
+<template>
+  <EvAspectRatio ratio="16:9" style="width: 320px">
+    <img src="/banner.jpg" alt="Banner" style="width: 100%; height: 100%; object-fit: cover;" />
+  </EvAspectRatio>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 20. CHARTS -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('chart')" id="sec-chart" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Charts (Bar, Line & Pie)</span>
+                <span class="pg-section__category-badge">Data Display</span>
+              </h2>
+              <code class="pg-section__import"
+                >import { EvChart } from 'evoq-ui'; import { EvBarChart, EvLineChart, EvPieChart }
+                from 'evoq-ui/charts'</code
+              >
+            </div>
+            <p class="pg-section__desc">
+              Visualisasi data grafik modern berbasis Unovis dengan integrasi token warna tema
+              otomatis.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <!-- Bar Chart in Card -->
+            <EvChart title="Performa Penjualan" subtext="Jan - Mei 2025" style="max-width: 520px">
+              <template #summary>
+                <div style="font-weight: 800; font-size: 1.1rem">Rp 1,45 Miliar</div>
+              </template>
+              <template #legend>
+                <EvBadge variant="draft">Realisasi</EvBadge>
+                <EvBadge variant="neutral">Target</EvBadge>
+              </template>
+              <EvBarChart
+                :data="salesData"
+                category="bulan"
+                :series="['realisasi', 'target']"
+                :series-labels="['Realisasi', 'Target']"
+                :height="180"
+                label="Realisasi vs Target"
+              />
+            </EvChart>
+
+            <div class="pg-section__row pg-section__row--top">
+              <!-- Line Area Chart -->
+              <EvChart variant="no-card" title="Tren Realisasi" style="max-width: 360px">
+                <EvLineChart
+                  :data="salesData"
+                  category="bulan"
+                  :series="['realisasi']"
+                  type="area"
+                  :height="160"
+                  label="Tren realisasi bulanan"
+                />
+              </EvChart>
+
+              <!-- Doughnut Pie Chart -->
+              <EvChart variant="no-card" title="Komposisi Pengeluaran" style="max-width: 300px">
+                <EvPieChart
+                  :data="costData"
+                  value="total"
+                  category="nama"
+                  type="doughnut-rounded"
+                  :height="180"
+                  central-label="100%"
+                  central-sub-label="total"
+                  label="Komposisi pengeluaran biaya"
+                />
+              </EvChart>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { EvChart } from &apos;evoq-ui&apos;
+import { EvBarChart, EvLineChart, EvPieChart } from &apos;evoq-ui/charts&apos;
+
+const data = [
+  { bulan: &apos;Jan&apos;, nilai: 120 },
+  { bulan: &apos;Feb&apos;, nilai: 150 },
+]
+</script>
+
+<template>
+  <EvChart title="Penjualan">
+    <EvBarChart :data="data" category="bulan" :series="[&apos;nilai&apos;]" :height="200" />
+  </EvChart>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 21. BREADCRUMB -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('breadcrumb')" id="sec-breadcrumb" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Breadcrumb</span>
+                <span class="pg-section__category-badge">Navigation</span>
+              </h2>
+              <code class="pg-section__import">import { EvBreadcrumb } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Navigasi remah roti hierarkis dengan fitur pemangkasan otomatis (max-items) dan ikon
+              beranda.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Lengkap</h3>
+              <EvBreadcrumb :items="crumbs" />
+            </div>
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Dipangkas (Max 3 Items)</h3>
+              <EvBreadcrumb :items="crumbs" :max-items="3" />
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code="<script setup lang=&quot;ts&quot;>
+import { EvBreadcrumb, type BreadcrumbItem } from 'evoq-ui'
+
+const items: BreadcrumbItem[] = [
+  { label: 'Beranda', href: '#', icon: true },
+  { label: 'Vendor', href: '#' },
+  { label: 'PT Maju Jaya' },
+]
+</script>
+
+<template>
+  <EvBreadcrumb :items=&quot;items&quot; :max-items=&quot;3&quot; />
+</template>"
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 22. NAVIGATION MENU -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('navigation-menu')" id="sec-navigation-menu" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Navigation Menu</span>
+                <span class="pg-section__category-badge">Navigation</span>
+              </h2>
+              <code class="pg-section__import"
+                >import { EvNavigationMenu, EvNavMenuItem } from 'evoq-ui'</code
+              >
+            </div>
+            <p class="pg-section__desc">
+              Bilah navigasi utama aplikasi dengan slot logo brand, item tautan berstatus aktif, dan
+              slot profil pengguna.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <EvNavigationMenu
+              label="Navigasi Utama"
+              style="border: 1px solid var(--ev-border-primary); border-radius: 8px"
+            >
+              <template #brand><EvLogo :size="32" /></template>
+              <EvNavMenuItem :active="navSection === 'beranda'" @click="navSection = 'beranda'">
+                Beranda
+              </EvNavMenuItem>
+              <EvNavMenuItem :active="navSection === 'pengadaan'" @click="navSection = 'pengadaan'">
+                Pengadaan
+              </EvNavMenuItem>
+              <EvNavMenuItem :active="navSection === 'laporan'" @click="navSection = 'laporan'">
+                <template #icon>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.3"
+                  >
+                    <rect x="2.5" y="2.5" width="11" height="11" rx="2" />
+                  </svg>
+                </template>
+                Laporan
+              </EvNavMenuItem>
+              <template #profile>
+                <EvAvatar :size="40" variant="teal" label="EV" />
+              </template>
+            </EvNavigationMenu>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvNavigationMenu, EvNavMenuItem, EvLogo, EvAvatar } from &apos;evoq-ui&apos;
+
+const activeMenu = ref(&apos;beranda&apos;)
+</script>
+
+<template>
+  <EvNavigationMenu label="Navigasi Utama">
+    <template #brand><EvLogo :size="32" /></template>
+    <EvNavMenuItem :active="activeMenu === &apos;beranda&apos;" @click="activeMenu = &apos;beranda&apos;">Beranda</EvNavMenuItem>
+    <EvNavMenuItem :active="activeMenu === &apos;data&apos;" @click="activeMenu = &apos;data&apos;">Data</EvNavMenuItem>
+    <template #profile><EvAvatar :size="40" variant="teal" label="EV" /></template>
+  </EvNavigationMenu>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 23. TABS -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('tabs')" id="sec-tabs" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Tabs</span>
+                <span class="pg-section__category-badge">Navigation</span>
+              </h2>
+              <code class="pg-section__import">import { EvTabs, EvTab } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Navigasi tab tersegmentasi (pill) dan tab bergaris bawah (line) untuk mengelompokkan
+              konten pandangan.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Tab Tersegmentasi (Segmented)</h3>
+              <EvTabs v-model="tabSegmented" label="Tab Tersegmentasi">
+                <EvTab value="ringkasan">Ringkasan</EvTab>
+                <EvTab value="detail">Detail Informasi</EvTab>
+                <EvTab value="riwayat">Riwayat Log</EvTab>
+                <EvTab value="arsip" disabled>Arsip (Disabled)</EvTab>
+              </EvTabs>
+            </div>
+
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Tab Garis Bawah (Line)</h3>
+              <EvTabs v-model="tabLine" variant="line" label="Tab Garis">
+                <EvTab value="satu">Tab Satu</EvTab>
+                <EvTab value="dua">Tab Dua</EvTab>
+                <EvTab value="tiga">Tab Tiga</EvTab>
+              </EvTabs>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvTabs, EvTab } from &apos;evoq-ui&apos;
+
+const tabActive = ref(&apos;ringkasan&apos;)
+</script>
+
+<template>
+  <!-- Segmented Tabs -->
+  <EvTabs v-model="tabActive" label="Pilihan Tab">
+    <EvTab value="ringkasan">Ringkasan</EvTab>
+    <EvTab value="detail">Detail</EvTab>
+  </EvTabs>
+
+  <!-- Line Tabs -->
+  <EvTabs v-model="tabActive" variant="line">
+    <EvTab value="ringkasan">Ringkasan</EvTab>
+    <EvTab value="detail">Detail</EvTab>
+  </EvTabs>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 24. CAROUSEL -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('carousel')" id="sec-carousel" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Carousel</span>
+                <span class="pg-section__category-badge">Navigation</span>
+              </h2>
+              <code class="pg-section__import"
+                >import { EvCarousel, EvCarouselSlide } from 'evoq-ui'</code
+              >
+            </div>
+            <p class="pg-section__desc">
+              Komidi putar galeri geser gambar/konten dengan rasio aspek terjaga dan navigasi slide
+              interaktif.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <EvCarousel
+              v-model="slide"
+              ratio="16:9"
+              label="Galeri Galeri Foto"
+              style="max-width: 400px"
+            >
+              <EvCarouselSlide v-for="n in 5" :key="n">
+                <div class="pg-ratio-box">Slide Foto Nomor {{ n }}</div>
+              </EvCarouselSlide>
+            </EvCarousel>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvCarousel, EvCarouselSlide } from &apos;evoq-ui&apos;
+
+const currentSlide = ref(0)
+</script>
+
+<template>
+  <EvCarousel v-model="currentSlide" ratio="16:9" label="Galeri">
+    <EvCarouselSlide>Slide 1</EvCarouselSlide>
+    <EvCarouselSlide>Slide 2</EvCarouselSlide>
+  </EvCarousel>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 25. ACCORDION -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('accordion')" id="sec-accordion" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Accordion</span>
+                <span class="pg-section__category-badge">Feedback & Overlays</span>
+              </h2>
+              <code class="pg-section__import">import { EvAccordion } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Panel lipat akordeon untuk FAQ atau informasi bertingkat dengan varian default dan
+              card.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Varian Default (dengan opsi Separator)</h3>
+              <EvAccordion
+                v-model="openDefault"
+                title="1. Bagaimana cara mengajukan pengadaan?"
+                subtext="Pertanyaan pembuka (separator aktif)"
+              >
+                Anda dapat mengajukan proposal pengadaan melalui menu formulir dan melampirkan
+                berkas penawaran vendor yang valid.
+              </EvAccordion>
+              <EvAccordion
+                :separator="false"
+                title="2. Berapa lama proses verifikasi berkas?"
+                subtext="Item terakhir dalam daftar (separator nonaktif)"
+              >
+                Proses verifikasi berkas memakan waktu 1 hingga 3 hari kerja operasional.
+              </EvAccordion>
+            </div>
+
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Varian Card & Status Nonaktif</h3>
+              <EvAccordion
+                v-model="openCard"
+                variant="card"
+                title="Syarat dan Ketentuan Vendor"
+                subtext="Ketentuan hukum"
+              >
+                Seluruh vendor terdaftar wajib memenuhi standardisasi kualitas ISO dan mematuhi SLA
+                kerja sama yang disepakati.
+              </EvAccordion>
+              <EvAccordion
+                disabled
+                title="Menu Ditutup (Nonaktif)"
+                subtext="Tidak bisa dibuka saat ini"
+              />
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvAccordion } from &apos;evoq-ui&apos;
+
+const isOpen = ref(true)
+</script>
+
+<template>
+  <!-- Default Accordion -->
+  <EvAccordion v-model="isOpen" title="Pertanyaan 1">
+    Konten penjelasan item pertama.
+  </EvAccordion>
+
+  <!-- Last Item with Separator Off -->
+  <EvAccordion :separator="false" title="Pertanyaan Terakhir">
+    Garis pemisah bawah dinonaktifkan untuk item terakhir.
+  </EvAccordion>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 26. ALERT -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('alert')" id="sec-alert" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Alert</span>
+                <span class="pg-section__category-badge">Feedback & Overlays</span>
+              </h2>
+              <code class="pg-section__import">import { EvAlert } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Kotak pesan peringatan/umpan balik dengan varian semantik, mode inverse, slot aksi
+              trailing, dan slot link inline di bawah pesan (*Has Link*).
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <!-- Subsection 1: Alert dengan Link & Actions -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">
+                Alert dengan Tautan Inline (*Has Link*) & Aksi Trailing
+              </h3>
+              <div class="pg-section__row pg-section__row--column" style="gap: 1rem">
+                <EvAlert
+                  variant="info"
+                  title="Pembaruan Sistem Tersedia"
+                  subtext="Versi 2.4.0 menghadirkan fitur analitik performa baru yang lebih cepat."
+                  dismissible
+                >
+                  <template #link>
+                    <EvButtonLink variant="primary" href="#"
+                      >Lihat Catatan Rilis & Panduan &rarr;</EvButtonLink
+                    >
+                  </template>
+                  <template #actions>
+                    <EvButton size="small" variant="secondary-light">Nanti</EvButton>
+                    <EvButton size="small">Perbarui Sekarang</EvButton>
+                  </template>
+                </EvAlert>
+              </div>
+            </div>
+
+            <!-- Subsection 2: Varian Standar -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Varian Semantik Standar</h3>
+              <div class="pg-section__row pg-section__row--column">
+                <EvAlert
+                  v-for="v in alerts"
+                  :key="v"
+                  :variant="v"
+                  :title="`Notifikasi Status ${v}`"
+                  subtext="Informasi rincian peringatan mengenai pembaruan data sistem."
+                  dismissible
+                />
+              </div>
+            </div>
+
+            <!-- Subsection 3: Varian Inverse -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Varian Inverse (Kontras Solid)</h3>
+              <div class="pg-section__row pg-section__row--column">
+                <EvAlert
+                  v-for="v in ['info', 'success', 'error', 'warning'] as const"
+                  :key="`inv-${v}`"
+                  :variant="v"
+                  inverse
+                  :title="`Peringatan Penting ${v}`"
+                  subtext="Pesan prioritas tinggi yang memerlukan tindakan pengguna."
+                />
+              </div>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { EvAlert, EvButtonLink, EvButton } from &apos;evoq-ui&apos;
+</script>
+
+<template>
+  <!-- Alert with Inline Link & Trailing Action -->
+  <EvAlert
+    variant="info"
+    title="Pembaruan Tersedia"
+    subtext="Versi terbaru siap dipasang."
+    dismissible
+  >
+    <template #link>
+      <EvButtonLink variant="primary" href="#">Pelajari lebih lanjut &rarr;</EvButtonLink>
+    </template>
+    <template #actions>
+      <EvButton size="small">Perbarui</EvButton>
+    </template>
+  </EvAlert>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 27. ALERT DIALOG & OVERLAYS -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('alert-dialog')" id="sec-alert-dialog" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Alert Dialog</span>
+                <span class="pg-section__category-badge">Feedback & Overlays</span>
+              </h2>
+              <code class="pg-section__import">import { EvAlertDialog } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Dialog konfirmasi modal penting yang memerlukan aksi pengguna yang disengaja (seperti
+              menghapus data).
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row">
+              <EvButton variant="destructive" @click="dialogOpen = true"
+                >Buka Alert Dialog Hapus</EvButton
+              >
+            </div>
+
+            <EvAlertDialog
+              v-model="dialogOpen"
+              variant="delete"
+              layout="compact"
+              title="Hapus vendor ini?"
+              description="Tindakan ini permanen dan data yang dihapus tidak dapat dipulihkan kembali."
+            >
+              <template #actions>
+                <EvButton variant="destructive" @click="dialogOpen = false">Ya, Hapus</EvButton>
+                <EvButton variant="secondary-light" @click="dialogOpen = false">Batal</EvButton>
+              </template>
+            </EvAlertDialog>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvAlertDialog, EvButton } from &apos;evoq-ui&apos;
+
+const open = ref(false)
+</script>
+
+<template>
+  <EvButton variant="destructive" @click="open = true">Hapus Item</EvButton>
+
+  <EvAlertDialog
+    v-model="open"
+    variant="delete"
+    title="Hapus item ini?"
+    description="Tindakan ini tidak bisa dibatalkan."
+  >
+    <template #actions>
+      <EvButton variant="destructive" @click="open = false">Hapus</EvButton>
+      <EvButton variant="secondary-light" @click="open = false">Batal</EvButton>
+    </template>
+  </EvAlertDialog>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 28. MODAL -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('modal')" id="sec-modal" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Modal</span>
+                <span class="pg-section__category-badge">Feedback & Overlays</span>
+              </h2>
+              <code class="pg-section__import">import { EvModal } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Jendela dialog terfokus untuk memasukkan data formulir atau menampilkan konten
+              mendalam.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row">
+              <EvButton @click="modalOpen = true">Buka Contoh Modal</EvButton>
+            </div>
+
+            <EvModal
+              v-model="modalOpen"
+              title="Tambah Vendor Baru"
+              subtext="Isi formulir pengadaan vendor"
+            >
+              <div style="display: flex; flex-direction: column; gap: 1rem; padding: 0.5rem 0">
+                <EvInput label="Nama Lengkap Perusahaan" placeholder="PT Contoh Maju..." />
+                <EvInput label="Alamat Kantor" placeholder="Jl. Sudirman No..." />
+              </div>
+              <template #footerStart>
+                <EvCheckbox v-model="dontAskAgain" label="Ingat pilihan saya" />
+              </template>
+              <template #footer>
+                <EvButton variant="secondary-light" @click="modalOpen = false">Batal</EvButton>
+                <EvButton @click="modalOpen = false">Simpan Data</EvButton>
+              </template>
+            </EvModal>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvModal, EvButton, EvInput } from &apos;evoq-ui&apos;
+
+const modalOpen = ref(false)
+</script>
+
+<template>
+  <EvButton @click="modalOpen = true">Buka Modal</EvButton>
+
+  <EvModal v-model="modalOpen" title="Judul Modal" subtext="Subteks penjelas modal">
+    <p>Konten isi modal berada di sini.</p>
+    <template #footer>
+      <EvButton variant="secondary-light" @click="modalOpen = false">Batal</EvButton>
+      <EvButton @click="modalOpen = false">Simpan</EvButton>
+    </template>
+  </EvModal>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 29. DRAWER -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('drawer')" id="sec-drawer" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Drawer & Bottom Sheet</span>
+                <span class="pg-section__category-badge">Feedback & Overlays</span>
+              </h2>
+              <code class="pg-section__import">import { EvDrawer } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Panel overlay yang muncul dari sisi samping kanan (drawer) atau dari bawah (bottom
+              sheet).
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row">
+              <EvButton variant="outline" @click="drawerOpen = true"
+                >Buka Drawer Kanan (Filter)</EvButton
+              >
+              <EvButton variant="outline" @click="sheetOpen = true">Buka Bottom Sheet</EvButton>
+            </div>
+
+            <!-- Side Drawer -->
+            <EvDrawer
+              v-model="drawerOpen"
+              title="Filter Lanjutan"
+              subtext="Persempit hasil pencarian berkas"
+            >
+              <div style="display: flex; flex-direction: column; gap: 1rem; padding: 0.5rem 0">
+                <EvInput label="Kata Kunci" placeholder="Cari..." />
+                <EvSwitch :model-value="true" label="Hanya Tampilkan yang Aktif" />
+              </div>
+              <template #footer>
+                <EvButton variant="secondary-light" @click="drawerOpen = false">Reset</EvButton>
+                <EvButton @click="drawerOpen = false">Terapkan Filter</EvButton>
+              </template>
+            </EvDrawer>
+
+            <!-- Bottom Sheet -->
+            <EvDrawer
+              v-model="sheetOpen"
+              placement="bottom"
+              title="Aksi Cepat"
+              subtext="Pilih tindakan yang diinginkan"
+            >
+              <p style="margin: 0; color: var(--ev-text-secondary); font-size: 0.875rem">
+                Bottom sheet dirancang khusus untuk kemudahan akses perangkat mobile dan desktop.
+              </p>
+              <template #footer>
+                <EvButton block @click="sheetOpen = false">Tutup Panel</EvButton>
+              </template>
+            </EvDrawer>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvDrawer, EvButton } from &apos;evoq-ui&apos;
+
+const drawerOpen = ref(false)
+const sheetOpen = ref(false)
+</script>
+
+<template>
+  <EvButton @click="drawerOpen = true">Buka Drawer</EvButton>
+  <EvButton @click="sheetOpen = true">Buka Sheet</EvButton>
+
+  <!-- Right Drawer -->
+  <EvDrawer v-model="drawerOpen" title="Filter">
+    <p>Konten drawer samping.</p>
+  </EvDrawer>
+
+  <!-- Bottom Sheet -->
+  <EvDrawer v-model="sheetOpen" placement="bottom" title="Aksi">
+    <p>Konten bottom sheet.</p>
+  </EvDrawer>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 30. POPOVER -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('popover')" id="sec-popover" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Popover</span>
+                <span class="pg-section__category-badge">Feedback & Overlays</span>
+              </h2>
+              <code class="pg-section__import">import { EvPopover } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Panel melayang kontekstual yang terikat langsung pada elemen pemicu (trigger).
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row">
+              <EvPopover
+                v-model="popoverOpen"
+                title="Pengaturan Dimensi"
+                description="Sesuaikan tata letak kolom panel"
+              >
+                <template #trigger="{ toggle }">
+                  <EvButton variant="secondary-grey" @click="toggle"
+                    >Buka Popover Pengaturan</EvButton
+                  >
+                </template>
+                <div style="font-size: 0.85rem; padding: 0.5rem 0">
+                  Pilih ukuran grid tabel atau form kecil pengaturan.
+                </div>
+                <template #footer>
+                  <EvButton size="small" @click="popoverOpen = false">Simpan Pengaturan</EvButton>
+                </template>
+              </EvPopover>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvPopover, EvButton } from &apos;evoq-ui&apos;
+
+const open = ref(false)
+</script>
+
+<template>
+  <EvPopover v-model="open" title="Pengaturan" description="Atur preferensi Anda">
+    <template #trigger="{ toggle }">
+      <EvButton @click="toggle">Buka Menu</EvButton>
+    </template>
+    <p>Isi formulir ringkas popover.</p>
+    <template #footer>
+      <EvButton size="small" @click="open = false">Selesai</EvButton>
+    </template>
+  </EvPopover>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 31. TOOLTIP -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('tooltip')" id="sec-tooltip" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Tooltip</span>
+                <span class="pg-section__category-badge">Feedback & Overlays</span>
+              </h2>
+              <code class="pg-section__import">import { EvTooltip } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Petunjuk teks melayang saat kursor melayang (hover) dengan 4 arah penempatan (top,
+              bottom, left, right).
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Arah Penempatan (Placement)</h3>
+              <div class="pg-section__row">
+                <EvTooltip
+                  v-for="p in tooltipPlacements"
+                  :key="p"
+                  :placement="p"
+                  :text="`Tooltip berada di posisi: ${p}`"
+                >
+                  <EvButton variant="outline" size="small">Hover: {{ p }}</EvButton>
+                </EvTooltip>
+              </div>
+            </div>
+
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Tooltip dengan Judul & Langkah</h3>
+              <div class="pg-section__row">
+                <EvTooltip placement="bottom" title="Panduan Fitur Baru" dismissible>
+                  <template #content
+                    >Klik tombol ini untuk melihat ringkasan performa penjualan bulanan.</template
+                  >
+                  <template #footer>Langkah 1 dari 4</template>
+                  <EvButton size="small">Dengan Judul & Panduan</EvButton>
+                </EvTooltip>
+              </div>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { EvTooltip, EvButton } from &apos;evoq-ui&apos;
+</script>
+
+<template>
+  <!-- Basic Tooltip -->
+  <EvTooltip placement="top" text="Salin tautan ke clipboard">
+    <EvButton variant="outline">Arahkan Kursor</EvButton>
+  </EvTooltip>
+
+  <!-- Rich Tooltip with Title & Step -->
+  <EvTooltip placement="bottom" title="Tips Pintasan" dismissible>
+    <template #content>Gunakan tombol Ctrl+K untuk pencarian cepat.</template>
+    <template #footer>Langkah 1 dari 3</template>
+    <EvButton>Bantuan</EvButton>
+  </EvTooltip>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 32. DIRECTION -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('direction')" id="sec-direction" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Direction Box</span>
+                <span class="pg-section__category-badge">Feedback & Overlays</span>
+              </h2>
+              <code class="pg-section__import">import { EvDirection } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Kotak panduan arahan aksi langkah demi langkah bagi pengguna dengan tombol konfirmasi
+              dan batal.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <EvDirection
+              title="Lengkapi Profil Akun Vendor"
+              subtext="Isi dan setujui data legalitas sebelum dapat mengajukan penawaran"
+            >
+              <template #headerAction>
+                <EvButtonLink variant="primary">Lewati untuk sekarang</EvButtonLink>
+              </template>
+              <EvCheckbox
+                v-model="directionAgree"
+                label="Saya menyatakan data yang diisikan benar dan sah"
+              />
+              <template #confirm>
+                <EvButton :disabled="!directionAgree">Lanjutkan Pendaftaran</EvButton>
+              </template>
+              <template #cancel>
+                <EvButton variant="secondary-light">Batal</EvButton>
+              </template>
+            </EvDirection>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { ref } from &apos;vue&apos;
+import { EvDirection, EvButton, EvCheckbox } from &apos;evoq-ui&apos;
+
+const agree = ref(false)
+</script>
+
+<template>
+  <EvDirection title="Lengkapi Profil" subtext="Harap lengkapi data berikut:">
+    <EvCheckbox v-model="agree" label="Saya setuju dengan syarat & ketentuan" />
+    <template #confirm>
+      <EvButton :disabled="!agree">Lanjutkan</EvButton>
+    </template>
+  </EvDirection>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 33. SCROLL AREA -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('scroll-area')" id="sec-scroll-area" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Scroll Area</span>
+                <span class="pg-section__category-badge">Layout & Identity</span>
+              </h2>
+              <code class="pg-section__import">import { EvScrollArea } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Wadah area pengguliran (scrollable container) berkustomisasi dengan scrollbar yang
+              konsisten antar peramban.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row pg-section__row--top" style="gap: 2rem">
+              <div>
+                <h4 style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--ev-text-secondary)">
+                  Default (Scrollbar Kanan)
+                </h4>
+                <EvScrollArea
+                  style="
+                    max-height: 140px;
+                    width: 320px;
+                    border: 1px solid var(--ev-border-primary);
+                    border-radius: 8px;
+                    padding: 0.75rem 1rem;
+                  "
+                >
+                  <p
+                    v-for="n in 10"
+                    :key="n"
+                    style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--ev-text-secondary)"
+                  >
+                    Baris log transaksi #00{{ n }} - Normal
+                  </p>
+                </EvScrollArea>
+              </div>
+
+              <div>
+                <h4 style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--ev-text-secondary)">
+                  Mirror (Scrollbar Kiri / RTL)
+                </h4>
+                <EvScrollArea
+                  mirror
+                  style="
+                    max-height: 140px;
+                    width: 320px;
+                    border: 1px solid var(--ev-border-primary);
+                    border-radius: 8px;
+                    padding: 0.75rem 1rem;
+                  "
+                >
+                  <p
+                    v-for="n in 10"
+                    :key="`m-${n}`"
+                    style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--ev-text-secondary)"
+                  >
+                    Baris log transaksi #00{{ n }} - Mirrored
+                  </p>
+                </EvScrollArea>
+              </div>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { EvScrollArea } from &apos;evoq-ui&apos;
+</script>
+
+<template>
+  <!-- Standard Vertical Scrollbar -->
+  <EvScrollArea style="max-height: 150px; max-width: 300px">
+    <p v-for="n in 10" :key="n">Item nomor {{ n }}</p>
+  </EvScrollArea>
+
+  <!-- Mirrored Scrollbar (Opposite Edge) -->
+  <EvScrollArea mirror style="max-height: 150px; max-width: 300px">
+    <p v-for="n in 10" :key="n">Item mirrored {{ n }}</p>
+  </EvScrollArea>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 34. SEPARATOR -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('separator')" id="sec-separator" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Separator</span>
+                <span class="pg-section__category-badge">Layout & Identity</span>
+              </h2>
+              <code class="pg-section__import">import { EvSeparator } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Garis pemisah konten semantik dengan orientasi horizontal atau vertikal.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Horizontal</h3>
+              <div style="display: flex; flex-direction: column; gap: 0.75rem">
+                <div>Konten Atas</div>
+                <EvSeparator />
+                <div>Konten Bawah</div>
+              </div>
+            </div>
+
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">Vertikal</h3>
+              <div class="pg-section__row" style="height: 28px">
+                <span>Kolom Kiri</span>
+                <EvSeparator orientation="vertical" />
+                <span>Kolom Tengah</span>
+                <EvSeparator orientation="vertical" />
+                <span>Kolom Kanan</span>
+              </div>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { EvSeparator } from &apos;evoq-ui&apos;
+</script>
+
+<template>
+  <!-- Horizontal Separator -->
+  <EvSeparator />
+
+  <!-- Vertical Separator -->
+  <div style="display: flex; align-items: center; height: 24px;">
+    <span>Item 1</span>
+    <EvSeparator orientation="vertical" />
+    <span>Item 2</span>
+  </div>
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 35. LOGO -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('logo')" id="sec-logo" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Logo</span>
+                <span class="pg-section__category-badge">Layout & Identity</span>
+              </h2>
+              <code class="pg-section__import">import { EvLogo } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Logo resmi sistem desain Evoq UI dalam format vektor SVG dengan berbagai ukuran dan
+              slot label pendamping.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row">
+              <EvLogo :size="24" />
+              <EvLogo :size="36" />
+              <EvLogo :size="48" />
+              <EvLogo :size="40">
+                <span style="font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em"
+                  >EVOQ UI</span
+                >
+              </EvLogo>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<script setup lang="ts">
+import { EvLogo } from &apos;evoq-ui&apos;
+</script>
+
+<template>
+  <EvLogo :size="32" />
+  <EvLogo :size="40">
+    <strong>EVOQ UI</strong>
+  </EvLogo>
+</template>'
+          />
+        </section>
+      </div>
+    </div>
+  </div>
+</template>

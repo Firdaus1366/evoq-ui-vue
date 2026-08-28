@@ -1,0 +1,1065 @@
+{
+  "source": {
+    "file": "EVOQ - Design System",
+    "fileKey": "hJ3XmwLptPtF4IFBDlZlpx",
+    "page": "Introduction",
+    "url": "https://www.figma.com/design/hJ3XmwLptPtF4IFBDlZlpx/EVOQ--Design-System",
+    "scrapedAt": "2026-08-27",
+    "method": "Figma Desktop Bridge (figma-console MCP)",
+    "note": "Collection Primitives (83 var, 8 ramp) dan Brand (20 var, 4 mode) terbaca lewat getLocalVariablesAsync + resolusi alias per-ID. Ramp red/sky/neutral ada di library collection (Tailwind/Colors) yang tidak bisa dienumerasi, jadi nilainya diambil dari board dokumentasi."
+  },
+  "boards": [
+    {
+      "name": "Design System EVOQ Summary",
+      "id": "5094:72368"
+    },
+    {
+      "name": "Color Token",
+      "id": "5093:41584"
+    },
+    {
+      "name": "Design Token",
+      "id": "5095:41675"
+    },
+    {
+      "name": "Typography",
+      "id": "5095:42691"
+    },
+    {
+      "name": "Shadow",
+      "id": "5094:72039"
+    },
+    {
+      "name": "Spacing & Radius",
+      "id": "5095:43010"
+    },
+    {
+      "name": "Component",
+      "id": "5095:43290"
+    }
+  ],
+  "summary": {
+    "totalVariables": 196,
+    "collections": [
+      {
+        "name": "Primitives",
+        "variables": 83,
+        "modes": ["default"],
+        "groups": "9 color ramps"
+      },
+      {
+        "name": "Semantic Color",
+        "variables": 63,
+        "modes": ["Light", "Dark"],
+        "groups": "7 role groups"
+      },
+      {
+        "name": "Spacing & Radius",
+        "variables": 50,
+        "modes": ["default"],
+        "groups": "4 groups"
+      }
+    ],
+    "textStyles": 19,
+    "effectStyles": 8,
+    "components": {
+      "completed": 36,
+      "inProgress": 10,
+      "total": 46,
+      "progress": "78%"
+    }
+  },
+  "primitives": {
+    "lgrey": {
+      "50": "#F9F9FA",
+      "100": "#F3F4F5",
+      "150": "#ECEEF0",
+      "200": "#E6E8EB",
+      "300": "#DADDE1",
+      "400": "#CDD1D7",
+      "500": "#C1C6CD",
+      "600": "#9A9EA4",
+      "700": "#74777B",
+      "800": "#4D4F52",
+      "850": "#3A3B3D",
+      "900": "#272829"
+    },
+    "dgrey": {
+      "50": "#78879A",
+      "100": "#707E90",
+      "150": "#687586",
+      "200": "#606D7C",
+      "300": "#586472",
+      "400": "#49525F",
+      "500": "#39414B",
+      "600": "#292F37",
+      "700": "#21262C",
+      "800": "#191C21",
+      "850": "#101316",
+      "900": "#0C0E10"
+    },
+    "grey": {
+      "100": "#F9F9F9",
+      "200": "#F1F1F4",
+      "300": "#DBDFE9",
+      "400": "#C4CADA",
+      "500": "#99A1B7",
+      "600": "#78829D",
+      "700": "#4B5675",
+      "800": "#252F4A",
+      "900": "#071437"
+    },
+    "purple": {
+      "50": "#F4EBFD",
+      "100": "#EAD7FB",
+      "200": "#D5AEF7",
+      "300": "#BF86F2",
+      "400": "#AA5DEE",
+      "500": "#9535EA",
+      "600": "#772ABB",
+      "700": "#59208C",
+      "800": "#3C155E",
+      "900": "#2D1046"
+    },
+    "green": {
+      "50": "#E8F9EE",
+      "100": "#D1F4DD",
+      "200": "#A2E8BA",
+      "300": "#74DD98",
+      "400": "#45D175",
+      "500": "#17C653",
+      "600": "#129E42",
+      "700": "#0E7732",
+      "800": "#094F21",
+      "900": "#073B19"
+    },
+    "cyan": {
+      "50": "#E7F5F8",
+      "100": "#D0EAF0",
+      "200": "#A1D5E2",
+      "300": "#71C0D3",
+      "400": "#42ABC5",
+      "500": "#1396B6",
+      "600": "#0F7892",
+      "700": "#0B5A6D",
+      "800": "#083C49",
+      "900": "#062D37"
+    },
+    "yellow": {
+      "50": "#FEF9EB",
+      "100": "#FEF3D7",
+      "200": "#FDE7B0",
+      "300": "#FBDB88",
+      "400": "#FACF61",
+      "500": "#F9C339",
+      "600": "#C79C2E",
+      "700": "#957522",
+      "800": "#644E17",
+      "900": "#4B3B11"
+    },
+    "maroon": {
+      "50": "#F9EAEA",
+      "100": "#F2D4D4",
+      "200": "#E5AAAA",
+      "300": "#D87F7F",
+      "400": "#CB5555",
+      "500": "#BE2A2A",
+      "600": "#982222",
+      "700": "#721919",
+      "800": "#4C1111",
+      "900": "#390D0D"
+    }
+  },
+  "semantic": {
+    "modes": ["light", "dark"],
+    "bg": [
+      {
+        "token": "bg/primary",
+        "light": "#FFFFFF",
+        "dark": "#3E424A",
+        "aliasLight": "white",
+        "aliasDark": "neutral/800",
+        "desc": "Base page background"
+      },
+      {
+        "token": "bg/secondary",
+        "light": "#F9F9F9",
+        "dark": "#5E626F",
+        "aliasLight": "grey/100",
+        "aliasDark": "neutral/700",
+        "desc": "Secondary offset surfaces"
+      },
+      {
+        "token": "bg/tertiary",
+        "light": "#F1F1F4",
+        "dark": "#EBEDF1",
+        "aliasLight": "grey/200",
+        "aliasDark": "neutral/100",
+        "desc": "Tertiary blocks & tabs"
+      },
+      {
+        "token": "bg/subtle",
+        "light": "#EBEDF1",
+        "dark": "#3E424A",
+        "aliasLight": "neutral/50",
+        "aliasDark": "neutral/800",
+        "desc": "Subtle alert/banner tiles"
+      },
+      {
+        "token": "bg/subtler",
+        "light": "#D7DBE3",
+        "dark": "#7D8394",
+        "aliasLight": "neutral/200",
+        "aliasDark": "neutral/600",
+        "desc": "Sunken container backdrops"
+      },
+      {
+        "token": "bg/subtlest",
+        "light": "#C4C8D5",
+        "dark": "#9CA4B9",
+        "aliasLight": "neutral/300",
+        "aliasDark": "neutral/500",
+        "desc": "Muted default states"
+      },
+      {
+        "token": "bg/inverse",
+        "light": "#3E424A",
+        "dark": "#EBEDF1",
+        "aliasLight": "neutral/800",
+        "aliasDark": "neutral/100",
+        "desc": "Opposing theme background"
+      },
+      {
+        "token": "bg/overlay",
+        "light": "#181C20",
+        "dark": "#181C20",
+        "aliasLight": "modal-scrim",
+        "aliasDark": "modal-scrim",
+        "desc": "Dimming screen overlay"
+      }
+    ],
+    "text": [
+      {
+        "token": "text/primary",
+        "light": "#071437",
+        "dark": "#EBEDF1",
+        "aliasLight": "grey/900",
+        "aliasDark": "neutral/100",
+        "desc": "Primary body & titles"
+      },
+      {
+        "token": "text/secondary",
+        "light": "#78829D",
+        "dark": "#B0B6C7",
+        "aliasLight": "grey/600",
+        "aliasDark": "neutral/400",
+        "desc": "Supporting metadata & labels"
+      },
+      {
+        "token": "text/tertiary",
+        "light": "#C4CADA",
+        "dark": "#9CA4B9",
+        "aliasLight": "grey/400",
+        "aliasDark": "neutral/500",
+        "desc": "Disabled fallback text"
+      },
+      {
+        "token": "text/disabled",
+        "light": "#DBDFE9",
+        "dark": "#7D8394",
+        "aliasLight": "grey/300",
+        "aliasDark": "neutral/600",
+        "desc": "Hard disabled interface text"
+      },
+      {
+        "token": "text/inverse",
+        "light": "#FFFFFF",
+        "dark": "#3E424A",
+        "aliasLight": "white",
+        "aliasDark": "neutral/800",
+        "desc": "White text on dark components"
+      },
+      {
+        "token": "text/link",
+        "light": "#1B84FF",
+        "dark": "#1B84FF",
+        "aliasLight": "brand/primary/500",
+        "aliasDark": "brand/primary/500",
+        "desc": "Actionable inline link"
+      },
+      {
+        "token": "text/error",
+        "light": "#C62249",
+        "dark": "#F82A5B",
+        "aliasLight": "red/600",
+        "aliasDark": "red/500",
+        "desc": "Negative state text"
+      },
+      {
+        "token": "text/success",
+        "light": "#129E42",
+        "dark": "#17C653",
+        "aliasLight": "green/600",
+        "aliasDark": "green/500",
+        "desc": "Positive state text"
+      },
+      {
+        "token": "text/warning",
+        "light": "#C79C2E",
+        "dark": "#F9C339",
+        "aliasLight": "yellow/600",
+        "aliasDark": "yellow/500",
+        "desc": "Cautionary state text"
+      },
+      {
+        "token": "text/info",
+        "light": "#1B84FF",
+        "dark": "#166ACC",
+        "aliasLight": "blue/500",
+        "aliasDark": "blue/600",
+        "desc": "Informational state text"
+      }
+    ],
+    "icon": [
+      {
+        "token": "icon/primary",
+        "light": "#78829D",
+        "dark": "#EBEDF1",
+        "aliasLight": "grey/600",
+        "aliasDark": "neutral/100",
+        "desc": "Interactive & navigation icons"
+      },
+      {
+        "token": "icon/secondary",
+        "light": "#99A1B7",
+        "dark": "#B0B6C7",
+        "aliasLight": "grey/500",
+        "aliasDark": "neutral/400",
+        "desc": "Secondary state icons"
+      },
+      {
+        "token": "icon/tertiary",
+        "light": "#C4CADA",
+        "dark": "#9CA4B9",
+        "aliasLight": "grey/400",
+        "aliasDark": "neutral/500",
+        "desc": "Decorative accent elements"
+      },
+      {
+        "token": "icon/disabled",
+        "light": "#DBDFE9",
+        "dark": "#7D8394",
+        "aliasLight": "grey/300",
+        "aliasDark": "neutral/600",
+        "desc": "Deactivated icon state"
+      },
+      {
+        "token": "icon/inverse",
+        "light": "#FFFFFF",
+        "dark": "#3E424A",
+        "aliasLight": "white",
+        "aliasDark": "neutral/800",
+        "desc": "Icons placed on solid accents"
+      },
+      {
+        "token": "icon/link",
+        "light": "#1B84FF",
+        "dark": "#166ACC",
+        "aliasLight": "brand/primary/500",
+        "aliasDark": "brand/primary/600",
+        "desc": "Hyperlinked icon actions"
+      },
+      {
+        "token": "icon/error",
+        "light": "#F82A5B",
+        "dark": "#C62249",
+        "aliasLight": "red/500",
+        "aliasDark": "red/600",
+        "desc": "Danger alert indicators"
+      },
+      {
+        "token": "icon/success",
+        "light": "#17C653",
+        "dark": "#129E42",
+        "aliasLight": "green/500",
+        "aliasDark": "green/600",
+        "desc": "Successful completion status"
+      },
+      {
+        "token": "icon/warning",
+        "light": "#F9C339",
+        "dark": "#C79C2E",
+        "aliasLight": "yellow/500",
+        "aliasDark": "yellow/600",
+        "desc": "System warning status"
+      },
+      {
+        "token": "icon/info",
+        "light": "#1B84FF",
+        "dark": "#166ACC",
+        "aliasLight": "blue/500",
+        "aliasDark": "blue/600",
+        "desc": "Informative status glyphs"
+      }
+    ],
+    "border": [
+      {
+        "token": "border/primary",
+        "light": "#DBDFE9",
+        "dark": "#7D8394",
+        "aliasLight": "grey/300",
+        "aliasDark": "neutral/600",
+        "desc": "Default input & card borders"
+      },
+      {
+        "token": "border/secondary",
+        "light": "#F1F1F4",
+        "dark": "#9CA4B9",
+        "aliasLight": "grey/200",
+        "aliasDark": "neutral/500",
+        "desc": "Dividers and subtle rules"
+      },
+      {
+        "token": "border/tertiary",
+        "light": "#C4CADA",
+        "dark": "#D7DBE3",
+        "aliasLight": "grey/400",
+        "aliasDark": "neutral/200",
+        "desc": "Grid structures & table lines"
+      },
+      {
+        "token": "border/disabled",
+        "light": "#DBDFE9",
+        "dark": "#5E626F",
+        "aliasLight": "grey/300",
+        "aliasDark": "neutral/700",
+        "desc": "Deactivated interactive borders"
+      },
+      {
+        "token": "border/inverse",
+        "light": "#99A1B7",
+        "dark": "#EBEDF1",
+        "aliasLight": "grey/50",
+        "aliasDark": "neutral/100",
+        "desc": "Opposite polarity borders"
+      }
+    ],
+    "brand": [
+      {
+        "token": "brand/primary",
+        "light": "#1B84FF",
+        "dark": "#499DFF",
+        "aliasLight": "brand/primary/500",
+        "aliasDark": "brand/primary/400",
+        "desc": "Brand dominant accent"
+      },
+      {
+        "token": "brand/primary-bold",
+        "light": "#166ACC",
+        "dark": "#A4CEFF",
+        "aliasLight": "brand/primary/600",
+        "aliasDark": "brand/primary/200",
+        "desc": "Pressed/hovered brand fill"
+      },
+      {
+        "token": "brand/primary-subtle",
+        "light": "#E8F3FF",
+        "dark": "#0B3566",
+        "aliasLight": "brand/primary/50",
+        "aliasDark": "brand/primary/800",
+        "desc": "Light brand background panels"
+      },
+      {
+        "token": "brand/secondary",
+        "light": "#C54A16",
+        "dark": "#D16E45",
+        "aliasLight": "brand/secondary/500",
+        "aliasDark": "brand/secondary/400",
+        "desc": "Supporting secondary highlight"
+      },
+      {
+        "token": "brand/secondary-bold",
+        "light": "#9E3B12",
+        "dark": "#E8B7A2",
+        "aliasLight": "brand/secondary/600",
+        "aliasDark": "brand/secondary/200",
+        "desc": "Pressed secondary active state"
+      },
+      {
+        "token": "brand/secondary-subtle",
+        "light": "#F9EDE8",
+        "dark": "#4F1E09",
+        "aliasLight": "brand/secondary/50",
+        "aliasDark": "brand/secondary/800",
+        "desc": "Light secondary banner blocks"
+      }
+    ],
+    "ext": [
+      {
+        "token": "ext/error",
+        "light": "#F82A5B",
+        "dark": "#F9557C",
+        "aliasLight": "red/500",
+        "aliasDark": "red/400",
+        "desc": "Extended critical error"
+      },
+      {
+        "token": "ext/error-bold",
+        "light": "#C62249",
+        "dark": "#FEEAEF",
+        "aliasLight": "red/600",
+        "aliasDark": "red/50",
+        "desc": "High contrast red alert text"
+      },
+      {
+        "token": "ext/error-subtle",
+        "light": "#FCAABD",
+        "dark": "#951937",
+        "aliasLight": "red/200",
+        "aliasDark": "red/700",
+        "desc": "Subtle warning card stroke"
+      },
+      {
+        "token": "ext/error-subtler",
+        "light": "#FED4DE",
+        "dark": "#631124",
+        "aliasLight": "red/100",
+        "aliasDark": "red/800",
+        "desc": "Faint system error background"
+      },
+      {
+        "token": "ext/success",
+        "light": "#17C653",
+        "dark": "#45D175",
+        "aliasLight": "green/500",
+        "aliasDark": "green/400",
+        "desc": "Extended success indicator"
+      },
+      {
+        "token": "ext/success-bold",
+        "light": "#129E42",
+        "dark": "#E8F9EE",
+        "aliasLight": "green/600",
+        "aliasDark": "green/50",
+        "desc": "High contrast green success text"
+      },
+      {
+        "token": "ext/success-subtle",
+        "light": "#A2E8BA",
+        "dark": "#0E7732",
+        "aliasLight": "green/200",
+        "aliasDark": "green/700",
+        "desc": "Subtle success card stroke"
+      },
+      {
+        "token": "ext/success-subtler",
+        "light": "#D1F4DD",
+        "dark": "#094F21",
+        "aliasLight": "green/100",
+        "aliasDark": "green/800",
+        "desc": "Faint positive success background"
+      },
+      {
+        "token": "ext/warning",
+        "light": "#F9C339",
+        "dark": "#FACF61",
+        "aliasLight": "yellow/500",
+        "aliasDark": "yellow/400",
+        "desc": "Extended warning marker"
+      },
+      {
+        "token": "ext/warning-bold",
+        "light": "#C79C2E",
+        "dark": "#FEF9EB",
+        "aliasLight": "yellow/600",
+        "aliasDark": "yellow/50",
+        "desc": "High contrast amber text"
+      },
+      {
+        "token": "ext/warning-subtle",
+        "light": "#FDE7B0",
+        "dark": "#957522",
+        "aliasLight": "yellow/200",
+        "aliasDark": "yellow/700",
+        "desc": "Subtle warning banner border"
+      },
+      {
+        "token": "ext/warning-subtler",
+        "light": "#FEF3D7",
+        "dark": "#644E17",
+        "aliasLight": "yellow/100",
+        "aliasDark": "yellow/800",
+        "desc": "Faint warning banner background"
+      },
+      {
+        "token": "ext/info",
+        "light": "#1B84FF",
+        "dark": "#69BEE4",
+        "aliasLight": "blue/500",
+        "aliasDark": "sky/400",
+        "desc": "Extended informational state"
+      },
+      {
+        "token": "ext/info-bold",
+        "light": "#166ACC",
+        "dark": "#F1F6F9",
+        "aliasLight": "blue/600",
+        "aliasDark": "sky/50",
+        "desc": "High contrast informational text"
+      },
+      {
+        "token": "ext/info-subtle",
+        "light": "#A4CEFF",
+        "dark": "#0F5E81",
+        "aliasLight": "blue/200",
+        "aliasDark": "sky/700",
+        "desc": "Subtle informational card stroke"
+      },
+      {
+        "token": "ext/info-subtler",
+        "light": "#D1E6FF",
+        "dark": "#0C3F57",
+        "aliasLight": "blue/100",
+        "aliasDark": "sky/800",
+        "desc": "Faint informational background panel"
+      }
+    ],
+    "tree": [
+      {
+        "token": "tree/lv1",
+        "light": "#FFFFFF",
+        "dark": "#3E424A",
+        "aliasLight": "white",
+        "aliasDark": "neutral/800",
+        "desc": "Canvas base nesting level"
+      },
+      {
+        "token": "tree/lv2",
+        "light": "#F9F9FA",
+        "dark": "#39414B",
+        "aliasLight": "lgrey/50",
+        "aliasDark": "dgrey/500",
+        "desc": "Nesting level 2 container"
+      },
+      {
+        "token": "tree/lv3",
+        "light": "#F3F4F5",
+        "dark": "#49525F",
+        "aliasLight": "lgrey/100",
+        "aliasDark": "dgrey/400",
+        "desc": "Nesting level 3 container"
+      },
+      {
+        "token": "tree/lv4",
+        "light": "#ECEEF0",
+        "dark": "#586472",
+        "aliasLight": "lgrey/150",
+        "aliasDark": "dgrey/300",
+        "desc": "Nesting level 4 wrapper"
+      },
+      {
+        "token": "tree/lv5",
+        "light": "#E6E8EB",
+        "dark": "#606D7C",
+        "aliasLight": "lgrey/200",
+        "aliasDark": "dgrey/200",
+        "desc": "Nesting level 5 panel border"
+      },
+      {
+        "token": "tree/lv6",
+        "light": "#DADDE1",
+        "dark": "#687586",
+        "aliasLight": "lgrey/300",
+        "aliasDark": "dgrey/150",
+        "desc": "Nesting level 6 divider stroke"
+      },
+      {
+        "token": "tree/lv7",
+        "light": "#CDD1D7",
+        "dark": "#707E90",
+        "aliasLight": "lgrey/400",
+        "aliasDark": "dgrey/100",
+        "desc": "Nesting level 7 sunken background"
+      },
+      {
+        "token": "tree/lv8",
+        "light": "#C1C6CD",
+        "dark": "#78879A",
+        "aliasLight": "lgrey/500",
+        "aliasDark": "dgrey/50",
+        "desc": "Deepest contrast tree nesting base"
+      }
+    ]
+  },
+  "spacing": {
+    "none": 0,
+    "2xs": 2,
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "2xl": 32,
+    "3xl": 48
+  },
+  "radius": {
+    "none": 0,
+    "2xs": 2,
+    "3xs": 4,
+    "xs": 6,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "2xl": 32,
+    "rd": 9999
+  },
+  "stroke": {
+    "xs": 1,
+    "sm": 2,
+    "md": 3,
+    "lg": 4,
+    "xl": 5
+  },
+  "typographyVariables": {
+    "fontSize": {
+      "3xs": 8,
+      "2xs": 10,
+      "xs": 12,
+      "sm": 14,
+      "md": 16,
+      "lg": 18,
+      "xl": 20,
+      "2xl": 24,
+      "3xl": 28,
+      "4xl": 32,
+      "5xl": 40
+    },
+    "lineHeight": {
+      "2xs": 12,
+      "xs": 16,
+      "sm": 20,
+      "md": 24,
+      "lg": 28,
+      "xl": 32,
+      "2xl": 36,
+      "3xl": 40,
+      "4xl": 48
+    },
+    "letterSpacing": {
+      "tighter": -0.5,
+      "tight": -0.3,
+      "snug": -0.2,
+      "normal": 0,
+      "wide": 0.2,
+      "wider": 1.5
+    }
+  },
+  "textStyles": {
+    "fontFamily": "Inter",
+    "headings": [
+      {
+        "style": "heading/display",
+        "weight": "Bold",
+        "fontSize": 40,
+        "lineHeight": 48
+      },
+      {
+        "style": "heading/h1",
+        "weight": "Bold",
+        "fontSize": 32,
+        "lineHeight": 40
+      },
+      {
+        "style": "heading/h2",
+        "weight": "Bold",
+        "fontSize": 28,
+        "lineHeight": 36
+      },
+      {
+        "style": "heading/h3",
+        "weight": "Bold",
+        "fontSize": 24,
+        "lineHeight": 32
+      },
+      {
+        "style": "heading/h4",
+        "weight": "Semi Bold",
+        "fontSize": 20,
+        "lineHeight": 28
+      }
+    ],
+    "subheadings": [
+      {
+        "style": "subheading/h5",
+        "weight": "Bold",
+        "fontSize": 18,
+        "lineHeight": 24
+      },
+      {
+        "style": "subheading/h6",
+        "weight": "Bold",
+        "fontSize": 16,
+        "lineHeight": 20
+      },
+      {
+        "style": "subheading/h7",
+        "weight": "Bold",
+        "fontSize": 14,
+        "lineHeight": 16
+      },
+      {
+        "style": "subheading/h8",
+        "weight": "Semi Bold",
+        "fontSize": 12,
+        "lineHeight": 16
+      }
+    ],
+    "body": [
+      {
+        "style": "body/large",
+        "weight": "Medium",
+        "fontSize": 16,
+        "lineHeight": 20
+      },
+      {
+        "style": "body/large-b",
+        "weight": "Bold",
+        "fontSize": 16,
+        "lineHeight": 20
+      },
+      {
+        "style": "body/regular",
+        "weight": "Medium",
+        "fontSize": 14,
+        "lineHeight": 16
+      },
+      {
+        "style": "body/regular-b",
+        "weight": "Bold",
+        "fontSize": 14,
+        "lineHeight": 16
+      },
+      {
+        "style": "body/small",
+        "weight": "Medium",
+        "fontSize": 12,
+        "lineHeight": 16
+      },
+      {
+        "style": "body/small-b",
+        "weight": "Bold",
+        "fontSize": 12,
+        "lineHeight": 16
+      },
+      {
+        "style": "body/xtrasmall",
+        "weight": "Medium",
+        "fontSize": 10,
+        "lineHeight": 16
+      },
+      {
+        "style": "body/xtrasmall-b",
+        "weight": "Bold",
+        "fontSize": 10,
+        "lineHeight": 16
+      },
+      {
+        "style": "body/micro",
+        "weight": "Medium",
+        "fontSize": 8,
+        "lineHeight": 12
+      },
+      {
+        "style": "body/micro-b",
+        "weight": "Bold",
+        "fontSize": 8,
+        "lineHeight": 12
+      }
+    ]
+  },
+  "effectStyles": [
+    {
+      "style": "elevation/xs",
+      "spec": "Drop Shadow: blur 2, offset (0,1), 5% opacity",
+      "usage": "Static indicators and small badges"
+    },
+    {
+      "style": "elevation/sm",
+      "spec": "Double Shadow: blur 3 (y=1, 10%) & blur 2 (y=1, spread -1, 6%)",
+      "usage": "Secondary buttons and small inputs"
+    },
+    {
+      "style": "elevation/md",
+      "spec": "Double Shadow: blur 6 (y=4, spread -1, 10%) & blur 4 (y=2, spread -2, 6%)",
+      "usage": "Main elevated standard for UI cards"
+    },
+    {
+      "style": "elevation/lg",
+      "spec": "Double Shadow: blur 15 (y=10, spread -3, 10%) & blur 6 (y=4, spread -4, 5%)",
+      "usage": "Dropdowns, popovers, sticky elements"
+    },
+    {
+      "style": "elevation/xl",
+      "spec": "Double Shadow: blur 25 (y=20, spread -5, 10%) & blur 10 (y=8, spread -6, 4%)",
+      "usage": "Modal frames"
+    },
+    {
+      "style": "buttonpressed",
+      "spec": "Inner Shadow: blur 4, offset (0,4), 25% opacity",
+      "usage": "Physical inset state for pressed buttons"
+    },
+    {
+      "style": "table/left",
+      "spec": "Drop Shadow: blur 4, offset (4,0), 15% opacity",
+      "usage": "Left sticky table columns"
+    },
+    {
+      "style": "table/right",
+      "spec": "Drop Shadow: blur 4, offset (-4,0), 15% opacity",
+      "usage": "Right sticky table columns"
+    }
+  ],
+  "discrepancies": [
+    "Board Summary klaim 9 color ramps / 91 primitives. Yang benar: collection Primitives berisi 83 variable dalam 8 ramp; ramp ke-9 adalah collection Brand terpisah (20 variable, 4 mode). Angka 91 tetap tidak cocok dengan hitungan mana pun.",
+    "Board Summary tulis Semantic Color 2 mode / Spacing & Radius 50 variable, tapi tidak menyebut collection Brand sama sekali, padahal collection itu yang menentukan warna brand di seluruh sistem.",
+    "Di mode Green, brand/primary/900 resolve ke teal/900 (#082a27) lewat brand/secondary/900, bukan ke green/900 (#073b19). Kemungkinan salah alias di Figma.",
+    "Alias border/inverse light tertulis grey/50 (#99a1b7), padahal ramp grey mulai dari step 100 dan #99a1b7 itu grey/500.",
+    "bg/subtle light alias neutral/50 = #ebedf1, identik dengan neutral/100. Dua nama untuk satu nilai.",
+    "Ramp red mirip tapi berbeda dari rose (red/500 #f82a5b vs rose/500 #f8285a). Keduanya ramp terpisah.",
+    "Halaman on-progress ada 11, bukan 10 seperti klaim board Summary.",
+    "Ramp lgrey dan dgrey punya 12 step (termasuk 150 dan 850), grey hanya 9 step (100-900)."
+  ],
+  "brandCollection": {
+    "note": "Ini ramp ke-9 yang dimaksud board Summary. Bukan ramp warna, tapi layer indirection: brand/primary/* dan brand/secondary/* murni alias ke dua ramp palette, dan 4 mode-nya menukar ramp mana yang dipakai.",
+    "modes": ["Blue", "Light Blue", "Green", "Orange"],
+    "variables": 20,
+    "mapping": {
+      "Blue": {
+        "primary": "blue",
+        "secondary": "orange"
+      },
+      "Light Blue": {
+        "primary": "lightblue",
+        "secondary": "indigo"
+      },
+      "Green": {
+        "primary": "green",
+        "secondary": "teal"
+      },
+      "Orange": {
+        "primary": "orange",
+        "secondary": "rose"
+      }
+    },
+    "quirk": "Di mode Green, brand/primary/900 resolve lewat brand/secondary/900 ke teal/900 (#082a27), bukan green/900 (#073b19)."
+  },
+  "libraryRamps": {
+    "note": "Ramp di library file, direkonstruksi penuh (10 step) dari rantai alias collection Brand.",
+    "blue": {
+      "50": "#e8f3ff",
+      "100": "#d1e6ff",
+      "200": "#a4ceff",
+      "300": "#76b5ff",
+      "400": "#499dff",
+      "500": "#1b84ff",
+      "600": "#166acc",
+      "700": "#104f99",
+      "800": "#0b3566",
+      "900": "#08284d"
+    },
+    "lightblue": {
+      "50": "#f2f6f8",
+      "100": "#e9f1f4",
+      "200": "#d6e6ed",
+      "300": "#b6d7e4",
+      "400": "#80c3de",
+      "500": "#30aee1",
+      "600": "#1f8cb8",
+      "700": "#1a6583",
+      "800": "#134357",
+      "900": "#0b2530"
+    },
+    "orange": {
+      "50": "#f9ede8",
+      "100": "#f3dbd0",
+      "200": "#e8b7a2",
+      "300": "#dc9273",
+      "400": "#d16e45",
+      "500": "#c54a16",
+      "600": "#9e3b12",
+      "700": "#762c0d",
+      "800": "#4f1e09",
+      "900": "#3b1607"
+    },
+    "indigo": {
+      "50": "#f3f3f9",
+      "100": "#ececf6",
+      "200": "#dedef2",
+      "300": "#c7c7ed",
+      "400": "#9fa0eb",
+      "500": "#6366f1",
+      "600": "#2328e6",
+      "700": "#181ba7",
+      "800": "#12146b",
+      "900": "#0a0b36"
+    },
+    "teal": {
+      "50": "#f0f8f7",
+      "100": "#e2f2f0",
+      "200": "#c4e8e5",
+      "300": "#93ddd7",
+      "400": "#3ed8ca",
+      "500": "#0d9488",
+      "600": "#0d766c",
+      "700": "#0c5852",
+      "800": "#0a403b",
+      "900": "#082a27"
+    },
+    "rose": {
+      "50": "#feeaef",
+      "100": "#fed4de",
+      "200": "#fca9bd",
+      "300": "#fb7e9c",
+      "400": "#f9537b",
+      "500": "#f8285a",
+      "600": "#c62048",
+      "700": "#951836",
+      "800": "#631024",
+      "900": "#4a0c1b"
+    }
+  },
+  "partialRamps": {
+    "note": "Hanya step yang benar-benar direferensi semantic layer. Nilai dari board dokumentasi, bukan dari variable collection.",
+    "red": {
+      "50": "#feeaef",
+      "100": "#fed4de",
+      "200": "#fcaabd",
+      "400": "#f9557c",
+      "500": "#f82a5b",
+      "600": "#c62249",
+      "700": "#951937",
+      "800": "#631124"
+    },
+    "sky": {
+      "50": "#f1f6f9",
+      "400": "#69bee4",
+      "500": "#0ea5e9",
+      "700": "#0f5e81",
+      "800": "#0c3f57"
+    },
+    "neutral": {
+      "50": "#ebedf1",
+      "100": "#ebedf1",
+      "200": "#d7dbe3",
+      "300": "#c4c8d5",
+      "400": "#b0b6c7",
+      "500": "#9ca4b9",
+      "600": "#7d8394",
+      "700": "#5e626f",
+      "800": "#3e424a"
+    },
+    "white": "#ffffff",
+    "modal-scrim": "#181c20"
+  }
+}
