@@ -45,9 +45,9 @@
     "extract:props": "node scripts/extract-props.mjs"
   },
   "peerDependencies": {
-    "vue": "^3.5.0",
     "@unovis/ts": "^1.6.0",
-    "@unovis/vue": "^1.6.0"
+    "@unovis/vue": "^1.6.0",
+    "vue": "^3.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -55,6 +55,7 @@
     "@unovis/ts": "^1.6.7",
     "@unovis/vue": "^1.6.7",
     "@vitejs/plugin-vue": "^6.0.8",
+    "@vue/server-renderer": "^3.5.0",
     "@vue/test-utils": "^2.4.11",
     "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",

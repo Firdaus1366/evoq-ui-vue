@@ -205,7 +205,7 @@ const activeComponent = computed(() => {
 
 // Brand & Theme
 type Brand = 'blue' | 'lightblue' | 'green' | 'orange'
-const theme = ref<'auto' | 'light' | 'dark'>('auto')
+const theme = ref<'auto' | 'light' | 'dark'>('light')
 const brand = ref<Brand>('blue')
 
 function setTheme(next: 'auto' | 'light' | 'dark') {
@@ -995,19 +995,19 @@ function isVisible(id: string) {
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { EvButton } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { EvButton } from 'evoq-ui'
 </script>
 
 <template>
   <!-- Basic Button -->
-  <EvButton variant="primary" size="default">Simpan Data</EvButton>
+  <EvButton variant=&quot;primary&quot; size=&quot;default&quot;>Simpan Data</EvButton>
 
   <!-- Outline with Left Icon -->
-  <EvButton variant="outline" size="small">
+  <EvButton variant=&quot;outline&quot; size=&quot;small&quot;>
     <template #iconLeft>
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M8 3v10M3 8h10" />
+      <svg width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 16 16&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.5&quot;>
+        <path d=&quot;M8 3v10M3 8h10&quot; />
       </svg>
     </template>
     Tambah Item
@@ -1016,7 +1016,7 @@ import { EvButton } from &apos;evoq-ui&apos;
   <!-- Loading & Disabled -->
   <EvButton loading>Memproses...</EvButton>
   <EvButton disabled>Nonaktif</EvButton>
-</template>'
+</template>"
           />
         </section>
 
@@ -1068,20 +1068,20 @@ import { EvButton } from &apos;evoq-ui&apos;
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvButtonGroup, EvButtonGroupItem } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvButtonGroup, EvButtonGroupItem } from 'evoq-ui'
 
 const page = ref(1)
 </script>
 
 <template>
-  <EvButtonGroup label="Halaman">
-    <EvButtonGroupItem v-for="n in 5" :key="n" :active="page === n" @click="page = n">
+  <EvButtonGroup label=&quot;Halaman&quot;>
+    <EvButtonGroupItem v-for=&quot;n in 5&quot; :key=&quot;n&quot; :active=&quot;page === n&quot; @click=&quot;page = n&quot;>
       {{ n }}
     </EvButtonGroupItem>
   </EvButtonGroup>
-</template>'
+</template>"
           />
         </section>
 
@@ -1116,14 +1116,14 @@ const page = ref(1)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { EvButtonLink } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { EvButtonLink } from 'evoq-ui'
 </script>
 
 <template>
-  <EvButtonLink variant="primary" href="/panduan">Baca Panduan</EvButtonLink>
-  <EvButtonLink variant="secondary" href="#">Lihat Riwayat</EvButtonLink>
-</template>'
+  <EvButtonLink variant=&quot;primary&quot; href=&quot;/panduan&quot;>Baca Panduan</EvButtonLink>
+  <EvButtonLink variant=&quot;secondary&quot; href=&quot;#&quot;>Lihat Riwayat</EvButtonLink>
+</template>"
           />
         </section>
 
@@ -1177,21 +1177,21 @@ import { EvButtonLink } from &apos;evoq-ui&apos;
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvToggle, EvToggleGroup } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvToggle, EvToggleGroup } from 'evoq-ui'
 
 const filterAktif = ref(true)
 </script>
 
 <template>
   <!-- Group cascades variant and size to all child toggles -->
-  <EvToggleGroup variant="outline" size="small" label="Filter Ringkas">
-    <EvToggle v-model="filterAktif">Aktif</EvToggle>
+  <EvToggleGroup variant=&quot;outline&quot; size=&quot;small&quot; label=&quot;Filter Ringkas&quot;>
+    <EvToggle v-model=&quot;filterAktif&quot;>Aktif</EvToggle>
     <EvToggle>Arsip</EvToggle>
-    <EvToggle variant="default">Override Default</EvToggle>
+    <EvToggle variant=&quot;default&quot;>Override Default</EvToggle>
   </EvToggleGroup>
-</template>'
+</template>"
           />
         </section>
 
@@ -1380,8 +1380,8 @@ const filterAktif = ref(true)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
 import {
   EvInput,
   EvRichEditor,
@@ -1389,28 +1389,28 @@ import {
   EvInputSearch,
   EvInputFieldUnit,
   EvTextarea
-} from &apos;evoq-ui&apos;
+} from 'evoq-ui'
 
-const query = ref(&apos;&apos;)
-const domain = ref(&apos;google&apos;)
-const harga = ref(&apos;25000000&apos;)
-const currency = ref(&apos;IDR&apos;)
-const konten = ref(&apos;<h1>Judul Dokumen</h1><p>Isi teks tebal: <strong>Disetujui</strong></p>&apos;)
+const query = ref('')
+const domain = ref('google')
+const harga = ref('25000000')
+const currency = ref('IDR')
+const konten = ref('<h1>Judul Dokumen</h1><p>Isi teks tebal: <strong>Disetujui</strong></p>')
 </script>
 
 <template>
   <!-- Dedicated Search Bar -->
-  <EvInputSearch v-model="query" placeholder="Cari..." clearable />
+  <EvInputSearch v-model=&quot;query&quot; placeholder=&quot;Cari...&quot; clearable />
 
   <!-- Input with Prefix/Suffix Addons -->
-  <EvInputWithLabel v-model="domain" prefix-label="https://" suffix-label=".com" placement="both" label="Domain" />
+  <EvInputWithLabel v-model=&quot;domain&quot; prefix-label=&quot;https://&quot; suffix-label=&quot;.com&quot; placement=&quot;both&quot; label=&quot;Domain&quot; />
 
   <!-- Composite Unit Field -->
-  <EvInputFieldUnit v-model="harga" v-model:unit="currency" :units="[&apos;IDR&apos;, &apos;USD&apos;, &apos;EUR&apos;]" label="Harga" />
+  <EvInputFieldUnit v-model=&quot;harga&quot; v-model:unit=&quot;currency&quot; :units=&quot;['IDR', 'USD', 'EUR']&quot; label=&quot;Harga&quot; />
 
   <!-- Rich Text Editor with Toolbar -->
-  <EvRichEditor v-model="konten" label="Artikel" :maxlength="2000" has-scroll required />
-</template>'
+  <EvRichEditor v-model=&quot;konten&quot; label=&quot;Artikel&quot; :maxlength=&quot;2000&quot; has-scroll required />
+</template>"
           />
         </section>
 
@@ -1456,20 +1456,20 @@ const konten = ref(&apos;<h1>Judul Dokumen</h1><p>Isi teks tebal: <strong>Disetu
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvCheckbox } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvCheckbox } from 'evoq-ui'
 
 const setuju = ref(false)
 </script>
 
 <template>
   <EvCheckbox
-    v-model="setuju"
-    label="Saya menyetujui syarat & ketentuan"
-    subtext="Wajib disetujui sebelum mengirim formulir"
+    v-model=&quot;setuju&quot;
+    label=&quot;Saya menyetujui syarat & ketentuan&quot;
+    subtext=&quot;Wajib disetujui sebelum mengirim formulir&quot;
   />
-</template>'
+</template>"
           />
         </section>
 
@@ -1515,19 +1515,19 @@ const setuju = ref(false)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvRadioGroup, EvRadio } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvRadioGroup, EvRadio } from 'evoq-ui'
 
-const paket = ref(&apos;bulanan&apos;)
+const paket = ref('bulanan')
 </script>
 
 <template>
-  <EvRadioGroup v-model="paket" label="Pilih Paket">
-    <EvRadio value="bulanan" label="Bulanan" subtext="Ditagih tiap bulan" />
-    <EvRadio value="tahunan" label="Tahunan" subtext="Hemat 20%" />
+  <EvRadioGroup v-model=&quot;paket&quot; label=&quot;Pilih Paket&quot;>
+    <EvRadio value=&quot;bulanan&quot; label=&quot;Bulanan&quot; subtext=&quot;Ditagih tiap bulan&quot; />
+    <EvRadio value=&quot;tahunan&quot; label=&quot;Tahunan&quot; subtext=&quot;Hemat 20%&quot; />
   </EvRadioGroup>
-</template>'
+</template>"
           />
         </section>
 
@@ -1596,9 +1596,9 @@ const paket = ref(&apos;bulanan&apos;)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvSwitch } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvSwitch } from 'evoq-ui'
 
 const aktif = ref(true)
 const senyap = ref(false)
@@ -1607,22 +1607,22 @@ const senyap = ref(false)
 <template>
   <!-- SwitchField with Right Label & Subtext -->
   <EvSwitch
-    v-model="aktif"
-    label="Notifikasi Email"
-    subtext="Kirim rangkuman mingguan"
+    v-model=&quot;aktif&quot;
+    label=&quot;Notifikasi Email&quot;
+    subtext=&quot;Kirim rangkuman mingguan&quot;
   />
 
   <!-- SwitchField with Left Label Placement -->
   <EvSwitch
-    v-model="senyap"
-    label-placement="left"
-    label="Mode Senyap"
-    subtext="Matikan suara notifikasi"
+    v-model=&quot;senyap&quot;
+    label-placement=&quot;left&quot;
+    label=&quot;Mode Senyap&quot;
+    subtext=&quot;Matikan suara notifikasi&quot;
   />
 
   <!-- Compact with Track Text -->
-  <EvSwitch v-model="aktif" size="small" text="ON" />
-</template>'
+  <EvSwitch v-model=&quot;aktif&quot; size=&quot;small&quot; text=&quot;ON&quot; />
+</template>"
           />
         </section>
 
@@ -1746,9 +1746,9 @@ const senyap = ref(false)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvSlider } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvSlider } from 'evoq-ui'
 
 const volume = ref(75)
 const priceRange = ref<[number, number]>([20, 80])
@@ -1756,11 +1756,11 @@ const priceRange = ref<[number, number]>([20, 80])
 
 <template>
   <!-- Single Value Slider -->
-  <EvSlider v-model="volume" label="Volume" show-value />
+  <EvSlider v-model=&quot;volume&quot; label=&quot;Volume&quot; show-value />
 
   <!-- Dual Range Slider -->
-  <EvSlider v-model="priceRange" range label="Rentang Harga" show-value />
-</template>'
+  <EvSlider v-model=&quot;priceRange&quot; range label=&quot;Rentang Harga&quot; show-value />
+</template>"
           />
         </section>
 
@@ -1849,26 +1849,26 @@ const priceRange = ref<[number, number]>([20, 80])
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvCalendar, EvTimePicker } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvCalendar, EvTimePicker } from 'evoq-ui'
 
 const tanggal = ref<Date | null>(new Date())
 const rentang = ref<[Date | null, Date | null]>([null, null])
-const jam = ref(&apos;09:30&apos;)
-const jamAmPm = ref(&apos;02:00 PM&apos;)
+const jam = ref('09:30')
+const jamAmPm = ref('02:00 PM')
 </script>
 
 <template>
   <!-- Calendar with Presets -->
-  <EvCalendar v-model="rentang" mode="range" presets />
+  <EvCalendar v-model=&quot;rentang&quot; mode=&quot;range&quot; presets />
 
   <!-- 24-Hour Time Picker -->
-  <EvTimePicker v-model="jam" title="Pilih Jam" />
+  <EvTimePicker v-model=&quot;jam&quot; title=&quot;Pilih Jam&quot; />
 
   <!-- 12-Hour AM/PM Time Picker -->
-  <EvTimePicker v-model="jamAmPm" format="am-pm" title="Jadwal" />
-</template>'
+  <EvTimePicker v-model=&quot;jamAmPm&quot; format=&quot;am-pm&quot; title=&quot;Jadwal&quot; />
+</template>"
           />
         </section>
 
@@ -1925,20 +1925,20 @@ const jamAmPm = ref(&apos;02:00 PM&apos;)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvDropdownList, EvDropdownItem } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvDropdownList, EvDropdownItem } from 'evoq-ui'
 
-const vendor = ref(&apos;PT Maju Jaya&apos;)
-const search = ref(&apos;&apos;)
+const vendor = ref('PT Maju Jaya')
+const search = ref('')
 </script>
 
 <template>
-  <EvDropdownList v-model:search-value="search" searchable label="Vendor">
-    <EvDropdownItem label="PT Maju Jaya" :active="vendor === &apos;PT Maju Jaya&apos;" @select="vendor = &apos;PT Maju Jaya&apos;" />
-    <EvDropdownItem label="CV Sentosa" :active="vendor === &apos;CV Sentosa&apos;" @select="vendor = &apos;CV Sentosa&apos;" />
+  <EvDropdownList v-model:search-value=&quot;search&quot; searchable label=&quot;Vendor&quot;>
+    <EvDropdownItem label=&quot;PT Maju Jaya&quot; :active=&quot;vendor === 'PT Maju Jaya'&quot; @select=&quot;vendor = 'PT Maju Jaya'&quot; />
+    <EvDropdownItem label=&quot;CV Sentosa&quot; :active=&quot;vendor === 'CV Sentosa'&quot; @select=&quot;vendor = 'CV Sentosa'&quot; />
   </EvDropdownList>
-</template>'
+</template>"
           />
         </section>
 
@@ -1979,15 +1979,15 @@ const search = ref(&apos;&apos;)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { EvBadge } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { EvBadge } from 'evoq-ui'
 </script>
 
 <template>
-  <EvBadge variant="success">Disetujui</EvBadge>
-  <EvBadge variant="waiting">Menunggu</EvBadge>
-  <EvBadge variant="reject" reverse>Ditolak</EvBadge>
-</template>'
+  <EvBadge variant=&quot;success&quot;>Disetujui</EvBadge>
+  <EvBadge variant=&quot;waiting&quot;>Menunggu</EvBadge>
+  <EvBadge variant=&quot;reject&quot; reverse>Ditolak</EvBadge>
+</template>"
           />
         </section>
 
@@ -2054,25 +2054,25 @@ import { EvBadge } from &apos;evoq-ui&apos;
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { EvTag, EvTagGroup } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { EvTag, EvTagGroup } from 'evoq-ui'
 </script>
 
 <template>
   <!-- Wrap with Loose Spacing -->
-  <EvTagGroup spacing="loose">
+  <EvTagGroup spacing=&quot;loose&quot;>
     <EvTag>Frontend</EvTag>
     <EvTag>Vue 3</EvTag>
     <EvTag removable>Design System</EvTag>
   </EvTagGroup>
 
   <!-- Horizontal Scroll with Outline Variant -->
-  <EvTagGroup type="scroll" variant="outline">
+  <EvTagGroup type=&quot;scroll&quot; variant=&quot;outline&quot;>
     <EvTag>#Web</EvTag>
     <EvTag>#UI</EvTag>
     <EvTag>#Components</EvTag>
   </EvTagGroup>
-</template>'
+</template>"
           />
         </section>
 
@@ -2107,21 +2107,21 @@ import { EvTag, EvTagGroup } from &apos;evoq-ui&apos;
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { EvHint } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { EvHint } from 'evoq-ui'
 </script>
 
 <template>
   <!-- Dot Notification -->
-  <EvHint size="small" />
+  <EvHint size=&quot;small&quot; />
 
   <!-- Badge with Counter -->
-  <EvHint size="medium" :value="5" />
-  <EvHint size="large" :value="99" />
+  <EvHint size=&quot;medium&quot; :value=&quot;5&quot; />
+  <EvHint size=&quot;large&quot; :value=&quot;99&quot; />
 
   <!-- Hidden on 0 (Figma Spec) -->
-  <EvHint :value="0" />
-</template>'
+  <EvHint :value=&quot;0&quot; />
+</template>"
           />
         </section>
 
@@ -2159,17 +2159,17 @@ import { EvHint } from &apos;evoq-ui&apos;
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { EvKbd } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { EvKbd } from 'evoq-ui'
 </script>
 
 <template>
-  <div class="flex items-center gap-1">
+  <div class=&quot;flex items-center gap-1&quot;>
     <EvKbd>Ctrl</EvKbd>
     <span>+</span>
     <EvKbd>K</EvKbd>
   </div>
-</template>'
+</template>"
           />
         </section>
 
@@ -2227,21 +2227,21 @@ import { EvKbd } from &apos;evoq-ui&apos;
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { EvAvatar, EvAvatarGroup } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { EvAvatar, EvAvatarGroup } from 'evoq-ui'
 </script>
 
 <template>
   <!-- Single Avatar -->
-  <EvAvatar :size="40" variant="blue" label="FJ" />
+  <EvAvatar :size=&quot;40&quot; variant=&quot;blue&quot; label=&quot;FJ&quot; />
 
   <!-- Avatar Group -->
-  <EvAvatarGroup :size="32" label="Tim Pengembang">
-    <EvAvatar :size="32" variant="green" label="AB" />
-    <EvAvatar :size="32" variant="orange" label="CD" />
-    <EvAvatar :size="32" variant="number" label="+3" />
+  <EvAvatarGroup :size=&quot;32&quot; label=&quot;Tim Pengembang&quot;>
+    <EvAvatar :size=&quot;32&quot; variant=&quot;green&quot; label=&quot;AB&quot; />
+    <EvAvatar :size=&quot;32&quot; variant=&quot;orange&quot; label=&quot;CD&quot; />
+    <EvAvatar :size=&quot;32&quot; variant=&quot;number&quot; label=&quot;+3&quot; />
   </EvAvatarGroup>
-</template>'
+</template>"
           />
         </section>
 
@@ -2307,25 +2307,25 @@ import { EvAvatar, EvAvatarGroup } from &apos;evoq-ui&apos;
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { EvCard, EvButton, EvBadge } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { EvCard, EvButton, EvBadge } from 'evoq-ui'
 </script>
 
 <template>
-  <EvCard title="Judul Kartu" description="Deskripsi singkat informasi">
+  <EvCard title=&quot;Judul Kartu&quot; description=&quot;Deskripsi singkat informasi&quot;>
     <!-- Slot 1: Header Slot beside title -->
     <template #headerSlot>
-      <EvBadge variant="draft">Aktif</EvBadge>
+      <EvBadge variant=&quot;draft&quot;>Aktif</EvBadge>
     </template>
 
     <p>Konten utama di dalam body kartu.</p>
 
     <template #footer>
-      <EvButton variant="secondary-light" size="small">Batal</EvButton>
-      <EvButton size="small">Simpan</EvButton>
+      <EvButton variant=&quot;secondary-light&quot; size=&quot;small&quot;>Batal</EvButton>
+      <EvButton size=&quot;small&quot;>Simpan</EvButton>
     </template>
   </EvCard>
-</template>'
+</template>"
           />
         </section>
 
@@ -2381,25 +2381,25 @@ import { EvCard, EvButton, EvBadge } from &apos;evoq-ui&apos;
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvTree, EvTreeItem } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvTree, EvTreeItem } from 'evoq-ui'
 
-const selected = ref(&apos;keuangan&apos;)
+const selected = ref('keuangan')
 </script>
 
 <template>
-  <EvTree label="Struktur Organisasi">
+  <EvTree label=&quot;Struktur Organisasi&quot;>
     <EvTreeItem
-      :level="1"
-      label="PT Maju Jaya"
+      :level=&quot;1&quot;
+      label=&quot;PT Maju Jaya&quot;
       has-child
-      :expanded="true"
-      :selected="selected === &apos;maju&apos;"
-      @select="selected = &apos;maju&apos;"
+      :expanded=&quot;true&quot;
+      :selected=&quot;selected === 'maju'&quot;
+      @select=&quot;selected = 'maju'&quot;
     />
   </EvTree>
-</template>'
+</template>"
           />
         </section>
 
@@ -2429,15 +2429,15 @@ const selected = ref(&apos;keuangan&apos;)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { EvAspectRatio } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { EvAspectRatio } from 'evoq-ui'
 </script>
 
 <template>
-  <EvAspectRatio ratio="16:9" style="width: 320px">
-    <img src="/banner.jpg" alt="Banner" style="width: 100%; height: 100%; object-fit: cover;" />
+  <EvAspectRatio ratio=&quot;16:9&quot; style=&quot;width: 320px&quot;>
+    <img src=&quot;/banner.jpg&quot; alt=&quot;Banner&quot; style=&quot;width: 100%; height: 100%; object-fit: cover;&quot; />
   </EvAspectRatio>
-</template>'
+</template>"
           />
         </section>
 
@@ -2512,21 +2512,21 @@ import { EvAspectRatio } from &apos;evoq-ui&apos;
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { EvChart } from &apos;evoq-ui&apos;
-import { EvBarChart, EvLineChart, EvPieChart } from &apos;evoq-ui/charts&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { EvChart } from 'evoq-ui'
+import { EvBarChart, EvLineChart, EvPieChart } from 'evoq-ui/charts'
 
 const data = [
-  { bulan: &apos;Jan&apos;, nilai: 120 },
-  { bulan: &apos;Feb&apos;, nilai: 150 },
+  { bulan: 'Jan', nilai: 120 },
+  { bulan: 'Feb', nilai: 150 },
 ]
 </script>
 
 <template>
-  <EvChart title="Penjualan">
-    <EvBarChart :data="data" category="bulan" :series="[&apos;nilai&apos;]" :height="200" />
+  <EvChart title=&quot;Penjualan&quot;>
+    <EvBarChart :data=&quot;data&quot; category=&quot;bulan&quot; :series=&quot;['nilai']&quot; :height=&quot;200&quot; />
   </EvChart>
-</template>'
+</template>"
           />
         </section>
 
@@ -2630,21 +2630,21 @@ const items: BreadcrumbItem[] = [
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvNavigationMenu, EvNavMenuItem, EvLogo, EvAvatar } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvNavigationMenu, EvNavMenuItem, EvLogo, EvAvatar } from 'evoq-ui'
 
-const activeMenu = ref(&apos;beranda&apos;)
+const activeMenu = ref('beranda')
 </script>
 
 <template>
-  <EvNavigationMenu label="Navigasi Utama">
-    <template #brand><EvLogo :size="32" /></template>
-    <EvNavMenuItem :active="activeMenu === &apos;beranda&apos;" @click="activeMenu = &apos;beranda&apos;">Beranda</EvNavMenuItem>
-    <EvNavMenuItem :active="activeMenu === &apos;data&apos;" @click="activeMenu = &apos;data&apos;">Data</EvNavMenuItem>
-    <template #profile><EvAvatar :size="40" variant="teal" label="EV" /></template>
+  <EvNavigationMenu label=&quot;Navigasi Utama&quot;>
+    <template #brand><EvLogo :size=&quot;32&quot; /></template>
+    <EvNavMenuItem :active=&quot;activeMenu === 'beranda'&quot; @click=&quot;activeMenu = 'beranda'&quot;>Beranda</EvNavMenuItem>
+    <EvNavMenuItem :active=&quot;activeMenu === 'data'&quot; @click=&quot;activeMenu = 'data'&quot;>Data</EvNavMenuItem>
+    <template #profile><EvAvatar :size=&quot;40&quot; variant=&quot;teal&quot; label=&quot;EV&quot; /></template>
   </EvNavigationMenu>
-</template>'
+</template>"
           />
         </section>
 
@@ -2688,26 +2688,26 @@ const activeMenu = ref(&apos;beranda&apos;)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvTabs, EvTab } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvTabs, EvTab } from 'evoq-ui'
 
-const tabActive = ref(&apos;ringkasan&apos;)
+const tabActive = ref('ringkasan')
 </script>
 
 <template>
   <!-- Segmented Tabs -->
-  <EvTabs v-model="tabActive" label="Pilihan Tab">
-    <EvTab value="ringkasan">Ringkasan</EvTab>
-    <EvTab value="detail">Detail</EvTab>
+  <EvTabs v-model=&quot;tabActive&quot; label=&quot;Pilihan Tab&quot;>
+    <EvTab value=&quot;ringkasan&quot;>Ringkasan</EvTab>
+    <EvTab value=&quot;detail&quot;>Detail</EvTab>
   </EvTabs>
 
   <!-- Line Tabs -->
-  <EvTabs v-model="tabActive" variant="line">
-    <EvTab value="ringkasan">Ringkasan</EvTab>
-    <EvTab value="detail">Detail</EvTab>
+  <EvTabs v-model=&quot;tabActive&quot; variant=&quot;line&quot;>
+    <EvTab value=&quot;ringkasan&quot;>Ringkasan</EvTab>
+    <EvTab value=&quot;detail&quot;>Detail</EvTab>
   </EvTabs>
-</template>'
+</template>"
           />
         </section>
 
@@ -2745,19 +2745,19 @@ const tabActive = ref(&apos;ringkasan&apos;)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvCarousel, EvCarouselSlide } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvCarousel, EvCarouselSlide } from 'evoq-ui'
 
 const currentSlide = ref(0)
 </script>
 
 <template>
-  <EvCarousel v-model="currentSlide" ratio="16:9" label="Galeri">
+  <EvCarousel v-model=&quot;currentSlide&quot; ratio=&quot;16:9&quot; label=&quot;Galeri&quot;>
     <EvCarouselSlide>Slide 1</EvCarouselSlide>
     <EvCarouselSlide>Slide 2</EvCarouselSlide>
   </EvCarousel>
-</template>'
+</template>"
           />
         </section>
 
@@ -2819,24 +2819,24 @@ const currentSlide = ref(0)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvAccordion } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvAccordion } from 'evoq-ui'
 
 const isOpen = ref(true)
 </script>
 
 <template>
   <!-- Default Accordion -->
-  <EvAccordion v-model="isOpen" title="Pertanyaan 1">
+  <EvAccordion v-model=&quot;isOpen&quot; title=&quot;Pertanyaan 1&quot;>
     Konten penjelasan item pertama.
   </EvAccordion>
 
   <!-- Last Item with Separator Off -->
-  <EvAccordion :separator="false" title="Pertanyaan Terakhir">
+  <EvAccordion :separator=&quot;false&quot; title=&quot;Pertanyaan Terakhir&quot;>
     Garis pemisah bawah dinonaktifkan untuk item terakhir.
   </EvAccordion>
-</template>'
+</template>"
           />
         </section>
 
@@ -2916,26 +2916,26 @@ const isOpen = ref(true)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { EvAlert, EvButtonLink, EvButton } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { EvAlert, EvButtonLink, EvButton } from 'evoq-ui'
 </script>
 
 <template>
   <!-- Alert with Inline Link & Trailing Action -->
   <EvAlert
-    variant="info"
-    title="Pembaruan Tersedia"
-    subtext="Versi terbaru siap dipasang."
+    variant=&quot;info&quot;
+    title=&quot;Pembaruan Tersedia&quot;
+    subtext=&quot;Versi terbaru siap dipasang.&quot;
     dismissible
   >
     <template #link>
-      <EvButtonLink variant="primary" href="#">Pelajari lebih lanjut &rarr;</EvButtonLink>
+      <EvButtonLink variant=&quot;primary&quot; href=&quot;#&quot;>Pelajari lebih lanjut &rarr;</EvButtonLink>
     </template>
     <template #actions>
-      <EvButton size="small">Perbarui</EvButton>
+      <EvButton size=&quot;small&quot;>Perbarui</EvButton>
     </template>
   </EvAlert>
-</template>'
+</template>"
           />
         </section>
 
@@ -2979,28 +2979,28 @@ import { EvAlert, EvButtonLink, EvButton } from &apos;evoq-ui&apos;
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvAlertDialog, EvButton } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvAlertDialog, EvButton } from 'evoq-ui'
 
 const open = ref(false)
 </script>
 
 <template>
-  <EvButton variant="destructive" @click="open = true">Hapus Item</EvButton>
+  <EvButton variant=&quot;destructive&quot; @click=&quot;open = true&quot;>Hapus Item</EvButton>
 
   <EvAlertDialog
-    v-model="open"
-    variant="delete"
-    title="Hapus item ini?"
-    description="Tindakan ini tidak bisa dibatalkan."
+    v-model=&quot;open&quot;
+    variant=&quot;delete&quot;
+    title=&quot;Hapus item ini?&quot;
+    description=&quot;Tindakan ini tidak bisa dibatalkan.&quot;
   >
     <template #actions>
-      <EvButton variant="destructive" @click="open = false">Hapus</EvButton>
-      <EvButton variant="secondary-light" @click="open = false">Batal</EvButton>
+      <EvButton variant=&quot;destructive&quot; @click=&quot;open = false&quot;>Hapus</EvButton>
+      <EvButton variant=&quot;secondary-light&quot; @click=&quot;open = false&quot;>Batal</EvButton>
     </template>
   </EvAlertDialog>
-</template>'
+</template>"
           />
         </section>
 
@@ -3047,24 +3047,24 @@ const open = ref(false)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvModal, EvButton, EvInput } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvModal, EvButton, EvInput } from 'evoq-ui'
 
 const modalOpen = ref(false)
 </script>
 
 <template>
-  <EvButton @click="modalOpen = true">Buka Modal</EvButton>
+  <EvButton @click=&quot;modalOpen = true&quot;>Buka Modal</EvButton>
 
-  <EvModal v-model="modalOpen" title="Judul Modal" subtext="Subteks penjelas modal">
+  <EvModal v-model=&quot;modalOpen&quot; title=&quot;Judul Modal&quot; subtext=&quot;Subteks penjelas modal&quot;>
     <p>Konten isi modal berada di sini.</p>
     <template #footer>
-      <EvButton variant="secondary-light" @click="modalOpen = false">Batal</EvButton>
-      <EvButton @click="modalOpen = false">Simpan</EvButton>
+      <EvButton variant=&quot;secondary-light&quot; @click=&quot;modalOpen = false&quot;>Batal</EvButton>
+      <EvButton @click=&quot;modalOpen = false&quot;>Simpan</EvButton>
     </template>
   </EvModal>
-</template>'
+</template>"
           />
         </section>
 
@@ -3127,28 +3127,28 @@ const modalOpen = ref(false)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvDrawer, EvButton } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvDrawer, EvButton } from 'evoq-ui'
 
 const drawerOpen = ref(false)
 const sheetOpen = ref(false)
 </script>
 
 <template>
-  <EvButton @click="drawerOpen = true">Buka Drawer</EvButton>
-  <EvButton @click="sheetOpen = true">Buka Sheet</EvButton>
+  <EvButton @click=&quot;drawerOpen = true&quot;>Buka Drawer</EvButton>
+  <EvButton @click=&quot;sheetOpen = true&quot;>Buka Sheet</EvButton>
 
   <!-- Right Drawer -->
-  <EvDrawer v-model="drawerOpen" title="Filter">
+  <EvDrawer v-model=&quot;drawerOpen&quot; title=&quot;Filter&quot;>
     <p>Konten drawer samping.</p>
   </EvDrawer>
 
   <!-- Bottom Sheet -->
-  <EvDrawer v-model="sheetOpen" placement="bottom" title="Aksi">
+  <EvDrawer v-model=&quot;sheetOpen&quot; placement=&quot;bottom&quot; title=&quot;Aksi&quot;>
     <p>Konten bottom sheet.</p>
   </EvDrawer>
-</template>'
+</template>"
           />
         </section>
 
@@ -3192,24 +3192,24 @@ const sheetOpen = ref(false)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvPopover, EvButton } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvPopover, EvButton } from 'evoq-ui'
 
 const open = ref(false)
 </script>
 
 <template>
-  <EvPopover v-model="open" title="Pengaturan" description="Atur preferensi Anda">
-    <template #trigger="{ toggle }">
-      <EvButton @click="toggle">Buka Menu</EvButton>
+  <EvPopover v-model=&quot;open&quot; title=&quot;Pengaturan&quot; description=&quot;Atur preferensi Anda&quot;>
+    <template #trigger=&quot;{ toggle }&quot;>
+      <EvButton @click=&quot;toggle&quot;>Buka Menu</EvButton>
     </template>
     <p>Isi formulir ringkas popover.</p>
     <template #footer>
-      <EvButton size="small" @click="open = false">Selesai</EvButton>
+      <EvButton size=&quot;small&quot; @click=&quot;open = false&quot;>Selesai</EvButton>
     </template>
   </EvPopover>
-</template>'
+</template>"
           />
         </section>
 
@@ -3261,23 +3261,23 @@ const open = ref(false)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { EvTooltip, EvButton } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { EvTooltip, EvButton } from 'evoq-ui'
 </script>
 
 <template>
   <!-- Basic Tooltip -->
-  <EvTooltip placement="top" text="Salin tautan ke clipboard">
-    <EvButton variant="outline">Arahkan Kursor</EvButton>
+  <EvTooltip placement=&quot;top&quot; text=&quot;Salin tautan ke clipboard&quot;>
+    <EvButton variant=&quot;outline&quot;>Arahkan Kursor</EvButton>
   </EvTooltip>
 
   <!-- Rich Tooltip with Title & Step -->
-  <EvTooltip placement="bottom" title="Tips Pintasan" dismissible>
+  <EvTooltip placement=&quot;bottom&quot; title=&quot;Tips Pintasan&quot; dismissible>
     <template #content>Gunakan tombol Ctrl+K untuk pencarian cepat.</template>
     <template #footer>Langkah 1 dari 3</template>
     <EvButton>Bantuan</EvButton>
   </EvTooltip>
-</template>'
+</template>"
           />
         </section>
 
@@ -3321,21 +3321,21 @@ import { EvTooltip, EvButton } from &apos;evoq-ui&apos;
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { ref } from &apos;vue&apos;
-import { EvDirection, EvButton, EvCheckbox } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { ref } from 'vue'
+import { EvDirection, EvButton, EvCheckbox } from 'evoq-ui'
 
 const agree = ref(false)
 </script>
 
 <template>
-  <EvDirection title="Lengkapi Profil" subtext="Harap lengkapi data berikut:">
-    <EvCheckbox v-model="agree" label="Saya setuju dengan syarat & ketentuan" />
+  <EvDirection title=&quot;Lengkapi Profil&quot; subtext=&quot;Harap lengkapi data berikut:&quot;>
+    <EvCheckbox v-model=&quot;agree&quot; label=&quot;Saya setuju dengan syarat & ketentuan&quot; />
     <template #confirm>
-      <EvButton :disabled="!agree">Lanjutkan</EvButton>
+      <EvButton :disabled=&quot;!agree&quot;>Lanjutkan</EvButton>
     </template>
   </EvDirection>
-</template>'
+</template>"
           />
         </section>
 
@@ -3409,21 +3409,21 @@ const agree = ref(false)
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { EvScrollArea } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { EvScrollArea } from 'evoq-ui'
 </script>
 
 <template>
   <!-- Standard Vertical Scrollbar -->
-  <EvScrollArea style="max-height: 150px; max-width: 300px">
-    <p v-for="n in 10" :key="n">Item nomor {{ n }}</p>
+  <EvScrollArea style=&quot;max-height: 150px; max-width: 300px&quot;>
+    <p v-for=&quot;n in 10&quot; :key=&quot;n&quot;>Item nomor {{ n }}</p>
   </EvScrollArea>
 
   <!-- Mirrored Scrollbar (Opposite Edge) -->
-  <EvScrollArea mirror style="max-height: 150px; max-width: 300px">
-    <p v-for="n in 10" :key="n">Item mirrored {{ n }}</p>
+  <EvScrollArea mirror style=&quot;max-height: 150px; max-width: 300px&quot;>
+    <p v-for=&quot;n in 10&quot; :key=&quot;n&quot;>Item mirrored {{ n }}</p>
   </EvScrollArea>
-</template>'
+</template>"
           />
         </section>
 
@@ -3467,8 +3467,8 @@ import { EvScrollArea } from &apos;evoq-ui&apos;
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { EvSeparator } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { EvSeparator } from 'evoq-ui'
 </script>
 
 <template>
@@ -3476,12 +3476,12 @@ import { EvSeparator } from &apos;evoq-ui&apos;
   <EvSeparator />
 
   <!-- Vertical Separator -->
-  <div style="display: flex; align-items: center; height: 24px;">
+  <div style=&quot;display: flex; align-items: center; height: 24px;&quot;>
     <span>Item 1</span>
-    <EvSeparator orientation="vertical" />
+    <EvSeparator orientation=&quot;vertical&quot; />
     <span>Item 2</span>
   </div>
-</template>'
+</template>"
           />
         </section>
 
@@ -3517,16 +3517,16 @@ import { EvSeparator } from &apos;evoq-ui&apos;
           </div>
 
           <PlaygroundCodeSnippet
-            code='<script setup lang="ts">
-import { EvLogo } from &apos;evoq-ui&apos;
+            code="<script setup lang=&quot;ts&quot;>
+import { EvLogo } from 'evoq-ui'
 </script>
 
 <template>
-  <EvLogo :size="32" />
-  <EvLogo :size="40">
+  <EvLogo :size=&quot;32&quot; />
+  <EvLogo :size=&quot;40&quot;>
     <strong>EVOQ UI</strong>
   </EvLogo>
-</template>'
+</template>"
           />
         </section>
       </div>
