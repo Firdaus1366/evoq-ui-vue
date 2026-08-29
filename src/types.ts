@@ -146,6 +146,20 @@ export type ChartVariant = 'card' | 'no-card'
 /** Selection mode of `EvCalendar` - Figma's `Basic` and `Range` variants. */
 export type CalendarMode = 'single' | 'range'
 
+/**
+ * Which grid `EvCalendar` draws. `month` and `year` are the `Month` / `Year`
+ * variants of the mobile sets, and the same two grids back the desktop
+ * `Month Open` / `Year Open` overlays.
+ */
+export type CalendarView = 'day' | 'month' | 'year' | 'full'
+
+/**
+ * Which board `EvCalendar` draws: `D - Calendar`, or the `M - CalendarPopup` /
+ * `M- CalendarDrawer` treatment - bare chevrons, a value read-out above the
+ * footer, and footer buttons split evenly.
+ */
+export type CalendarPlatform = 'desktop' | 'mobile'
+
 /** Format of `EvTimePicker`. */
 export type TimePickerFormat = 'default' | 'with-seconds' | 'am-pm' | 'am-pm-seconds'
 

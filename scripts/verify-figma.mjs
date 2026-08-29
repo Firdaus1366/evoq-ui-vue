@@ -1607,7 +1607,13 @@ section('input', () => {
 // -------------------------------------------------------------- Calendar
 section('calendar', () => {
   const panel = rule('.ev-calendar')
-  check('calendar width', panel.get('width'), '312px')
+  /*
+   * The board sizes Basic at 312 and Range at 608 - both are the 280px panels
+   * plus 16px padding either side, so the root hugs rather than pinning 312,
+   * which would squash Range's two months into one column's width.
+   */
+  check('calendar width', panel.get('width'), 'fit-content')
+  check('calendar panel width', rule('.ev-calendar__panel').get('width'), '280px')
   check('calendar pad', resolve(panel.get('padding')), '16px')
   check('calendar gap', resolve(panel.get('gap')), '16px')
   check('calendar radius', resolve(panel.get('border-radius')), '8px')
@@ -1672,6 +1678,111 @@ section('calendar', () => {
     resolve(rule('.ev-calendar__day--disabled').get('color')),
     '#dbdfe9',
   )
+
+  /*
+   * Structure. `Frame 8` stacks the weekday row over the day rows at gap 4,
+   * and the day rows themselves sit flush - the board leaves no gap between
+   * weeks. `Frame 12` puts the Range variant's two panels side by side at 16.
+   */
+  check('calendar grid gap', resolve(rule('.ev-calendar__grid').get('gap')), '4px')
+  check('calendar grid direction', rule('.ev-calendar__grid').get('flex-direction'), 'column')
+  check('calendar week rows are flush', rule('.ev-calendar__weekdays').get('gap'), '0')
+  check('calendar months gap', resolve(rule('.ev-calendar__months').get('gap')), '16px')
+  check('calendar panel gap', resolve(rule('.ev-calendar__panel').get('gap')), '8px')
+
+  /*
+   * node: Filter - the preset row sits BELOW the calendar and the two Preset
+   * variants move the padding off the root onto each band.
+   */
+  const filter = rule('.ev-calendar__filter')
+  check('calendar filter pad', resolve(filter.get('padding')), '16px 8px')
+  check('calendar filter gap', resolve(filter.get('gap')), '8px')
+  check('calendar filter wraps', filter.get('flex-wrap'), 'wrap')
+  check('calendar sectioned root pad', resolve(rule('.ev-calendar--sectioned').get('padding')), '0')
+  check('calendar sectioned root gap', resolve(rule('.ev-calendar--sectioned').get('gap')), '0')
+  check(
+    'calendar sectioned inner pad',
+    resolve(rule('.ev-calendar--sectioned .ev-calendar__calendar').get('padding')),
+    '16px',
+  )
+
+  const preset = rule('.ev-calendar__preset')
+  check('calendar preset height', preset.get('min-height'), '32px')
+  check('calendar preset pad', resolve(preset.get('padding')), '8px')
+  check('calendar preset radius', resolve(preset.get('border-radius')), '6px')
+  check('calendar preset bg', resolve(preset.get('background-color')), '#ffffff')
+  check('calendar preset fg', resolve(preset.get('color')), '#071437')
+
+  // node: Frame 19 - the range read-out then Cancel then Apply.
+  check('calendar footer gap', resolve(rule('.ev-calendar__footer-row').get('gap')), '8px')
+  const cancel = merged('.ev-calendar__btn', '.ev-calendar__btn--cancel')
+  check('calendar cancel bg', resolve(cancel.get('background-color')), '#f1f1f4')
+  check('calendar cancel border', resolve(cancel.get('border-color')), '#dbdfe9')
+  check('calendar cancel fg', resolve(cancel.get('color')), '#071437')
+  const apply = merged('.ev-calendar__btn', '.ev-calendar__btn--apply')
+  check('calendar apply bg', resolve(apply.get('background-color')), '#1b84ff')
+  check('calendar apply fg', resolve(apply.get('color')), '#ffffff')
+
+  /*
+   * node: Frame 2 / Frame 8 - the Month and Year grids reuse `.DayCell` at
+   * 93x40, wrapping three across with no column gap and a row gap of 8.
+   */
+  const cells = rule('.ev-calendar__cells')
+  check('calendar cells columns', cells.get('grid-template-columns'), 'repeat(3,93px)')
+  check('calendar cells column gap', resolve(cells.get('column-gap')), '0')
+  check('calendar cells row gap', resolve(cells.get('row-gap')), '8px')
+  check('calendar wide cell width', rule('.ev-calendar__day--wide').get('width'), '93px')
+
+  /*
+   * node: Date - the Full Calendar variant stacks month blocks at gap 8 inside
+   * a scroller, each labelling itself instead of paging.
+   */
+  const full = rule('.ev-calendar__full')
+  check('calendar full gap', resolve(full.get('gap')), '8px')
+  check('calendar full scrolls', full.get('overflow-y'), 'auto')
+  check('calendar block gap', resolve(rule('.ev-calendar__block').get('gap')), '4px')
+
+  /*
+   * node: DropdownList - Month Open / Year Open float over the header. The
+   * board instances the DropdownList component itself, so the panel's own
+   * section already covers its 6px radius, #dbdfe9 stroke and elevation/md.
+   */
+  const overlay = rule('.ev-calendar__overlay')
+  check('calendar overlay floats', overlay.get('position'), 'absolute')
+  check('calendar overlay min width', overlay.get('min-width'), '106px')
+  check('calendar month label is a button', rule('.ev-calendar__month').get('cursor'), 'pointer')
+
+  /*
+   * node: Frame 26 - the mobile read-out, 14 Bold in the brand colour, and the
+   * mobile footer splits its two buttons evenly where desktop right-aligns.
+   */
+  const readout = rule('.ev-calendar__readout')
+  check('calendar readout gap', resolve(readout.get('gap')), '8px')
+  check('calendar readout height', readout.get('height'), '16px')
+  const readoutValue = rule('.ev-calendar__readout-value')
+  check('calendar readout colour', resolve(readoutValue.get('color')), '#1b84ff')
+  check('calendar readout weight', resolve(readoutValue.get('font-weight')), '700')
+  check(
+    'calendar mobile footer splits evenly',
+    rule('.ev-calendar--mobile .ev-calendar__footer-row .ev-calendar__btn').get('flex'),
+    // The minifier collapses the equivalent `1 1 0%` to `1`.
+    '1',
+  )
+  check(
+    'calendar mobile chevron is bare',
+    resolve(rule('.ev-calendar--mobile .ev-calendar__nav').get('background-color')),
+    'transparent',
+  )
+  check(
+    'calendar mobile chevron size',
+    rule('.ev-calendar--mobile .ev-calendar__nav').get('width'),
+    '24px',
+  )
+
+  // node: ButtonLink - "Select Time", padded 8 top and bottom.
+  const link = rule('.ev-calendar__time-link')
+  check('calendar time link pad', resolve(link.get('padding')), '8px 0')
+  check('calendar time link colour', resolve(link.get('color')), '#071437')
 })
 
 // ---------------------------------------------------------- Chart series
@@ -2012,17 +2123,86 @@ section('input-field-unit', () => {
 })
 
 // ------------------------------------------------------------- Time Picker
+/*
+ * Traced from `Calendar & Time Picker / M - TimePickerPopup` (4 Variants, all
+ * 312x368). The board draws a wheel: a 32px band behind the columns, the value
+ * at 18/24 Bold, its neighbours muted, a ":" in a 20px frame between columns,
+ * and Apply stacked ABOVE Cancel. There is no title and no column caption.
+ */
 section('time-picker', () => {
   const scope = merged('.ev-time-picker')
   const tp = rule('.ev-time-picker')
-  check('time-picker width', tp.get('width'), '280px')
+  check('time-picker width', tp.get('width'), '312px')
   check('time-picker radius', resolve(tp.get('border-radius'), scope), '8px')
   check('time-picker border', resolve(tp.get('border'), scope), '1px solid #dbdfe9')
-  const header = rule('.ev-time-picker__header')
-  check('time-picker header bg', resolve(header.get('background-color'), scope), '#f9f9f9')
-  const activeItem = rule('.ev-time-picker__item--active')
-  check('time-picker active item bg', resolve(activeItem.get('background-color'), scope), '#1b84ff')
-  check('time-picker active item fg', resolve(activeItem.get('color'), scope), '#ffffff')
+  check('time-picker bg', resolve(tp.get('background-color'), scope), '#ffffff')
+  check('time-picker pad', resolve(tp.get('padding')), '24px 16px')
+  check('time-picker gap', resolve(tp.get('gap')), '16px')
+
+  // node: Frame 28 - the value, 14 Bold in the brand colour.
+  const value = rule('.ev-time-picker__value')
+  check('time-picker value colour', resolve(value.get('color'), scope), '#1b84ff')
+  check('time-picker value font', resolve(value.get('font-size')), '0.875rem')
+  check('time-picker value weight', resolve(value.get('font-weight')), '700')
+  check('time-picker display gap', resolve(rule('.ev-time-picker__display').get('gap')), '8px')
+
+  // node: Frame 18 / Frame 22
+  const wheel = rule('.ev-time-picker__wheel')
+  check('time-picker wheel height', wheel.get('height'), '184px')
+  check('time-picker wheel gap', resolve(wheel.get('gap')), '8px')
+  const band = rule('.ev-time-picker__band')
+  check('time-picker band height', band.get('height'), '32px')
+  check('time-picker band radius', resolve(band.get('border-radius')), '8px')
+  check('time-picker band bg', resolve(band.get('background-color'), scope), '#ebedf1')
+
+  // node: Frame 9 - the colon column is 20 wide, 14 Bold.
+  const sep = rule('.ev-time-picker__separator')
+  check('time-picker separator width', sep.get('width'), '20px')
+  check('time-picker separator colour', resolve(sep.get('color'), scope), '#071437')
+  check('time-picker separator weight', resolve(sep.get('font-weight')), '700')
+
+  // The value steps up to 18/24; its neighbours stay 14 and muted.
+  const selected = rule('.ev-time-picker__item--selected')
+  check('time-picker selected font', resolve(selected.get('font-size')), '1.125rem')
+  check('time-picker selected line', resolve(selected.get('line-height')), '1.5rem')
+  check('time-picker selected weight', resolve(selected.get('font-weight')), '700')
+  check('time-picker selected colour', resolve(selected.get('color'), scope), '#071437')
+  const item = rule('.ev-time-picker__item')
+  check('time-picker item colour', resolve(item.get('color'), scope), '#dbdfe9')
+  check('time-picker item font', resolve(item.get('font-size')), '0.875rem')
+
+  /*
+   * DEVIATION: the board freezes one frame of a wheel - three neighbours at
+   * 16/8 spacing around a 24px value. Rendered literally that leaves only seven
+   * reachable values per column. The column scrolls instead, on a 32px pitch
+   * taken from the board's own band, padded (184 - 32) / 2 so row 0 centres.
+   */
+  const column = rule('.ev-time-picker__column')
+  check('time-picker column scrolls', column.get('overflow-y'), 'auto')
+  check('time-picker column snap', column.get('scroll-snap-type'), 'y mandatory')
+  check('time-picker column pad', resolve(column.get('padding')), '76px 0')
+  check('time-picker item pitch', item.get('height'), '32px')
+  check('time-picker item snap', item.get('scroll-snap-align'), 'center')
+
+  // node: Frame 19 - full-width buttons stacked, Apply first.
+  const footer = rule('.ev-time-picker__footer')
+  check('time-picker footer direction', footer.get('flex-direction'), 'column')
+  check('time-picker footer gap', resolve(footer.get('gap')), '8px')
+  const btn = rule('.ev-time-picker__btn')
+  check('time-picker btn height', btn.get('min-height'), '40px')
+  check('time-picker btn pad', resolve(btn.get('padding')), '12px 16px')
+  check('time-picker btn radius', resolve(btn.get('border-radius')), '6px')
+  const apply = merged('.ev-time-picker__btn', '.ev-time-picker__btn--apply')
+  check('time-picker apply bg', resolve(apply.get('background-color'), scope), '#1b84ff')
+  check('time-picker apply fg', resolve(apply.get('color'), scope), '#ffffff')
+  const cancel = merged('.ev-time-picker__btn', '.ev-time-picker__btn--cancel')
+  check('time-picker cancel bg', resolve(cancel.get('background-color'), scope), '#e8f3ff')
+  check('time-picker cancel border', resolve(cancel.get('border-color'), scope), '#a4ceff')
+  check('time-picker cancel fg', resolve(cancel.get('color'), scope), '#1b84ff')
+
+  // The board draws neither of these nodes.
+  pass('time-picker draws no title', rule('.ev-time-picker__title').size === 0, 'absent')
+  pass('time-picker draws no column caption', rule('.ev-time-picker__col-label').size === 0, 'absent')
 })
 
 // ----------------------------------------------------------------- Report

@@ -377,6 +377,8 @@ const domainName = ref('mycompany')
 const websiteUrl = ref('google')
 const unitPrice = ref('25000000')
 const selectedCurrency = ref('IDR')
+const calendarMonthOpen = ref(false)
+const calendarDrawerOpen = ref(false)
 const richContentSmall = ref('')
 const richContent = ref(
   '<h1>Pengadaan Server Cloud</h1><p>Berikut adalah <strong>spesifikasi teknis</strong> yang disetujui:</p><ul><li>RAM 128GB ECC</li><li>NVMe Storage 4TB</li><li>Koneksi 10 Gbps Redundant</li></ul>',
@@ -1797,7 +1799,7 @@ const priceRange = ref<[number, number]>([20, 80])
                   >
                     Tanggal Tunggal + Event
                   </h4>
-                  <EvCalendar v-model="pickedDate" :events="[new Date()]" />
+                  <EvCalendar v-model="pickedDate" :events="[new Date()]" show-time-link />
                 </div>
                 <div>
                   <h4
@@ -1806,6 +1808,83 @@ const priceRange = ref<[number, number]>([20, 80])
                     Mode Rentang (Range) + Presets
                   </h4>
                   <EvCalendar v-model="pickedRange" mode="range" presets />
+                </div>
+              </div>
+            </div>
+
+            <!-- Subsection 1b: Month / Year grids and the header overlays -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">
+                Grid Bulan &amp; Tahun (varian Month / Year, dan overlay Month Open / Year Open)
+              </h3>
+              <div class="pg-section__row pg-section__row--top" style="gap: 2rem">
+                <div>
+                  <h4
+                    style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--ev-text-secondary)"
+                  >
+                    view="month" — 12 sel, paging per tahun
+                  </h4>
+                  <EvCalendar v-model="pickedDate" view="month" />
+                </div>
+                <div>
+                  <h4
+                    style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--ev-text-secondary)"
+                  >
+                    view="year" — blok 36 tahun
+                  </h4>
+                  <EvCalendar v-model="pickedDate" view="year" />
+                </div>
+                <div>
+                  <h4
+                    style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--ev-text-secondary)"
+                  >
+                    Month Open — overlay di atas header
+                  </h4>
+                  <EvCalendar v-model="pickedDate" v-model:month-open="calendarMonthOpen" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Subsection 1c: the mobile boards -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">
+                Papan Mobile (CalendarPopup, Full Calendar, dan Drawer)
+              </h3>
+              <div class="pg-section__row pg-section__row--top" style="gap: 2rem">
+                <div>
+                  <h4
+                    style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--ev-text-secondary)"
+                  >
+                    platform="mobile" — read-out + footer terbagi rata
+                  </h4>
+                  <EvCalendar v-model="pickedDate" platform="mobile" has-reset />
+                </div>
+                <div>
+                  <h4
+                    style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--ev-text-secondary)"
+                  >
+                    view="full" — tumpukan bulan yang bergulir
+                  </h4>
+                  <EvCalendar
+                    v-model="pickedDate"
+                    view="full"
+                    :full-months="4"
+                    platform="mobile"
+                    style="--ev-calendar-full-height: 320px"
+                  />
+                </div>
+                <div>
+                  <h4
+                    style="margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--ev-text-secondary)"
+                  >
+                    Drawer — komposisi, bukan komponen terpisah
+                  </h4>
+                  <EvButton variant="secondary-light" @click="calendarDrawerOpen = true">
+                    Buka Calendar Drawer
+                  </EvButton>
+                  <EvDrawer v-model="calendarDrawerOpen" placement="bottom" title="Pilih tanggal">
+                    <EvCalendar v-model="pickedDate" platform="mobile" has-reset />
+                  </EvDrawer>
                 </div>
               </div>
             </div>
@@ -1822,7 +1901,7 @@ const priceRange = ref<[number, number]>([20, 80])
                   >
                     Format 24 Jam (Default)
                   </h4>
-                  <EvTimePicker v-model="pickedTime" title="Jam Masuk" />
+                  <EvTimePicker v-model="pickedTime" has-reset />
                 </div>
                 <div>
                   <h4
@@ -1830,11 +1909,7 @@ const priceRange = ref<[number, number]>([20, 80])
                   >
                     Format dengan Detik
                   </h4>
-                  <EvTimePicker
-                    v-model="pickedTimeSeconds"
-                    format="with-seconds"
-                    title="Presisi Detik"
-                  />
+                  <EvTimePicker v-model="pickedTimeSeconds" format="with-seconds" />
                 </div>
                 <div>
                   <h4
@@ -1842,7 +1917,7 @@ const priceRange = ref<[number, number]>([20, 80])
                   >
                     Format 12 Jam (AM / PM)
                   </h4>
-                  <EvTimePicker v-model="pickedTimeAmPm" format="am-pm" title="Jadwal Meeting" />
+                  <EvTimePicker v-model="pickedTimeAmPm" format="am-pm" />
                 </div>
               </div>
             </div>
