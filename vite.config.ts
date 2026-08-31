@@ -4,6 +4,9 @@ import dts from 'vite-plugin-dts'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
+  server: {
+    allowedHosts: ['evoq-ui.crml.my.id'],
+  },
   plugins: [
     vue(),
     dts({

@@ -633,6 +633,19 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
           "reject",
           "custom"
         ]
+        "name": "variant",
+        "type": "BadgeVariant",
+        "required": false,
+        "default": "'neutral'",
+        "control": "select",
+        "options": [
+          "success",
+          "waiting",
+          "neutral",
+          "draft",
+          "reject",
+          "custom"
+        ]
       },
       {
         "name": "reverse",
@@ -642,13 +655,25 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "description": "Figma's `Reverse Colors` property: swaps the tinted badge for a solid fill with inverse text.",
         "control": "boolean"
       }
+        "name": "reverse",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `Reverse Colors` property: swaps the tinted badge for a solid fill with inverse text.",
+        "control": "boolean"
+      }
     ],
+    "slots": [
     "slots": [
       {
         "name": "default",
         "description": ""
+        "name": "default",
+        "description": ""
       },
       {
+        "name": "iconLeft",
+        "description": ""
         "name": "iconLeft",
         "description": ""
       },
@@ -656,9 +681,17 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "name": "iconRight",
         "description": ""
       }
+        "name": "iconRight",
+        "description": ""
+      }
     ],
     "emits": []
+    "emits": []
   },
+  "EvBreadcrumb": {
+    "tag": "EvBreadcrumb",
+    "file": "src/components/breadcrumb/EvBreadcrumb.vue",
+    "props": [
   "EvBreadcrumb": {
     "tag": "EvBreadcrumb",
     "file": "src/components/breadcrumb/EvBreadcrumb.vue",
@@ -668,8 +701,18 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "type": "BreadcrumbItem[]",
         "required": true,
         "control": "none"
+        "name": "items",
+        "type": "BreadcrumbItem[]",
+        "required": true,
+        "control": "none"
       },
       {
+        "name": "maxItems",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Collapse the middle of the trail once there are more crumbs than this, matching Figma's `Ellipsis` variant. `0` never collapses.",
+        "control": "number"
         "name": "maxItems",
         "type": "number",
         "required": false,
@@ -685,10 +728,23 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "description": "Accessible name for the trail.",
         "control": "text"
       }
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "'Breadcrumb'",
+        "description": "Accessible name for the trail.",
+        "control": "text"
+      }
     ],
     "slots": [],
     "emits": [
+    "slots": [],
+    "emits": [
       {
+        "name": "select",
+        "description": ""
+      }
+    ]
         "name": "select",
         "description": ""
       }
@@ -698,7 +754,24 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
     "tag": "EvButtonGroup",
     "file": "src/components/button-group/EvButtonGroup.vue",
     "props": [
+  "EvButtonGroup": {
+    "tag": "EvButtonGroup",
+    "file": "src/components/button-group/EvButtonGroup.vue",
+    "props": [
       {
+        "name": "variant",
+        "type": "ButtonGroupVariant",
+        "required": false,
+        "default": "'default-light'",
+        "description": "Applied to every item unless one overrides it.",
+        "control": "select",
+        "options": [
+          "default-light",
+          "default-white",
+          "primary",
+          "destructive",
+          "warning"
+        ]
         "name": "variant",
         "type": "ButtonGroupVariant",
         "required": false,
@@ -723,6 +796,15 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
           "large",
           "small"
         ]
+        "name": "size",
+        "type": "ButtonGroupSize",
+        "required": false,
+        "default": "'large'",
+        "control": "select",
+        "options": [
+          "large",
+          "small"
+        ]
       },
       {
         "name": "label",
@@ -731,20 +813,47 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "description": "Accessible name for the control.",
         "control": "text"
       }
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Accessible name for the control.",
+        "control": "text"
+      }
     ],
+    "slots": [
     "slots": [
       {
         "name": "default",
         "description": "The items - one `EvButtonGroupItem` each."
       }
+        "name": "default",
+        "description": "The items - one `EvButtonGroupItem` each."
+      }
     ],
+    "emits": []
     "emits": []
   },
   "EvButtonGroupItem": {
     "tag": "EvButtonGroupItem",
     "file": "src/components/button-group/EvButtonGroupItem.vue",
     "props": [
+  "EvButtonGroupItem": {
+    "tag": "EvButtonGroupItem",
+    "file": "src/components/button-group/EvButtonGroupItem.vue",
+    "props": [
       {
+        "name": "variant",
+        "type": "ButtonGroupVariant",
+        "required": false,
+        "description": "Overrides the group's variant for this one item.",
+        "control": "select",
+        "options": [
+          "default-light",
+          "default-white",
+          "primary",
+          "destructive",
+          "warning"
+        ]
         "name": "variant",
         "type": "ButtonGroupVariant",
         "required": false,
@@ -767,8 +876,22 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
           "large",
           "small"
         ]
+        "name": "size",
+        "type": "ButtonGroupSize",
+        "required": false,
+        "control": "select",
+        "options": [
+          "large",
+          "small"
+        ]
       },
       {
+        "name": "active",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks this item as the current choice.",
+        "control": "boolean"
         "name": "active",
         "type": "boolean",
         "required": false,
@@ -782,8 +905,19 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "required": false,
         "default": "false",
         "control": "boolean"
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
       },
       {
+        "name": "iconOnly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Square item holding only an icon. Give it an `aria-label`.",
+        "control": "boolean"
         "name": "iconOnly",
         "type": "boolean",
         "required": false,
@@ -803,13 +937,29 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
           "reset"
         ]
       }
+        "name": "type",
+        "type": "'button' | 'submit' | 'reset'",
+        "required": false,
+        "default": "'button'",
+        "control": "select",
+        "options": [
+          "button",
+          "submit",
+          "reset"
+        ]
+      }
     ],
+    "slots": [
     "slots": [
       {
         "name": "default",
         "description": ""
+        "name": "default",
+        "description": ""
       },
       {
+        "name": "iconLeft",
+        "description": ""
         "name": "iconLeft",
         "description": ""
       },
@@ -817,9 +967,17 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "name": "iconRight",
         "description": ""
       }
+        "name": "iconRight",
+        "description": ""
+      }
     ],
     "emits": [
+    "emits": [
       {
+        "name": "click",
+        "description": ""
+      }
+    ]
         "name": "click",
         "description": ""
       }
@@ -829,7 +987,23 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
     "tag": "EvButtonLink",
     "file": "src/components/button-link/EvButtonLink.vue",
     "props": [
+  "EvButtonLink": {
+    "tag": "EvButtonLink",
+    "file": "src/components/button-link/EvButtonLink.vue",
+    "props": [
       {
+        "name": "variant",
+        "type": "ButtonLinkVariant",
+        "required": false,
+        "default": "'primary'",
+        "control": "select",
+        "options": [
+          "primary",
+          "secondary",
+          "tertiary",
+          "invert",
+          "custom"
+        ]
         "name": "variant",
         "type": "ButtonLinkVariant",
         "required": false,
@@ -849,8 +1023,18 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "required": false,
         "description": "Renders an anchor instead of a button.",
         "control": "text"
+        "name": "href",
+        "type": "string",
+        "required": false,
+        "description": "Renders an anchor instead of a button.",
+        "control": "text"
       },
       {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
         "name": "disabled",
         "type": "boolean",
         "required": false,
@@ -869,13 +1053,29 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
           "reset"
         ]
       }
+        "name": "type",
+        "type": "'button' | 'submit' | 'reset'",
+        "required": false,
+        "default": "'button'",
+        "control": "select",
+        "options": [
+          "button",
+          "submit",
+          "reset"
+        ]
+      }
     ],
+    "slots": [
     "slots": [
       {
         "name": "default",
         "description": ""
+        "name": "default",
+        "description": ""
       },
       {
+        "name": "iconLeft",
+        "description": ""
         "name": "iconLeft",
         "description": ""
       },
@@ -883,9 +1083,17 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "name": "iconRight",
         "description": ""
       }
+        "name": "iconRight",
+        "description": ""
+      }
     ],
     "emits": [
+    "emits": [
       {
+        "name": "click",
+        "description": ""
+      }
+    ]
         "name": "click",
         "description": ""
       }
@@ -895,7 +1103,26 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
     "tag": "EvButton",
     "file": "src/components/button/EvButton.vue",
     "props": [
+  "EvButton": {
+    "tag": "EvButton",
+    "file": "src/components/button/EvButton.vue",
+    "props": [
       {
+        "name": "variant",
+        "type": "ButtonVariant",
+        "required": false,
+        "default": "'primary'",
+        "description": "Visual weight of the button.",
+        "control": "select",
+        "options": [
+          "primary",
+          "secondary-light",
+          "secondary-grey",
+          "secondary-white",
+          "destructive",
+          "outline",
+          "ghost"
+        ]
         "name": "variant",
         "type": "ButtonVariant",
         "required": false,
@@ -923,6 +1150,16 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
           "default",
           "small"
         ]
+        "name": "size",
+        "type": "ButtonSize",
+        "required": false,
+        "default": "'default'",
+        "description": "Control height: 40px (`default`) or 32px (`small`).",
+        "control": "select",
+        "options": [
+          "default",
+          "small"
+        ]
       },
       {
         "name": "disabled",
@@ -930,8 +1167,19 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "required": false,
         "default": "false",
         "control": "boolean"
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
       },
       {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Shows a spinner and blocks interaction.",
+        "control": "boolean"
         "name": "loading",
         "type": "boolean",
         "required": false,
@@ -946,8 +1194,20 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "default": "false",
         "description": "Stretch to the full width of the parent.",
         "control": "boolean"
+        "name": "block",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Stretch to the full width of the parent.",
+        "control": "boolean"
       },
       {
+        "name": "iconOnly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Render as a square control holding only an icon. Pass the icon through the `iconLeft` slot, and give the button an `aria-label` - there is no visible text for a screen reader to announce.",
+        "control": "boolean"
         "name": "iconOnly",
         "type": "boolean",
         "required": false,
@@ -967,13 +1227,29 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
           "reset"
         ]
       }
+        "name": "type",
+        "type": "'button' | 'submit' | 'reset'",
+        "required": false,
+        "default": "'button'",
+        "control": "select",
+        "options": [
+          "button",
+          "submit",
+          "reset"
+        ]
+      }
     ],
+    "slots": [
     "slots": [
       {
         "name": "default",
         "description": ""
+        "name": "default",
+        "description": ""
       },
       {
+        "name": "iconLeft",
+        "description": ""
         "name": "iconLeft",
         "description": ""
       },
@@ -981,9 +1257,17 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "name": "iconRight",
         "description": ""
       }
+        "name": "iconRight",
+        "description": ""
+      }
     ],
     "emits": [
+    "emits": [
       {
+        "name": "click",
+        "description": ""
+      }
+    ]
         "name": "click",
         "description": ""
       }
@@ -993,7 +1277,17 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
     "tag": "EvCalendar",
     "file": "src/components/calendar/EvCalendar.vue",
     "props": [
+  "EvCalendar": {
+    "tag": "EvCalendar",
+    "file": "src/components/calendar/EvCalendar.vue",
+    "props": [
       {
+        "name": "modelValue",
+        "type": "Date | [Date | null, Date | null] | null",
+        "required": false,
+        "default": "null",
+        "description": "A single date, or a `[from, to]` pair in range mode.",
+        "control": "none"
         "name": "modelValue",
         "type": "Date | [Date | null, Date | null] | null",
         "required": false,
