@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, provide, toRef } from 'vue'
 import type { TagVariant } from '../../types'
-import { TAG_GROUP_KEY } from './context'
+import { TAG_GROUP_KEY } from '../../atoms/tag/context'
 
 /*
  * Compiled 1:1 from the Figma node `Tag / TagGroup` (COMPONENT_SET, 8 variants:

@@ -136,9 +136,19 @@ valid CSS that renders the wrong colour.
 
 A component is not done until it has a section there and that section passes.
 
+### Atomic structure
+
+Components are organised by atomic level - `src/atoms`, `src/molecules`,
+`src/organisms` and `src/patterns` (there is no screen layer; screens belong to
+the apps that use this package). A layer may only import from the layers below
+it, and ESLint fails any import that breaks that. The level is a source-tree
+concern only: every component is exported flat from `evoq-ui`, so moving one
+between layers never changes a consumer's import. The rules, and how to pick a
+layer, are in [`AGENTS.md` §9](AGENTS.md).
+
 ### Adding a component
 
-1. Create `src/components/<name>/Ev<Name>.vue`.
+1. Create `src/<layer>/<name>/Ev<Name>.vue` in the right atomic layer.
 2. Add `defineOptions({ name: 'Ev<Name>' })` so devtools and global registration agree.
 3. Style with `ev-<name>` BEM classes in a **non-scoped** `<style lang="scss">` block,
    using only semantic `--ev-*` tokens — that is what makes the component themeable by
@@ -146,7 +156,7 @@ A component is not done until it has a section there and that section passes.
    `@use '../../styles/typography' as type; @include type.style('body/regular');`
 4. Trace the values from that component's own page in Figma rather than inferring them
    from the token layer — the boards carry per-state specs the tokens do not.
-5. Re-export it from [`src/components/index.ts`](src/components/index.ts).
+5. Re-export it from that layer's barrel, e.g. [`src/atoms/index.ts`](src/atoms/index.ts).
 6. Add `Ev<Name>.spec.ts` next to it, and a section in [`playground/App.vue`](playground/App.vue).
 
 ## Coverage
@@ -225,6 +235,54 @@ The five series colours come from the `PieChart` board, and each is already a
 semantic token — `brand/primary`, `ext/success`, `ext/warning`,
 `brand/secondary`, `ext/error`. Override `--ev-chart-series-1..10` to re-point
 them.
+
+## Component docs and MCP
+
+Every component has one document and one **stable id**: `evoq-ui:<name>`, the
+component name without its `Ev` prefix, in kebab case — `EvButton` is
+`evoq-ui:button`, `EvNavMenuItem` is `evoq-ui:nav-menu-item`. The id does not
+change when a component moves between atomic layers, so an agent or an
+aggregator can hold on to it.
+
+| Path                                  | What it is                                                                   |
+| ------------------------------------- | ---------------------------------------------------------------------------- |
+| [`docs/components/`](docs/components) | one Markdown doc per component, plus an index by layer                       |
+| `docs/components/manifest.json`       | the same data as JSON — also importable as `evoq-ui/manifest.json`           |
+| [`mcp/server.mjs`](mcp/server.mjs)    | an MCP server (stdio, no dependencies) that serves exactly those files by id |
+
+Each doc carries the import line, every prop with its type, allowed values and
+default, the slots, events and `v-model`s, where non-prop attributes land, what
+the component is built from and what uses it, a copy-ready example, and the
+binding Do / Don't rules from its Figma documentation frame — with the Figma
+node ids, so a design reference is one lookup away.
+
+**Nothing in them is written by hand.** `npm run docs:build` reads the props from
+the SFCs, the example from the playground simulator, the composition from the
+imports, and the guidance from a snapshot of the Figma docs
+(`design/figma-component-docs.json`). Only the mapping to Figma and the search
+keywords live in [`scripts/component-sources.mjs`](scripts/component-sources.mjs).
+The build fails on anything it cannot source — including a pixel value in the
+Figma prose that has not been checked against the board. `npm run docs:check`
+fails when the committed docs are stale, and runs before every publish.
+
+### Using the MCP server
+
+In this repo, [`.mcp.json`](.mcp.json) registers it for any MCP client that
+reads project config; `npm run mcp` starts it by hand. In an app that installed
+`evoq-ui`, add it to that app's MCP config:
+
+```json
+{ "mcpServers": { "evoq-ui": { "command": "npx", "args": ["evoq-ui-mcp"] } } }
+```
+
+| Tool                | Use it to                                                                                                               |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `list_components`   | list every id, filtered by layer                                                                                        |
+| `search_components` | find ids by purpose — "date range", "confirm delete", "chip"                                                            |
+| `get_component`     | fetch one doc by id (`format: "json"` for the manifest entry); unknown ids are reported, never swapped for a near match |
+
+Resources: `evoq-ui://manifest`, `evoq-ui://components` (the index) and
+`evoq-ui://components/{name}` for each doc.
 
 ## Build output
 

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
+import EvButton from '../../atoms/button/EvButton.vue'
 import EvTimePicker from './EvTimePicker.vue'
 
 describe('EvTimePicker', () => {
@@ -79,6 +80,23 @@ describe('EvTimePicker', () => {
     expect(buttons[0]!.text()).toBe('Apply')
     expect(buttons[1]!.classes()).toContain('ev-time-picker__btn--cancel')
     expect(buttons[1]!.text()).toBe('Cancel')
+  })
+
+  it('composes the Button atom rather than drawing its own buttons', () => {
+    const buttons = mount(EvTimePicker).findAllComponents(EvButton)
+
+    expect(buttons).toHaveLength(2)
+    expect(buttons[0]!.props()).toMatchObject({ variant: 'primary', size: 'default', block: true })
+    expect(buttons[1]!.props()).toMatchObject({
+      variant: 'secondary-light',
+      size: 'default',
+      block: true,
+    })
+  })
+
+  it('disables both buttons with the picker', () => {
+    const buttons = mount(EvTimePicker, { props: { disabled: true } }).findAllComponents(EvButton)
+    expect(buttons.every((b) => b.props('disabled'))).toBe(true)
   })
 
   it('picks any row in the column, however far from the current value', async () => {

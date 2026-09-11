@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, provide, ref, toRef, useId } from 'vue'
-import { TABS_KEY } from './context'
+import { TABS_KEY } from '../../atoms/tab/context'
 import type { TabsVariant } from '../../types'
 
 defineOptions({

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue'
+import EvInput from '../../atoms/input/EvInput.vue'
 
 defineOptions({
   name: 'EvInputFieldUnit',
@@ -50,7 +51,6 @@ const emit = defineEmits<{
   clear: []
 }>()
 
-const inputId = `ev-input-unit-${useId()}`
 const selectId = `ev-input-unit-sel-${useId()}`
 const messageId = `ev-input-unit-msg-${useId()}`
 
@@ -58,23 +58,10 @@ const normalizedUnits = computed<UnitOption[]>(() => {
   return props.units.map((u) => (typeof u === 'string' ? { label: u, value: u } : u))
 })
 
-const hasValue = computed(() => props.modelValue !== '' && props.modelValue != null)
-const showClear = computed(
-  () => props.clearable && hasValue.value && !props.disabled && !props.readonly,
-)
 const hasMessage = computed(() => Boolean(props.validationText || props.validationTextEnd))
-
-function onInput(event: Event) {
-  emit('update:modelValue', (event.target as HTMLInputElement).value)
-}
 
 function onUnitChange(event: Event) {
   emit('update:unit', (event.target as HTMLSelectElement).value)
-}
-
-function clear() {
-  emit('update:modelValue', '')
-  emit('clear')
 }
 </script>
 
@@ -108,53 +95,26 @@ function clear() {
         </span>
       </div>
 
-      <div class="ev-input-field-unit__input-wrap">
-        <input
-          :id="inputId"
-          v-bind="$attrs"
-          class="ev-input-field-unit__control"
-          :type="type"
-          :value="modelValue"
-          :placeholder="placeholder"
-          :disabled="disabled"
-          :readonly="readonly"
-          :required="required"
-          :aria-invalid="error || undefined"
-          :aria-describedby="hasMessage ? messageId : undefined"
-          @input="onInput"
-        />
-
-        <button
-          v-if="showClear"
-          type="button"
-          class="ev-input-field-unit__clear"
-          aria-label="Bersihkan"
-          @click="clear"
-        >
-          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.4" fill="none" />
-            <path d="M7.5 7.5l5 5M12.5 7.5l-5 5" stroke="currentColor" stroke-width="1.4" />
-          </svg>
-        </button>
-
-        <span v-if="error" class="ev-input-field-unit__icon ev-input-field-unit__icon--error">
-          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.4" fill="none" />
-            <path
-              d="M10 6v5M10 13.5v.5"
-              stroke="currentColor"
-              stroke-width="1.6"
-              stroke-linecap="round"
-            />
-          </svg>
-        </span>
-
-        <!-- Floating Notched Label -->
-        <label v-if="label" class="ev-input-field-unit__label" :for="inputId">
-          {{ label
-          }}<span v-if="required" class="ev-input-field-unit__required" aria-hidden="true">*</span>
-        </label>
-      </div>
+      <!--
+        node: InputField - an instance of the field atom, notched label and
+        all. The message is not handed to it: the board runs one message under
+        both boxes, so this component renders it and points the field at it.
+      -->
+      <EvInput
+        v-bind="$attrs"
+        :model-value="modelValue"
+        :type="type"
+        :placeholder="placeholder"
+        :label="label"
+        :required="required"
+        :disabled="disabled"
+        :readonly="readonly"
+        :error="error"
+        :clearable="clearable"
+        :aria-describedby="hasMessage ? messageId : undefined"
+        @update:model-value="emit('update:modelValue', $event)"
+        @clear="emit('clear')"
+      />
     </div>
 
     <p v-if="hasMessage" :id="messageId" class="ev-input-field-unit__message">
@@ -242,98 +202,10 @@ function clear() {
     }
   }
 
-  &__input-wrap {
-    position: relative;
-    box-sizing: border-box;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: var(--ev-spacing-sm);
-    min-width: 0;
-    min-height: 44px;
-    padding: var(--ev-spacing-md);
-    border: var(--ev-stroke-xs) solid var(--ev-input-border);
-    border-radius: var(--ev-radius-xs);
-    background-color: var(--ev-input-bg);
-    transition: border-color var(--ev-duration-fast) var(--ev-easing-standard);
-
-    &:focus-within {
-      border-color: var(--ev-brand-primary);
-    }
-  }
-
-  &__control {
+  /* The InputField atom takes the rest of the row; its look is its own. */
+  &__field > .ev-input {
     flex: 1;
     min-width: 0;
-    height: 100%;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: var(--ev-input-fg);
-
-    @include type.style('body/regular');
-
-    &::placeholder {
-      color: var(--ev-input-placeholder);
-    }
-
-    &:focus {
-      outline: none;
-    }
-
-    &:disabled {
-      cursor: not-allowed;
-    }
-  }
-
-  &__icon {
-    display: inline-flex;
-    align-items: center;
-    flex-shrink: 0;
-    color: var(--ev-icon-primary);
-
-    svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    &--error {
-      color: var(--ev-ext-error);
-    }
-  }
-
-  &__clear {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: var(--ev-icon-primary);
-    cursor: pointer;
-
-    svg {
-      width: 20px;
-      height: 20px;
-    }
-  }
-
-  &__label {
-    position: absolute;
-    top: 0;
-    left: var(--ev-spacing-md);
-    padding: 0 3px;
-    transform: translateY(-50%);
-    background-color: var(--ev-input-bg);
-    color: var(--ev-text-secondary);
-
-    @include type.style('body/small');
-  }
-
-  &__required {
-    margin-left: 2px;
-    color: var(--ev-ext-error);
   }
 
   &__message {
@@ -354,10 +226,6 @@ function clear() {
     --ev-input-border: var(--ev-ext-error);
     --ev-input-fg: var(--ev-ext-error-bold);
     --ev-input-message: var(--ev-ext-error);
-
-    .ev-input-field-unit__field:focus-within {
-      border-color: var(--ev-ext-error);
-    }
   }
 
   &--disabled {

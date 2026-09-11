@@ -349,25 +349,163 @@ absence of nodes the board does not draw.
 
 ---
 
-## 9. Component checklist
+## 9. Atomic layers
 
-1. `src/components/<name>/Ev<Name>.vue`
+The source tree is organised by atomic level. The level is a source concern
+only — every component is still exported flat from the package root, so
+`import { EvButton } from 'evoq-ui'` never changes when a component moves.
+
+| Layer        | Folder           | What belongs here                                                                                                                                                              | May import                        |
+| ------------ | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------- |
+| **Atom**     | `src/atoms/`     | One element or one control. Its slots carry content (text, icons), never another control. `EvButton`, `EvInput`, `EvInputSearch`, `EvCheckbox`, `EvTag`, `EvDropdownItem`…     | nothing but `types`, `styles`     |
+| **Molecule** | `src/molecules/` | A small group of atoms doing one job, including every `…Group` that hands shared settings to the atoms inside it. `EvInputFieldUnit`, `EvDropdownList`, `EvTabs`, `EvTooltip`… | atoms                             |
+| **Organism** | `src/organisms/` | A complete section: it owns behaviour (overlay, focus trap, multi-step state) or exists to host other components in a header / content / footer frame.                         | atoms, molecules, other organisms |
+| **Pattern**  | `src/patterns/`  | A page-level arrangement of organisms — the template layer, ported from the Figma `Pattern` page.                                                                              | every layer below                 |
+
+There is **no screen layer**. This package supplies building blocks; screens
+belong to the products that use it.
+
+`src/charts/` holds organisms too, but stays its own folder because it is its
+own entry point (`evoq-ui/charts`). Nothing in the four layers may import it —
+doing so would drag the optional Unovis peer into every consumer's bundle.
+
+### 9.1 The rules are enforced, not suggested
+
+`eslint.config.js` fails the build of any upward import (an atom importing a
+molecule, a molecule importing an organism), any sibling import inside the atom
+or molecule layer, and any import of `src/charts` from the main layers. If the
+rule fires, the component is in the wrong layer or the thing it imports is —
+move it; do not disable the rule.
+
+### 9.2 Compose, do not redraw
+
+**Where the Figma board places an instance of another component, the Vue code
+renders that component.** A footer that the board builds from `Button`
+instances is `<EvButton variant=… size=…>`, not a local `<button>` restyled to
+look the same.
+
+Redrawn atoms drift: when the Button set changes, the copies do not follow, and
+they never had the Button's hover and pressed states to begin with. The
+Calendar and TimePicker footers were exactly that — five local buttons whose
+resolved CSS matched an `EvButton` variant on every property — until they were
+replaced.
+
+How to tell which is which:
+
+1. In Figma, the child is an `INSTANCE` whose `getMainComponentAsync()` belongs
+   to a design-system set → compose that component. Icons from the icon
+   library have no local page; ignore them.
+2. Without the bridge, compare the built CSS: a local control whose resolved
+   height, padding, radius, colours, border and type all equal one `EvButton`
+   variant is that variant.
+3. A control that matches no instance on the board (a modal's close cross, the
+   calendar's chevron tiles) is a native element — leave it.
+4. An instance the board puts where a consumer's content goes (a Card footer's
+   Buttons, a Modal's "don't show again" Checkbox) is a **slot**, not an import.
+   The consumer composes it; the component must not hard-code it.
+
+Run this to list, per component set, the design-system components it instances
+directly (instances nested inside another instance are that instance's
+business):
+
+```js
+await figma.loadAllPagesAsync()
+const out = {}
+for (const page of figma.root.children) {
+  for (const set of page.findAllWithCriteria({ types: ['COMPONENT_SET'] })) {
+    const deps = new Set()
+    for (const inst of set.findAllWithCriteria({ types: ['INSTANCE'] })) {
+      let a = inst.parent,
+        nested = false
+      while (a && a !== set) {
+        if (a.type === 'INSTANCE') {
+          nested = true
+          break
+        }
+        a = a.parent
+      }
+      if (nested) continue
+      const mc = await inst.getMainComponentAsync()
+      const owner = mc && mc.parent && mc.parent.type === 'COMPONENT_SET' ? mc.parent : mc
+      let p = owner
+      while (p && p.type !== 'PAGE') p = p.parent
+      if (p && owner.name !== set.name) deps.add(owner.name) // no page = library icon
+    }
+    out[page.name + ' :: ' + set.name] = [...deps]
+  }
+}
+return out
+```
+
+Then read `inst.variantProperties` and diff the instance against its main
+component — radius, fills, text colour, sizing. Those differences are
+**instance overrides**.
+
+Keep a BEM hook class on the composed atom (`class="ev-calendar__btn--apply"`)
+for layout and tests. It may carry layout (`flex`, `width`) and **exactly the
+fields the board's instance overrides — nothing else**:
+
+| Composite         | Instance                               | Overrides it carries                            |
+| ----------------- | -------------------------------------- | ----------------------------------------------- |
+| Carousel arrows   | Button, Secondary-Light / Small / Icon | radius 9999, chevron `icon/primary`             |
+| Calendar "Select" | ButtonLink, Primary                    | label `text/primary`, full width, 8px block pad |
+| everything else   | —                                      | none                                            |
+
+Write an override as a custom property where the atom exposes one
+(`--ev-link-fg`), and scope it `& &__hook` so it outranks the atom's base rule
+regardless of stylesheet order. The harness asserts both halves: the redrawn
+selector is gone (`rule('.ev-calendar__btn').size === 0`), and an override rule
+holds only the overridden keys, so a copy cannot creep back in.
+
+When composing would break semantics, extend the atom rather than redraw it.
+Breadcrumb's hidden crumbs are links, but DropdownList was a listbox — so
+DropdownList gained `menu` and DropdownItem gained `href`, instead of
+Breadcrumb keeping a private dropdown (which had already drifted: 2px padding,
+a home-made shadow, 12px text).
+
+### 9.3 Choosing a layer for a new component
+
+- Imports another Ev component → at least a molecule.
+- A part that only makes sense inside one parent (`EvCarouselSlide`,
+  `EvTreeItem`) lives in that parent's folder, at the parent's layer.
+- A part that stands alone with an optional parent context (`EvRadio`,
+  `EvTag`, `EvToggle`, `EvTab`) is an atom; its `context.ts` lives with the
+  atom, and the Group molecule imports it from there.
+
+---
+
+## 10. Component checklist
+
+1. `src/<layer>/<name>/Ev<Name>.vue` — pick the layer with §9.3
 2. `defineOptions({ name: 'Ev<Name>' })`
 3. Non-scoped `<style lang="scss">`, `ev-<name>` BEM, semantic tokens only
 4. Header comment with the node tree you ported, in board order
 5. Unions in `src/types.ts`, each naming its Figma set
-6. Re-export from `src/components/index.ts`
-7. `Ev<Name>.spec.ts` — structure, order, counts, absences
+6. Re-export from `src/<layer>/index.ts`
+7. `Ev<Name>.spec.ts` — structure, order, counts, absences; and, for a
+   composite, that it renders the atoms the board instances (§9.2)
 8. A section in `scripts/verify-figma.mjs` that passes
 9. A `playground/App.vue` section, and a `SIMULATOR_DEMOS` entry so the props
    simulator has something to show inside it
+10. An entry in `scripts/component-sources.mjs` — its Figma doc key, the sets it
+    renders with their node ids, `partOf` / `children`, and search keywords —
+    then `npm run docs:build`. Its id is derived from its name
+    (`EvNavMenuItem` → `evoq-ui:nav-menu-item`) and must never be reused.
 
 `npm run extract:props` regenerates `playground/component-props.ts`. It runs
 automatically before `dev` and `build:playground`; never hand-edit it.
 
+`npm run docs:build` regenerates `docs/components/` — one doc per component and
+`manifest.json`, served by `mcp/server.mjs`. Never hand-edit those either; fix
+the source the doc names. When the Figma documentation frames change,
+re-scrape them into `design/figma-component-docs.json` (the Usage section and
+summary only, §6), and add any pixel value the prose quotes to
+`VERIFIED_PROSE_PX` in `scripts/build-docs.mjs` only after checking it against
+the board.
+
 ---
 
-## 10. Rules of thumb
+## 11. Rules of thumb
 
 - **Read the node before you write the CSS.** Not the screenshot, not the doc.
 - **Structure first, colour second.** Colour errors get caught; structure errors ship.

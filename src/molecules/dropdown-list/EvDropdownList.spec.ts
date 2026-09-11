@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { h } from 'vue'
 import { mount } from '@vue/test-utils'
-import EvDropdownItem from './EvDropdownItem.vue'
+import EvDropdownItem from '../../atoms/dropdown-item/EvDropdownItem.vue'
+import EvInputSearch from '../../atoms/input-search/EvInputSearch.vue'
 import EvDropdownList from './EvDropdownList.vue'
 
 describe('EvDropdownList', () => {
@@ -17,12 +18,50 @@ describe('EvDropdownList', () => {
     const wrapper = mount(EvDropdownList, {
       props: { searchable: true, searchValue: 'ma', searchPlaceholder: 'Cari vendor' },
     })
-    const input = wrapper.find('.ev-dropdown-list__search-input')
+    const input = wrapper.find('.ev-dropdown-list__search input')
     expect((input.element as HTMLInputElement).value).toBe('ma')
     expect(input.attributes('placeholder')).toBe('Cari vendor')
 
     await input.setValue('maju')
     expect(wrapper.emitted('update:searchValue')).toEqual([['maju']])
+  })
+
+  it('composes the InputSearch atom for its search, as the board instances it', () => {
+    const wrapper = mount(EvDropdownList, { props: { searchable: true } })
+    expect(wrapper.findComponent(EvInputSearch).exists()).toBe(true)
+    expect(wrapper.find('.ev-dropdown-list__search-input').exists()).toBe(false)
+  })
+
+  it('turns into a menu whose rows are menu items, and href rows real links', () => {
+    const wrapper = mount(EvDropdownList, {
+      props: { menu: true, label: 'Langkah' },
+      slots: {
+        default: () => [
+          h(EvDropdownItem, { href: '/a' }, () => 'Tautan'),
+          h(EvDropdownItem, null, () => 'Aksi'),
+        ],
+      },
+    })
+    expect(wrapper.find('.ev-dropdown-list__options').attributes('role')).toBe('menu')
+
+    const [link, action] = wrapper.findAll('.ev-dropdown-item')
+    // A link row hands its role to the anchor inside it.
+    expect(link!.attributes('role')).toBe('none')
+    const anchor = link!.find('a')
+    expect(anchor.attributes('href')).toBe('/a')
+    expect(anchor.attributes('role')).toBe('menuitem')
+    expect(action!.attributes('role')).toBe('menuitem')
+    expect(action!.attributes('aria-selected')).toBeUndefined()
+  })
+
+  it('keeps rows as listbox options by default', () => {
+    const wrapper = mount(EvDropdownList, {
+      slots: { default: () => h(EvDropdownItem, { active: true }, () => 'A') },
+    })
+    const row = wrapper.find('.ev-dropdown-item')
+    expect(row.attributes('role')).toBe('option')
+    expect(row.attributes('aria-selected')).toBe('true')
+    expect(row.find('a').exists()).toBe(false)
   })
 
   it('caps the height only when scroll is turned on', () => {

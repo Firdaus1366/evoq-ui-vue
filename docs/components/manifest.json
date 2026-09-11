@@ -1,0 +1,4872 @@
+{
+  "name": "evoq-ui",
+  "version": "0.0.1",
+  "idScheme": "evoq-ui:<component name without the Ev prefix, kebab-case>. Stable across layer moves.",
+  "generatedBy": "scripts/build-docs.mjs",
+  "figmaFile": "hJ3XmwLptPtF4IFBDlZlpx",
+  "layers": {
+    "atom": 24,
+    "molecule": 12,
+    "organism": 18,
+    "pattern": 0
+  },
+  "components": [
+    {
+      "id": "evoq-ui:accordion",
+      "name": "EvAccordion",
+      "tag": "ev-accordion",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvAccordion } from 'evoq-ui'",
+      "doc": "docs/components/accordion.md",
+      "source": "src/molecules/accordion/EvAccordion.vue",
+      "summary": "A collapsible section: a header button with a title and optional subtext that shows or hides its panel.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "variant",
+          "type": "AccordionVariant",
+          "options": [
+            "default",
+            "card"
+          ],
+          "default": "'default'",
+          "required": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "subtext",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "separator",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Whether to show the bottom separator rule in the default variant."
+        }
+      ],
+      "slots": [
+        "default",
+        "title",
+        "subtext"
+      ],
+      "events": [
+        "update:modelValue"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [
+        "evoq-ui:separator"
+      ],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4105:63588",
+        "sets": [
+          {
+            "name": "Accordion",
+            "id": "2473:2493",
+            "page": "Accordion"
+          }
+        ]
+      },
+      "keywords": [
+        "collapse",
+        "expand",
+        "disclosure",
+        "faq"
+      ]
+    },
+    {
+      "id": "evoq-ui:alert",
+      "name": "EvAlert",
+      "tag": "ev-alert",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvAlert } from 'evoq-ui'",
+      "doc": "docs/components/alert.md",
+      "source": "src/molecules/alert/EvAlert.vue",
+      "summary": "Communicate a persistent, in-page message about the status of a page, section, or action.",
+      "summarySource": "figma-legacy",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "variant",
+          "type": "AlertVariant",
+          "options": [
+            "neutral",
+            "neutral-dark",
+            "info",
+            "success",
+            "error",
+            "warning"
+          ],
+          "default": "'neutral'",
+          "required": false
+        },
+        {
+          "name": "inverse",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Swaps the tinted alert for a solid fill with inverse text."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "subtext",
+          "type": "string",
+          "required": false,
+          "description": "Supporting line. Its presence switches the alert to the taller layout."
+        },
+        {
+          "name": "dismissible",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Renders the dismiss button and enables the `close` event."
+        },
+        {
+          "name": "closeLabel",
+          "type": "string",
+          "default": "'Tutup'",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "subtext",
+        "link",
+        "actions",
+        "icon"
+      ],
+      "events": [
+        "close"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:modal"
+      ],
+      "figma": {
+        "doc": "4147:63829",
+        "sets": [
+          {
+            "name": "Alert",
+            "id": "681:11285",
+            "page": "Alert"
+          }
+        ]
+      },
+      "keywords": [
+        "banner",
+        "message",
+        "notice",
+        "callout",
+        "status message"
+      ]
+    },
+    {
+      "id": "evoq-ui:alert-dialog",
+      "name": "EvAlertDialog",
+      "tag": "ev-alert-dialog",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvAlertDialog } from 'evoq-ui'",
+      "doc": "docs/components/alert-dialog.md",
+      "source": "src/organisms/alert-dialog/EvAlertDialog.vue",
+      "summary": "A blocking dialog that asks the user to confirm or decide - traps focus, closes on Escape, and restores focus on close.",
+      "summarySource": "code",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "variant",
+          "type": "AlertDialogVariant",
+          "options": [
+            "success",
+            "warning",
+            "confirmation",
+            "info",
+            "delete"
+          ],
+          "default": "'confirmation'",
+          "required": false
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "layout",
+          "type": "'desktop' | 'compact'",
+          "options": [
+            "desktop",
+            "compact"
+          ],
+          "default": "'desktop'",
+          "required": false,
+          "description": "`desktop` uses the board's large illustration; `compact` uses the mobile layout, where the artwork becomes a 40px icon tile and the buttons stack."
+        },
+        {
+          "name": "closeOnScrim",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Set false to force a deliberate choice from the buttons."
+        }
+      ],
+      "slots": [
+        "default",
+        "title",
+        "description",
+        "media",
+        "actions"
+      ],
+      "events": [
+        "update:modelValue",
+        "close"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:alert",
+        "evoq-ui:modal"
+      ],
+      "figma": {
+        "doc": "4147:64224",
+        "sets": [
+          {
+            "name": "D - AlertDialog",
+            "id": "2519:1822",
+            "page": "Alert Dialog"
+          },
+          {
+            "name": "M - AlertDialog",
+            "id": "2519:2209",
+            "page": "Alert Dialog"
+          }
+        ]
+      },
+      "keywords": [
+        "confirm",
+        "dialog",
+        "delete confirmation",
+        "modal"
+      ]
+    },
+    {
+      "id": "evoq-ui:aspect-ratio",
+      "name": "EvAspectRatio",
+      "tag": "ev-aspect-ratio",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvAspectRatio } from 'evoq-ui'",
+      "doc": "docs/components/aspect-ratio.md",
+      "source": "src/atoms/aspect-ratio/EvAspectRatio.vue",
+      "summary": "A box that holds one media element at a fixed width-to-height ratio, filling it with the media and clipping the overflow.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "ratio",
+          "type": "AspectRatio | string",
+          "default": "'16:9'",
+          "required": false,
+          "description": "One of the ratios drawn in Figma, or any `w:h` / `w/h` pair."
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [
+        "evoq-ui:carousel-slide"
+      ],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4156:64491",
+        "sets": [
+          {
+            "name": "Aspect Ratio",
+            "id": "820:3124",
+            "page": "Aspect Ratio"
+          }
+        ]
+      },
+      "keywords": [
+        "ratio",
+        "media",
+        "image",
+        "video",
+        "embed",
+        "16:9"
+      ]
+    },
+    {
+      "id": "evoq-ui:avatar",
+      "name": "EvAvatar",
+      "tag": "ev-avatar",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvAvatar } from 'evoq-ui'",
+      "doc": "docs/components/avatar.md",
+      "source": "src/atoms/avatar/EvAvatar.vue",
+      "summary": "An avatar represents a user or entity through an image, initials, or icon, helping provide identity and context within the interface.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "size",
+          "type": "AvatarSize",
+          "options": [
+            24,
+            32,
+            40,
+            48,
+            64,
+            96
+          ],
+          "default": "32",
+          "required": false
+        },
+        {
+          "name": "variant",
+          "type": "AvatarVariant",
+          "options": [
+            "green",
+            "blue",
+            "orange",
+            "purple",
+            "teal",
+            "pink",
+            "number",
+            "empty",
+            "error"
+          ],
+          "default": "'blue'",
+          "required": false,
+          "description": "Tint of the initials avatar, or one of the three grey states: `number` for an overflow count, `empty` for no person, `error` for a failed image."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Initials, or the count for the `number` variant."
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "description": "Shows the photo instead of the initials."
+        },
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name. Falls back to the initials."
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:badge",
+        "evoq-ui:button"
+      ],
+      "figma": {
+        "doc": "3715:14719",
+        "sets": [
+          {
+            "name": "Avatar",
+            "id": "497:979",
+            "page": "Avatar"
+          }
+        ]
+      },
+      "keywords": [
+        "user",
+        "profile",
+        "initials",
+        "photo",
+        "person"
+      ]
+    },
+    {
+      "id": "evoq-ui:avatar-group",
+      "name": "EvAvatarGroup",
+      "tag": "ev-avatar-group",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvAvatarGroup } from 'evoq-ui'",
+      "doc": "docs/components/avatar-group.md",
+      "source": "src/molecules/avatar-group/EvAvatarGroup.vue",
+      "summary": "A labelled, overlapping stack of avatars that share one size.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "size",
+          "type": "AvatarSize",
+          "options": [
+            24,
+            32,
+            40,
+            48,
+            64,
+            96
+          ],
+          "default": "32",
+          "required": false,
+          "description": "Must match the size of the avatars inside - it sets the overlap."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name for the stack."
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [
+        "evoq-ui:avatar"
+      ],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:badge",
+        "evoq-ui:button"
+      ],
+      "figma": {
+        "doc": "3715:14719",
+        "sets": [
+          {
+            "name": "AvatarGroup",
+            "id": "504:705",
+            "page": "Avatar"
+          }
+        ]
+      },
+      "keywords": [
+        "avatar stack",
+        "people",
+        "members"
+      ]
+    },
+    {
+      "id": "evoq-ui:badge",
+      "name": "EvBadge",
+      "tag": "ev-badge",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvBadge } from 'evoq-ui'",
+      "doc": "docs/components/badge.md",
+      "source": "src/atoms/badge/EvBadge.vue",
+      "summary": "A badge is a small, color-coded label that communicates an item's status, category, or count using concise text.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "variant",
+          "type": "BadgeVariant",
+          "options": [
+            "success",
+            "waiting",
+            "neutral",
+            "draft",
+            "reject",
+            "custom"
+          ],
+          "default": "'neutral'",
+          "required": false
+        },
+        {
+          "name": "reverse",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Reverse Colors` property: swaps the tinted badge for a solid fill with inverse text."
+        }
+      ],
+      "slots": [
+        "default",
+        "iconLeft",
+        "iconRight"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:avatar",
+        "evoq-ui:button",
+        "evoq-ui:hint"
+      ],
+      "figma": {
+        "doc": "3804:28987",
+        "sets": [
+          {
+            "name": "Badge",
+            "id": "72:1516",
+            "page": "Badge"
+          }
+        ]
+      },
+      "keywords": [
+        "status",
+        "label",
+        "pill",
+        "chip",
+        "state"
+      ]
+    },
+    {
+      "id": "evoq-ui:bar-chart",
+      "name": "EvBarChart",
+      "tag": "ev-bar-chart",
+      "layer": "organism",
+      "entry": "evoq-ui/charts",
+      "import": "import { EvBarChart } from 'evoq-ui/charts'",
+      "doc": "docs/components/bar-chart.md",
+      "source": "src/charts/EvBarChart.vue",
+      "summary": "A bar chart - grouped or stacked - drawn in SVG from an array of records.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "data",
+          "type": "T[]",
+          "required": true
+        },
+        {
+          "name": "category",
+          "type": "keyof T & string",
+          "required": true,
+          "description": "Key holding each row's category - the X axis."
+        },
+        {
+          "name": "series",
+          "type": "(keyof T & string)[]",
+          "required": true,
+          "description": "One key per series. Several keys give the board's GroupBarChart."
+        },
+        {
+          "name": "type",
+          "type": "BarChartType",
+          "options": [
+            "grouped",
+            "stacked"
+          ],
+          "default": "'grouped'",
+          "required": false,
+          "description": "`stacked` stacks the series within one column instead of clustering."
+        },
+        {
+          "name": "height",
+          "type": "number",
+          "default": "240",
+          "required": false
+        },
+        {
+          "name": "showValues",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Has Value`: the figure above each bar."
+        },
+        {
+          "name": "seriesLabels",
+          "type": "string[]",
+          "required": false,
+          "description": "Names used in the tooltip. Falls back to the series keys."
+        },
+        {
+          "name": "xLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "yLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible description of what the chart shows."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "partOf": "evoq-ui:chart",
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4220:71982",
+        "sets": [
+          {
+            "name": "BarChart",
+            "id": "3398:521",
+            "page": "Chart"
+          }
+        ]
+      },
+      "keywords": [
+        "bar",
+        "column chart",
+        "histogram",
+        "graph"
+      ]
+    },
+    {
+      "id": "evoq-ui:breadcrumb",
+      "name": "EvBreadcrumb",
+      "tag": "ev-breadcrumb",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvBreadcrumb } from 'evoq-ui'",
+      "doc": "docs/components/breadcrumb.md",
+      "source": "src/organisms/breadcrumb/EvBreadcrumb.vue",
+      "summary": "Show the user's location within a hierarchy and let them navigate back to any ancestor level.",
+      "summarySource": "figma-legacy",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "items",
+          "type": "BreadcrumbItem[]",
+          "required": true
+        },
+        {
+          "name": "maxItems",
+          "type": "number",
+          "default": "0",
+          "required": false,
+          "description": "Collapse the middle of the trail once there are more crumbs than this, matching Figma's `Ellipsis` variant. `0` never collapses."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": "'Breadcrumb'",
+          "required": false,
+          "description": "Accessible name for the trail."
+        }
+      ],
+      "slots": [],
+      "events": [
+        "select"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [
+        "evoq-ui:button-link",
+        "evoq-ui:dropdown-item",
+        "evoq-ui:dropdown-list"
+      ],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4179:64595",
+        "sets": [
+          {
+            "name": "Breadcrumb",
+            "id": "681:10168",
+            "page": "Breadcrumb"
+          }
+        ]
+      },
+      "keywords": [
+        "path",
+        "trail",
+        "hierarchy",
+        "navigation"
+      ]
+    },
+    {
+      "id": "evoq-ui:button",
+      "name": "EvButton",
+      "tag": "ev-button",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvButton } from 'evoq-ui'",
+      "doc": "docs/components/button.md",
+      "source": "src/atoms/button/EvButton.vue",
+      "summary": "A button triggers an action or submits a form — the primary way users commit to a decision in a form, card, dialog, or toolbar.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "variant",
+          "type": "ButtonVariant",
+          "options": [
+            "primary",
+            "secondary-light",
+            "secondary-grey",
+            "secondary-white",
+            "destructive",
+            "outline",
+            "ghost"
+          ],
+          "default": "'primary'",
+          "required": false,
+          "description": "Visual weight of the button."
+        },
+        {
+          "name": "size",
+          "type": "ButtonSize",
+          "options": [
+            "default",
+            "small"
+          ],
+          "default": "'default'",
+          "required": false,
+          "description": "Control height: 40px (`default`) or 32px (`small`)."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Shows a spinner and blocks interaction."
+        },
+        {
+          "name": "block",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Stretch to the full width of the parent."
+        },
+        {
+          "name": "iconOnly",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Render as a square control holding only an icon. Pass the icon through the `iconLeft` slot, and give the button an `aria-label` - there is no visible text for a screen reader to announce."
+        },
+        {
+          "name": "type",
+          "type": "'button' | 'submit' | 'reset'",
+          "options": [
+            "button",
+            "submit",
+            "reset"
+          ],
+          "default": "'button'",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "iconLeft",
+        "iconRight"
+      ],
+      "events": [
+        "click"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [
+        "evoq-ui:calendar",
+        "evoq-ui:carousel",
+        "evoq-ui:time-picker"
+      ],
+      "seeAlso": [
+        "evoq-ui:button-link",
+        "evoq-ui:switch",
+        "evoq-ui:toggle"
+      ],
+      "figma": {
+        "doc": "3814:54536",
+        "sets": [
+          {
+            "name": "Button",
+            "id": "114:2645",
+            "page": "Button"
+          }
+        ]
+      },
+      "keywords": [
+        "action",
+        "submit",
+        "cta",
+        "btn",
+        "primary",
+        "destructive"
+      ]
+    },
+    {
+      "id": "evoq-ui:button-group",
+      "name": "EvButtonGroup",
+      "tag": "ev-button-group",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvButtonGroup } from 'evoq-ui'",
+      "doc": "docs/components/button-group.md",
+      "source": "src/molecules/button-group/EvButtonGroup.vue",
+      "summary": "Group related action buttons horizontally so they share borders and read as one control.",
+      "summarySource": "figma-legacy",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "variant",
+          "type": "ButtonGroupVariant",
+          "options": [
+            "default-light",
+            "default-white",
+            "primary",
+            "destructive",
+            "warning"
+          ],
+          "default": "'default-light'",
+          "required": false,
+          "description": "Applied to every item unless one overrides it."
+        },
+        {
+          "name": "size",
+          "type": "ButtonGroupSize",
+          "options": [
+            "large",
+            "small"
+          ],
+          "default": "'large'",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name for the control."
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [
+        "evoq-ui:button-group-item"
+      ],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:button"
+      ],
+      "figma": {
+        "doc": "4187:64907",
+        "sets": [
+          {
+            "name": "ButtonGroup",
+            "id": "749:4513",
+            "page": "Button Group"
+          }
+        ]
+      },
+      "keywords": [
+        "segmented",
+        "pagination",
+        "button bar"
+      ]
+    },
+    {
+      "id": "evoq-ui:button-group-item",
+      "name": "EvButtonGroupItem",
+      "tag": "ev-button-group-item",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvButtonGroupItem } from 'evoq-ui'",
+      "doc": "docs/components/button-group-item.md",
+      "source": "src/atoms/button-group-item/EvButtonGroupItem.vue",
+      "summary": "One segment of a ButtonGroup - a button that takes its variant and size from the group around it.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "variant",
+          "type": "ButtonGroupVariant",
+          "options": [
+            "default-light",
+            "default-white",
+            "primary",
+            "destructive",
+            "warning"
+          ],
+          "required": false,
+          "description": "Overrides the group's variant for this one item."
+        },
+        {
+          "name": "size",
+          "type": "ButtonGroupSize",
+          "options": [
+            "large",
+            "small"
+          ],
+          "required": false
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Marks this item as the current choice."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "iconOnly",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Square item holding only an icon. Give it an `aria-label`."
+        },
+        {
+          "name": "type",
+          "type": "'button' | 'submit' | 'reset'",
+          "options": [
+            "button",
+            "submit",
+            "reset"
+          ],
+          "default": "'button'",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "iconLeft",
+        "iconRight"
+      ],
+      "events": [
+        "click"
+      ],
+      "partOf": "evoq-ui:button-group",
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:button"
+      ],
+      "figma": {
+        "doc": "4187:64907",
+        "sets": [
+          {
+            "name": "ButtonGroup Item",
+            "id": "749:4128",
+            "page": "Button Group"
+          }
+        ]
+      },
+      "keywords": [
+        "segment",
+        "pagination item"
+      ]
+    },
+    {
+      "id": "evoq-ui:button-link",
+      "name": "EvButtonLink",
+      "tag": "ev-button-link",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvButtonLink } from 'evoq-ui'",
+      "doc": "docs/components/button-link.md",
+      "source": "src/atoms/button-link/EvButtonLink.vue",
+      "summary": "A button link is a text-only, inline action styled as a link — used for low-emphasis or navigational actions where a full button would be too heavy.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "variant",
+          "type": "ButtonLinkVariant",
+          "options": [
+            "primary",
+            "secondary",
+            "tertiary",
+            "invert",
+            "custom"
+          ],
+          "default": "'primary'",
+          "required": false
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Renders an anchor instead of a button."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "current",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "The link is the current item - a breadcrumb's page. Pins the variant's `State=Active` look and sets `aria-current=\"page\"`; without an `href` it renders as plain text, since the current page is not a destination."
+        },
+        {
+          "name": "type",
+          "type": "'button' | 'submit' | 'reset'",
+          "options": [
+            "button",
+            "submit",
+            "reset"
+          ],
+          "default": "'button'",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "iconLeft",
+        "iconRight"
+      ],
+      "events": [
+        "click"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [
+        "evoq-ui:breadcrumb",
+        "evoq-ui:calendar"
+      ],
+      "seeAlso": [
+        "evoq-ui:button",
+        "evoq-ui:toggle"
+      ],
+      "figma": {
+        "doc": "3855:54960",
+        "sets": [
+          {
+            "name": "ButtonLink",
+            "id": "480:3197",
+            "page": "Button Link"
+          }
+        ]
+      },
+      "keywords": [
+        "link",
+        "anchor",
+        "text button",
+        "href"
+      ]
+    },
+    {
+      "id": "evoq-ui:calendar",
+      "name": "EvCalendar",
+      "tag": "ev-calendar",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvCalendar } from 'evoq-ui'",
+      "doc": "docs/components/calendar.md",
+      "source": "src/organisms/calendar/EvCalendar.vue",
+      "summary": "A date picker for a single date or a range, with day, month, year and full-calendar views, presets, and desktop and mobile layouts.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [
+        "modelValue",
+        "month",
+        "view",
+        "monthOpen",
+        "yearOpen"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "Date | [Date | null, Date | null] | null",
+          "default": "null",
+          "required": false,
+          "description": "A single date, or a `[from, to]` pair in range mode."
+        },
+        {
+          "name": "mode",
+          "type": "CalendarMode",
+          "options": [
+            "single",
+            "range"
+          ],
+          "default": "'single'",
+          "required": false
+        },
+        {
+          "name": "view",
+          "type": "CalendarView",
+          "options": [
+            "day",
+            "month",
+            "year",
+            "full"
+          ],
+          "default": "'day'",
+          "required": false,
+          "description": "Which grid to draw. `month` and `year` are the board's `Month` / `Year` variants, and the same two grids back the desktop `Month Open` and `Year Open` overlays."
+        },
+        {
+          "name": "platform",
+          "type": "CalendarPlatform",
+          "options": [
+            "desktop",
+            "mobile"
+          ],
+          "default": "'desktop'",
+          "required": false,
+          "description": "`desktop` is the `D - Calendar` board; `mobile` is `M - CalendarPopup` - bare chevrons, a value read-out above the footer, and footer buttons split evenly rather than sitting right-aligned."
+        },
+        {
+          "name": "fullMonths",
+          "type": "number",
+          "default": "12",
+          "required": false,
+          "description": "How many month blocks the `full` view stacks."
+        },
+        {
+          "name": "monthOpen",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Month Open` / `Year Open` overlays on the desktop header."
+        },
+        {
+          "name": "yearOpen",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "month",
+          "type": "Date",
+          "required": false,
+          "description": "The month on view. Uncontrolled unless you pass it."
+        },
+        {
+          "name": "min",
+          "type": "Date",
+          "required": false
+        },
+        {
+          "name": "max",
+          "type": "Date",
+          "required": false
+        },
+        {
+          "name": "weekStartsOn",
+          "type": "0 | 1",
+          "options": [
+            0,
+            1
+          ],
+          "default": "1",
+          "required": false,
+          "description": "0 = Sunday, 1 = Monday."
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "default": "'id-ID'",
+          "required": false,
+          "description": "Locale for the month name and weekday initials."
+        },
+        {
+          "name": "events",
+          "type": "Date[]",
+          "default": "() => []",
+          "required": false,
+          "description": "Dates to mark with the board's event dot."
+        },
+        {
+          "name": "presets",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Basic Preset` / `Range Preset`: the quick-select row below the grid."
+        },
+        {
+          "name": "hasReset",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Has Reset Button` on the footer row."
+        },
+        {
+          "name": "showTimeLink",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "The board's `Select Time` link, drawn under the Basic variant."
+        },
+        {
+          "name": "previousLabel",
+          "type": "string",
+          "default": "'Bulan sebelumnya'",
+          "required": false
+        },
+        {
+          "name": "nextLabel",
+          "type": "string",
+          "default": "'Bulan berikutnya'",
+          "required": false
+        },
+        {
+          "name": "cancelLabel",
+          "type": "string",
+          "default": "'Cancel'",
+          "required": false
+        },
+        {
+          "name": "applyLabel",
+          "type": "string",
+          "default": "'Apply'",
+          "required": false
+        },
+        {
+          "name": "resetLabel",
+          "type": "string",
+          "default": "'Reset'",
+          "required": false
+        },
+        {
+          "name": "timeLinkLabel",
+          "type": "string",
+          "default": "'Select Time'",
+          "required": false
+        }
+      ],
+      "slots": [],
+      "events": [
+        "update:modelValue",
+        "update:month",
+        "update:view",
+        "update:monthOpen",
+        "update:yearOpen",
+        "apply",
+        "cancel",
+        "reset"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [
+        "evoq-ui:button",
+        "evoq-ui:button-link",
+        "evoq-ui:dropdown-item",
+        "evoq-ui:dropdown-list"
+      ],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4218:66637",
+        "sets": [
+          {
+            "name": "D - Calendar",
+            "id": "2561:1340",
+            "page": "Calendar & Time Picker"
+          },
+          {
+            "name": "M - CalendarPopup",
+            "id": "2577:1585",
+            "page": "Calendar & Time Picker"
+          },
+          {
+            "name": "M- CalendarDrawer",
+            "id": "2844:5830",
+            "page": "Calendar & Time Picker"
+          }
+        ]
+      },
+      "keywords": [
+        "date picker",
+        "datepicker",
+        "date range",
+        "calendar"
+      ]
+    },
+    {
+      "id": "evoq-ui:card",
+      "name": "EvCard",
+      "tag": "ev-card",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvCard } from 'evoq-ui'",
+      "doc": "docs/components/card.md",
+      "source": "src/organisms/card/EvCard.vue",
+      "summary": "A bordered block that frames one subject: optional image, title and description, header action, body and footer.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "type",
+          "type": "CardType",
+          "options": [
+            "default",
+            "small",
+            "image"
+          ],
+          "default": "'default'",
+          "required": false
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "image",
+        "title",
+        "description",
+        "headerSlot",
+        "headerAction",
+        "footer"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4220:70848",
+        "sets": [
+          {
+            "name": "Card",
+            "id": "93:157",
+            "page": "Card"
+          }
+        ]
+      },
+      "keywords": [
+        "panel",
+        "tile",
+        "container",
+        "box"
+      ]
+    },
+    {
+      "id": "evoq-ui:carousel",
+      "name": "EvCarousel",
+      "tag": "ev-carousel",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvCarousel } from 'evoq-ui'",
+      "doc": "docs/components/carousel.md",
+      "source": "src/organisms/carousel/EvCarousel.vue",
+      "summary": "A carousel displays a set of items in a scrollable horizontal or vertical track, with previous/next navigation buttons and a position indicator. It supports multiple content aspect ratios.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "number",
+          "default": "0",
+          "required": false,
+          "description": "Index of the slide in view."
+        },
+        {
+          "name": "orientation",
+          "type": "CarouselOrientation",
+          "options": [
+            "horizontal",
+            "vertical"
+          ],
+          "default": "'horizontal'",
+          "required": false
+        },
+        {
+          "name": "ratio",
+          "type": "AspectRatio | string",
+          "default": "'16:9'",
+          "required": false,
+          "description": "Applied to every slide. The usage doc is explicit that one carousel keeps a single ratio throughout, so it lives here rather than on each slide."
+        },
+        {
+          "name": "showButtons",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Figma's `Need Button`: the previous/next controls."
+        },
+        {
+          "name": "showIndicator",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Figma's `Has Indicator Slot`: the position dots."
+        },
+        {
+          "name": "previousLabel",
+          "type": "string",
+          "default": "'Sebelumnya'",
+          "required": false
+        },
+        {
+          "name": "nextLabel",
+          "type": "string",
+          "default": "'Berikutnya'",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name for the carousel."
+        }
+      ],
+      "slots": [
+        "default",
+        "indicator"
+      ],
+      "events": [
+        "update:modelValue"
+      ],
+      "partOf": null,
+      "children": [
+        "evoq-ui:carousel-slide"
+      ],
+      "composes": [
+        "evoq-ui:button"
+      ],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:tabs"
+      ],
+      "figma": {
+        "doc": "4597:11479",
+        "sets": [
+          {
+            "name": "Carousel",
+            "id": "2344:1404",
+            "page": "Carousel"
+          }
+        ]
+      },
+      "keywords": [
+        "slider",
+        "gallery",
+        "slideshow"
+      ]
+    },
+    {
+      "id": "evoq-ui:carousel-slide",
+      "name": "EvCarouselSlide",
+      "tag": "ev-carousel-slide",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvCarouselSlide } from 'evoq-ui'",
+      "doc": "docs/components/carousel-slide.md",
+      "source": "src/organisms/carousel/EvCarouselSlide.vue",
+      "summary": "One slide of a Carousel, drawn as an Aspect Ratio box at the carousel's ratio.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [],
+      "slots": [
+        "default"
+      ],
+      "events": [],
+      "partOf": "evoq-ui:carousel",
+      "children": [],
+      "composes": [
+        "evoq-ui:aspect-ratio"
+      ],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:tabs"
+      ],
+      "figma": {
+        "doc": "4597:11479",
+        "sets": []
+      },
+      "keywords": [
+        "slide"
+      ]
+    },
+    {
+      "id": "evoq-ui:chart",
+      "name": "EvChart",
+      "tag": "ev-chart",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvChart } from 'evoq-ui'",
+      "doc": "docs/components/chart.md",
+      "source": "src/organisms/chart/EvChart.vue",
+      "summary": "The titled frame a chart sits in: title, subtext, header action, summary and legend around the chart slot.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "variant",
+          "type": "ChartVariant",
+          "options": [
+            "card",
+            "no-card"
+          ],
+          "default": "'card'",
+          "required": false,
+          "description": "`card` wraps the chart in a surface; `no-card` renders it bare."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "subtext",
+          "type": "string",
+          "required": false,
+          "description": "Figma's `Has Subtext`: a muted line under the title - a range or unit."
+        }
+      ],
+      "slots": [
+        "default",
+        "title",
+        "subtext",
+        "headerAction",
+        "summary",
+        "legend"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [
+        "evoq-ui:bar-chart",
+        "evoq-ui:line-chart",
+        "evoq-ui:pie-chart"
+      ],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:bar-chart"
+      ],
+      "figma": {
+        "doc": "4220:71982",
+        "sets": [
+          {
+            "name": "Chart",
+            "id": "3404:2299",
+            "page": "Chart"
+          }
+        ]
+      },
+      "keywords": [
+        "chart card",
+        "graph container",
+        "dashboard tile"
+      ]
+    },
+    {
+      "id": "evoq-ui:checkbox",
+      "name": "EvCheckbox",
+      "tag": "ev-checkbox",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvCheckbox } from 'evoq-ui'",
+      "doc": "docs/components/checkbox.md",
+      "source": "src/atoms/checkbox/EvCheckbox.vue",
+      "summary": "A checkbox lets users select one or more options from a set, or toggle a single setting on or off. It supports checked, unchecked, indeterminate, disabled, and error states.",
+      "summarySource": "figma",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "indeterminate",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Renders the dash instead of the tick. Independent of `modelValue`, the same way the DOM's own `indeterminate` flag is."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Draws the error border and tints the subtext."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "subtext",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "value",
+          "type": "string | number",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "subtext"
+      ],
+      "events": [
+        "update:modelValue"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [
+        "evoq-ui:tree-item"
+      ],
+      "seeAlso": [
+        "evoq-ui:button",
+        "evoq-ui:radio",
+        "evoq-ui:toggle"
+      ],
+      "figma": {
+        "doc": "3931:58016",
+        "sets": [
+          {
+            "name": "Checkbox",
+            "id": "504:4181",
+            "page": "Checkbox"
+          }
+        ]
+      },
+      "keywords": [
+        "check",
+        "multi select",
+        "tick",
+        "indeterminate"
+      ]
+    },
+    {
+      "id": "evoq-ui:direction",
+      "name": "EvDirection",
+      "tag": "ev-direction",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvDirection } from 'evoq-ui'",
+      "doc": "docs/components/direction.md",
+      "source": "src/organisms/direction/EvDirection.vue",
+      "summary": "A panel that guides one short task: title and subtext, an optional header action, a body, and confirm / cancel footer slots.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "subtext",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "hasHeaderAction",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Figma's `Has Icon Right`: the trailing element in the header. On by default - the usage doc says not to hide the close affordance."
+        },
+        {
+          "name": "hasConfirm",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Figma's `Has Confirmation Button`: the primary action in the footer. Turn it off for a read-only panel that only needs a dismiss."
+        }
+      ],
+      "slots": [
+        "default",
+        "topSlot",
+        "title",
+        "subtext",
+        "headerAction",
+        "confirm",
+        "cancel"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:alert"
+      ],
+      "figma": {
+        "doc": "4220:76473",
+        "sets": [
+          {
+            "name": "Direction",
+            "id": "2504:3364",
+            "page": "Direction"
+          }
+        ]
+      },
+      "keywords": [
+        "guided task",
+        "instruction panel",
+        "step"
+      ]
+    },
+    {
+      "id": "evoq-ui:drawer",
+      "name": "EvDrawer",
+      "tag": "ev-drawer",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvDrawer } from 'evoq-ui'",
+      "doc": "docs/components/drawer.md",
+      "source": "src/organisms/drawer/EvDrawer.vue",
+      "summary": "A panel that slides in from the right, left or bottom over a scrim - traps focus, closes on Escape, and restores focus on close.",
+      "summarySource": "code",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "size",
+          "type": "DrawerSize",
+          "options": [
+            "default",
+            "wide"
+          ],
+          "default": "'default'",
+          "required": false
+        },
+        {
+          "name": "placement",
+          "type": "DrawerPlacement",
+          "options": [
+            "right",
+            "left",
+            "bottom"
+          ],
+          "default": "'right'",
+          "required": false,
+          "description": "Which edge it slides from. `bottom` is the board's mobile sheet."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "subtext",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "closable",
+          "type": "boolean",
+          "default": "true",
+          "required": false
+        },
+        {
+          "name": "closeLabel",
+          "type": "string",
+          "default": "'Tutup'",
+          "required": false
+        },
+        {
+          "name": "closeOnScrim",
+          "type": "boolean",
+          "default": "true",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "title",
+        "subtext",
+        "topSlot",
+        "footer"
+      ],
+      "events": [
+        "update:modelValue",
+        "close"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:alert-dialog"
+      ],
+      "figma": {
+        "doc": "4258:76893",
+        "sets": [
+          {
+            "name": "D- Drawer",
+            "id": "2930:20688",
+            "page": "Drawer"
+          },
+          {
+            "name": "M- Drawer",
+            "id": "2616:13119",
+            "page": "Drawer"
+          }
+        ]
+      },
+      "keywords": [
+        "side panel",
+        "sheet",
+        "bottom sheet",
+        "offcanvas"
+      ]
+    },
+    {
+      "id": "evoq-ui:dropdown-item",
+      "name": "EvDropdownItem",
+      "tag": "ev-dropdown-item",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvDropdownItem } from 'evoq-ui'",
+      "doc": "docs/components/dropdown-item.md",
+      "source": "src/atoms/dropdown-item/EvDropdownItem.vue",
+      "summary": "One row of a DropdownList: an option in a listbox, or a menu item - a real link when given an href - inside a menu.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "variant",
+          "type": "DropdownItemVariant",
+          "options": [
+            "list",
+            "list-box"
+          ],
+          "default": "'list'",
+          "required": false,
+          "description": "`list` is the plain 24px row; `list-box` is the taller 32px row the board uses once a checkbox or avatar sits beside the label."
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Active` state - the currently chosen option."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Makes the row a real link - for a menu of destinations, such as a breadcrumb's hidden crumbs. It keeps native link behaviour (open in a new tab, copy address) that a scripted option would lose."
+        }
+      ],
+      "slots": [
+        "default",
+        "iconLeft",
+        "iconRight"
+      ],
+      "events": [
+        "select"
+      ],
+      "partOf": "evoq-ui:dropdown-list",
+      "children": [],
+      "composes": [],
+      "usedBy": [
+        "evoq-ui:breadcrumb",
+        "evoq-ui:calendar"
+      ],
+      "seeAlso": [
+        "evoq-ui:radio"
+      ],
+      "figma": {
+        "doc": "4258:77060",
+        "sets": [
+          {
+            "name": ".List Text",
+            "id": "668:8826",
+            "page": "Dropdown List"
+          }
+        ]
+      },
+      "keywords": [
+        "option",
+        "menu item",
+        "list item",
+        "select option"
+      ]
+    },
+    {
+      "id": "evoq-ui:dropdown-list",
+      "name": "EvDropdownList",
+      "tag": "ev-dropdown-list",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvDropdownList } from 'evoq-ui'",
+      "doc": "docs/components/dropdown-list.md",
+      "source": "src/molecules/dropdown-list/EvDropdownList.vue",
+      "summary": "A floating list panel - a listbox of options to choose from, or a menu of actions and links - with optional search, scrolling and an empty state.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [
+        "searchValue"
+      ],
+      "props": [
+        {
+          "name": "searchable",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Has Search`: turns the list into the Combobox pattern."
+        },
+        {
+          "name": "searchValue",
+          "type": "string",
+          "default": "''",
+          "required": false
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "default": "'Cari...'",
+          "required": false
+        },
+        {
+          "name": "scrollable",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Has Scroll`: caps the visible height. Off by default - the doc says scrolling still works without it. Override the cap itself with `--ev-dropdown-list-max-height`."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name for the option list."
+        },
+        {
+          "name": "menu",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "A menu of actions or links rather than a listbox of options to choose from - the rows become menu items, and a row with `href` a real link."
+        }
+      ],
+      "slots": [
+        "default",
+        "empty"
+      ],
+      "events": [
+        "update:searchValue"
+      ],
+      "partOf": null,
+      "children": [
+        "evoq-ui:dropdown-item"
+      ],
+      "composes": [
+        "evoq-ui:input-search"
+      ],
+      "usedBy": [
+        "evoq-ui:breadcrumb",
+        "evoq-ui:calendar"
+      ],
+      "seeAlso": [
+        "evoq-ui:radio"
+      ],
+      "figma": {
+        "doc": "4258:77060",
+        "sets": [
+          {
+            "name": "DropdownList",
+            "id": "668:8852",
+            "page": "Dropdown List"
+          }
+        ]
+      },
+      "keywords": [
+        "select",
+        "menu",
+        "options",
+        "listbox",
+        "combobox",
+        "popover list"
+      ]
+    },
+    {
+      "id": "evoq-ui:hint",
+      "name": "EvHint",
+      "tag": "ev-hint",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvHint } from 'evoq-ui'",
+      "doc": "docs/components/hint.md",
+      "source": "src/atoms/hint/EvHint.vue",
+      "summary": "A hint is a small notification badge that signals unread or pending items — shown as a plain dot or a count, attached to an icon, tab, or menu item.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "size",
+          "type": "HintSize",
+          "options": [
+            "small",
+            "medium",
+            "large"
+          ],
+          "default": "'medium'",
+          "required": false
+        },
+        {
+          "name": "value",
+          "type": "number | string",
+          "required": false,
+          "description": "Count to display. Leave unset for the bare dot."
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "default": "99",
+          "required": false,
+          "description": "Counts above this render as `{max}+`, matching Figma's `99+` variant."
+        },
+        {
+          "name": "dot",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Force the dot even when a value is given."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:badge",
+        "evoq-ui:button"
+      ],
+      "figma": {
+        "doc": "3947:58190",
+        "sets": [
+          {
+            "name": "Hint",
+            "id": "658:1960",
+            "page": "Hint"
+          }
+        ]
+      },
+      "keywords": [
+        "notification",
+        "dot",
+        "count",
+        "unread",
+        "badge count"
+      ]
+    },
+    {
+      "id": "evoq-ui:input",
+      "name": "EvInput",
+      "tag": "ev-input",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvInput } from 'evoq-ui'",
+      "doc": "docs/components/input.md",
+      "source": "src/atoms/input/EvInput.vue",
+      "summary": "A single-line text input for collecting short free-form values. It supports leading/trailing icons, validation messaging, and multiple interaction states.",
+      "summarySource": "figma",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string | number",
+          "default": "''",
+          "required": false
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "default": "'text'",
+          "required": false,
+          "description": "Any native input type - `text`, `search`, `email`, `number`, ..."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "size",
+          "type": "'default' | 'small'",
+          "options": [
+            "default",
+            "small"
+          ],
+          "default": "'default'",
+          "required": false,
+          "description": "Container size: default (44px) or small (32px) per Figma spec"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Floating label, drawn notched into the field's top border."
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Marks the field required and appends the board's red asterisk."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Switches the field to the error style. Always pair it with a message."
+        },
+        {
+          "name": "validationText",
+          "type": "string",
+          "required": false,
+          "description": "Helper text below the field. Turns red in the error state."
+        },
+        {
+          "name": "validationTextEnd",
+          "type": "string",
+          "required": false,
+          "description": "Trailing helper text, right-aligned - a counter or a hint."
+        },
+        {
+          "name": "clearable",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Shows the clear button once there is something to clear."
+        },
+        {
+          "name": "clearLabel",
+          "type": "string",
+          "default": "'Bersihkan'",
+          "required": false
+        }
+      ],
+      "slots": [
+        "iconLeft",
+        "iconRight"
+      ],
+      "events": [
+        "update:modelValue",
+        "clear"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [
+        "evoq-ui:input-field-unit"
+      ],
+      "seeAlso": [
+        "evoq-ui:textarea"
+      ],
+      "figma": {
+        "doc": "4680:3577",
+        "sets": [
+          {
+            "name": "InputField",
+            "id": "85:2484",
+            "page": "Input"
+          }
+        ]
+      },
+      "keywords": [
+        "text field",
+        "input",
+        "form",
+        "textbox",
+        "field"
+      ]
+    },
+    {
+      "id": "evoq-ui:input-field-unit",
+      "name": "EvInputFieldUnit",
+      "tag": "ev-input-field-unit",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvInputFieldUnit } from 'evoq-ui'",
+      "doc": "docs/components/input-field-unit.md",
+      "source": "src/molecules/input-field-unit/EvInputFieldUnit.vue",
+      "summary": "A composite input pairing a leading unit selector (dropdown) with a text/number field. Use it for values that carry a unit — e.g. amount + currency, weight + unit. It supports validation and the same interaction states as InputField.",
+      "summarySource": "figma",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue",
+        "unit"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string | number",
+          "default": "''",
+          "required": false
+        },
+        {
+          "name": "unit",
+          "type": "string",
+          "default": "''",
+          "required": false
+        },
+        {
+          "name": "units",
+          "type": "(string | UnitOption)[]",
+          "default": "() => ['IDR', 'USD', 'EUR']",
+          "required": false
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "default": "'text'",
+          "required": false
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "validationText",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "validationTextEnd",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "clearable",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        }
+      ],
+      "slots": [],
+      "events": [
+        "update:modelValue",
+        "update:unit",
+        "clear"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [
+        "evoq-ui:input"
+      ],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:input"
+      ],
+      "figma": {
+        "doc": "4707:9944",
+        "sets": [
+          {
+            "name": "InputFieldUnit",
+            "id": "702:3937",
+            "page": "Input"
+          }
+        ]
+      },
+      "keywords": [
+        "unit",
+        "currency",
+        "amount",
+        "measure"
+      ]
+    },
+    {
+      "id": "evoq-ui:input-search",
+      "name": "EvInputSearch",
+      "tag": "ev-input-search",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvInputSearch } from 'evoq-ui'",
+      "doc": "docs/components/input-search.md",
+      "source": "src/atoms/input-search/EvInputSearch.vue",
+      "summary": "A search input with a leading search icon and an optional clear action. Use it to filter or look up content. It is 44px tall and supports validation and interaction states.",
+      "summarySource": "figma",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string",
+          "default": "''",
+          "required": false
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "default": "'Cari sesuatu...'",
+          "required": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "clearable",
+          "type": "boolean",
+          "default": "true",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "validationText",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "slots": [
+        "shortcut"
+      ],
+      "events": [
+        "update:modelValue",
+        "search",
+        "clear"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [
+        "evoq-ui:dropdown-list"
+      ],
+      "seeAlso": [
+        "evoq-ui:input"
+      ],
+      "figma": {
+        "doc": "4713:10535",
+        "sets": [
+          {
+            "name": "InputSearch",
+            "id": "750:2949",
+            "page": "Input"
+          }
+        ]
+      },
+      "keywords": [
+        "search",
+        "filter",
+        "query",
+        "lookup"
+      ]
+    },
+    {
+      "id": "evoq-ui:input-with-label",
+      "name": "EvInputWithLabel",
+      "tag": "ev-input-with-label",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvInputWithLabel } from 'evoq-ui'",
+      "doc": "docs/components/input-with-label.md",
+      "source": "src/atoms/input-with-label/EvInputWithLabel.vue",
+      "summary": "A single-line text input with an inline label placed to the left, right, or both sides of the field. It supports icons, validation, and the same interaction states as InputField.",
+      "summarySource": "figma",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string | number",
+          "default": "''",
+          "required": false
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "default": "'text'",
+          "required": false
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "prefixLabel",
+          "type": "string",
+          "required": false,
+          "description": "Text for left inline label prefix"
+        },
+        {
+          "name": "suffixLabel",
+          "type": "string",
+          "required": false,
+          "description": "Text for right inline label suffix"
+        },
+        {
+          "name": "placement",
+          "type": "'left' | 'right' | 'both'",
+          "options": [
+            "left",
+            "right",
+            "both"
+          ],
+          "default": "'left'",
+          "required": false,
+          "description": "Position placement for inline labels"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "validationText",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "validationTextEnd",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "clearable",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        }
+      ],
+      "slots": [
+        "iconLeft",
+        "iconRight",
+        "prefix",
+        "suffix"
+      ],
+      "events": [
+        "update:modelValue",
+        "clear"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:input"
+      ],
+      "figma": {
+        "doc": "4680:3998",
+        "sets": [
+          {
+            "name": "InputWithLabel",
+            "id": "368:6832",
+            "page": "Input"
+          }
+        ]
+      },
+      "keywords": [
+        "addon",
+        "prefix",
+        "suffix",
+        "inline label"
+      ]
+    },
+    {
+      "id": "evoq-ui:kbd",
+      "name": "EvKbd",
+      "tag": "ev-kbd",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvKbd } from 'evoq-ui'",
+      "doc": "docs/components/kbd.md",
+      "source": "src/atoms/kbd/EvKbd.vue",
+      "summary": "A Kbd (keyboard key) is a small inline chip that represents a single physical key or shortcut token — like Ctrl or ⇧ — used to document keyboard shortcuts.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "variant",
+          "type": "KbdVariant",
+          "options": [
+            "text",
+            "icon"
+          ],
+          "default": "'text'",
+          "required": false,
+          "description": "A text cap hugs its label; an icon cap is a 16px square."
+        },
+        {
+          "name": "light",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Figma's `Light` property. Set to false for the dark cap."
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:badge"
+      ],
+      "figma": {
+        "doc": "4527:86976",
+        "sets": [
+          {
+            "name": "Kbd",
+            "id": "2637:2613",
+            "page": "Kbd"
+          }
+        ]
+      },
+      "keywords": [
+        "keyboard",
+        "shortcut",
+        "key",
+        "hotkey"
+      ]
+    },
+    {
+      "id": "evoq-ui:line-chart",
+      "name": "EvLineChart",
+      "tag": "ev-line-chart",
+      "layer": "organism",
+      "entry": "evoq-ui/charts",
+      "import": "import { EvLineChart } from 'evoq-ui/charts'",
+      "doc": "docs/components/line-chart.md",
+      "source": "src/charts/EvLineChart.vue",
+      "summary": "A line or area chart for trends over time, drawn in SVG from an array of records.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "data",
+          "type": "T[]",
+          "required": true
+        },
+        {
+          "name": "category",
+          "type": "keyof T & string",
+          "required": true,
+          "description": "Key holding each row's position on the X axis."
+        },
+        {
+          "name": "series",
+          "type": "(keyof T & string)[]",
+          "required": true,
+          "description": "One key per series."
+        },
+        {
+          "name": "type",
+          "type": "LineChartType",
+          "options": [
+            "line",
+            "area"
+          ],
+          "default": "'line'",
+          "required": false,
+          "description": "`area` fills the region beneath the trend, as the board's Area does."
+        },
+        {
+          "name": "height",
+          "type": "number",
+          "default": "240",
+          "required": false
+        },
+        {
+          "name": "seriesLabels",
+          "type": "string[]",
+          "required": false,
+          "description": "Names used in the tooltip. Falls back to the series keys."
+        },
+        {
+          "name": "xLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "yLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible description of what the chart shows."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "partOf": "evoq-ui:chart",
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:bar-chart"
+      ],
+      "figma": {
+        "doc": "4220:71982",
+        "sets": [
+          {
+            "name": "LineChart",
+            "id": "3398:1486",
+            "page": "Chart"
+          }
+        ]
+      },
+      "keywords": [
+        "line",
+        "trend",
+        "area chart",
+        "time series",
+        "graph"
+      ]
+    },
+    {
+      "id": "evoq-ui:logo",
+      "name": "EvLogo",
+      "tag": "ev-logo",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvLogo } from 'evoq-ui'",
+      "doc": "docs/components/logo.md",
+      "source": "src/atoms/logo/EvLogo.vue",
+      "summary": "The EVOQ brand mark as an inline SVG; put your own wordmark in its default slot to form the full lockup.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "size",
+          "type": "number | string",
+          "default": "32",
+          "required": false,
+          "description": "Rendered height. The mark is square, so this sets both dimensions."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": "'EVOQ'",
+          "required": false,
+          "description": "Accessible name. Set to an empty string for a decorative mark."
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": null,
+        "sets": [
+          {
+            "name": "EVOQ-Logo",
+            "id": "5092:66984",
+            "page": "Logo"
+          },
+          {
+            "name": "Datasea-Logo",
+            "id": "5092:41618",
+            "page": "Logo"
+          }
+        ]
+      },
+      "keywords": [
+        "brand",
+        "logo",
+        "mark"
+      ]
+    },
+    {
+      "id": "evoq-ui:modal",
+      "name": "EvModal",
+      "tag": "ev-modal",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvModal } from 'evoq-ui'",
+      "doc": "docs/components/modal.md",
+      "source": "src/organisms/modal/EvModal.vue",
+      "summary": "A modal is a focused overlay dialog that interrupts the current flow to present information or request a decision, blocking interaction with the page behind it until dismissed. Available for desktop and mobile.",
+      "summarySource": "figma",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "size",
+          "type": "ModalSize",
+          "options": [
+            "small",
+            "medium",
+            "large"
+          ],
+          "default": "'small'",
+          "required": false
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "subtext",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "closable",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Renders the close button in the header."
+        },
+        {
+          "name": "closeLabel",
+          "type": "string",
+          "default": "'Tutup'",
+          "required": false
+        },
+        {
+          "name": "closeOnScrim",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Set false to keep a click on the scrim from closing the modal."
+        }
+      ],
+      "slots": [
+        "default",
+        "title",
+        "subtext",
+        "topSlot",
+        "footerStart",
+        "footer"
+      ],
+      "events": [
+        "update:modelValue",
+        "close"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:alert",
+        "evoq-ui:drawer"
+      ],
+      "figma": {
+        "doc": "4282:80755",
+        "sets": [
+          {
+            "name": "D - Modal",
+            "id": "2123:1992",
+            "page": "Modal"
+          },
+          {
+            "name": "M - Modal",
+            "id": "2124:2190",
+            "page": "Modal"
+          }
+        ]
+      },
+      "keywords": [
+        "dialog",
+        "overlay",
+        "popup window"
+      ]
+    },
+    {
+      "id": "evoq-ui:nav-menu-item",
+      "name": "EvNavMenuItem",
+      "tag": "ev-nav-menu-item",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvNavMenuItem } from 'evoq-ui'",
+      "doc": "docs/components/nav-menu-item.md",
+      "source": "src/atoms/nav-menu-item/EvNavMenuItem.vue",
+      "summary": "One destination in a NavigationMenu - a link when given an href, marked as the current section when active.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Marks the current section."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Renders an anchor instead of a button."
+        },
+        {
+          "name": "iconOnly",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Icon Only` state: a 32px square pill. Give it an `aria-label`, since there is no visible text."
+        }
+      ],
+      "slots": [
+        "default",
+        "icon"
+      ],
+      "events": [
+        "click"
+      ],
+      "partOf": "evoq-ui:navigation-menu",
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:drawer",
+        "evoq-ui:tabs"
+      ],
+      "figma": {
+        "doc": "4347:81532",
+        "sets": [
+          {
+            "name": ".TabMenubar",
+            "id": "2065:2424",
+            "page": "Navigation Menu - Desktop"
+          }
+        ]
+      },
+      "keywords": [
+        "nav item",
+        "menu link",
+        "top bar item"
+      ]
+    },
+    {
+      "id": "evoq-ui:navigation-menu",
+      "name": "EvNavigationMenu",
+      "tag": "ev-navigation-menu",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvNavigationMenu } from 'evoq-ui'",
+      "doc": "docs/components/navigation-menu.md",
+      "source": "src/organisms/navigation-menu/EvNavigationMenu.vue",
+      "summary": "The navigation menu is the top-level horizontal bar that anchors a desktop app — pairing the brand logo with primary navigation links and utilities (search, profile) so users can orient and move between sections.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name for the bar."
+        }
+      ],
+      "slots": [
+        "default",
+        "brand",
+        "slot1",
+        "slot2",
+        "search",
+        "profile"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [
+        "evoq-ui:nav-menu-item"
+      ],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:drawer",
+        "evoq-ui:tabs"
+      ],
+      "figma": {
+        "doc": "4347:81532",
+        "sets": [
+          {
+            "name": "D - NavigationMenu",
+            "id": "2968:2895",
+            "page": "Navigation Menu - Desktop"
+          }
+        ]
+      },
+      "keywords": [
+        "navbar",
+        "header",
+        "top bar",
+        "app bar"
+      ]
+    },
+    {
+      "id": "evoq-ui:pie-chart",
+      "name": "EvPieChart",
+      "tag": "ev-pie-chart",
+      "layer": "organism",
+      "entry": "evoq-ui/charts",
+      "import": "import { EvPieChart } from 'evoq-ui/charts'",
+      "doc": "docs/components/pie-chart.md",
+      "source": "src/charts/EvPieChart.vue",
+      "summary": "A pie or doughnut chart for part-to-whole proportions, drawn in SVG.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "data",
+          "type": "T[]",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "keyof T & string",
+          "required": true,
+          "description": "Key holding each slice's value."
+        },
+        {
+          "name": "category",
+          "type": "keyof T & string",
+          "required": true,
+          "description": "Key holding each slice's name, used by the tooltip."
+        },
+        {
+          "name": "type",
+          "type": "PieChartType",
+          "options": [
+            "pie",
+            "doughnut",
+            "doughnut-rounded"
+          ],
+          "default": "'doughnut'",
+          "required": false,
+          "description": "`pie` is a full circle, `doughnut` hollows the centre, and `doughnut-rounded` separates the segments and rounds their ends."
+        },
+        {
+          "name": "height",
+          "type": "number",
+          "default": "240",
+          "required": false
+        },
+        {
+          "name": "centralLabel",
+          "type": "string",
+          "required": false,
+          "description": "Text placed in the hollow centre. Ignored by the `pie` type."
+        },
+        {
+          "name": "centralSubLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible description of what the chart shows."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "partOf": "evoq-ui:chart",
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:bar-chart"
+      ],
+      "figma": {
+        "doc": "4220:71982",
+        "sets": [
+          {
+            "name": "PieChart",
+            "id": "3404:1813",
+            "page": "Chart"
+          }
+        ]
+      },
+      "keywords": [
+        "pie",
+        "doughnut",
+        "donut",
+        "proportion",
+        "graph"
+      ]
+    },
+    {
+      "id": "evoq-ui:popover",
+      "name": "EvPopover",
+      "tag": "ev-popover",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvPopover } from 'evoq-ui'",
+      "doc": "docs/components/popover.md",
+      "source": "src/molecules/popover/EvPopover.vue",
+      "summary": "A popover is a small floating panel anchored to a trigger, used to surface contextual content — a short form, details, or controls — on click, without navigating away from the current view.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "placement",
+          "type": "TooltipPlacement",
+          "options": [
+            "top",
+            "bottom",
+            "left",
+            "right"
+          ],
+          "default": "'bottom'",
+          "required": false,
+          "description": "Which side of the trigger the panel sits on."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "closeOnOutside",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Set false to keep a click outside from closing it."
+        }
+      ],
+      "slots": [
+        "default",
+        "trigger",
+        "title",
+        "description",
+        "footer"
+      ],
+      "events": [
+        "update:modelValue"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:modal",
+        "evoq-ui:tooltip"
+      ],
+      "figma": {
+        "doc": "4419:83485",
+        "sets": [
+          {
+            "name": "D - Popover",
+            "id": "2057:3539",
+            "page": "Popover"
+          }
+        ]
+      },
+      "keywords": [
+        "floating panel",
+        "flyout",
+        "overlay"
+      ]
+    },
+    {
+      "id": "evoq-ui:radio",
+      "name": "EvRadio",
+      "tag": "ev-radio",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvRadio } from 'evoq-ui'",
+      "doc": "docs/components/radio.md",
+      "source": "src/atoms/radio/EvRadio.vue",
+      "summary": "A radio button lets users choose exactly one option from a set. Options are mutually exclusive — selecting one clears the others in the same group.",
+      "summarySource": "figma",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "value",
+          "type": "string | number",
+          "required": true,
+          "description": "Value this radio contributes when selected."
+        },
+        {
+          "name": "modelValue",
+          "type": "string | number | null",
+          "required": false,
+          "description": "Only used when the radio is not inside an `EvRadioGroup`."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "subtext",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "subtext"
+      ],
+      "events": [
+        "update:modelValue"
+      ],
+      "partOf": "evoq-ui:radio-group",
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:checkbox",
+        "evoq-ui:toggle"
+      ],
+      "figma": {
+        "doc": "4015:62616",
+        "sets": [
+          {
+            "name": "RadioButton",
+            "id": "555:3529",
+            "page": "Radio Group"
+          }
+        ]
+      },
+      "keywords": [
+        "radio",
+        "single select",
+        "option"
+      ]
+    },
+    {
+      "id": "evoq-ui:radio-group",
+      "name": "EvRadioGroup",
+      "tag": "ev-radio-group",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvRadioGroup } from 'evoq-ui'",
+      "doc": "docs/components/radio-group.md",
+      "source": "src/molecules/radio-group/EvRadioGroup.vue",
+      "summary": "Holds a set of radios under one name and one v-model, so exactly one of them is chosen.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string | number | null",
+          "default": "null",
+          "required": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "Shared `name` for the underlying inputs. Generated when omitted."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Disables every radio in the group."
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Puts every radio in the group into the error state."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name for the group."
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [
+        "update:modelValue"
+      ],
+      "partOf": null,
+      "children": [
+        "evoq-ui:radio"
+      ],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:checkbox",
+        "evoq-ui:toggle"
+      ],
+      "figma": {
+        "doc": "4015:62616",
+        "sets": []
+      },
+      "keywords": [
+        "radio group",
+        "single choice"
+      ]
+    },
+    {
+      "id": "evoq-ui:rich-editor",
+      "name": "EvRichEditor",
+      "tag": "ev-rich-editor",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvRichEditor } from 'evoq-ui'",
+      "doc": "docs/components/rich-editor.md",
+      "source": "src/organisms/rich-editor/EvRichEditor.vue",
+      "summary": "A rich-text editor input with a formatting toolbar for entering styled, multi-line content. It supports leading/trailing icons, a scrollbar, validation, and the same interaction states as InputField.",
+      "summarySource": "figma",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string",
+          "default": "''",
+          "required": false
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "description": "`.InputType` variant `Placeholder-default` - 14px, shown while empty."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "`.InputType` variant `Title` - 12px, shown while empty instead of the placeholder."
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "The `Mandatory` boolean on `.InputType`: appends the red asterisk."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "toolbar",
+          "type": "RichEditorToolbarType",
+          "default": "'big'",
+          "required": false,
+          "description": "Which `.RichEditor` type to draw: `big` is the 528px, 19-control bar; `small` is the 360px, 13-control one."
+        },
+        {
+          "name": "hasScroll",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Has Scroll`: reveals the 2px scrollbar once the body overflows."
+        },
+        {
+          "name": "maxlength",
+          "type": "number",
+          "default": "2000",
+          "required": false
+        },
+        {
+          "name": "showCount",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Figma's `Has Validation Text`: the trailing character counter."
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Has Validation Error`: red border, red message."
+        },
+        {
+          "name": "validationText",
+          "type": "string",
+          "required": false,
+          "description": "The leading message. The board only reveals it in the two Error states."
+        }
+      ],
+      "slots": [],
+      "events": [
+        "update:modelValue",
+        "focus",
+        "blur",
+        "emoji",
+        "image",
+        "attach"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:input",
+        "evoq-ui:textarea"
+      ],
+      "figma": {
+        "doc": "4690:7715",
+        "sets": [
+          {
+            "name": "InputRichEditor",
+            "id": "665:2254",
+            "page": "Input"
+          },
+          {
+            "name": ".RichEditor",
+            "id": "651:2851",
+            "page": "Input"
+          }
+        ]
+      },
+      "keywords": [
+        "wysiwyg",
+        "text editor",
+        "formatting",
+        "rich text"
+      ]
+    },
+    {
+      "id": "evoq-ui:scroll-area",
+      "name": "EvScrollArea",
+      "tag": "ev-scroll-area",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvScrollArea } from 'evoq-ui'",
+      "doc": "docs/components/scroll-area.md",
+      "source": "src/atoms/scroll-area/EvScrollArea.vue",
+      "summary": "The scroll component is the thin scrollbar indicator shown alongside an overflowing container, signalling that more content is available and how far the user has scrolled.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "orientation",
+          "type": "ScrollOrientation",
+          "options": [
+            "vertical",
+            "horizontal",
+            "both"
+          ],
+          "default": "'vertical'",
+          "required": false,
+          "description": "Which axis may scroll."
+        },
+        {
+          "name": "mirror",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Flips the scrollbar to the opposite edge (e.g. left side for vertical)."
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:slider"
+      ],
+      "figma": {
+        "doc": "4432:84149",
+        "sets": [
+          {
+            "name": "Scroll",
+            "id": "2037:4",
+            "page": "Scrollbar"
+          }
+        ]
+      },
+      "keywords": [
+        "scrollbar",
+        "overflow",
+        "scroll container"
+      ]
+    },
+    {
+      "id": "evoq-ui:separator",
+      "name": "EvSeparator",
+      "tag": "ev-separator",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvSeparator } from 'evoq-ui'",
+      "doc": "docs/components/separator.md",
+      "source": "src/atoms/separator/EvSeparator.vue",
+      "summary": "A separator is a thin line that visually divides content into groups — between list items, sections, or side-by-side elements — without adding emphasis.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "orientation",
+          "type": "SeparatorOrientation",
+          "options": [
+            "horizontal",
+            "vertical"
+          ],
+          "default": "'horizontal'",
+          "required": false
+        },
+        {
+          "name": "decorative",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Purely decorative rules are hidden from assistive tech. Leave this off when the rule actually separates two groups of content."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [
+        "evoq-ui:accordion"
+      ],
+      "seeAlso": [
+        "evoq-ui:card"
+      ],
+      "figma": {
+        "doc": "4045:62753",
+        "sets": [
+          {
+            "name": "Separator",
+            "id": "194:756",
+            "page": "Separator"
+          }
+        ]
+      },
+      "keywords": [
+        "divider",
+        "rule",
+        "line",
+        "hr"
+      ]
+    },
+    {
+      "id": "evoq-ui:slider",
+      "name": "EvSlider",
+      "tag": "ev-slider",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvSlider } from 'evoq-ui'",
+      "doc": "docs/components/slider.md",
+      "source": "src/atoms/slider/EvSlider.vue",
+      "summary": "A slider lets users select a value or range by dragging a handle along a track, giving direct, continuous control over a bounded numeric input.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "number | [number, number]",
+          "default": "0",
+          "required": false,
+          "description": "A single number, or a `[lower, upper]` pair when `range` is on."
+        },
+        {
+          "name": "min",
+          "type": "number",
+          "default": "0",
+          "required": false
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "default": "100",
+          "required": false
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "default": "1",
+          "required": false
+        },
+        {
+          "name": "variant",
+          "type": "SliderVariant",
+          "options": [
+            "primary",
+            "destructive"
+          ],
+          "default": "'primary'",
+          "required": false
+        },
+        {
+          "name": "orientation",
+          "type": "SliderOrientation",
+          "options": [
+            "horizontal",
+            "vertical"
+          ],
+          "default": "'horizontal'",
+          "required": false
+        },
+        {
+          "name": "range",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Adds the second handle, filling between the two."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "showValue",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Shows the current value beneath the handle."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name. Required when there is no visible label."
+        }
+      ],
+      "slots": [],
+      "events": [
+        "update:modelValue"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:radio-group"
+      ],
+      "figma": {
+        "doc": "4510:85163",
+        "sets": [
+          {
+            "name": "Slider",
+            "id": "434:7617",
+            "page": "Slider"
+          }
+        ]
+      },
+      "keywords": [
+        "range",
+        "track",
+        "handle",
+        "min max"
+      ]
+    },
+    {
+      "id": "evoq-ui:switch",
+      "name": "EvSwitch",
+      "tag": "ev-switch",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvSwitch } from 'evoq-ui'",
+      "doc": "docs/components/switch.md",
+      "source": "src/atoms/switch/EvSwitch.vue",
+      "summary": "A switch toggles a single setting on or off, taking effect immediately. It pairs a sliding control with a label, and supports active, disabled, and error states.",
+      "summarySource": "figma",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "size",
+          "type": "SwitchSize",
+          "options": [
+            "default",
+            "small"
+          ],
+          "default": "'default'",
+          "required": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Paints the track in the error colour, on or off."
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "required": false,
+          "description": "Label rendered inside the track, beside the thumb."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Visible label beside the switch."
+        },
+        {
+          "name": "subtext",
+          "type": "string",
+          "required": false,
+          "description": "Subtext rendered under the visible label."
+        },
+        {
+          "name": "labelPlacement",
+          "type": "'left' | 'right'",
+          "options": [
+            "left",
+            "right"
+          ],
+          "default": "'right'",
+          "required": false,
+          "description": "Position of the visible label/subtext relative to the switch."
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name when no visible label is provided."
+        }
+      ],
+      "slots": [
+        "default",
+        "subtext"
+      ],
+      "events": [
+        "update:modelValue"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:button",
+        "evoq-ui:checkbox",
+        "evoq-ui:radio"
+      ],
+      "figma": {
+        "doc": "4084:62875",
+        "sets": [
+          {
+            "name": "SwitchField",
+            "id": "504:8352",
+            "page": "Switch"
+          }
+        ]
+      },
+      "keywords": [
+        "toggle switch",
+        "on off",
+        "setting"
+      ]
+    },
+    {
+      "id": "evoq-ui:tab",
+      "name": "EvTab",
+      "tag": "ev-tab",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvTab } from 'evoq-ui'",
+      "doc": "docs/components/tab.md",
+      "source": "src/atoms/tab/EvTab.vue",
+      "summary": "One tab in a Tabs strip; its value selects it, and it takes the variant from the Tabs around it.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "value",
+          "type": "string | number",
+          "required": true,
+          "description": "Value this tab selects."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "iconLeft",
+        "iconRight"
+      ],
+      "events": [],
+      "partOf": "evoq-ui:tabs",
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:navigation-menu"
+      ],
+      "figma": {
+        "doc": "4100:63234",
+        "sets": [
+          {
+            "name": ".TabItem",
+            "id": "434:5262",
+            "page": "Tabs"
+          }
+        ]
+      },
+      "keywords": [
+        "tab item"
+      ]
+    },
+    {
+      "id": "evoq-ui:tabs",
+      "name": "EvTabs",
+      "tag": "ev-tabs",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvTabs } from 'evoq-ui'",
+      "doc": "docs/components/tabs.md",
+      "source": "src/molecules/tabs/EvTabs.vue",
+      "summary": "Tabs let users switch between related views within the same context, showing one panel at a time. They come in a segmented (pill) style and a line (underline) style.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string | number | null",
+          "default": "null",
+          "required": false
+        },
+        {
+          "name": "variant",
+          "type": "TabsVariant",
+          "options": [
+            "segmented",
+            "line"
+          ],
+          "default": "'segmented'",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name for the tab list."
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [
+        "update:modelValue"
+      ],
+      "partOf": null,
+      "children": [
+        "evoq-ui:tab"
+      ],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:navigation-menu"
+      ],
+      "figma": {
+        "doc": "4100:63234",
+        "sets": [
+          {
+            "name": "Tabs",
+            "id": "434:6135",
+            "page": "Tabs"
+          }
+        ]
+      },
+      "keywords": [
+        "tab bar",
+        "segmented",
+        "views"
+      ]
+    },
+    {
+      "id": "evoq-ui:tag",
+      "name": "EvTag",
+      "tag": "ev-tag",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvTag } from 'evoq-ui'",
+      "doc": "docs/components/tag.md",
+      "source": "src/atoms/tag/EvTag.vue",
+      "summary": "A tag is a small label that marks an item with a keyword, category, or attribute. It can carry a leading icon and an optional close button to remove it.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "variant",
+          "type": "TagVariant",
+          "options": [
+            "default",
+            "outline"
+          ],
+          "required": false
+        },
+        {
+          "name": "removable",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Renders the trailing dismiss button and enables the `remove` event."
+        },
+        {
+          "name": "removeLabel",
+          "type": "string",
+          "default": "'Remove'",
+          "required": false,
+          "description": "Accessible name for the dismiss button."
+        }
+      ],
+      "slots": [
+        "default",
+        "iconLeft"
+      ],
+      "events": [
+        "remove"
+      ],
+      "partOf": "evoq-ui:tag-group",
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:badge",
+        "evoq-ui:button",
+        "evoq-ui:tabs"
+      ],
+      "figma": {
+        "doc": "4105:63441",
+        "sets": [
+          {
+            "name": "Tag",
+            "id": "3050:6361",
+            "page": "Tag"
+          }
+        ]
+      },
+      "keywords": [
+        "chip",
+        "keyword",
+        "filter chip",
+        "removable"
+      ]
+    },
+    {
+      "id": "evoq-ui:tag-group",
+      "name": "EvTagGroup",
+      "tag": "ev-tag-group",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvTagGroup } from 'evoq-ui'",
+      "doc": "docs/components/tag-group.md",
+      "source": "src/molecules/tag-group/EvTagGroup.vue",
+      "summary": "Lays out a set of tags, wrapping or scrolling, and hands them one shared variant.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "variant",
+          "type": "TagVariant",
+          "options": [
+            "default",
+            "outline"
+          ],
+          "required": false,
+          "description": "Cascades to every `EvTag` inside that does not set its own."
+        },
+        {
+          "name": "spacing",
+          "type": "'default' | 'loose'",
+          "options": [
+            "default",
+            "loose"
+          ],
+          "default": "'default'",
+          "required": false,
+          "description": "Figma's `Spacing`: 4px (`default`) or 8px (`loose`)."
+        },
+        {
+          "name": "type",
+          "type": "'wrap' | 'scroll'",
+          "options": [
+            "wrap",
+            "scroll"
+          ],
+          "default": "'wrap'",
+          "required": false,
+          "description": "Figma's `Type`: wrap onto more lines, or one line that scrolls."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name for the group."
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [
+        "evoq-ui:tag"
+      ],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:badge",
+        "evoq-ui:button",
+        "evoq-ui:tabs"
+      ],
+      "figma": {
+        "doc": "4105:63441",
+        "sets": [
+          {
+            "name": "TagGroup",
+            "id": "3050:6644",
+            "page": "Tag"
+          }
+        ]
+      },
+      "keywords": [
+        "chips",
+        "tag list",
+        "filters"
+      ]
+    },
+    {
+      "id": "evoq-ui:textarea",
+      "name": "EvTextarea",
+      "tag": "ev-textarea",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvTextarea } from 'evoq-ui'",
+      "doc": "docs/components/textarea.md",
+      "source": "src/atoms/textarea/EvTextarea.vue",
+      "summary": "A multi-line text input for collecting longer free-form content. It supports a character counter, validation, optional icons, a scrollbar, and the same interaction states as InputField.",
+      "summarySource": "figma",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string",
+          "default": "''",
+          "required": false
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "description": "`.InputType` variant `Placeholder-default` - 14px, shown while empty."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "`.InputType` variant `Title` - 12px, shown while empty instead of the placeholder."
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "The `Mandatory` boolean on `.InputType`: appends the red asterisk."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "rows",
+          "type": "number",
+          "default": "4",
+          "required": false,
+          "description": "Drives the fixed height: `rows` x 16px line-height + 16px padding."
+        },
+        {
+          "name": "maxlength",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "showCount",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Has Validation Text`: the trailing character counter."
+        },
+        {
+          "name": "validationText",
+          "type": "string",
+          "required": false,
+          "description": "The leading message. The board only reveals it in the two Error states."
+        },
+        {
+          "name": "validationTextEnd",
+          "type": "string",
+          "required": false,
+          "description": "Trailing helper text. `showCount` wins when both are set."
+        },
+        {
+          "name": "clearable",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "clearLabel",
+          "type": "string",
+          "default": "'Bersihkan'",
+          "required": false
+        },
+        {
+          "name": "hasScroll",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Figma's `Has Scroll`: reveals the 2px scrollbar once the body overflows."
+        }
+      ],
+      "slots": [],
+      "events": [
+        "update:modelValue",
+        "focus",
+        "blur",
+        "clear"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:input",
+        "evoq-ui:rich-editor"
+      ],
+      "figma": {
+        "doc": "4680:4513",
+        "sets": [
+          {
+            "name": "InputTextArea",
+            "id": "487:6751",
+            "page": "Input"
+          }
+        ]
+      },
+      "keywords": [
+        "multiline",
+        "textarea",
+        "notes",
+        "counter"
+      ]
+    },
+    {
+      "id": "evoq-ui:time-picker",
+      "name": "EvTimePicker",
+      "tag": "ev-time-picker",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvTimePicker } from 'evoq-ui'",
+      "doc": "docs/components/time-picker.md",
+      "source": "src/organisms/time-picker/EvTimePicker.vue",
+      "summary": "A scrolling wheel for picking a time - 24-hour, with seconds, or AM/PM - with Apply and Cancel.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string",
+          "default": "'00:00'",
+          "required": false
+        },
+        {
+          "name": "format",
+          "type": "TimePickerFormat",
+          "options": [
+            "default",
+            "with-seconds",
+            "am-pm",
+            "am-pm-seconds"
+          ],
+          "default": "'default'",
+          "required": false,
+          "description": "Figma's `Variant`: which columns the wheel shows."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "hasReset",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Has Reset Button`: the refresh glyph beside the value."
+        },
+        {
+          "name": "resetLabel",
+          "type": "string",
+          "default": "'Atur ulang'",
+          "required": false
+        },
+        {
+          "name": "cancelLabel",
+          "type": "string",
+          "default": "'Cancel'",
+          "required": false
+        },
+        {
+          "name": "applyLabel",
+          "type": "string",
+          "default": "'Apply'",
+          "required": false
+        }
+      ],
+      "slots": [],
+      "events": [
+        "update:modelValue",
+        "apply",
+        "cancel",
+        "reset"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [
+        "evoq-ui:button"
+      ],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4218:66637",
+        "sets": [
+          {
+            "name": "M - TimePickerPopup",
+            "id": "2579:14063",
+            "page": "Calendar & Time Picker"
+          },
+          {
+            "name": "M- TimePickerDrawer",
+            "id": "2844:6656",
+            "page": "Calendar & Time Picker"
+          }
+        ]
+      },
+      "keywords": [
+        "time",
+        "clock",
+        "hour minute",
+        "timepicker"
+      ]
+    },
+    {
+      "id": "evoq-ui:toggle",
+      "name": "EvToggle",
+      "tag": "ev-toggle",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvToggle } from 'evoq-ui'",
+      "doc": "docs/components/toggle.md",
+      "source": "src/atoms/toggle/EvToggle.vue",
+      "summary": "A toggle is a two-state button that switches an option on or off. Use it standalone, or grouped in a ToggleGroup for a set of related single- or multi-select options.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Pressed state."
+        },
+        {
+          "name": "variant",
+          "type": "ToggleVariant",
+          "options": [
+            "default",
+            "outline"
+          ],
+          "required": false
+        },
+        {
+          "name": "size",
+          "type": "ToggleSize",
+          "options": [
+            "default",
+            "small"
+          ],
+          "required": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "iconLeft",
+        "iconRight"
+      ],
+      "events": [
+        "update:modelValue"
+      ],
+      "partOf": "evoq-ui:toggle-group",
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:radio-group",
+        "evoq-ui:switch"
+      ],
+      "figma": {
+        "doc": "4518:85699",
+        "sets": [
+          {
+            "name": "Toggle",
+            "id": "2855:1224",
+            "page": "Toggle"
+          }
+        ]
+      },
+      "keywords": [
+        "toggle button",
+        "pressed",
+        "on off button"
+      ]
+    },
+    {
+      "id": "evoq-ui:toggle-group",
+      "name": "EvToggleGroup",
+      "tag": "ev-toggle-group",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvToggleGroup } from 'evoq-ui'",
+      "doc": "docs/components/toggle-group.md",
+      "source": "src/molecules/toggle-group/EvToggleGroup.vue",
+      "summary": "A labelled row of toggles that share one variant and size.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "size",
+          "type": "ToggleSize",
+          "options": [
+            "default",
+            "small"
+          ],
+          "default": "'default'",
+          "required": false,
+          "description": "Sets the gap and cascades default size to child `EvToggle`s."
+        },
+        {
+          "name": "variant",
+          "type": "ToggleVariant",
+          "options": [
+            "default",
+            "outline"
+          ],
+          "required": false,
+          "description": "Cascades default variant to child `EvToggle`s."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name for the group."
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [
+        "evoq-ui:toggle"
+      ],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:radio-group",
+        "evoq-ui:switch"
+      ],
+      "figma": {
+        "doc": "4518:85699",
+        "sets": [
+          {
+            "name": "ToggleGroup",
+            "id": "2864:12585",
+            "page": "Toggle"
+          }
+        ]
+      },
+      "keywords": [
+        "toolbar",
+        "view switcher",
+        "formatting"
+      ]
+    },
+    {
+      "id": "evoq-ui:tooltip",
+      "name": "EvTooltip",
+      "tag": "ev-tooltip",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvTooltip } from 'evoq-ui'",
+      "doc": "docs/components/tooltip.md",
+      "source": "src/molecules/tooltip/EvTooltip.vue",
+      "summary": "A tooltip is a small dark overlay that appears on hover or focus to give a short, contextual hint about an element, with an arrow pointing back to its trigger.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [
+        "open"
+      ],
+      "props": [
+        {
+          "name": "placement",
+          "type": "TooltipPlacement",
+          "options": [
+            "top",
+            "bottom",
+            "left",
+            "right"
+          ],
+          "default": "'top'",
+          "required": false,
+          "description": "Which side of the trigger the bubble sits on."
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "required": false,
+          "description": "Body text. Use the `content` slot for anything richer."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "description": "Optional bold heading inside the bubble."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "description": "Take control of visibility instead of letting hover and focus drive it."
+        },
+        {
+          "name": "dismissible",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Renders the close button in the title row."
+        },
+        {
+          "name": "closeLabel",
+          "type": "string",
+          "default": "'Tutup'",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "content",
+        "title",
+        "slotTitle",
+        "slotContent",
+        "footer"
+      ],
+      "events": [
+        "update:open"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:modal",
+        "evoq-ui:popover"
+      ],
+      "figma": {
+        "doc": "4527:86149",
+        "sets": [
+          {
+            "name": "Tooltip",
+            "id": "479:2624",
+            "page": "Tooltip"
+          }
+        ]
+      },
+      "keywords": [
+        "hint",
+        "hover",
+        "info",
+        "popup text"
+      ]
+    },
+    {
+      "id": "evoq-ui:tree",
+      "name": "EvTree",
+      "tag": "ev-tree",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvTree } from 'evoq-ui'",
+      "doc": "docs/components/tree.md",
+      "source": "src/organisms/tree/EvTree.vue",
+      "summary": "A tree displays hierarchical data as nested, expandable rows — files and folders, categories, or org structures — letting users drill into nested levels while keeping their place.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name for the tree."
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [
+        "evoq-ui:tree-item"
+      ],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4527:86644",
+        "sets": [
+          {
+            "name": "Tree",
+            "id": "2481:7383",
+            "page": "Tree"
+          }
+        ]
+      },
+      "keywords": [
+        "hierarchy",
+        "file tree",
+        "nested list",
+        "explorer"
+      ]
+    },
+    {
+      "id": "evoq-ui:tree-item",
+      "name": "EvTreeItem",
+      "tag": "ev-tree-item",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvTreeItem } from 'evoq-ui'",
+      "doc": "docs/components/tree-item.md",
+      "source": "src/organisms/tree/EvTreeItem.vue",
+      "summary": "One row of a Tree: indented by level, with a chevron that expands its children and an optional checkbox for selection.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [
+        "expanded",
+        "checked"
+      ],
+      "props": [
+        {
+          "name": "level",
+          "type": "number",
+          "default": "1",
+          "required": false,
+          "description": "Nesting depth, 1-8. The design system only draws eight."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "hasChild",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Figma's `Has Child`: the node can be opened, so it gets a chevron. Defaults to true, as the component set does."
+        },
+        {
+          "name": "expanded",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "selected",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "hasCheckbox",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Has Checkbox`: puts a selection box before the label."
+        },
+        {
+          "name": "checked",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "indeterminate",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Renders the checkbox's dash, for a partly-selected subtree."
+        },
+        {
+          "name": "checkboxLabel",
+          "type": "string",
+          "default": "'Pilih'",
+          "required": false,
+          "description": "Accessible name for the checkbox, which has no visible label of its own."
+        }
+      ],
+      "slots": [
+        "default",
+        "icon",
+        "actions"
+      ],
+      "events": [
+        "update:expanded",
+        "update:checked",
+        "select"
+      ],
+      "partOf": "evoq-ui:tree",
+      "children": [],
+      "composes": [
+        "evoq-ui:checkbox"
+      ],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4527:86644",
+        "sets": []
+      },
+      "keywords": [
+        "tree row",
+        "node"
+      ]
+    }
+  ]
+}

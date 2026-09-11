@@ -44,4 +44,18 @@ describe('EvButtonLink', () => {
     await wrapper.trigger('click')
     expect(wrapper.emitted('click')).toBeUndefined()
   })
+
+  it('marks the current item and pins its Active look', () => {
+    const wrapper = mount(EvButtonLink, { props: { current: true, variant: 'secondary' } })
+    // Nowhere to go, so not a control at all.
+    expect(wrapper.element.tagName).toBe('SPAN')
+    expect(wrapper.attributes('aria-current')).toBe('page')
+    expect(wrapper.classes()).toContain('ev-button-link--current')
+  })
+
+  it('keeps the current item a link when it has somewhere to go', () => {
+    const wrapper = mount(EvButtonLink, { props: { current: true, href: '/here' } })
+    expect(wrapper.element.tagName).toBe('A')
+    expect(wrapper.attributes('aria-current')).toBe('page')
+  })
 })

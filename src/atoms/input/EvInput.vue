@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useId } from 'vue'
+import { computed, useAttrs, useId } from 'vue'
 
 defineOptions({
   name: 'EvInput',
@@ -68,6 +68,19 @@ const showClear = computed(
 )
 const hasMessage = computed(() => Boolean(props.validationText || props.validationTextEnd))
 
+/*
+ * Keep a caller's own `aria-describedby` alongside the message id - a
+ * composite (EvInputFieldUnit) points the field at a message it renders
+ * itself, and the explicit binding below would otherwise overwrite it.
+ */
+const attrs = useAttrs()
+const describedBy = computed(
+  () =>
+    [attrs['aria-describedby'], hasMessage.value ? messageId : undefined]
+      .filter(Boolean)
+      .join(' ') || undefined,
+)
+
 function onInput(event: Event) {
   emit('update:modelValue', (event.target as HTMLInputElement).value)
 }
@@ -101,7 +114,7 @@ function clear() {
         :readonly="readonly"
         :required="required"
         :aria-invalid="error || undefined"
-        :aria-describedby="hasMessage ? messageId : undefined"
+        :aria-describedby="describedBy"
         @input="onInput"
       />
 

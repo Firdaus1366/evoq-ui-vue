@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch, type ComponentPublicInstance } from 'vue'
+import EvButton from '../../atoms/button/EvButton.vue'
 
 /*
  * Compiled 1:1 from the Figma node `Calendar & Time Picker / M - TimePickerPopup`
@@ -276,24 +277,25 @@ function onReset() {
       </template>
     </div>
 
-    <!-- node: Frame 19 — Apply above Cancel, both full width -->
+    <!-- node: Frame 19 — Apply above Cancel, both full-width Button atoms -->
     <div class="ev-time-picker__footer">
-      <button
-        type="button"
+      <EvButton
         class="ev-time-picker__btn ev-time-picker__btn--apply"
+        block
         :disabled="disabled"
         @click="onApply"
       >
         {{ applyLabel }}
-      </button>
-      <button
-        type="button"
+      </EvButton>
+      <EvButton
         class="ev-time-picker__btn ev-time-picker__btn--cancel"
+        variant="secondary-light"
+        block
         :disabled="disabled"
         @click="onCancel"
       >
         {{ cancelLabel }}
-      </button>
+      </EvButton>
     </div>
   </div>
 </template>
@@ -441,36 +443,10 @@ function onReset() {
     gap: var(--ev-spacing-sm);
   }
 
-  &__btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--ev-spacing-xs);
-    width: 100%;
-    min-height: 40px;
-    padding: var(--ev-spacing-md) var(--ev-spacing-lg);
-    border: var(--ev-stroke-xs) solid transparent;
-    border-radius: var(--ev-radius-xs);
-    cursor: pointer;
-
-    @include type.style('body/regular');
-
-    &:disabled {
-      cursor: not-allowed;
-      opacity: 0.5;
-    }
-
-    &--apply {
-      background-color: var(--ev-brand-primary);
-      color: var(--ev-text-inverse);
-    }
-
-    &--cancel {
-      border-color: var(--ev-brand-primary-200);
-      background-color: var(--ev-brand-primary-subtle);
-      color: var(--ev-brand-primary);
-    }
-  }
+  /*
+   * Apply and Cancel are EvButton (primary / secondary-light, default size) -
+   * their look belongs to the Button atom, so nothing here restyles them.
+   */
 
   &--disabled {
     cursor: not-allowed;

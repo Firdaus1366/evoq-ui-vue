@@ -1,0 +1,29 @@
+/*
+ * Atoms - one element or one control. An atom never imports another Ev
+ * component; its slots carry content (text, icons), not other controls.
+ * Enforced by the layer rule in eslint.config.js.
+ */
+export { default as EvAspectRatio } from './aspect-ratio/EvAspectRatio.vue'
+export { default as EvAvatar } from './avatar/EvAvatar.vue'
+export { default as EvBadge } from './badge/EvBadge.vue'
+export { default as EvButton } from './button/EvButton.vue'
+export { default as EvButtonGroupItem } from './button-group-item/EvButtonGroupItem.vue'
+export { default as EvButtonLink } from './button-link/EvButtonLink.vue'
+export { default as EvCheckbox } from './checkbox/EvCheckbox.vue'
+export { default as EvDropdownItem } from './dropdown-item/EvDropdownItem.vue'
+export { default as EvHint } from './hint/EvHint.vue'
+export { default as EvInput } from './input/EvInput.vue'
+export { default as EvInputSearch } from './input-search/EvInputSearch.vue'
+export { default as EvInputWithLabel } from './input-with-label/EvInputWithLabel.vue'
+export { default as EvKbd } from './kbd/EvKbd.vue'
+export { default as EvLogo } from './logo/EvLogo.vue'
+export { default as EvNavMenuItem } from './nav-menu-item/EvNavMenuItem.vue'
+export { default as EvRadio } from './radio/EvRadio.vue'
+export { default as EvScrollArea } from './scroll-area/EvScrollArea.vue'
+export { default as EvSeparator } from './separator/EvSeparator.vue'
+export { default as EvSlider } from './slider/EvSlider.vue'
+export { default as EvSwitch } from './switch/EvSwitch.vue'
+export { default as EvTab } from './tab/EvTab.vue'
+export { default as EvTag } from './tag/EvTag.vue'
+export { default as EvTextarea } from './textarea/EvTextarea.vue'
+export { default as EvToggle } from './toggle/EvToggle.vue'

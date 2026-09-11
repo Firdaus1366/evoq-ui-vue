@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { defineComponent, h, ref } from 'vue'
 import { mount } from '@vue/test-utils'
-import EvTab from './EvTab.vue'
+import EvTab from '../../atoms/tab/EvTab.vue'
 import EvTabs from './EvTabs.vue'
 
 const Harness = defineComponent({

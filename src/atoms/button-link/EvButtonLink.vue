@@ -13,12 +13,19 @@ const props = withDefaults(
     /** Renders an anchor instead of a button. */
     href?: string
     disabled?: boolean
+    /**
+     * The link is the current item - a breadcrumb's page. Pins the variant's
+     * `State=Active` look and sets `aria-current="page"`; without an `href`
+     * it renders as plain text, since the current page is not a destination.
+     */
+    current?: boolean
     type?: 'button' | 'submit' | 'reset'
   }>(),
   {
     variant: 'primary',
     href: undefined,
     disabled: false,
+    current: false,
     type: 'button',
   },
 )
@@ -33,8 +40,14 @@ defineSlots<{
   iconRight?: () => unknown
 }>()
 
-/** An anchor without an `href` is not focusable, so a disabled link is a button. */
-const tag = computed(() => (props.href && !props.disabled ? 'a' : 'button'))
+/**
+ * An anchor without an `href` is not focusable, so a disabled link is a
+ * button. The current item with nowhere to go is not a control at all.
+ */
+const tag = computed(() => {
+  if (props.href && !props.disabled) return 'a'
+  return props.current ? 'span' : 'button'
+})
 
 function onClick(event: MouseEvent) {
   if (props.disabled) {
@@ -51,7 +64,11 @@ function onClick(event: MouseEvent) {
     :is="tag"
     v-bind="$attrs"
     class="ev-button-link"
-    :class="[`ev-button-link--${variant}`, { 'ev-button-link--disabled': disabled }]"
+    :class="[
+      `ev-button-link--${variant}`,
+      { 'ev-button-link--disabled': disabled, 'ev-button-link--current': current },
+    ]"
+    :aria-current="current ? 'page' : undefined"
     :href="tag === 'a' ? href : undefined"
     :type="tag === 'button' ? type : undefined"
     :disabled="tag === 'button' && disabled ? true : undefined"
@@ -111,6 +128,13 @@ function onClick(event: MouseEvent) {
     font-weight: var(--ev-font-weight-bold);
   }
 
+  /* The current item is where you already are: no pointer, no hover weight. */
+  &.ev-button-link--current,
+  &.ev-button-link--current:hover {
+    cursor: default;
+    font-weight: var(--ev-font-weight-medium);
+  }
+
   &--primary {
     --ev-link-fg: var(--ev-brand-primary);
     --ev-link-icon: var(--ev-brand-primary);
@@ -120,7 +144,8 @@ function onClick(event: MouseEvent) {
       --ev-link-icon: var(--ev-brand-primary-bold);
     }
 
-    &:active:not(:disabled) {
+    &:active:not(:disabled),
+    &.ev-button-link--current {
       --ev-link-fg: var(--ev-text-secondary);
       --ev-link-icon: var(--ev-icon-secondary);
     }
@@ -130,7 +155,8 @@ function onClick(event: MouseEvent) {
     --ev-link-fg: var(--ev-text-secondary);
     --ev-link-icon: var(--ev-icon-secondary);
 
-    &:active:not(:disabled) {
+    &:active:not(:disabled),
+    &.ev-button-link--current {
       --ev-link-fg: var(--ev-text-primary);
       --ev-link-icon: var(--ev-text-secondary);
     }
@@ -140,7 +166,8 @@ function onClick(event: MouseEvent) {
     --ev-link-fg: var(--ev-text-primary);
     --ev-link-icon: var(--ev-text-secondary);
 
-    &:active:not(:disabled) {
+    &:active:not(:disabled),
+    &.ev-button-link--current {
       --ev-link-fg: var(--ev-text-secondary);
       --ev-link-icon: var(--ev-icon-secondary);
     }
@@ -150,7 +177,8 @@ function onClick(event: MouseEvent) {
     --ev-link-fg: var(--ev-text-inverse);
     --ev-link-icon: var(--ev-text-inverse);
 
-    &:active:not(:disabled) {
+    &:active:not(:disabled),
+    &.ev-button-link--current {
       --ev-link-fg: var(--ev-text-tertiary);
       --ev-link-icon: var(--ev-text-tertiary);
     }
@@ -169,7 +197,8 @@ function onClick(event: MouseEvent) {
       --ev-link-icon: var(--ev-brand-primary-bold);
     }
 
-    &:active:not(:disabled) {
+    &:active:not(:disabled),
+    &.ev-button-link--current {
       --ev-link-fg: var(--ev-text-secondary);
       --ev-link-icon: var(--ev-icon-secondary);
     }

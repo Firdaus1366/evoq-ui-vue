@@ -1,5 +1,6 @@
 /**
- * Reads every `Ev*.vue` under `src/components` and writes the playground's
+ * Reads every `Ev*.vue` in the atomic layer folders (`src/atoms`,
+ * `src/molecules`, `src/organisms`, `src/patterns`) and `src/charts`, and writes the playground's
  * props catalogue to `playground/component-props.ts`.
  *
  *     node scripts/extract-props.mjs
@@ -17,10 +18,22 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
+import { pathToFileURL } from 'node:url'
 
 const ROOT = process.cwd()
-const COMPONENT_DIR = path.join(ROOT, 'src', 'components')
 const OUT = path.join(ROOT, 'playground', 'component-props.ts')
+
+/*
+ * Source folder -> atomic layer. The charts are organisms that live in their
+ * own folder only because they are a separate package entry point.
+ */
+const LAYER_DIRS = {
+  atoms: 'atom',
+  molecules: 'molecule',
+  organisms: 'organism',
+  patterns: 'pattern',
+  charts: 'organism',
+}
 
 /** Every `Ev*.vue` in the library, sorted so the output is stable. */
 function sourceFiles() {
@@ -32,10 +45,17 @@ function sourceFiles() {
       else if (/^Ev[A-Za-z]+\.vue$/.test(entry.name)) out.push(full)
     }
   }
-  walk(COMPONENT_DIR)
-  const chartDir = path.join(ROOT, 'src', 'charts')
-  if (fs.existsSync(chartDir)) walk(chartDir)
+  for (const folder of Object.keys(LAYER_DIRS)) {
+    const dir = path.join(ROOT, 'src', folder)
+    if (fs.existsSync(dir)) walk(dir)
+  }
   return out.sort()
+}
+
+/** The atomic layer a component belongs to, read off its source folder. */
+function layerOf(file) {
+  const folder = path.relative(path.join(ROOT, 'src'), file).split(path.sep)[0]
+  return LAYER_DIRS[folder]
 }
 
 /**
@@ -86,17 +106,20 @@ function literalOptions(type) {
 
 /** Type aliases from `src/types.ts` that are plain literal unions. */
 function readTypeAliases() {
-  const file = path.join(ROOT, 'src', 'types.ts')
-  if (!fs.existsSync(file)) return {}
-  const source = fs.readFileSync(file, 'utf8')
+  // The charts entry keeps its own unions beside it.
+  const files = [path.join(ROOT, 'src', 'types.ts'), path.join(ROOT, 'src', 'charts', 'types.ts')]
   const aliases = {}
   const re = /export type (\w+)\s*=\s*([^\n][\s\S]*?)(?=\n\s*\n|\nexport |\n\/\*\*|$)/g
-  let match
-  while ((match = re.exec(source))) {
-    const [, name, rawBody] = match
-    const body = rawBody.replace(/\s+/g, ' ').replace(/;$/, '').trim()
-    const options = literalOptions(body)
-    if (options) aliases[name] = options
+  for (const file of files) {
+    if (!fs.existsSync(file)) continue
+    const source = fs.readFileSync(file, 'utf8')
+    let match
+    while ((match = re.exec(source))) {
+      const [, name, rawBody] = match
+      const body = rawBody.replace(/\s+/g, ' ').replace(/;$/, '').trim()
+      const options = literalOptions(body)
+      if (options) aliases[name] = options
+    }
   }
   return aliases
 }
@@ -217,8 +240,7 @@ function extract(file, aliases) {
             name,
             type,
             required: !optional,
-            default:
-              fallback === undefined || fallback === 'undefined' ? undefined : fallback,
+            default: fallback === undefined || fallback === 'undefined' ? undefined : fallback,
             description: member.doc || undefined,
             control: controlFor(type, options),
             options: options ?? undefined,
@@ -231,17 +253,26 @@ function extract(file, aliases) {
   return {
     tag,
     file: path.relative(ROOT, file).replace(/\\/g, '/'),
+    layer: layerOf(file),
     props,
     slots: readNamedBlock(script, 'defineSlots'),
     emits: readNamedBlock(script, 'defineEmits'),
   }
 }
 
-const aliases = readTypeAliases()
-const catalogue = {}
-for (const file of sourceFiles()) {
-  const meta = extract(file, aliases)
-  if (meta) catalogue[meta.tag] = meta
+/**
+ * Every component's props, slots and events, keyed by tag. Exported so the
+ * component docs (`scripts/build-docs.mjs`) read the exact same catalogue the
+ * playground does, rather than a second parse that could disagree.
+ */
+export function buildCatalogue() {
+  const aliases = readTypeAliases()
+  const catalogue = {}
+  for (const file of sourceFiles()) {
+    const meta = extract(file, aliases)
+    if (meta) catalogue[meta.tag] = meta
+  }
+  return catalogue
 }
 
 const header = `/**
@@ -271,9 +302,13 @@ export interface MemberMeta {
   description?: string
 }
 
+export type AtomicLayer = 'atom' | 'molecule' | 'organism' | 'pattern'
+
 export interface ComponentMeta {
   tag: string
   file: string
+  /** Atomic level, read off the folder the component lives in. */
+  layer: AtomicLayer
   props: PropMeta[]
   slots: MemberMeta[]
   emits: MemberMeta[]
@@ -281,8 +316,12 @@ export interface ComponentMeta {
 
 export const COMPONENT_PROPS: Record<string, ComponentMeta> = `
 
-fs.writeFileSync(OUT, `${header}${JSON.stringify(catalogue, null, 2)}\n`, 'utf8')
+// Run as a script (not imported): write the playground catalogue.
+if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
+  const catalogue = buildCatalogue()
+  fs.writeFileSync(OUT, `${header}${JSON.stringify(catalogue, null, 2)}\n`, 'utf8')
 
-const componentCount = Object.keys(catalogue).length
-const propCount = Object.values(catalogue).reduce((n, c) => n + c.props.length, 0)
-console.log(`${componentCount} komponen, ${propCount} props -> ${path.relative(ROOT, OUT)}`)
+  const componentCount = Object.keys(catalogue).length
+  const propCount = Object.values(catalogue).reduce((n, c) => n + c.props.length, 0)
+  console.log(`${componentCount} komponen, ${propCount} props -> ${path.relative(ROOT, OUT)}`)
+}

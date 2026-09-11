@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { provide, toRef } from 'vue'
-import { BUTTON_GROUP_KEY } from './context'
+import { BUTTON_GROUP_KEY } from '../../atoms/button-group-item/context'
 import type { ButtonGroupSize, ButtonGroupVariant } from '../../types'
 
 defineOptions({

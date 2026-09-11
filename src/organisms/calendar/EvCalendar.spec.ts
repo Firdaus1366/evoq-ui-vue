@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
+import EvButton from '../../atoms/button/EvButton.vue'
+import EvButtonLink from '../../atoms/button-link/EvButtonLink.vue'
 import EvCalendar from './EvCalendar.vue'
 
 /** January 2026 starts on a Thursday - a month with a visible lead-in. */
@@ -8,6 +10,68 @@ const JAN_2026 = new Date(2026, 0, 1)
 const dayButtons = (wrapper: ReturnType<typeof mount>) => wrapper.findAll('.ev-calendar__day')
 
 describe('EvCalendar', () => {
+  /*
+   * These cover the half the emit-only tests missed: with no `v-model` on the
+   * host, the controls have to drive the component themselves.
+   */
+  it('opens the header overlay with no host binding', async () => {
+    const wrapper = mount(EvCalendar, { props: { month: new Date(2026, 0, 1) } })
+    expect(wrapper.find('.ev-calendar__overlay').exists()).toBe(false)
+
+    await wrapper.find('.ev-calendar__month').trigger('click')
+    expect(wrapper.find('.ev-calendar__overlay').exists()).toBe(true)
+    expect(wrapper.findAll('.ev-dropdown-item')).toHaveLength(12)
+
+    await wrapper.find('.ev-calendar__month').trigger('click')
+    expect(wrapper.find('.ev-calendar__overlay').exists()).toBe(false)
+  })
+
+  it('actually pages the month when one is chosen from the overlay', async () => {
+    const wrapper = mount(EvCalendar, { attachTo: document.body })
+    await wrapper.find('.ev-calendar__month').trigger('click')
+
+    await wrapper.findAll('.ev-dropdown-item')[6]!.trigger('click') // July
+    expect(wrapper.find('.ev-calendar__overlay').exists()).toBe(false)
+    expect(wrapper.find('.ev-calendar__month').text()).toContain('Juli')
+    wrapper.unmount()
+  })
+
+  it('drills Year to Month to day without a host binding', async () => {
+    // `month` is left uncontrolled here on purpose - passing it would hand the
+    // page position back to the host, which is a different contract.
+    const wrapper = mount(EvCalendar, { props: { view: 'year' } })
+
+    const cells = () => wrapper.findAll('.ev-calendar__cells .ev-calendar__day')
+    const picked = cells()[29]!.text()
+
+    // Year grid -> pick a year -> month grid, paged to it.
+    await cells()[29]!.trigger('click')
+    expect(cells()).toHaveLength(12)
+    expect(wrapper.find('.ev-calendar__month').text()).toBe(picked)
+
+    // Month grid -> pick May -> day grid.
+    await cells()[4]!.trigger('click')
+    expect(wrapper.find('.ev-calendar__cells').exists()).toBe(false)
+    expect(wrapper.findAll('.ev-calendar__days .ev-calendar__day')).toHaveLength(42)
+  })
+
+  it('still honours a host that drives the view itself', async () => {
+    const wrapper = mount(EvCalendar, { props: { view: 'month' } })
+    await wrapper.setProps({ view: 'year' })
+    expect(wrapper.findAll('.ev-calendar__cells .ev-calendar__day')).toHaveLength(36)
+  })
+
+  it('dismisses the overlay on a click beyond the calendar', async () => {
+    const wrapper = mount(EvCalendar, { attachTo: document.body })
+    await wrapper.find('.ev-calendar__month').trigger('click')
+    expect(wrapper.find('.ev-calendar__overlay').exists()).toBe(true)
+
+    document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('.ev-calendar__overlay').exists()).toBe(false)
+    wrapper.unmount()
+  })
+
   it('draws the mobile board: bare chevrons, a read-out, and a split footer', () => {
     const wrapper = mount(EvCalendar, { props: { platform: 'mobile' } })
 
@@ -29,6 +93,22 @@ describe('EvCalendar', () => {
     const mobile = mount(EvCalendar, { props: { platform: 'mobile', hasReset: true } })
     expect(mobile.find('.ev-calendar__btn--reset').exists()).toBe(false)
     expect(mobile.find('.ev-calendar__readout-reset').exists()).toBe(true)
+  })
+
+  it('composes the Button atom for its footer, sized per platform', () => {
+    const variants = (platform: 'desktop' | 'mobile') =>
+      mount(EvCalendar, { props: { mode: 'range', hasReset: true, platform } })
+        .findAllComponents(EvButton)
+        .map((b) => `${b.props('variant')}/${b.props('size')}`)
+
+    // Desktop: Reset, Cancel, Apply - small.
+    expect(variants('desktop')).toEqual([
+      'secondary-grey/small',
+      'secondary-grey/small',
+      'primary/small',
+    ])
+    // Mobile: reset moves to the read-out; Cancel turns secondary-light, 40px.
+    expect(variants('mobile')).toEqual(['secondary-light/default', 'primary/default'])
   })
 
   it("stacks month blocks in the board's Full Calendar view", () => {
@@ -197,6 +277,8 @@ describe('EvCalendar', () => {
     expect(link.text()).toBe('Select Time')
     await link.trigger('click')
     expect(wrapper.emitted('select-time')).toHaveLength(1)
+    // The board instances ButtonLink (Primary) there.
+    expect(wrapper.findComponent(EvButtonLink).props('variant')).toBe('primary')
   })
 
   it('keeps the weekday row and the day rows as separate frames', () => {

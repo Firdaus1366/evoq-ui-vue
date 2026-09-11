@@ -9,11 +9,16 @@
     "**/*.scss"
   ],
   "files": [
-    "dist"
+    "dist",
+    "docs/components",
+    "mcp"
   ],
   "main": "./dist/evoq-ui.cjs",
   "module": "./dist/evoq-ui.js",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "evoq-ui-mcp": "./mcp/server.mjs"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -26,7 +31,9 @@
       "require": "./dist/charts.cjs"
     },
     "./style.css": "./dist/evoq-ui.css",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./manifest.json": "./docs/components/manifest.json",
+    "./docs/*": "./docs/components/*"
   },
   "scripts": {
     "dev": "node scripts/extract-props.mjs && vite",
@@ -41,8 +48,11 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{ts,vue,css,scss,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,vue,css,scss,json,md}\"",
-    "prepublishOnly": "npm run build",
-    "extract:props": "node scripts/extract-props.mjs"
+    "prepublishOnly": "npm run build && npm run docs:check",
+    "extract:props": "node scripts/extract-props.mjs",
+    "docs:build": "node scripts/build-docs.mjs",
+    "docs:check": "node scripts/build-docs.mjs --check",
+    "mcp": "node mcp/server.mjs"
   },
   "peerDependencies": {
     "@unovis/ts": "^1.6.0",

@@ -25,474 +25,23 @@ export interface MemberMeta {
   description?: string
 }
 
+export type AtomicLayer = 'atom' | 'molecule' | 'organism' | 'pattern'
+
 export interface ComponentMeta {
   tag: string
   file: string
+  /** Atomic level, read off the folder the component lives in. */
+  layer: AtomicLayer
   props: PropMeta[]
   slots: MemberMeta[]
   emits: MemberMeta[]
 }
 
 export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
-  "EvBarChart": {
-    "tag": "EvBarChart",
-    "file": "src/charts/EvBarChart.vue",
-    "props": [
-      {
-        "name": "data",
-        "type": "T[]",
-        "required": true,
-        "control": "none"
-      },
-      {
-        "name": "category",
-        "type": "keyof T & string",
-        "required": true,
-        "description": "Key holding each row's category - the X axis.",
-        "control": "none"
-      },
-      {
-        "name": "series",
-        "type": "(keyof T & string)[]",
-        "required": true,
-        "description": "One key per series. Several keys give the board's GroupBarChart.",
-        "control": "none"
-      },
-      {
-        "name": "type",
-        "type": "BarChartType",
-        "required": false,
-        "default": "'grouped'",
-        "description": "`stacked` stacks the series within one column instead of clustering.",
-        "control": "none"
-      },
-      {
-        "name": "height",
-        "type": "number",
-        "required": false,
-        "default": "240",
-        "control": "number"
-      },
-      {
-        "name": "showValues",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Figma's `Has Value`: the figure above each bar.",
-        "control": "boolean"
-      },
-      {
-        "name": "seriesLabels",
-        "type": "string[]",
-        "required": false,
-        "description": "Names used in the tooltip. Falls back to the series keys.",
-        "control": "none"
-      },
-      {
-        "name": "xLabel",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "yLabel",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "description": "Accessible description of what the chart shows.",
-        "control": "text"
-      }
-    ],
-    "slots": [],
-    "emits": []
-  },
-  "EvLineChart": {
-    "tag": "EvLineChart",
-    "file": "src/charts/EvLineChart.vue",
-    "props": [
-      {
-        "name": "data",
-        "type": "T[]",
-        "required": true,
-        "control": "none"
-      },
-      {
-        "name": "category",
-        "type": "keyof T & string",
-        "required": true,
-        "description": "Key holding each row's position on the X axis.",
-        "control": "none"
-      },
-      {
-        "name": "series",
-        "type": "(keyof T & string)[]",
-        "required": true,
-        "description": "One key per series.",
-        "control": "none"
-      },
-      {
-        "name": "type",
-        "type": "LineChartType",
-        "required": false,
-        "default": "'line'",
-        "description": "`area` fills the region beneath the trend, as the board's Area does.",
-        "control": "none"
-      },
-      {
-        "name": "height",
-        "type": "number",
-        "required": false,
-        "default": "240",
-        "control": "number"
-      },
-      {
-        "name": "seriesLabels",
-        "type": "string[]",
-        "required": false,
-        "description": "Names used in the tooltip. Falls back to the series keys.",
-        "control": "none"
-      },
-      {
-        "name": "xLabel",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "yLabel",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "description": "Accessible description of what the chart shows.",
-        "control": "text"
-      }
-    ],
-    "slots": [],
-    "emits": []
-  },
-  "EvPieChart": {
-    "tag": "EvPieChart",
-    "file": "src/charts/EvPieChart.vue",
-    "props": [
-      {
-        "name": "data",
-        "type": "T[]",
-        "required": true,
-        "control": "none"
-      },
-      {
-        "name": "value",
-        "type": "keyof T & string",
-        "required": true,
-        "description": "Key holding each slice's value.",
-        "control": "none"
-      },
-      {
-        "name": "category",
-        "type": "keyof T & string",
-        "required": true,
-        "description": "Key holding each slice's name, used by the tooltip.",
-        "control": "none"
-      },
-      {
-        "name": "type",
-        "type": "PieChartType",
-        "required": false,
-        "default": "'doughnut'",
-        "description": "`pie` is a full circle, `doughnut` hollows the centre, and `doughnut-rounded` separates the segments and rounds their ends.",
-        "control": "none"
-      },
-      {
-        "name": "height",
-        "type": "number",
-        "required": false,
-        "default": "240",
-        "control": "number"
-      },
-      {
-        "name": "centralLabel",
-        "type": "string",
-        "required": false,
-        "description": "Text placed in the hollow centre. Ignored by the `pie` type.",
-        "control": "text"
-      },
-      {
-        "name": "centralSubLabel",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "description": "Accessible description of what the chart shows.",
-        "control": "text"
-      }
-    ],
-    "slots": [],
-    "emits": []
-  },
-  "EvAccordion": {
-    "tag": "EvAccordion",
-    "file": "src/components/accordion/EvAccordion.vue",
-    "props": [
-      {
-        "name": "modelValue",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "variant",
-        "type": "AccordionVariant",
-        "required": false,
-        "default": "'default'",
-        "control": "select",
-        "options": [
-          "default",
-          "card"
-        ]
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "title",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "subtext",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "separator",
-        "type": "boolean",
-        "required": false,
-        "default": "true",
-        "description": "Whether to show the bottom separator rule in the default variant.",
-        "control": "boolean"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      },
-      {
-        "name": "title",
-        "description": ""
-      },
-      {
-        "name": "subtext",
-        "description": ""
-      }
-    ],
-    "emits": [
-      {
-        "name": "update:modelValue",
-        "description": ""
-      }
-    ]
-  },
-  "EvAlertDialog": {
-    "tag": "EvAlertDialog",
-    "file": "src/components/alert-dialog/EvAlertDialog.vue",
-    "props": [
-      {
-        "name": "modelValue",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "variant",
-        "type": "AlertDialogVariant",
-        "required": false,
-        "default": "'confirmation'",
-        "control": "select",
-        "options": [
-          "success",
-          "warning",
-          "confirmation",
-          "info",
-          "delete"
-        ]
-      },
-      {
-        "name": "title",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "description",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "layout",
-        "type": "'desktop' | 'compact'",
-        "required": false,
-        "default": "'desktop'",
-        "description": "`desktop` uses the board's large illustration; `compact` uses the mobile layout, where the artwork becomes a 40px icon tile and the buttons stack.",
-        "control": "select",
-        "options": [
-          "desktop",
-          "compact"
-        ]
-      },
-      {
-        "name": "closeOnScrim",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Set false to force a deliberate choice from the buttons.",
-        "control": "boolean"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": "Figma's `Slot` - extra content under the description."
-      },
-      {
-        "name": "title",
-        "description": ""
-      },
-      {
-        "name": "description",
-        "description": ""
-      },
-      {
-        "name": "media",
-        "description": "The board draws a per-variant illustration here. Those are artwork rather than tokens, so the library ships an icon tile and leaves the picture to the consumer."
-      },
-      {
-        "name": "actions",
-        "description": "The buttons. The board puts the confirm action last on desktop."
-      }
-    ],
-    "emits": [
-      {
-        "name": "update:modelValue",
-        "description": ""
-      },
-      {
-        "name": "close",
-        "description": ""
-      }
-    ]
-  },
-  "EvAlert": {
-    "tag": "EvAlert",
-    "file": "src/components/alert/EvAlert.vue",
-    "props": [
-      {
-        "name": "variant",
-        "type": "AlertVariant",
-        "required": false,
-        "default": "'neutral'",
-        "control": "select",
-        "options": [
-          "neutral",
-          "neutral-dark",
-          "info",
-          "success",
-          "error",
-          "warning"
-        ]
-      },
-      {
-        "name": "inverse",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Swaps the tinted alert for a solid fill with inverse text.",
-        "control": "boolean"
-      },
-      {
-        "name": "title",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "subtext",
-        "type": "string",
-        "required": false,
-        "description": "Supporting line. Its presence switches the alert to the taller layout.",
-        "control": "text"
-      },
-      {
-        "name": "dismissible",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Renders the dismiss button and enables the `close` event.",
-        "control": "boolean"
-      },
-      {
-        "name": "closeLabel",
-        "type": "string",
-        "required": false,
-        "default": "'Tutup'",
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      },
-      {
-        "name": "subtext",
-        "description": ""
-      },
-      {
-        "name": "link",
-        "description": "Inline link rendered below the message (Figma's `Has Link`)."
-      },
-      {
-        "name": "actions",
-        "description": "Trailing controls, such as a confirm button (Figma's `Has Button`)."
-      },
-      {
-        "name": "icon",
-        "description": ""
-      }
-    ],
-    "emits": [
-      {
-        "name": "close",
-        "description": ""
-      }
-    ]
-  },
   "EvAspectRatio": {
     "tag": "EvAspectRatio",
-    "file": "src/components/aspect-ratio/EvAspectRatio.vue",
+    "file": "src/atoms/aspect-ratio/EvAspectRatio.vue",
+    "layer": "atom",
     "props": [
       {
         "name": "ratio",
@@ -513,7 +62,8 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
   },
   "EvAvatar": {
     "tag": "EvAvatar",
-    "file": "src/components/avatar/EvAvatar.vue",
+    "file": "src/atoms/avatar/EvAvatar.vue",
+    "layer": "atom",
     "props": [
       {
         "name": "size",
@@ -579,45 +129,10 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
     ],
     "emits": []
   },
-  "EvAvatarGroup": {
-    "tag": "EvAvatarGroup",
-    "file": "src/components/avatar/EvAvatarGroup.vue",
-    "props": [
-      {
-        "name": "size",
-        "type": "AvatarSize",
-        "required": false,
-        "default": "32",
-        "description": "Must match the size of the avatars inside - it sets the overlap.",
-        "control": "select",
-        "options": [
-          24,
-          32,
-          40,
-          48,
-          64,
-          96
-        ]
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "description": "Accessible name for the stack.",
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": "The avatars. Put an `EvAvatar variant=\"number\"` last for an overflow."
-      }
-    ],
-    "emits": []
-  },
   "EvBadge": {
     "tag": "EvBadge",
-    "file": "src/components/badge/EvBadge.vue",
+    "file": "src/atoms/badge/EvBadge.vue",
+    "layer": "atom",
     "props": [
       {
         "name": "variant",
@@ -659,90 +174,10 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
     ],
     "emits": []
   },
-  "EvBreadcrumb": {
-    "tag": "EvBreadcrumb",
-    "file": "src/components/breadcrumb/EvBreadcrumb.vue",
-    "props": [
-      {
-        "name": "items",
-        "type": "BreadcrumbItem[]",
-        "required": true,
-        "control": "none"
-      },
-      {
-        "name": "maxItems",
-        "type": "number",
-        "required": false,
-        "default": "0",
-        "description": "Collapse the middle of the trail once there are more crumbs than this, matching Figma's `Ellipsis` variant. `0` never collapses.",
-        "control": "number"
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "default": "'Breadcrumb'",
-        "description": "Accessible name for the trail.",
-        "control": "text"
-      }
-    ],
-    "slots": [],
-    "emits": [
-      {
-        "name": "select",
-        "description": ""
-      }
-    ]
-  },
-  "EvButtonGroup": {
-    "tag": "EvButtonGroup",
-    "file": "src/components/button-group/EvButtonGroup.vue",
-    "props": [
-      {
-        "name": "variant",
-        "type": "ButtonGroupVariant",
-        "required": false,
-        "default": "'default-light'",
-        "description": "Applied to every item unless one overrides it.",
-        "control": "select",
-        "options": [
-          "default-light",
-          "default-white",
-          "primary",
-          "destructive",
-          "warning"
-        ]
-      },
-      {
-        "name": "size",
-        "type": "ButtonGroupSize",
-        "required": false,
-        "default": "'large'",
-        "control": "select",
-        "options": [
-          "large",
-          "small"
-        ]
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "description": "Accessible name for the control.",
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": "The items - one `EvButtonGroupItem` each."
-      }
-    ],
-    "emits": []
-  },
   "EvButtonGroupItem": {
     "tag": "EvButtonGroupItem",
-    "file": "src/components/button-group/EvButtonGroupItem.vue",
+    "file": "src/atoms/button-group-item/EvButtonGroupItem.vue",
+    "layer": "atom",
     "props": [
       {
         "name": "variant",
@@ -827,7 +262,8 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
   },
   "EvButtonLink": {
     "tag": "EvButtonLink",
-    "file": "src/components/button-link/EvButtonLink.vue",
+    "file": "src/atoms/button-link/EvButtonLink.vue",
+    "layer": "atom",
     "props": [
       {
         "name": "variant",
@@ -855,6 +291,14 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "type": "boolean",
         "required": false,
         "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "current",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The link is the current item - a breadcrumb's page. Pins the variant's `State=Active` look and sets `aria-current=\"page\"`; without an `href` it renders as plain text, since the current page is not a destination.",
         "control": "boolean"
       },
       {
@@ -893,7 +337,8 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
   },
   "EvButton": {
     "tag": "EvButton",
-    "file": "src/components/button/EvButton.vue",
+    "file": "src/atoms/button/EvButton.vue",
+    "layer": "atom",
     "props": [
       {
         "name": "variant",
@@ -989,9 +434,2378 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
       }
     ]
   },
+  "EvCheckbox": {
+    "tag": "EvCheckbox",
+    "file": "src/atoms/checkbox/EvCheckbox.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "indeterminate",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Renders the dash instead of the tick. Independent of `modelValue`, the same way the DOM's own `indeterminate` flag is.",
+        "control": "boolean"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Draws the error border and tints the subtext.",
+        "control": "boolean"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "subtext",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "value",
+        "type": "string | number",
+        "required": false,
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      },
+      {
+        "name": "subtext",
+        "description": ""
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      }
+    ]
+  },
+  "EvDropdownItem": {
+    "tag": "EvDropdownItem",
+    "file": "src/atoms/dropdown-item/EvDropdownItem.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "variant",
+        "type": "DropdownItemVariant",
+        "required": false,
+        "default": "'list'",
+        "description": "`list` is the plain 24px row; `list-box` is the taller 32px row the board uses once a checkbox or avatar sits beside the label.",
+        "control": "select",
+        "options": [
+          "list",
+          "list-box"
+        ]
+      },
+      {
+        "name": "active",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `Active` state - the currently chosen option.",
+        "control": "boolean"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "href",
+        "type": "string",
+        "required": false,
+        "description": "Makes the row a real link - for a menu of destinations, such as a breadcrumb's hidden crumbs. It keeps native link behaviour (open in a new tab, copy address) that a scripted option would lose.",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      },
+      {
+        "name": "iconLeft",
+        "description": "Figma's `Slot Left` - an icon, checkbox or avatar."
+      },
+      {
+        "name": "iconRight",
+        "description": "Figma's `Slot Right` - a trailing glyph, such as a tick."
+      }
+    ],
+    "emits": [
+      {
+        "name": "select",
+        "description": ""
+      }
+    ]
+  },
+  "EvHint": {
+    "tag": "EvHint",
+    "file": "src/atoms/hint/EvHint.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "size",
+        "type": "HintSize",
+        "required": false,
+        "default": "'medium'",
+        "control": "select",
+        "options": [
+          "small",
+          "medium",
+          "large"
+        ]
+      },
+      {
+        "name": "value",
+        "type": "number | string",
+        "required": false,
+        "description": "Count to display. Leave unset for the bare dot.",
+        "control": "none"
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "required": false,
+        "default": "99",
+        "description": "Counts above this render as `{max}+`, matching Figma's `99+` variant.",
+        "control": "number"
+      },
+      {
+        "name": "dot",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Force the dot even when a value is given.",
+        "control": "boolean"
+      }
+    ],
+    "slots": [],
+    "emits": []
+  },
+  "EvInputSearch": {
+    "tag": "EvInputSearch",
+    "file": "src/atoms/input-search/EvInputSearch.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "control": "text"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "default": "'Cari sesuatu...'",
+        "control": "text"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "readonly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "clearable",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "validationText",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "shortcut",
+        "description": ""
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      },
+      {
+        "name": "search",
+        "description": ""
+      },
+      {
+        "name": "clear",
+        "description": ""
+      }
+    ]
+  },
+  "EvInputWithLabel": {
+    "tag": "EvInputWithLabel",
+    "file": "src/atoms/input-with-label/EvInputWithLabel.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "string | number",
+        "required": false,
+        "default": "''",
+        "control": "text"
+      },
+      {
+        "name": "type",
+        "type": "string",
+        "required": false,
+        "default": "'text'",
+        "control": "text"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "prefixLabel",
+        "type": "string",
+        "required": false,
+        "description": "Text for left inline label prefix",
+        "control": "text"
+      },
+      {
+        "name": "suffixLabel",
+        "type": "string",
+        "required": false,
+        "description": "Text for right inline label suffix",
+        "control": "text"
+      },
+      {
+        "name": "placement",
+        "type": "'left' | 'right' | 'both'",
+        "required": false,
+        "default": "'left'",
+        "description": "Position placement for inline labels",
+        "control": "select",
+        "options": [
+          "left",
+          "right",
+          "both"
+        ]
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "readonly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "validationText",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "validationTextEnd",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "clearable",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "iconLeft",
+        "description": ""
+      },
+      {
+        "name": "iconRight",
+        "description": ""
+      },
+      {
+        "name": "prefix",
+        "description": ""
+      },
+      {
+        "name": "suffix",
+        "description": ""
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      },
+      {
+        "name": "clear",
+        "description": ""
+      }
+    ]
+  },
+  "EvInput": {
+    "tag": "EvInput",
+    "file": "src/atoms/input/EvInput.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "string | number",
+        "required": false,
+        "default": "''",
+        "control": "text"
+      },
+      {
+        "name": "type",
+        "type": "string",
+        "required": false,
+        "default": "'text'",
+        "description": "Any native input type - `text`, `search`, `email`, `number`, ...",
+        "control": "text"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "size",
+        "type": "'default' | 'small'",
+        "required": false,
+        "default": "'default'",
+        "description": "Container size: default (44px) or small (32px) per Figma spec",
+        "control": "select",
+        "options": [
+          "default",
+          "small"
+        ]
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Floating label, drawn notched into the field's top border.",
+        "control": "text"
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks the field required and appends the board's red asterisk.",
+        "control": "boolean"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "readonly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Switches the field to the error style. Always pair it with a message.",
+        "control": "boolean"
+      },
+      {
+        "name": "validationText",
+        "type": "string",
+        "required": false,
+        "description": "Helper text below the field. Turns red in the error state.",
+        "control": "text"
+      },
+      {
+        "name": "validationTextEnd",
+        "type": "string",
+        "required": false,
+        "description": "Trailing helper text, right-aligned - a counter or a hint.",
+        "control": "text"
+      },
+      {
+        "name": "clearable",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Shows the clear button once there is something to clear.",
+        "control": "boolean"
+      },
+      {
+        "name": "clearLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Bersihkan'",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "iconLeft",
+        "description": "Figma's `Has L Icon`."
+      },
+      {
+        "name": "iconRight",
+        "description": "Figma's `Has R Icon`. Replaced by the error glyph in the error state."
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      },
+      {
+        "name": "clear",
+        "description": ""
+      }
+    ]
+  },
+  "EvKbd": {
+    "tag": "EvKbd",
+    "file": "src/atoms/kbd/EvKbd.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "variant",
+        "type": "KbdVariant",
+        "required": false,
+        "default": "'text'",
+        "description": "A text cap hugs its label; an icon cap is a 16px square.",
+        "control": "select",
+        "options": [
+          "text",
+          "icon"
+        ]
+      },
+      {
+        "name": "light",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Figma's `Light` property. Set to false for the dark cap.",
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      }
+    ],
+    "emits": []
+  },
+  "EvLogo": {
+    "tag": "EvLogo",
+    "file": "src/atoms/logo/EvLogo.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "size",
+        "type": "number | string",
+        "required": false,
+        "default": "32",
+        "description": "Rendered height. The mark is square, so this sets both dimensions.",
+        "control": "none"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "'EVOQ'",
+        "description": "Accessible name. Set to an empty string for a decorative mark.",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "The wordmark beside the mark. Not shipped - see the note in the style block for why - so supply your own asset here when you need it."
+      }
+    ],
+    "emits": []
+  },
+  "EvNavMenuItem": {
+    "tag": "EvNavMenuItem",
+    "file": "src/atoms/nav-menu-item/EvNavMenuItem.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "active",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks the current section.",
+        "control": "boolean"
+      },
+      {
+        "name": "href",
+        "type": "string",
+        "required": false,
+        "description": "Renders an anchor instead of a button.",
+        "control": "text"
+      },
+      {
+        "name": "iconOnly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `Icon Only` state: a 32px square pill. Give it an `aria-label`, since there is no visible text.",
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      },
+      {
+        "name": "icon",
+        "description": ""
+      }
+    ],
+    "emits": [
+      {
+        "name": "click",
+        "description": ""
+      }
+    ]
+  },
+  "EvRadio": {
+    "tag": "EvRadio",
+    "file": "src/atoms/radio/EvRadio.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "value",
+        "type": "string | number",
+        "required": true,
+        "description": "Value this radio contributes when selected.",
+        "control": "text"
+      },
+      {
+        "name": "modelValue",
+        "type": "string | number | null",
+        "required": false,
+        "description": "Only used when the radio is not inside an `EvRadioGroup`.",
+        "control": "none"
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "subtext",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      },
+      {
+        "name": "subtext",
+        "description": ""
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      }
+    ]
+  },
+  "EvScrollArea": {
+    "tag": "EvScrollArea",
+    "file": "src/atoms/scroll-area/EvScrollArea.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "orientation",
+        "type": "ScrollOrientation",
+        "required": false,
+        "default": "'vertical'",
+        "description": "Which axis may scroll.",
+        "control": "select",
+        "options": [
+          "vertical",
+          "horizontal",
+          "both"
+        ]
+      },
+      {
+        "name": "mirror",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Flips the scrollbar to the opposite edge (e.g. left side for vertical).",
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      }
+    ],
+    "emits": []
+  },
+  "EvSeparator": {
+    "tag": "EvSeparator",
+    "file": "src/atoms/separator/EvSeparator.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "orientation",
+        "type": "SeparatorOrientation",
+        "required": false,
+        "default": "'horizontal'",
+        "control": "select",
+        "options": [
+          "horizontal",
+          "vertical"
+        ]
+      },
+      {
+        "name": "decorative",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Purely decorative rules are hidden from assistive tech. Leave this off when the rule actually separates two groups of content.",
+        "control": "boolean"
+      }
+    ],
+    "slots": [],
+    "emits": []
+  },
+  "EvSlider": {
+    "tag": "EvSlider",
+    "file": "src/atoms/slider/EvSlider.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "number | [number, number]",
+        "required": false,
+        "default": "0",
+        "description": "A single number, or a `[lower, upper]` pair when `range` is on.",
+        "control": "none"
+      },
+      {
+        "name": "min",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "control": "number"
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "required": false,
+        "default": "100",
+        "control": "number"
+      },
+      {
+        "name": "step",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "control": "number"
+      },
+      {
+        "name": "variant",
+        "type": "SliderVariant",
+        "required": false,
+        "default": "'primary'",
+        "control": "select",
+        "options": [
+          "primary",
+          "destructive"
+        ]
+      },
+      {
+        "name": "orientation",
+        "type": "SliderOrientation",
+        "required": false,
+        "default": "'horizontal'",
+        "control": "select",
+        "options": [
+          "horizontal",
+          "vertical"
+        ]
+      },
+      {
+        "name": "range",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Adds the second handle, filling between the two.",
+        "control": "boolean"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "showValue",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Shows the current value beneath the handle.",
+        "control": "boolean"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Accessible name. Required when there is no visible label.",
+        "control": "text"
+      }
+    ],
+    "slots": [],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      }
+    ]
+  },
+  "EvSwitch": {
+    "tag": "EvSwitch",
+    "file": "src/atoms/switch/EvSwitch.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "size",
+        "type": "SwitchSize",
+        "required": false,
+        "default": "'default'",
+        "control": "select",
+        "options": [
+          "default",
+          "small"
+        ]
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Paints the track in the error colour, on or off.",
+        "control": "boolean"
+      },
+      {
+        "name": "text",
+        "type": "string",
+        "required": false,
+        "description": "Label rendered inside the track, beside the thumb.",
+        "control": "text"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Visible label beside the switch.",
+        "control": "text"
+      },
+      {
+        "name": "subtext",
+        "type": "string",
+        "required": false,
+        "description": "Subtext rendered under the visible label.",
+        "control": "text"
+      },
+      {
+        "name": "labelPlacement",
+        "type": "'left' | 'right'",
+        "required": false,
+        "default": "'right'",
+        "description": "Position of the visible label/subtext relative to the switch.",
+        "control": "select",
+        "options": [
+          "left",
+          "right"
+        ]
+      },
+      {
+        "name": "ariaLabel",
+        "type": "string",
+        "required": false,
+        "description": "Accessible name when no visible label is provided.",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      },
+      {
+        "name": "subtext",
+        "description": ""
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      }
+    ]
+  },
+  "EvTab": {
+    "tag": "EvTab",
+    "file": "src/atoms/tab/EvTab.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "value",
+        "type": "string | number",
+        "required": true,
+        "description": "Value this tab selects.",
+        "control": "text"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      },
+      {
+        "name": "iconLeft",
+        "description": ""
+      },
+      {
+        "name": "iconRight",
+        "description": ""
+      }
+    ],
+    "emits": []
+  },
+  "EvTag": {
+    "tag": "EvTag",
+    "file": "src/atoms/tag/EvTag.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "variant",
+        "type": "TagVariant",
+        "required": false,
+        "control": "select",
+        "options": [
+          "default",
+          "outline"
+        ]
+      },
+      {
+        "name": "removable",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Renders the trailing dismiss button and enables the `remove` event.",
+        "control": "boolean"
+      },
+      {
+        "name": "removeLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Remove'",
+        "description": "Accessible name for the dismiss button.",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      },
+      {
+        "name": "iconLeft",
+        "description": ""
+      }
+    ],
+    "emits": [
+      {
+        "name": "remove",
+        "description": ""
+      }
+    ]
+  },
+  "EvTextarea": {
+    "tag": "EvTextarea",
+    "file": "src/atoms/textarea/EvTextarea.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "control": "text"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "description": "`.InputType` variant `Placeholder-default` - 14px, shown while empty.",
+        "control": "text"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "`.InputType` variant `Title` - 12px, shown while empty instead of the placeholder.",
+        "control": "text"
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The `Mandatory` boolean on `.InputType`: appends the red asterisk.",
+        "control": "boolean"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "readonly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "rows",
+        "type": "number",
+        "required": false,
+        "default": "4",
+        "description": "Drives the fixed height: `rows` x 16px line-height + 16px padding.",
+        "control": "number"
+      },
+      {
+        "name": "maxlength",
+        "type": "number",
+        "required": false,
+        "control": "number"
+      },
+      {
+        "name": "showCount",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `Has Validation Text`: the trailing character counter.",
+        "control": "boolean"
+      },
+      {
+        "name": "validationText",
+        "type": "string",
+        "required": false,
+        "description": "The leading message. The board only reveals it in the two Error states.",
+        "control": "text"
+      },
+      {
+        "name": "validationTextEnd",
+        "type": "string",
+        "required": false,
+        "description": "Trailing helper text. `showCount` wins when both are set.",
+        "control": "text"
+      },
+      {
+        "name": "clearable",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "clearLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Bersihkan'",
+        "control": "text"
+      },
+      {
+        "name": "hasScroll",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Figma's `Has Scroll`: reveals the 2px scrollbar once the body overflows.",
+        "control": "boolean"
+      }
+    ],
+    "slots": [],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      },
+      {
+        "name": "focus",
+        "description": ""
+      },
+      {
+        "name": "blur",
+        "description": ""
+      },
+      {
+        "name": "clear",
+        "description": ""
+      }
+    ]
+  },
+  "EvToggle": {
+    "tag": "EvToggle",
+    "file": "src/atoms/toggle/EvToggle.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Pressed state.",
+        "control": "boolean"
+      },
+      {
+        "name": "variant",
+        "type": "ToggleVariant",
+        "required": false,
+        "control": "select",
+        "options": [
+          "default",
+          "outline"
+        ]
+      },
+      {
+        "name": "size",
+        "type": "ToggleSize",
+        "required": false,
+        "control": "select",
+        "options": [
+          "default",
+          "small"
+        ]
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      },
+      {
+        "name": "iconLeft",
+        "description": ""
+      },
+      {
+        "name": "iconRight",
+        "description": ""
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      }
+    ]
+  },
+  "EvBarChart": {
+    "tag": "EvBarChart",
+    "file": "src/charts/EvBarChart.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "data",
+        "type": "T[]",
+        "required": true,
+        "control": "none"
+      },
+      {
+        "name": "category",
+        "type": "keyof T & string",
+        "required": true,
+        "description": "Key holding each row's category - the X axis.",
+        "control": "none"
+      },
+      {
+        "name": "series",
+        "type": "(keyof T & string)[]",
+        "required": true,
+        "description": "One key per series. Several keys give the board's GroupBarChart.",
+        "control": "none"
+      },
+      {
+        "name": "type",
+        "type": "BarChartType",
+        "required": false,
+        "default": "'grouped'",
+        "description": "`stacked` stacks the series within one column instead of clustering.",
+        "control": "select",
+        "options": [
+          "grouped",
+          "stacked"
+        ]
+      },
+      {
+        "name": "height",
+        "type": "number",
+        "required": false,
+        "default": "240",
+        "control": "number"
+      },
+      {
+        "name": "showValues",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `Has Value`: the figure above each bar.",
+        "control": "boolean"
+      },
+      {
+        "name": "seriesLabels",
+        "type": "string[]",
+        "required": false,
+        "description": "Names used in the tooltip. Falls back to the series keys.",
+        "control": "none"
+      },
+      {
+        "name": "xLabel",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "yLabel",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Accessible description of what the chart shows.",
+        "control": "text"
+      }
+    ],
+    "slots": [],
+    "emits": []
+  },
+  "EvLineChart": {
+    "tag": "EvLineChart",
+    "file": "src/charts/EvLineChart.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "data",
+        "type": "T[]",
+        "required": true,
+        "control": "none"
+      },
+      {
+        "name": "category",
+        "type": "keyof T & string",
+        "required": true,
+        "description": "Key holding each row's position on the X axis.",
+        "control": "none"
+      },
+      {
+        "name": "series",
+        "type": "(keyof T & string)[]",
+        "required": true,
+        "description": "One key per series.",
+        "control": "none"
+      },
+      {
+        "name": "type",
+        "type": "LineChartType",
+        "required": false,
+        "default": "'line'",
+        "description": "`area` fills the region beneath the trend, as the board's Area does.",
+        "control": "select",
+        "options": [
+          "line",
+          "area"
+        ]
+      },
+      {
+        "name": "height",
+        "type": "number",
+        "required": false,
+        "default": "240",
+        "control": "number"
+      },
+      {
+        "name": "seriesLabels",
+        "type": "string[]",
+        "required": false,
+        "description": "Names used in the tooltip. Falls back to the series keys.",
+        "control": "none"
+      },
+      {
+        "name": "xLabel",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "yLabel",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Accessible description of what the chart shows.",
+        "control": "text"
+      }
+    ],
+    "slots": [],
+    "emits": []
+  },
+  "EvPieChart": {
+    "tag": "EvPieChart",
+    "file": "src/charts/EvPieChart.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "data",
+        "type": "T[]",
+        "required": true,
+        "control": "none"
+      },
+      {
+        "name": "value",
+        "type": "keyof T & string",
+        "required": true,
+        "description": "Key holding each slice's value.",
+        "control": "none"
+      },
+      {
+        "name": "category",
+        "type": "keyof T & string",
+        "required": true,
+        "description": "Key holding each slice's name, used by the tooltip.",
+        "control": "none"
+      },
+      {
+        "name": "type",
+        "type": "PieChartType",
+        "required": false,
+        "default": "'doughnut'",
+        "description": "`pie` is a full circle, `doughnut` hollows the centre, and `doughnut-rounded` separates the segments and rounds their ends.",
+        "control": "select",
+        "options": [
+          "pie",
+          "doughnut",
+          "doughnut-rounded"
+        ]
+      },
+      {
+        "name": "height",
+        "type": "number",
+        "required": false,
+        "default": "240",
+        "control": "number"
+      },
+      {
+        "name": "centralLabel",
+        "type": "string",
+        "required": false,
+        "description": "Text placed in the hollow centre. Ignored by the `pie` type.",
+        "control": "text"
+      },
+      {
+        "name": "centralSubLabel",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Accessible description of what the chart shows.",
+        "control": "text"
+      }
+    ],
+    "slots": [],
+    "emits": []
+  },
+  "EvAccordion": {
+    "tag": "EvAccordion",
+    "file": "src/molecules/accordion/EvAccordion.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "variant",
+        "type": "AccordionVariant",
+        "required": false,
+        "default": "'default'",
+        "control": "select",
+        "options": [
+          "default",
+          "card"
+        ]
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "subtext",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "separator",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether to show the bottom separator rule in the default variant.",
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      },
+      {
+        "name": "title",
+        "description": ""
+      },
+      {
+        "name": "subtext",
+        "description": ""
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      }
+    ]
+  },
+  "EvAlert": {
+    "tag": "EvAlert",
+    "file": "src/molecules/alert/EvAlert.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "variant",
+        "type": "AlertVariant",
+        "required": false,
+        "default": "'neutral'",
+        "control": "select",
+        "options": [
+          "neutral",
+          "neutral-dark",
+          "info",
+          "success",
+          "error",
+          "warning"
+        ]
+      },
+      {
+        "name": "inverse",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Swaps the tinted alert for a solid fill with inverse text.",
+        "control": "boolean"
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "subtext",
+        "type": "string",
+        "required": false,
+        "description": "Supporting line. Its presence switches the alert to the taller layout.",
+        "control": "text"
+      },
+      {
+        "name": "dismissible",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Renders the dismiss button and enables the `close` event.",
+        "control": "boolean"
+      },
+      {
+        "name": "closeLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Tutup'",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      },
+      {
+        "name": "subtext",
+        "description": ""
+      },
+      {
+        "name": "link",
+        "description": "Inline link rendered below the message (Figma's `Has Link`)."
+      },
+      {
+        "name": "actions",
+        "description": "Trailing controls, such as a confirm button (Figma's `Has Button`)."
+      },
+      {
+        "name": "icon",
+        "description": ""
+      }
+    ],
+    "emits": [
+      {
+        "name": "close",
+        "description": ""
+      }
+    ]
+  },
+  "EvAvatarGroup": {
+    "tag": "EvAvatarGroup",
+    "file": "src/molecules/avatar-group/EvAvatarGroup.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "size",
+        "type": "AvatarSize",
+        "required": false,
+        "default": "32",
+        "description": "Must match the size of the avatars inside - it sets the overlap.",
+        "control": "select",
+        "options": [
+          24,
+          32,
+          40,
+          48,
+          64,
+          96
+        ]
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Accessible name for the stack.",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "The avatars. Put an `EvAvatar variant=\"number\"` last for an overflow."
+      }
+    ],
+    "emits": []
+  },
+  "EvButtonGroup": {
+    "tag": "EvButtonGroup",
+    "file": "src/molecules/button-group/EvButtonGroup.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "variant",
+        "type": "ButtonGroupVariant",
+        "required": false,
+        "default": "'default-light'",
+        "description": "Applied to every item unless one overrides it.",
+        "control": "select",
+        "options": [
+          "default-light",
+          "default-white",
+          "primary",
+          "destructive",
+          "warning"
+        ]
+      },
+      {
+        "name": "size",
+        "type": "ButtonGroupSize",
+        "required": false,
+        "default": "'large'",
+        "control": "select",
+        "options": [
+          "large",
+          "small"
+        ]
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Accessible name for the control.",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "The items - one `EvButtonGroupItem` each."
+      }
+    ],
+    "emits": []
+  },
+  "EvDropdownList": {
+    "tag": "EvDropdownList",
+    "file": "src/molecules/dropdown-list/EvDropdownList.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "searchable",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `Has Search`: turns the list into the Combobox pattern.",
+        "control": "boolean"
+      },
+      {
+        "name": "searchValue",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "control": "text"
+      },
+      {
+        "name": "searchPlaceholder",
+        "type": "string",
+        "required": false,
+        "default": "'Cari...'",
+        "control": "text"
+      },
+      {
+        "name": "scrollable",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `Has Scroll`: caps the visible height. Off by default - the doc says scrolling still works without it. Override the cap itself with `--ev-dropdown-list-max-height`.",
+        "control": "boolean"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Accessible name for the option list.",
+        "control": "text"
+      },
+      {
+        "name": "menu",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "A menu of actions or links rather than a listbox of options to choose from - the rows become menu items, and a row with `href` a real link.",
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "The options."
+      },
+      {
+        "name": "empty",
+        "description": "Figma's `Not Found` variant. Render it instead of the options when a search returns nothing."
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:searchValue",
+        "description": ""
+      }
+    ]
+  },
+  "EvInputFieldUnit": {
+    "tag": "EvInputFieldUnit",
+    "file": "src/molecules/input-field-unit/EvInputFieldUnit.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "string | number",
+        "required": false,
+        "default": "''",
+        "control": "text"
+      },
+      {
+        "name": "unit",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "control": "text"
+      },
+      {
+        "name": "units",
+        "type": "(string | UnitOption)[]",
+        "required": false,
+        "default": "() => ['IDR', 'USD', 'EUR']",
+        "control": "none"
+      },
+      {
+        "name": "type",
+        "type": "string",
+        "required": false,
+        "default": "'text'",
+        "control": "text"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "readonly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "validationText",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "validationTextEnd",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "clearable",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      }
+    ],
+    "slots": [],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      },
+      {
+        "name": "update:unit",
+        "description": ""
+      },
+      {
+        "name": "clear",
+        "description": ""
+      }
+    ]
+  },
+  "EvPopover": {
+    "tag": "EvPopover",
+    "file": "src/molecules/popover/EvPopover.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "placement",
+        "type": "TooltipPlacement",
+        "required": false,
+        "default": "'bottom'",
+        "description": "Which side of the trigger the panel sits on.",
+        "control": "select",
+        "options": [
+          "top",
+          "bottom",
+          "left",
+          "right"
+        ]
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "closeOnOutside",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Set false to keep a click outside from closing it.",
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "Panel body - the board fills it with a small form."
+      },
+      {
+        "name": "trigger",
+        "description": "The element the popover hangs off."
+      },
+      {
+        "name": "title",
+        "description": ""
+      },
+      {
+        "name": "description",
+        "description": ""
+      },
+      {
+        "name": "footer",
+        "description": "Figma's `Slot` - a trailing row, usually the actions."
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      }
+    ]
+  },
+  "EvRadioGroup": {
+    "tag": "EvRadioGroup",
+    "file": "src/molecules/radio-group/EvRadioGroup.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "string | number | null",
+        "required": false,
+        "default": "null",
+        "control": "none"
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": false,
+        "description": "Shared `name` for the underlying inputs. Generated when omitted.",
+        "control": "text"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Disables every radio in the group.",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Puts every radio in the group into the error state.",
+        "control": "boolean"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Accessible name for the group.",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      }
+    ]
+  },
+  "EvTabs": {
+    "tag": "EvTabs",
+    "file": "src/molecules/tabs/EvTabs.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "string | number | null",
+        "required": false,
+        "default": "null",
+        "control": "none"
+      },
+      {
+        "name": "variant",
+        "type": "TabsVariant",
+        "required": false,
+        "default": "'segmented'",
+        "control": "select",
+        "options": [
+          "segmented",
+          "line"
+        ]
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Accessible name for the tab list.",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      }
+    ]
+  },
+  "EvTagGroup": {
+    "tag": "EvTagGroup",
+    "file": "src/molecules/tag-group/EvTagGroup.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "variant",
+        "type": "TagVariant",
+        "required": false,
+        "description": "Cascades to every `EvTag` inside that does not set its own.",
+        "control": "select",
+        "options": [
+          "default",
+          "outline"
+        ]
+      },
+      {
+        "name": "spacing",
+        "type": "'default' | 'loose'",
+        "required": false,
+        "default": "'default'",
+        "description": "Figma's `Spacing`: 4px (`default`) or 8px (`loose`).",
+        "control": "select",
+        "options": [
+          "default",
+          "loose"
+        ]
+      },
+      {
+        "name": "type",
+        "type": "'wrap' | 'scroll'",
+        "required": false,
+        "default": "'wrap'",
+        "description": "Figma's `Type`: wrap onto more lines, or one line that scrolls.",
+        "control": "select",
+        "options": [
+          "wrap",
+          "scroll"
+        ]
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Accessible name for the group.",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      }
+    ],
+    "emits": []
+  },
+  "EvToggleGroup": {
+    "tag": "EvToggleGroup",
+    "file": "src/molecules/toggle-group/EvToggleGroup.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "size",
+        "type": "ToggleSize",
+        "required": false,
+        "default": "'default'",
+        "description": "Sets the gap and cascades default size to child `EvToggle`s.",
+        "control": "select",
+        "options": [
+          "default",
+          "small"
+        ]
+      },
+      {
+        "name": "variant",
+        "type": "ToggleVariant",
+        "required": false,
+        "description": "Cascades default variant to child `EvToggle`s.",
+        "control": "select",
+        "options": [
+          "default",
+          "outline"
+        ]
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Accessible name for the group.",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      }
+    ],
+    "emits": []
+  },
+  "EvTooltip": {
+    "tag": "EvTooltip",
+    "file": "src/molecules/tooltip/EvTooltip.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "placement",
+        "type": "TooltipPlacement",
+        "required": false,
+        "default": "'top'",
+        "description": "Which side of the trigger the bubble sits on.",
+        "control": "select",
+        "options": [
+          "top",
+          "bottom",
+          "left",
+          "right"
+        ]
+      },
+      {
+        "name": "text",
+        "type": "string",
+        "required": false,
+        "description": "Body text. Use the `content` slot for anything richer.",
+        "control": "text"
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "description": "Optional bold heading inside the bubble.",
+        "control": "text"
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "required": false,
+        "description": "Take control of visibility instead of letting hover and focus drive it.",
+        "control": "boolean"
+      },
+      {
+        "name": "dismissible",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Renders the close button in the title row.",
+        "control": "boolean"
+      },
+      {
+        "name": "closeLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Tutup'",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "The element the tooltip describes."
+      },
+      {
+        "name": "content",
+        "description": ""
+      },
+      {
+        "name": "title",
+        "description": ""
+      },
+      {
+        "name": "slotTitle",
+        "description": "Figma's `Slot Title` - a 24px leading slot in the title row."
+      },
+      {
+        "name": "slotContent",
+        "description": "Figma's `Slot Content` - a block under the message, above the footer."
+      },
+      {
+        "name": "footer",
+        "description": "Figma's `.Pagination Step` - step counter plus link buttons."
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:open",
+        "description": ""
+      }
+    ]
+  },
+  "EvAlertDialog": {
+    "tag": "EvAlertDialog",
+    "file": "src/organisms/alert-dialog/EvAlertDialog.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "variant",
+        "type": "AlertDialogVariant",
+        "required": false,
+        "default": "'confirmation'",
+        "control": "select",
+        "options": [
+          "success",
+          "warning",
+          "confirmation",
+          "info",
+          "delete"
+        ]
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "layout",
+        "type": "'desktop' | 'compact'",
+        "required": false,
+        "default": "'desktop'",
+        "description": "`desktop` uses the board's large illustration; `compact` uses the mobile layout, where the artwork becomes a 40px icon tile and the buttons stack.",
+        "control": "select",
+        "options": [
+          "desktop",
+          "compact"
+        ]
+      },
+      {
+        "name": "closeOnScrim",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Set false to force a deliberate choice from the buttons.",
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "Figma's `Slot` - extra content under the description."
+      },
+      {
+        "name": "title",
+        "description": ""
+      },
+      {
+        "name": "description",
+        "description": ""
+      },
+      {
+        "name": "media",
+        "description": "The board draws a per-variant illustration here. Those are artwork rather than tokens, so the library ships an icon tile and leaves the picture to the consumer."
+      },
+      {
+        "name": "actions",
+        "description": "The buttons. The board puts the confirm action last on desktop."
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      },
+      {
+        "name": "close",
+        "description": ""
+      }
+    ]
+  },
+  "EvBreadcrumb": {
+    "tag": "EvBreadcrumb",
+    "file": "src/organisms/breadcrumb/EvBreadcrumb.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "items",
+        "type": "BreadcrumbItem[]",
+        "required": true,
+        "control": "none"
+      },
+      {
+        "name": "maxItems",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Collapse the middle of the trail once there are more crumbs than this, matching Figma's `Ellipsis` variant. `0` never collapses.",
+        "control": "number"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "'Breadcrumb'",
+        "description": "Accessible name for the trail.",
+        "control": "text"
+      }
+    ],
+    "slots": [],
+    "emits": [
+      {
+        "name": "select",
+        "description": ""
+      }
+    ]
+  },
   "EvCalendar": {
     "tag": "EvCalendar",
-    "file": "src/components/calendar/EvCalendar.vue",
+    "file": "src/organisms/calendar/EvCalendar.vue",
+    "layer": "organism",
     "props": [
       {
         "name": "modelValue",
@@ -1211,98 +3025,10 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
       }
     ]
   },
-  "EvTimePicker": {
-    "tag": "EvTimePicker",
-    "file": "src/components/calendar/EvTimePicker.vue",
-    "props": [
-      {
-        "name": "modelValue",
-        "type": "string",
-        "required": false,
-        "default": "'00:00'",
-        "control": "text"
-      },
-      {
-        "name": "format",
-        "type": "TimePickerFormat",
-        "required": false,
-        "default": "'default'",
-        "description": "Figma's `Variant`: which columns the wheel shows.",
-        "control": "select",
-        "options": [
-          "default",
-          "with-seconds",
-          "am-pm",
-          "am-pm-seconds"
-        ]
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "readonly",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "hasReset",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Figma's `Has Reset Button`: the refresh glyph beside the value.",
-        "control": "boolean"
-      },
-      {
-        "name": "resetLabel",
-        "type": "string",
-        "required": false,
-        "default": "'Atur ulang'",
-        "control": "text"
-      },
-      {
-        "name": "cancelLabel",
-        "type": "string",
-        "required": false,
-        "default": "'Cancel'",
-        "control": "text"
-      },
-      {
-        "name": "applyLabel",
-        "type": "string",
-        "required": false,
-        "default": "'Apply'",
-        "control": "text"
-      }
-    ],
-    "slots": [],
-    "emits": [
-      {
-        "name": "update:modelValue",
-        "description": ""
-      },
-      {
-        "name": "apply",
-        "description": ""
-      },
-      {
-        "name": "cancel",
-        "description": ""
-      },
-      {
-        "name": "reset",
-        "description": ""
-      }
-    ]
-  },
   "EvCard": {
     "tag": "EvCard",
-    "file": "src/components/card/EvCard.vue",
+    "file": "src/organisms/card/EvCard.vue",
+    "layer": "organism",
     "props": [
       {
         "name": "type",
@@ -1363,7 +3089,8 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
   },
   "EvCarousel": {
     "tag": "EvCarousel",
-    "file": "src/components/carousel/EvCarousel.vue",
+    "file": "src/organisms/carousel/EvCarousel.vue",
+    "layer": "organism",
     "props": [
       {
         "name": "modelValue",
@@ -1449,7 +3176,8 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
   },
   "EvCarouselSlide": {
     "tag": "EvCarouselSlide",
-    "file": "src/components/carousel/EvCarouselSlide.vue",
+    "file": "src/organisms/carousel/EvCarouselSlide.vue",
+    "layer": "organism",
     "props": [],
     "slots": [
       {
@@ -1461,7 +3189,8 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
   },
   "EvChart": {
     "tag": "EvChart",
-    "file": "src/components/chart/EvChart.vue",
+    "file": "src/organisms/chart/EvChart.vue",
+    "layer": "organism",
     "props": [
       {
         "name": "variant",
@@ -1517,79 +3246,10 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
     ],
     "emits": []
   },
-  "EvCheckbox": {
-    "tag": "EvCheckbox",
-    "file": "src/components/checkbox/EvCheckbox.vue",
-    "props": [
-      {
-        "name": "modelValue",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "indeterminate",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Renders the dash instead of the tick. Independent of `modelValue`, the same way the DOM's own `indeterminate` flag is.",
-        "control": "boolean"
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Draws the error border and tints the subtext.",
-        "control": "boolean"
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "subtext",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "value",
-        "type": "string | number",
-        "required": false,
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      },
-      {
-        "name": "subtext",
-        "description": ""
-      }
-    ],
-    "emits": [
-      {
-        "name": "update:modelValue",
-        "description": ""
-      }
-    ]
-  },
   "EvDirection": {
     "tag": "EvDirection",
-    "file": "src/components/direction/EvDirection.vue",
+    "file": "src/organisms/direction/EvDirection.vue",
+    "layer": "organism",
     "props": [
       {
         "name": "title",
@@ -1654,7 +3314,8 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
   },
   "EvDrawer": {
     "tag": "EvDrawer",
-    "file": "src/components/drawer/EvDrawer.vue",
+    "file": "src/organisms/drawer/EvDrawer.vue",
+    "layer": "organism",
     "props": [
       {
         "name": "modelValue",
@@ -1754,133 +3415,23 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
       }
     ]
   },
-  "EvDropdownItem": {
-    "tag": "EvDropdownItem",
-    "file": "src/components/dropdown-list/EvDropdownItem.vue",
+  "EvModal": {
+    "tag": "EvModal",
+    "file": "src/organisms/modal/EvModal.vue",
+    "layer": "organism",
     "props": [
       {
-        "name": "variant",
-        "type": "DropdownItemVariant",
-        "required": false,
-        "default": "'list'",
-        "description": "`list` is the plain 24px row; `list-box` is the taller 32px row the board uses once a checkbox or avatar sits beside the label.",
-        "control": "select",
-        "options": [
-          "list",
-          "list-box"
-        ]
-      },
-      {
-        "name": "active",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Figma's `Active` state - the currently chosen option.",
-        "control": "boolean"
-      },
-      {
-        "name": "disabled",
+        "name": "modelValue",
         "type": "boolean",
         "required": false,
         "default": "false",
         "control": "boolean"
       },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      },
-      {
-        "name": "iconLeft",
-        "description": "Figma's `Slot Left` - an icon, checkbox or avatar."
-      },
-      {
-        "name": "iconRight",
-        "description": "Figma's `Slot Right` - a trailing glyph, such as a tick."
-      }
-    ],
-    "emits": [
-      {
-        "name": "select",
-        "description": ""
-      }
-    ]
-  },
-  "EvDropdownList": {
-    "tag": "EvDropdownList",
-    "file": "src/components/dropdown-list/EvDropdownList.vue",
-    "props": [
-      {
-        "name": "searchable",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Figma's `Has Search`: turns the list into the Combobox pattern.",
-        "control": "boolean"
-      },
-      {
-        "name": "searchValue",
-        "type": "string",
-        "required": false,
-        "default": "''",
-        "control": "text"
-      },
-      {
-        "name": "searchPlaceholder",
-        "type": "string",
-        "required": false,
-        "default": "'Cari...'",
-        "control": "text"
-      },
-      {
-        "name": "scrollable",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Figma's `Has Scroll`: caps the visible height. Off by default - the doc says scrolling still works without it. Override the cap itself with `--ev-dropdown-list-max-height`.",
-        "control": "boolean"
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "description": "Accessible name for the option list.",
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": "The options."
-      },
-      {
-        "name": "empty",
-        "description": "Figma's `Not Found` variant. Render it instead of the options when a search returns nothing."
-      }
-    ],
-    "emits": [
-      {
-        "name": "update:searchValue",
-        "description": ""
-      }
-    ]
-  },
-  "EvHint": {
-    "tag": "EvHint",
-    "file": "src/components/hint/EvHint.vue",
-    "props": [
       {
         "name": "size",
-        "type": "HintSize",
+        "type": "ModalSize",
         "required": false,
-        "default": "'medium'",
+        "default": "'small'",
         "control": "select",
         "options": [
           "small",
@@ -1889,321 +3440,64 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         ]
       },
       {
-        "name": "value",
-        "type": "number | string",
-        "required": false,
-        "description": "Count to display. Leave unset for the bare dot.",
-        "control": "none"
-      },
-      {
-        "name": "max",
-        "type": "number",
-        "required": false,
-        "default": "99",
-        "description": "Counts above this render as `{max}+`, matching Figma's `99+` variant.",
-        "control": "number"
-      },
-      {
-        "name": "dot",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Force the dot even when a value is given.",
-        "control": "boolean"
-      }
-    ],
-    "slots": [],
-    "emits": []
-  },
-  "EvInput": {
-    "tag": "EvInput",
-    "file": "src/components/input/EvInput.vue",
-    "props": [
-      {
-        "name": "modelValue",
-        "type": "string | number",
-        "required": false,
-        "default": "''",
-        "control": "text"
-      },
-      {
-        "name": "type",
-        "type": "string",
-        "required": false,
-        "default": "'text'",
-        "description": "Any native input type - `text`, `search`, `email`, `number`, ...",
-        "control": "text"
-      },
-      {
-        "name": "placeholder",
+        "name": "title",
         "type": "string",
         "required": false,
         "control": "text"
       },
       {
-        "name": "size",
-        "type": "'default' | 'small'",
-        "required": false,
-        "default": "'default'",
-        "description": "Container size: default (44px) or small (32px) per Figma spec",
-        "control": "select",
-        "options": [
-          "default",
-          "small"
-        ]
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "description": "Floating label, drawn notched into the field's top border.",
-        "control": "text"
-      },
-      {
-        "name": "required",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Marks the field required and appends the board's red asterisk.",
-        "control": "boolean"
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "readonly",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Switches the field to the error style. Always pair it with a message.",
-        "control": "boolean"
-      },
-      {
-        "name": "validationText",
-        "type": "string",
-        "required": false,
-        "description": "Helper text below the field. Turns red in the error state.",
-        "control": "text"
-      },
-      {
-        "name": "validationTextEnd",
-        "type": "string",
-        "required": false,
-        "description": "Trailing helper text, right-aligned - a counter or a hint.",
-        "control": "text"
-      },
-      {
-        "name": "clearable",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Shows the clear button once there is something to clear.",
-        "control": "boolean"
-      },
-      {
-        "name": "clearLabel",
-        "type": "string",
-        "required": false,
-        "default": "'Bersihkan'",
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "iconLeft",
-        "description": "Figma's `Has L Icon`."
-      },
-      {
-        "name": "iconRight",
-        "description": "Figma's `Has R Icon`. Replaced by the error glyph in the error state."
-      }
-    ],
-    "emits": [
-      {
-        "name": "update:modelValue",
-        "description": ""
-      },
-      {
-        "name": "clear",
-        "description": ""
-      }
-    ]
-  },
-  "EvInputFieldUnit": {
-    "tag": "EvInputFieldUnit",
-    "file": "src/components/input/EvInputFieldUnit.vue",
-    "props": [
-      {
-        "name": "modelValue",
-        "type": "string | number",
-        "required": false,
-        "default": "''",
-        "control": "text"
-      },
-      {
-        "name": "unit",
-        "type": "string",
-        "required": false,
-        "default": "''",
-        "control": "text"
-      },
-      {
-        "name": "units",
-        "type": "(string | UnitOption)[]",
-        "required": false,
-        "default": "() => ['IDR', 'USD', 'EUR']",
-        "control": "none"
-      },
-      {
-        "name": "type",
-        "type": "string",
-        "required": false,
-        "default": "'text'",
-        "control": "text"
-      },
-      {
-        "name": "placeholder",
+        "name": "subtext",
         "type": "string",
         "required": false,
         "control": "text"
       },
       {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "required",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "readonly",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "validationText",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "validationTextEnd",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "clearable",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      }
-    ],
-    "slots": [],
-    "emits": [
-      {
-        "name": "update:modelValue",
-        "description": ""
-      },
-      {
-        "name": "update:unit",
-        "description": ""
-      },
-      {
-        "name": "clear",
-        "description": ""
-      }
-    ]
-  },
-  "EvInputSearch": {
-    "tag": "EvInputSearch",
-    "file": "src/components/input/EvInputSearch.vue",
-    "props": [
-      {
-        "name": "modelValue",
-        "type": "string",
-        "required": false,
-        "default": "''",
-        "control": "text"
-      },
-      {
-        "name": "placeholder",
-        "type": "string",
-        "required": false,
-        "default": "'Cari sesuatu...'",
-        "control": "text"
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "readonly",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "clearable",
+        "name": "closable",
         "type": "boolean",
         "required": false,
         "default": "true",
+        "description": "Renders the close button in the header.",
         "control": "boolean"
       },
       {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "validationText",
+        "name": "closeLabel",
         "type": "string",
         "required": false,
+        "default": "'Tutup'",
         "control": "text"
+      },
+      {
+        "name": "closeOnScrim",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Set false to keep a click on the scrim from closing the modal.",
+        "control": "boolean"
       }
     ],
     "slots": [
       {
-        "name": "shortcut",
+        "name": "default",
+        "description": "Body, between the header and the footer."
+      },
+      {
+        "name": "title",
+        "description": ""
+      },
+      {
+        "name": "subtext",
+        "description": ""
+      },
+      {
+        "name": "topSlot",
+        "description": "Figma's `Top Slot` - a row above the title."
+      },
+      {
+        "name": "footerStart",
+        "description": "Leading footer content, such as a \"don't show again\" checkbox."
+      },
+      {
+        "name": "footer",
         "description": ""
       }
     ],
@@ -2213,152 +3507,56 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "description": ""
       },
       {
-        "name": "search",
-        "description": ""
-      },
-      {
-        "name": "clear",
+        "name": "close",
         "description": ""
       }
     ]
   },
-  "EvInputWithLabel": {
-    "tag": "EvInputWithLabel",
-    "file": "src/components/input/EvInputWithLabel.vue",
+  "EvNavigationMenu": {
+    "tag": "EvNavigationMenu",
+    "file": "src/organisms/navigation-menu/EvNavigationMenu.vue",
+    "layer": "organism",
     "props": [
-      {
-        "name": "modelValue",
-        "type": "string | number",
-        "required": false,
-        "default": "''",
-        "control": "text"
-      },
-      {
-        "name": "type",
-        "type": "string",
-        "required": false,
-        "default": "'text'",
-        "control": "text"
-      },
-      {
-        "name": "placeholder",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
       {
         "name": "label",
         "type": "string",
         "required": false,
+        "description": "Accessible name for the bar.",
         "control": "text"
-      },
-      {
-        "name": "prefixLabel",
-        "type": "string",
-        "required": false,
-        "description": "Text for left inline label prefix",
-        "control": "text"
-      },
-      {
-        "name": "suffixLabel",
-        "type": "string",
-        "required": false,
-        "description": "Text for right inline label suffix",
-        "control": "text"
-      },
-      {
-        "name": "placement",
-        "type": "'left' | 'right' | 'both'",
-        "required": false,
-        "default": "'left'",
-        "description": "Position placement for inline labels",
-        "control": "select",
-        "options": [
-          "left",
-          "right",
-          "both"
-        ]
-      },
-      {
-        "name": "required",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "readonly",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "validationText",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "validationTextEnd",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "clearable",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
       }
     ],
     "slots": [
       {
-        "name": "iconLeft",
-        "description": ""
+        "name": "default",
+        "description": "Primary navigation - `EvNavMenuItem`s, or an `EvTabs` for the tab style."
       },
       {
-        "name": "iconRight",
-        "description": ""
+        "name": "brand",
+        "description": "The brand mark at the far left."
       },
       {
-        "name": "prefix",
-        "description": ""
+        "name": "slot1",
+        "description": "Figma's `Slot 1`: a flexible insertion point beside the navigation."
       },
       {
-        "name": "suffix",
-        "description": ""
+        "name": "slot2",
+        "description": "Figma's `Slot 2`: the first item of the right utility cluster."
+      },
+      {
+        "name": "search",
+        "description": "Figma's `Has Search`: the global search field."
+      },
+      {
+        "name": "profile",
+        "description": "Figma's `Has Profile`: the account item at the far right."
       }
     ],
-    "emits": [
-      {
-        "name": "update:modelValue",
-        "description": ""
-      },
-      {
-        "name": "clear",
-        "description": ""
-      }
-    ]
+    "emits": []
   },
   "EvRichEditor": {
     "tag": "EvRichEditor",
-    "file": "src/components/input/EvRichEditor.vue",
+    "file": "src/organisms/rich-editor/EvRichEditor.vue",
+    "layer": "organism",
     "props": [
       {
         "name": "modelValue",
@@ -2478,38 +3676,31 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
       }
     ]
   },
-  "EvTextarea": {
-    "tag": "EvTextarea",
-    "file": "src/components/input/EvTextarea.vue",
+  "EvTimePicker": {
+    "tag": "EvTimePicker",
+    "file": "src/organisms/time-picker/EvTimePicker.vue",
+    "layer": "organism",
     "props": [
       {
         "name": "modelValue",
         "type": "string",
         "required": false,
-        "default": "''",
+        "default": "'00:00'",
         "control": "text"
       },
       {
-        "name": "placeholder",
-        "type": "string",
+        "name": "format",
+        "type": "TimePickerFormat",
         "required": false,
-        "description": "`.InputType` variant `Placeholder-default` - 14px, shown while empty.",
-        "control": "text"
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "description": "`.InputType` variant `Title` - 12px, shown while empty instead of the placeholder.",
-        "control": "text"
-      },
-      {
-        "name": "required",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "The `Mandatory` boolean on `.InputType`: appends the red asterisk.",
-        "control": "boolean"
+        "default": "'default'",
+        "description": "Figma's `Variant`: which columns the wheel shows.",
+        "control": "select",
+        "options": [
+          "default",
+          "with-seconds",
+          "am-pm",
+          "am-pm-seconds"
+        ]
       },
       {
         "name": "disabled",
@@ -2526,69 +3717,33 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "control": "boolean"
       },
       {
-        "name": "error",
+        "name": "hasReset",
         "type": "boolean",
         "required": false,
         "default": "false",
+        "description": "Figma's `Has Reset Button`: the refresh glyph beside the value.",
         "control": "boolean"
       },
       {
-        "name": "rows",
-        "type": "number",
-        "required": false,
-        "default": "4",
-        "description": "Drives the fixed height: `rows` x 16px line-height + 16px padding.",
-        "control": "number"
-      },
-      {
-        "name": "maxlength",
-        "type": "number",
-        "required": false,
-        "control": "number"
-      },
-      {
-        "name": "showCount",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Figma's `Has Validation Text`: the trailing character counter.",
-        "control": "boolean"
-      },
-      {
-        "name": "validationText",
+        "name": "resetLabel",
         "type": "string",
         "required": false,
-        "description": "The leading message. The board only reveals it in the two Error states.",
+        "default": "'Atur ulang'",
         "control": "text"
       },
       {
-        "name": "validationTextEnd",
+        "name": "cancelLabel",
         "type": "string",
         "required": false,
-        "description": "Trailing helper text. `showCount` wins when both are set.",
+        "default": "'Cancel'",
         "control": "text"
       },
       {
-        "name": "clearable",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "clearLabel",
+        "name": "applyLabel",
         "type": "string",
         "required": false,
-        "default": "'Bersihkan'",
+        "default": "'Apply'",
         "control": "text"
-      },
-      {
-        "name": "hasScroll",
-        "type": "boolean",
-        "required": false,
-        "default": "true",
-        "description": "Figma's `Has Scroll`: reveals the 2px scrollbar once the body overflows.",
-        "control": "boolean"
       }
     ],
     "slots": [],
@@ -2598,1085 +3753,23 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "description": ""
       },
       {
-        "name": "focus",
+        "name": "apply",
         "description": ""
       },
       {
-        "name": "blur",
+        "name": "cancel",
         "description": ""
       },
       {
-        "name": "clear",
-        "description": ""
-      }
-    ]
-  },
-  "EvKbd": {
-    "tag": "EvKbd",
-    "file": "src/components/kbd/EvKbd.vue",
-    "props": [
-      {
-        "name": "variant",
-        "type": "KbdVariant",
-        "required": false,
-        "default": "'text'",
-        "description": "A text cap hugs its label; an icon cap is a 16px square.",
-        "control": "select",
-        "options": [
-          "text",
-          "icon"
-        ]
-      },
-      {
-        "name": "light",
-        "type": "boolean",
-        "required": false,
-        "default": "true",
-        "description": "Figma's `Light` property. Set to false for the dark cap.",
-        "control": "boolean"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      }
-    ],
-    "emits": []
-  },
-  "EvLogo": {
-    "tag": "EvLogo",
-    "file": "src/components/logo/EvLogo.vue",
-    "props": [
-      {
-        "name": "size",
-        "type": "number | string",
-        "required": false,
-        "default": "32",
-        "description": "Rendered height. The mark is square, so this sets both dimensions.",
-        "control": "none"
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "default": "'EVOQ'",
-        "description": "Accessible name. Set to an empty string for a decorative mark.",
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": "The wordmark beside the mark. Not shipped - see the note in the style block for why - so supply your own asset here when you need it."
-      }
-    ],
-    "emits": []
-  },
-  "EvModal": {
-    "tag": "EvModal",
-    "file": "src/components/modal/EvModal.vue",
-    "props": [
-      {
-        "name": "modelValue",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "size",
-        "type": "ModalSize",
-        "required": false,
-        "default": "'small'",
-        "control": "select",
-        "options": [
-          "small",
-          "medium",
-          "large"
-        ]
-      },
-      {
-        "name": "title",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "subtext",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "closable",
-        "type": "boolean",
-        "required": false,
-        "default": "true",
-        "description": "Renders the close button in the header.",
-        "control": "boolean"
-      },
-      {
-        "name": "closeLabel",
-        "type": "string",
-        "required": false,
-        "default": "'Tutup'",
-        "control": "text"
-      },
-      {
-        "name": "closeOnScrim",
-        "type": "boolean",
-        "required": false,
-        "default": "true",
-        "description": "Set false to keep a click on the scrim from closing the modal.",
-        "control": "boolean"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": "Body, between the header and the footer."
-      },
-      {
-        "name": "title",
-        "description": ""
-      },
-      {
-        "name": "subtext",
-        "description": ""
-      },
-      {
-        "name": "topSlot",
-        "description": "Figma's `Top Slot` - a row above the title."
-      },
-      {
-        "name": "footerStart",
-        "description": "Leading footer content, such as a \"don't show again\" checkbox."
-      },
-      {
-        "name": "footer",
-        "description": ""
-      }
-    ],
-    "emits": [
-      {
-        "name": "update:modelValue",
-        "description": ""
-      },
-      {
-        "name": "close",
-        "description": ""
-      }
-    ]
-  },
-  "EvNavMenuItem": {
-    "tag": "EvNavMenuItem",
-    "file": "src/components/navigation-menu/EvNavMenuItem.vue",
-    "props": [
-      {
-        "name": "active",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Marks the current section.",
-        "control": "boolean"
-      },
-      {
-        "name": "href",
-        "type": "string",
-        "required": false,
-        "description": "Renders an anchor instead of a button.",
-        "control": "text"
-      },
-      {
-        "name": "iconOnly",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Figma's `Icon Only` state: a 32px square pill. Give it an `aria-label`, since there is no visible text.",
-        "control": "boolean"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      },
-      {
-        "name": "icon",
-        "description": ""
-      }
-    ],
-    "emits": [
-      {
-        "name": "click",
-        "description": ""
-      }
-    ]
-  },
-  "EvNavigationMenu": {
-    "tag": "EvNavigationMenu",
-    "file": "src/components/navigation-menu/EvNavigationMenu.vue",
-    "props": [
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "description": "Accessible name for the bar.",
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": "Primary navigation - `EvNavMenuItem`s, or an `EvTabs` for the tab style."
-      },
-      {
-        "name": "brand",
-        "description": "The brand mark at the far left."
-      },
-      {
-        "name": "slot1",
-        "description": "Figma's `Slot 1`: a flexible insertion point beside the navigation."
-      },
-      {
-        "name": "slot2",
-        "description": "Figma's `Slot 2`: the first item of the right utility cluster."
-      },
-      {
-        "name": "search",
-        "description": "Figma's `Has Search`: the global search field."
-      },
-      {
-        "name": "profile",
-        "description": "Figma's `Has Profile`: the account item at the far right."
-      }
-    ],
-    "emits": []
-  },
-  "EvPopover": {
-    "tag": "EvPopover",
-    "file": "src/components/popover/EvPopover.vue",
-    "props": [
-      {
-        "name": "modelValue",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "placement",
-        "type": "TooltipPlacement",
-        "required": false,
-        "default": "'bottom'",
-        "description": "Which side of the trigger the panel sits on.",
-        "control": "select",
-        "options": [
-          "top",
-          "bottom",
-          "left",
-          "right"
-        ]
-      },
-      {
-        "name": "title",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "description",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "closeOnOutside",
-        "type": "boolean",
-        "required": false,
-        "default": "true",
-        "description": "Set false to keep a click outside from closing it.",
-        "control": "boolean"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": "Panel body - the board fills it with a small form."
-      },
-      {
-        "name": "trigger",
-        "description": "The element the popover hangs off."
-      },
-      {
-        "name": "title",
-        "description": ""
-      },
-      {
-        "name": "description",
-        "description": ""
-      },
-      {
-        "name": "footer",
-        "description": "Figma's `Slot` - a trailing row, usually the actions."
-      }
-    ],
-    "emits": [
-      {
-        "name": "update:modelValue",
-        "description": ""
-      }
-    ]
-  },
-  "EvRadio": {
-    "tag": "EvRadio",
-    "file": "src/components/radio/EvRadio.vue",
-    "props": [
-      {
-        "name": "value",
-        "type": "string | number",
-        "required": true,
-        "description": "Value this radio contributes when selected.",
-        "control": "text"
-      },
-      {
-        "name": "modelValue",
-        "type": "string | number | null",
-        "required": false,
-        "description": "Only used when the radio is not inside an `EvRadioGroup`.",
-        "control": "none"
-      },
-      {
-        "name": "name",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      },
-      {
-        "name": "subtext",
-        "type": "string",
-        "required": false,
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      },
-      {
-        "name": "subtext",
-        "description": ""
-      }
-    ],
-    "emits": [
-      {
-        "name": "update:modelValue",
-        "description": ""
-      }
-    ]
-  },
-  "EvRadioGroup": {
-    "tag": "EvRadioGroup",
-    "file": "src/components/radio/EvRadioGroup.vue",
-    "props": [
-      {
-        "name": "modelValue",
-        "type": "string | number | null",
-        "required": false,
-        "default": "null",
-        "control": "none"
-      },
-      {
-        "name": "name",
-        "type": "string",
-        "required": false,
-        "description": "Shared `name` for the underlying inputs. Generated when omitted.",
-        "control": "text"
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Disables every radio in the group.",
-        "control": "boolean"
-      },
-      {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Puts every radio in the group into the error state.",
-        "control": "boolean"
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "description": "Accessible name for the group.",
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      }
-    ],
-    "emits": [
-      {
-        "name": "update:modelValue",
-        "description": ""
-      }
-    ]
-  },
-  "EvScrollArea": {
-    "tag": "EvScrollArea",
-    "file": "src/components/scroll-area/EvScrollArea.vue",
-    "props": [
-      {
-        "name": "orientation",
-        "type": "ScrollOrientation",
-        "required": false,
-        "default": "'vertical'",
-        "description": "Which axis may scroll.",
-        "control": "select",
-        "options": [
-          "vertical",
-          "horizontal",
-          "both"
-        ]
-      },
-      {
-        "name": "mirror",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Flips the scrollbar to the opposite edge (e.g. left side for vertical).",
-        "control": "boolean"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      }
-    ],
-    "emits": []
-  },
-  "EvSeparator": {
-    "tag": "EvSeparator",
-    "file": "src/components/separator/EvSeparator.vue",
-    "props": [
-      {
-        "name": "orientation",
-        "type": "SeparatorOrientation",
-        "required": false,
-        "default": "'horizontal'",
-        "control": "select",
-        "options": [
-          "horizontal",
-          "vertical"
-        ]
-      },
-      {
-        "name": "decorative",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Purely decorative rules are hidden from assistive tech. Leave this off when the rule actually separates two groups of content.",
-        "control": "boolean"
-      }
-    ],
-    "slots": [],
-    "emits": []
-  },
-  "EvSlider": {
-    "tag": "EvSlider",
-    "file": "src/components/slider/EvSlider.vue",
-    "props": [
-      {
-        "name": "modelValue",
-        "type": "number | [number, number]",
-        "required": false,
-        "default": "0",
-        "description": "A single number, or a `[lower, upper]` pair when `range` is on.",
-        "control": "none"
-      },
-      {
-        "name": "min",
-        "type": "number",
-        "required": false,
-        "default": "0",
-        "control": "number"
-      },
-      {
-        "name": "max",
-        "type": "number",
-        "required": false,
-        "default": "100",
-        "control": "number"
-      },
-      {
-        "name": "step",
-        "type": "number",
-        "required": false,
-        "default": "1",
-        "control": "number"
-      },
-      {
-        "name": "variant",
-        "type": "SliderVariant",
-        "required": false,
-        "default": "'primary'",
-        "control": "select",
-        "options": [
-          "primary",
-          "destructive"
-        ]
-      },
-      {
-        "name": "orientation",
-        "type": "SliderOrientation",
-        "required": false,
-        "default": "'horizontal'",
-        "control": "select",
-        "options": [
-          "horizontal",
-          "vertical"
-        ]
-      },
-      {
-        "name": "range",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Adds the second handle, filling between the two.",
-        "control": "boolean"
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "showValue",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Shows the current value beneath the handle.",
-        "control": "boolean"
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "description": "Accessible name. Required when there is no visible label.",
-        "control": "text"
-      }
-    ],
-    "slots": [],
-    "emits": [
-      {
-        "name": "update:modelValue",
-        "description": ""
-      }
-    ]
-  },
-  "EvSwitch": {
-    "tag": "EvSwitch",
-    "file": "src/components/switch/EvSwitch.vue",
-    "props": [
-      {
-        "name": "modelValue",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "size",
-        "type": "SwitchSize",
-        "required": false,
-        "default": "'default'",
-        "control": "select",
-        "options": [
-          "default",
-          "small"
-        ]
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      },
-      {
-        "name": "error",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Paints the track in the error colour, on or off.",
-        "control": "boolean"
-      },
-      {
-        "name": "text",
-        "type": "string",
-        "required": false,
-        "description": "Label rendered inside the track, beside the thumb.",
-        "control": "text"
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "description": "Visible label beside the switch.",
-        "control": "text"
-      },
-      {
-        "name": "subtext",
-        "type": "string",
-        "required": false,
-        "description": "Subtext rendered under the visible label.",
-        "control": "text"
-      },
-      {
-        "name": "labelPlacement",
-        "type": "'left' | 'right'",
-        "required": false,
-        "default": "'right'",
-        "description": "Position of the visible label/subtext relative to the switch.",
-        "control": "select",
-        "options": [
-          "left",
-          "right"
-        ]
-      },
-      {
-        "name": "ariaLabel",
-        "type": "string",
-        "required": false,
-        "description": "Accessible name when no visible label is provided.",
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      },
-      {
-        "name": "subtext",
-        "description": ""
-      }
-    ],
-    "emits": [
-      {
-        "name": "update:modelValue",
-        "description": ""
-      }
-    ]
-  },
-  "EvTab": {
-    "tag": "EvTab",
-    "file": "src/components/tabs/EvTab.vue",
-    "props": [
-      {
-        "name": "value",
-        "type": "string | number",
-        "required": true,
-        "description": "Value this tab selects.",
-        "control": "text"
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "required": false,
-        "control": "boolean"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      },
-      {
-        "name": "iconLeft",
-        "description": ""
-      },
-      {
-        "name": "iconRight",
-        "description": ""
-      }
-    ],
-    "emits": []
-  },
-  "EvTabs": {
-    "tag": "EvTabs",
-    "file": "src/components/tabs/EvTabs.vue",
-    "props": [
-      {
-        "name": "modelValue",
-        "type": "string | number | null",
-        "required": false,
-        "default": "null",
-        "control": "none"
-      },
-      {
-        "name": "variant",
-        "type": "TabsVariant",
-        "required": false,
-        "default": "'segmented'",
-        "control": "select",
-        "options": [
-          "segmented",
-          "line"
-        ]
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "description": "Accessible name for the tab list.",
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      }
-    ],
-    "emits": [
-      {
-        "name": "update:modelValue",
-        "description": ""
-      }
-    ]
-  },
-  "EvTag": {
-    "tag": "EvTag",
-    "file": "src/components/tag/EvTag.vue",
-    "props": [
-      {
-        "name": "variant",
-        "type": "TagVariant",
-        "required": false,
-        "control": "select",
-        "options": [
-          "default",
-          "outline"
-        ]
-      },
-      {
-        "name": "removable",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Renders the trailing dismiss button and enables the `remove` event.",
-        "control": "boolean"
-      },
-      {
-        "name": "removeLabel",
-        "type": "string",
-        "required": false,
-        "default": "'Remove'",
-        "description": "Accessible name for the dismiss button.",
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      },
-      {
-        "name": "iconLeft",
-        "description": ""
-      }
-    ],
-    "emits": [
-      {
-        "name": "remove",
-        "description": ""
-      }
-    ]
-  },
-  "EvTagGroup": {
-    "tag": "EvTagGroup",
-    "file": "src/components/tag/EvTagGroup.vue",
-    "props": [
-      {
-        "name": "variant",
-        "type": "TagVariant",
-        "required": false,
-        "description": "Cascades to every `EvTag` inside that does not set its own.",
-        "control": "select",
-        "options": [
-          "default",
-          "outline"
-        ]
-      },
-      {
-        "name": "spacing",
-        "type": "'default' | 'loose'",
-        "required": false,
-        "default": "'default'",
-        "description": "Figma's `Spacing`: 4px (`default`) or 8px (`loose`).",
-        "control": "select",
-        "options": [
-          "default",
-          "loose"
-        ]
-      },
-      {
-        "name": "type",
-        "type": "'wrap' | 'scroll'",
-        "required": false,
-        "default": "'wrap'",
-        "description": "Figma's `Type`: wrap onto more lines, or one line that scrolls.",
-        "control": "select",
-        "options": [
-          "wrap",
-          "scroll"
-        ]
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "description": "Accessible name for the group.",
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      }
-    ],
-    "emits": []
-  },
-  "EvToggle": {
-    "tag": "EvToggle",
-    "file": "src/components/toggle/EvToggle.vue",
-    "props": [
-      {
-        "name": "modelValue",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Pressed state.",
-        "control": "boolean"
-      },
-      {
-        "name": "variant",
-        "type": "ToggleVariant",
-        "required": false,
-        "control": "select",
-        "options": [
-          "default",
-          "outline"
-        ]
-      },
-      {
-        "name": "size",
-        "type": "ToggleSize",
-        "required": false,
-        "control": "select",
-        "options": [
-          "default",
-          "small"
-        ]
-      },
-      {
-        "name": "disabled",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "control": "boolean"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      },
-      {
-        "name": "iconLeft",
-        "description": ""
-      },
-      {
-        "name": "iconRight",
-        "description": ""
-      }
-    ],
-    "emits": [
-      {
-        "name": "update:modelValue",
-        "description": ""
-      }
-    ]
-  },
-  "EvToggleGroup": {
-    "tag": "EvToggleGroup",
-    "file": "src/components/toggle/EvToggleGroup.vue",
-    "props": [
-      {
-        "name": "size",
-        "type": "ToggleSize",
-        "required": false,
-        "default": "'default'",
-        "description": "Sets the gap and cascades default size to child `EvToggle`s.",
-        "control": "select",
-        "options": [
-          "default",
-          "small"
-        ]
-      },
-      {
-        "name": "variant",
-        "type": "ToggleVariant",
-        "required": false,
-        "description": "Cascades default variant to child `EvToggle`s.",
-        "control": "select",
-        "options": [
-          "default",
-          "outline"
-        ]
-      },
-      {
-        "name": "label",
-        "type": "string",
-        "required": false,
-        "description": "Accessible name for the group.",
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": ""
-      }
-    ],
-    "emits": []
-  },
-  "EvTooltip": {
-    "tag": "EvTooltip",
-    "file": "src/components/tooltip/EvTooltip.vue",
-    "props": [
-      {
-        "name": "placement",
-        "type": "TooltipPlacement",
-        "required": false,
-        "default": "'top'",
-        "description": "Which side of the trigger the bubble sits on.",
-        "control": "select",
-        "options": [
-          "top",
-          "bottom",
-          "left",
-          "right"
-        ]
-      },
-      {
-        "name": "text",
-        "type": "string",
-        "required": false,
-        "description": "Body text. Use the `content` slot for anything richer.",
-        "control": "text"
-      },
-      {
-        "name": "title",
-        "type": "string",
-        "required": false,
-        "description": "Optional bold heading inside the bubble.",
-        "control": "text"
-      },
-      {
-        "name": "open",
-        "type": "boolean",
-        "required": false,
-        "description": "Take control of visibility instead of letting hover and focus drive it.",
-        "control": "boolean"
-      },
-      {
-        "name": "dismissible",
-        "type": "boolean",
-        "required": false,
-        "default": "false",
-        "description": "Renders the close button in the title row.",
-        "control": "boolean"
-      },
-      {
-        "name": "closeLabel",
-        "type": "string",
-        "required": false,
-        "default": "'Tutup'",
-        "control": "text"
-      }
-    ],
-    "slots": [
-      {
-        "name": "default",
-        "description": "The element the tooltip describes."
-      },
-      {
-        "name": "content",
-        "description": ""
-      },
-      {
-        "name": "title",
-        "description": ""
-      },
-      {
-        "name": "slotTitle",
-        "description": "Figma's `Slot Title` - a 24px leading slot in the title row."
-      },
-      {
-        "name": "slotContent",
-        "description": "Figma's `Slot Content` - a block under the message, above the footer."
-      },
-      {
-        "name": "footer",
-        "description": "Figma's `.Pagination Step` - step counter plus link buttons."
-      }
-    ],
-    "emits": [
-      {
-        "name": "update:open",
+        "name": "reset",
         "description": ""
       }
     ]
   },
   "EvTree": {
     "tag": "EvTree",
-    "file": "src/components/tree/EvTree.vue",
+    "file": "src/organisms/tree/EvTree.vue",
+    "layer": "organism",
     "props": [
       {
         "name": "label",
@@ -3696,7 +3789,8 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
   },
   "EvTreeItem": {
     "tag": "EvTreeItem",
-    "file": "src/components/tree/EvTreeItem.vue",
+    "file": "src/organisms/tree/EvTreeItem.vue",
+    "layer": "organism",
     "props": [
       {
         "name": "level",

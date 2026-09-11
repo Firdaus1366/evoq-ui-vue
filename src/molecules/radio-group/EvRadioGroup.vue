@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, provide, toRef, useId } from 'vue'
-import { RADIO_GROUP_KEY } from './context'
+import { RADIO_GROUP_KEY } from '../../atoms/radio/context'
 
 defineOptions({
   name: 'EvRadioGroup',

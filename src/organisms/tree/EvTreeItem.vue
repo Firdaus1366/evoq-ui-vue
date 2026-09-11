@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import EvCheckbox from '../checkbox/EvCheckbox.vue'
+import EvCheckbox from '../../atoms/checkbox/EvCheckbox.vue'
 
 defineOptions({
   name: 'EvTreeItem',

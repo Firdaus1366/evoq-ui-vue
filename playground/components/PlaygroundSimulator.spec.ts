@@ -24,6 +24,27 @@ describe('PlaygroundSimulator', () => {
     }
   })
 
+  it('files every component under an atomic layer folder', () => {
+    const FOLDER = {
+      atom: 'atoms',
+      molecule: 'molecules',
+      organism: 'organisms',
+      pattern: 'patterns',
+    }
+    for (const tag of TAGS) {
+      const { file, layer } = COMPONENT_PROPS[tag]!
+      // Charts are organisms kept in their own entry-point folder.
+      const folder = file.startsWith('src/charts/') ? 'organisms' : file.split('/')[1]
+      expect(folder, tag).toBe(FOLDER[layer])
+    }
+  })
+
+  it('badges the simulator with the component layer', () => {
+    const wrapper = mount(PlaygroundSimulator, { props: { tag: 'EvButton' } })
+    expect(wrapper.find('.pg-sim__layer').text()).toBe('atom')
+    wrapper.unmount()
+  })
+
   it.each(MOUNTABLE)('mounts %s without throwing', (tag) => {
     const wrapper = mount(PlaygroundSimulator, { props: { tag } })
     expect(wrapper.find('.pg-sim__title').text()).toBe(tag)

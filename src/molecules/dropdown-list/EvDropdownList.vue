@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import { computed, provide } from 'vue'
+import { DROPDOWN_LIST_KEY } from '../../atoms/dropdown-item/context'
+import EvInputSearch from '../../atoms/input-search/EvInputSearch.vue'
+
 defineOptions({
   name: 'EvDropdownList',
   inheritAttrs: false,
 })
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     /** Figma's `Has Search`: turns the list into the Combobox pattern. */
     searchable?: boolean
@@ -18,6 +22,11 @@ withDefaults(
     scrollable?: boolean
     /** Accessible name for the option list. */
     label?: string
+    /**
+     * A menu of actions or links rather than a listbox of options to choose
+     * from - the rows become menu items, and a row with `href` a real link.
+     */
+    menu?: boolean
   }>(),
   {
     searchable: false,
@@ -25,8 +34,11 @@ withDefaults(
     searchPlaceholder: 'Cari...',
     scrollable: false,
     label: undefined,
+    menu: false,
   },
 )
+
+provide(DROPDOWN_LIST_KEY, { menu: computed(() => props.menu) })
 
 defineEmits<{
   'update:searchValue': [value: string]
@@ -45,21 +57,20 @@ defineSlots<{
 
 <template>
   <div v-bind="$attrs" class="ev-dropdown-list">
+    <!-- node: Search - an InputSearch instance, hidden unless Has Search -->
     <div v-if="searchable" class="ev-dropdown-list__search">
-      <input
-        class="ev-dropdown-list__search-input"
-        type="search"
-        :value="searchValue"
+      <EvInputSearch
+        :model-value="searchValue"
         :placeholder="searchPlaceholder"
         :aria-label="searchPlaceholder"
-        @input="$emit('update:searchValue', ($event.target as HTMLInputElement).value)"
+        @update:model-value="$emit('update:searchValue', $event)"
       />
     </div>
 
     <ul
       class="ev-dropdown-list__options"
       :class="{ 'ev-dropdown-list__options--scrollable': scrollable }"
-      role="listbox"
+      :role="menu ? 'menu' : 'listbox'"
       :aria-label="label"
     >
       <slot />
@@ -92,27 +103,6 @@ defineSlots<{
 
   &__search {
     padding: var(--ev-spacing-sm) var(--ev-spacing-md);
-  }
-
-  &__search-input {
-    box-sizing: border-box;
-    width: 100%;
-    padding: var(--ev-spacing-md);
-    border: var(--ev-stroke-xs) solid var(--ev-border-primary);
-    border-radius: var(--ev-radius-xs);
-    background-color: var(--ev-bg-primary);
-    color: var(--ev-text-primary);
-
-    @include type.style('body/regular');
-
-    &::placeholder {
-      color: var(--ev-text-secondary);
-    }
-
-    &:focus-visible {
-      outline: var(--ev-focus-ring-width) solid var(--ev-focus-ring-color);
-      outline-offset: calc(var(--ev-focus-ring-offset) * -1);
-    }
   }
 
   &__options {

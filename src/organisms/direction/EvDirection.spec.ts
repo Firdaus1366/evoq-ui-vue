@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import EvDirection from './EvDirection.vue'
-import EvLogo from '../logo/EvLogo.vue'
+import EvLogo from '../../atoms/logo/EvLogo.vue'
 
 describe('EvDirection', () => {
   it("renders Figma's Top Slot above the header, only when filled", () => {

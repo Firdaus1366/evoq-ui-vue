@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import EvTagGroup from './EvTagGroup.vue'
-import EvTag from './EvTag.vue'
+import EvTag from '../../atoms/tag/EvTag.vue'
 
 describe('EvTagGroup', () => {
   it('renders default spacing and wrap type', () => {

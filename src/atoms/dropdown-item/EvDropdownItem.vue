@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { computed, inject } from 'vue'
 import type { DropdownItemVariant } from '../../types'
+import { DROPDOWN_LIST_KEY } from './context'
 
 defineOptions({
   name: 'EvDropdownItem',
@@ -17,18 +19,36 @@ const props = withDefaults(
     active?: boolean
     disabled?: boolean
     label?: string
+    /**
+     * Makes the row a real link - for a menu of destinations, such as a
+     * breadcrumb's hidden crumbs. It keeps native link behaviour (open in a
+     * new tab, copy address) that a scripted option would lose.
+     */
+    href?: string
   }>(),
   {
     variant: 'list',
     active: false,
     disabled: false,
     label: undefined,
+    href: undefined,
   },
 )
 
 const emit = defineEmits<{
   select: []
 }>()
+
+// Inside a `menu` list the row is a menu item; otherwise a listbox option.
+const list = inject(DROPDOWN_LIST_KEY, null)
+const inMenu = computed(() => list?.menu.value ?? false)
+const isLink = computed(() => Boolean(props.href) && !props.disabled)
+
+/** The row's own role - a link row hands its role to the anchor inside it. */
+const rowRole = computed(() => {
+  if (isLink.value) return 'none'
+  return inMenu.value ? 'menuitem' : 'option'
+})
 
 defineSlots<{
   default?: () => unknown
@@ -44,6 +64,8 @@ function select() {
 }
 
 function onKeydown(event: KeyboardEvent) {
+  // A link activates itself; swallowing Enter here would stop it navigating.
+  if (isLink.value) return
   if (event.key !== 'Enter' && event.key !== ' ') return
   event.preventDefault()
   select()
@@ -56,20 +78,38 @@ function onKeydown(event: KeyboardEvent) {
     class="ev-dropdown-item"
     :class="[
       `ev-dropdown-item--${variant}`,
-      { 'ev-dropdown-item--active': active, 'ev-dropdown-item--disabled': disabled },
+      {
+        'ev-dropdown-item--active': active,
+        'ev-dropdown-item--disabled': disabled,
+        'ev-dropdown-item--link': isLink,
+      },
     ]"
-    role="option"
-    :aria-selected="active"
-    :aria-disabled="disabled || undefined"
-    :tabindex="disabled ? -1 : 0"
+    :role="rowRole"
+    :aria-selected="rowRole === 'option' ? active : undefined"
+    :aria-disabled="!isLink && disabled ? true : undefined"
+    :tabindex="isLink ? undefined : disabled ? -1 : 0"
     @click="select"
     @keydown="onKeydown"
   >
-    <slot name="iconLeft" />
-    <span class="ev-dropdown-item__label"
-      ><slot>{{ label }}</slot></span
+    <a
+      v-if="isLink"
+      class="ev-dropdown-item__link"
+      :href="href"
+      :role="inMenu ? 'menuitem' : undefined"
     >
-    <slot name="iconRight" />
+      <slot name="iconLeft" />
+      <span class="ev-dropdown-item__label"
+        ><slot>{{ label }}</slot></span
+      >
+      <slot name="iconRight" />
+    </a>
+    <template v-else>
+      <slot name="iconLeft" />
+      <span class="ev-dropdown-item__label"
+        ><slot>{{ label }}</slot></span
+      >
+      <slot name="iconRight" />
+    </template>
   </li>
 </template>
 
@@ -121,6 +161,31 @@ function onKeydown(event: KeyboardEvent) {
     min-height: 32px;
     padding: var(--ev-spacing-xs) var(--ev-spacing-sm);
     gap: var(--ev-spacing-sm);
+  }
+
+  /*
+   * A link row moves its padding onto the anchor, so the whole row - not
+   * just the label - is the click and focus target.
+   */
+  &--link {
+    padding: 0;
+  }
+
+  &__link {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: inherit;
+    min-width: 0;
+    min-height: inherit;
+    padding: var(--ev-spacing-xs) var(--ev-spacing-sm);
+    color: inherit;
+    text-decoration: none;
+
+    &:focus-visible {
+      outline: var(--ev-focus-ring-width) solid var(--ev-focus-ring-color);
+      outline-offset: calc(var(--ev-focus-ring-offset) * -1);
+    }
   }
 
   &:hover:not(.ev-dropdown-item--disabled) {

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import PlaygroundCodeSnippet from './PlaygroundCodeSnippet.vue'
-import { COMPONENT_PROPS, type PropMeta } from '../component-props'
+import { COMPONENT_PROPS } from '../component-props'
+import { generateCode, initialValues, isDefault } from '../simulator-code'
 import { SIMULATOR_DEMOS } from '../simulator-demos'
 import * as EvoqComponents from '../../src'
 import * as EvoqCharts from '../../src/charts'
@@ -25,32 +26,13 @@ const target = computed(() => REGISTRY[props.tag])
 /** Props that can actually be driven from the panel, in declaration order. */
 const controllable = computed(() => (meta.value?.props ?? []).filter((p) => p.control !== 'none'))
 
-/** Parse a `withDefaults` literal back into a real value. */
-function parseDefault(raw: string | undefined): unknown {
-  if (raw === undefined) return undefined
-  const text = raw.trim()
-  if (text === 'true') return true
-  if (text === 'false') return false
-  if (text === 'null') return null
-  if (/^-?\d+(\.\d+)?$/.test(text)) return Number(text)
-  const quoted = /^'([\s\S]*)'$/.exec(text)
-  if (quoted) return quoted[1]
-  return undefined
-}
-
 const values = ref<Record<string, unknown>>({})
 
 /** Rebuild the panel whenever the simulated component changes. */
 watch(
   () => props.tag,
   () => {
-    const next: Record<string, unknown> = {}
-    for (const prop of meta.value?.props ?? []) {
-      const fallback = parseDefault(prop.default)
-      if (fallback !== undefined) next[prop.name] = fallback
-    }
-    Object.assign(next, demo.value.initial ?? {})
-    values.value = next
+    values.value = meta.value ? initialValues(meta.value, demo.value.initial) : {}
   },
   { immediate: true },
 )
@@ -80,69 +62,15 @@ const listeners = computed(() => {
 const slots = computed(() => demo.value.slots ?? {})
 
 function reset() {
-  const next: Record<string, unknown> = {}
-  for (const prop of meta.value?.props ?? []) {
-    const fallback = parseDefault(prop.default)
-    if (fallback !== undefined) next[prop.name] = fallback
-  }
-  Object.assign(next, demo.value.initial ?? {})
-  values.value = next
+  values.value = meta.value ? initialValues(meta.value, demo.value.initial) : {}
 }
 
 // ------------------------------------------------------------------ code gen
+// The generator lives in `../simulator-code` - the component docs print with it too.
 
-function isDefault(prop: PropMeta, value: unknown): boolean {
-  const fallback = parseDefault(prop.default)
-  if (fallback === undefined) return value === undefined || value === '' || value === false
-  return value === fallback
-}
-
-function attributeFor(prop: PropMeta, value: unknown): string | null {
-  if (isDefault(prop, value)) return null
-  const kebab = prop.name.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)
-
-  if (typeof value === 'boolean') return value ? kebab : `:${kebab}="false"`
-  if (typeof value === 'number') return `:${kebab}="${value}"`
-  if (typeof value === 'string') return `${kebab}="${value.replace(/"/g, '&quot;')}"`
-  if (value === null || value === undefined) return null
-  return `:${kebab}='${JSON.stringify(value)}'`
-}
-
-const generatedCode = computed(() => {
-  const info = meta.value
-  if (!info) return ''
-
-  const attributes: string[] = []
-  for (const prop of info.props) {
-    const attribute = attributeFor(prop, values.value[prop.name])
-    if (attribute) attributes.push(attribute)
-  }
-
-  const slotCode = demo.value.slotCode ?? {}
-  const named = Object.entries(slotCode).filter(([name]) => name !== 'default')
-  const defaultBody = slotCode.default
-
-  const open =
-    attributes.length === 0
-      ? `<${info.tag}`
-      : attributes.length === 1
-        ? `<${info.tag} ${attributes[0]}`
-        : `<${info.tag}\n  ${attributes.join('\n  ')}\n`
-
-  if (!defaultBody && named.length === 0) {
-    return attributes.length > 1 ? `${open}/>` : `${open} />`
-  }
-
-  const body: string[] = []
-  if (defaultBody) body.push(...defaultBody.split('\n').map((line) => `  ${line}`))
-  for (const [name, content] of named) {
-    body.push(`  <template #${name}>`)
-    body.push(...content.split('\n').map((line) => `    ${line}`))
-    body.push('  </template>')
-  }
-
-  return `${open}>\n${body.join('\n')}\n</${info.tag}>`
-})
+const generatedCode = computed(() =>
+  meta.value ? generateCode(meta.value, values.value, demo.value.slotCode) : '',
+)
 
 const stage = computed(() => demo.value.stage ?? 'default')
 const activeCount = computed(
@@ -161,7 +89,12 @@ const visibleProps = computed(() => {
     <!-- ------------------------------------------------------------ header -->
     <div class="pg-sim__head">
       <div>
-        <h3 class="pg-sim__title">{{ meta.tag }}</h3>
+        <div class="pg-sim__title-row">
+          <h3 class="pg-sim__title">{{ meta.tag }}</h3>
+          <span class="pg-sim__layer" :class="`pg-sim__layer--${meta.layer}`">{{
+            meta.layer
+          }}</span>
+        </div>
         <p class="pg-sim__file">{{ meta.file }}</p>
       </div>
       <div class="pg-sim__head-actions">
@@ -357,11 +290,33 @@ const visibleProps = computed(() => {
     flex-wrap: wrap;
   }
 
+  &__title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
   &__title {
     margin: 0;
     font-size: 18px;
     font-weight: 700;
     color: var(--ev-text-primary);
+  }
+
+  /* Atomic level, read off the source folder by extract-props. */
+  &__layer {
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: capitalize;
+    background-color: var(--ev-bg-subtle);
+    color: var(--ev-text-secondary);
+
+    &--atom {
+      background-color: var(--ev-brand-primary-subtle);
+      color: var(--ev-brand-primary);
+    }
   }
 
   &__file {

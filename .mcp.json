@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "evoq-ui": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["mcp/server.mjs"]
+    }
+  }
+}

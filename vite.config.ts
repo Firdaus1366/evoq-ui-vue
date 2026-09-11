@@ -50,7 +50,12 @@ export default defineConfig({
     globals: true,
     // The playground's simulator is tested too - it is what proves the
     // generated props catalogue actually mounts every component.
-    include: ['src/**/*.{test,spec}.ts', 'playground/**/*.{test,spec}.ts'],
+    include: [
+      'src/**/*.{test,spec}.ts',
+      'playground/**/*.{test,spec}.ts',
+      // The MCP server, driven over stdio like a real client.
+      'scripts/**/*.{test,spec}.ts',
+    ],
     // Stubs the SVG layout API jsdom lacks - see the file for why.
     setupFiles: ['./vitest.setup.ts'],
   },

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
+import EvSeparator from '../../atoms/separator/EvSeparator.vue'
 import EvAccordion from './EvAccordion.vue'
 
 describe('EvAccordion', () => {
@@ -60,5 +61,11 @@ describe('EvAccordion', () => {
     const wrapper = mount(EvAccordion, { slots: { title: 'T', subtext: 'S' } })
     expect(wrapper.find('.ev-accordion__title').text()).toBe('T')
     expect(wrapper.find('.ev-accordion__subtext').text()).toBe('S')
+  })
+
+  it('draws its rule with the Separator atom, as the board instances it', () => {
+    const rule = mount(EvAccordion).findComponent(EvSeparator)
+    expect(rule.exists()).toBe(true)
+    expect(rule.props('decorative')).toBe(true)
   })
 })

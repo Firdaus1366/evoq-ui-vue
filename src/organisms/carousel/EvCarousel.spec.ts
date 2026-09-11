@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { defineComponent, h, nextTick, ref } from 'vue'
 import { mount } from '@vue/test-utils'
+import EvAspectRatio from '../../atoms/aspect-ratio/EvAspectRatio.vue'
+import EvButton from '../../atoms/button/EvButton.vue'
 import EvCarousel from './EvCarousel.vue'
 import EvCarouselSlide from './EvCarouselSlide.vue'
 
@@ -122,5 +124,25 @@ describe('EvCarousel', () => {
   it('scrolls the other way when vertical', () => {
     const wrapper = mount(EvCarousel, { props: { orientation: 'vertical' } })
     expect(wrapper.classes()).toContain('ev-carousel--vertical')
+  })
+
+  it('composes Button atoms for its arrows: Secondary Light, small, icon only', async () => {
+    const wrapper = await mountCarousel()
+    const arrows = wrapper.findAllComponents(EvButton)
+    expect(arrows).toHaveLength(2)
+    for (const arrow of arrows) {
+      expect(arrow.props()).toMatchObject({
+        variant: 'secondary-light',
+        size: 'small',
+        iconOnly: true,
+      })
+    }
+  })
+
+  it('makes every slide an Aspect Ratio atom at the carousel ratio', async () => {
+    const wrapper = await mountCarousel({ ratio: '4:3' })
+    const slides = wrapper.findAllComponents(EvAspectRatio)
+    expect(slides.length).toBeGreaterThan(0)
+    expect(slides.every((s) => s.props('ratio') === '4:3')).toBe(true)
   })
 })

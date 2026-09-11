@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
+import EvButtonLink from '../../atoms/button-link/EvButtonLink.vue'
+import EvDropdownList from '../../molecules/dropdown-list/EvDropdownList.vue'
 import EvBreadcrumb from './EvBreadcrumb.vue'
 import type { BreadcrumbItem } from '../../types'
 
@@ -75,6 +77,35 @@ describe('EvBreadcrumb', () => {
     await dropdownItems[1]!.trigger('click')
     expect(wrapper.emitted('select')).toEqual([[trail[2], 2]])
     expect(wrapper.find('.ev-breadcrumb__dropdown').exists()).toBe(false)
+  })
+
+  it('composes ButtonLink crumbs: Secondary, with the page you are on pinned Active', () => {
+    const links = mount(EvBreadcrumb, { props: { items: trail } }).findAllComponents(EvButtonLink)
+    expect(links).toHaveLength(5)
+    expect(links.every((l) => l.props('variant') === 'secondary')).toBe(true)
+    expect(links.map((l) => l.props('current'))).toEqual([false, false, false, false, true])
+  })
+
+  it('names the icon-only home crumb by its label', () => {
+    const home = mount(EvBreadcrumb, { props: { items: trail } }).findAll(
+      '.ev-breadcrumb__link',
+    )[0]!
+    expect(home.attributes('aria-label')).toBe('Beranda')
+  })
+
+  it('opens the DropdownList molecule as a menu of real links', async () => {
+    const wrapper = mount(EvBreadcrumb, { props: { items: trail, maxItems: 3 } })
+    await wrapper.find('.ev-breadcrumb__ellipsis').trigger('click')
+
+    const list = wrapper.findComponent(EvDropdownList)
+    expect(list.props('menu')).toBe(true)
+    const anchors = wrapper.findAll('.ev-breadcrumb__dropdown-item a')
+    expect(anchors.map((a) => a.attributes('href'))).toEqual([
+      '/pengadaan',
+      '/pengadaan/vendor',
+      '/pengadaan/vendor/1',
+    ])
+    expect(anchors.every((a) => a.attributes('role') === 'menuitem')).toBe(true)
   })
 
   it('never collapses when maxItems is 0', () => {

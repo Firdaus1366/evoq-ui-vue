@@ -1,0 +1,912 @@
+{
+  "source": {
+    "file": "EVOQ - Design System",
+    "fileKey": "hJ3XmwLptPtF4IFBDlZlpx",
+    "captured": "2026-09-11",
+    "how": "Usage section (When to use / When not to use / Do / Don't) and the summary line of each page's newest `Documentation*` frame. Behavioural rules only: the Properties and Guideline sections are left out because they speak in Figma property names and carry prose numbers that disagree with the boards (AGENTS.md section 6).",
+    "legacy": "Alert, Breadcrumb and Button Group have no summary line in their Documentation frame; theirs comes from the older `<Name> - Usage Doc` frame and is marked `summaryFrom: legacy`."
+  },
+  "docs": {
+    "Avatar": {
+      "page": "Avatar",
+      "frame": "3715:14719",
+      "summary": "An avatar represents a user or entity through an image, initials, or icon, helping provide identity and context within the interface.",
+      "whenToUse": [
+        "Use to identify the author of a comment, message, post, or activity entry.",
+        "Use in lists, tables, or cards to scan owner/assignee at a glance.",
+        "Use letter variant (initials on colored bg) when no photo is available.",
+        "Use number variant for grouped count indicators (e.g., “+3 more” in a stack).",
+        "Use empty variant when identity is unknown but a placeholder slot is needed.",
+        "Use error variant when an avatar fails to load or a user is invalid."
+      ],
+      "whenNotToUse": [
+        "Don't use for system/non-human entities  →  use Icon",
+        "Don't use for status indicators alone  →  use Badge",
+        "Don't use as the only menu trigger  →  use Button as wrapper",
+        "Don't use at sizes below 24px  →  use Icon (initials unreadable)"
+      ],
+      "do": [
+        "Pick the avatar color deterministically from user id/initials so it stays stable",
+        "Use the face-centered crop for image variant",
+        "Use 1–2 uppercase letters for initials (“AB”)",
+        "Add aria-label describing the user's name"
+      ],
+      "dont": [
+        "Randomize avatar color on each render",
+        "Use a non-square source image without cropping",
+        "Use 3+ letters or lowercase initials",
+        "Leave avatars unannounced for screen readers"
+      ]
+    },
+    "Button": {
+      "page": "Button",
+      "frame": "3814:54536",
+      "summary": "A button triggers an action or submits a form — the primary way users commit to a decision in a form, card, dialog, or toolbar.",
+      "whenToUse": [
+        "Use for the primary action in a form, card, dialog, or toolbar.",
+        "Use one primary Button per view for the main action.",
+        "Use Secondary / Outline / Ghost for lower-emphasis actions.",
+        "Use Destructive for irreversible actions (delete, remove).",
+        "Use Icon Only in dense toolbars where space is tight."
+      ],
+      "whenNotToUse": [
+        "Don't use to navigate between pages  →  use Link",
+        "Don't use for an on/off setting  →  use Toggle / Switch",
+        "Don't use for many related options  →  use Segmented control",
+        "Don't nest a Button inside another Button or Link."
+      ],
+      "do": [
+        "Use one clear primary action per view",
+        "Keep labels to 1–3 words, sentence case, verb-first",
+        "Use Destructive only for irreversible actions",
+        "Provide an aria-label for Icon Only buttons"
+      ],
+      "dont": [
+        "Place two primary Buttons side by side",
+        "Write full sentences or ALL CAPS labels",
+        "Use vague labels like “Submit” or “OK”",
+        "Trigger destructive actions on the first click"
+      ]
+    },
+    "Badge": {
+      "page": "Badge",
+      "frame": "3804:28987",
+      "summary": "A badge is a small, color-coded label that communicates an item's status, category, or count using concise text.",
+      "whenToUse": [
+        "Use to communicate the status or state of an item (e.g., Success, Waiting, Reject).",
+        "Use in tables, lists, or cards to label rows at a glance.",
+        "Use the reverse (solid) style for high-emphasis or active states.",
+        "Use the subtle style for low-emphasis, inline status.",
+        "Use the Custom variant for domain-specific states not covered by the defaults."
+      ],
+      "whenNotToUse": [
+        "Don't use for interactive actions  →  use Button",
+        "Don't use to identify a person  →  use Avatar",
+        "Don't use for long text or full sentences  →  use plain text",
+        "Don't use as a count bubble on an icon  →  use Notification dot"
+      ],
+      "do": [
+        "Keep labels to 1–2 words in title case",
+        "Map each status to a consistent variant color",
+        "Use the icon slot only when it adds meaning",
+        "Pair color with text so meaning isn't color-only"
+      ],
+      "dont": [
+        "Write full sentences inside a badge",
+        "Reuse the same color for unrelated statuses",
+        "Rely on color alone to convey meaning",
+        "Stack multiple badges where one status suffices"
+      ]
+    },
+    "Checkbox": {
+      "page": "Checkbox",
+      "frame": "3931:58016",
+      "summary": "A checkbox lets users select one or more options from a set, or toggle a single setting on or off. It supports checked, unchecked, indeterminate, disabled, and error states.",
+      "whenToUse": [
+        "Use to select one or more options from a list (multi-select).",
+        "Use to toggle a single independent setting on or off.",
+        "Use the indeterminate state for a parent of a partially-selected group.",
+        "Add a subtext for a short helper or description under the label."
+      ],
+      "whenNotToUse": [
+        "Don't use for a single instant on/off  →  use Toggle",
+        "Don't use for mutually exclusive options  →  use Radio",
+        "Don't use for one pick among many  →  use Select",
+        "Don't use as a primary action  →  use Button"
+      ],
+      "do": [
+        "Keep labels short and describe what selecting does",
+        "Use indeterminate only on a parent of a group",
+        "Group related checkboxes vertically",
+        "Make both label and box part of the click target"
+      ],
+      "dont": [
+        "Write long sentences as a checkbox label",
+        "Use the checked state to trigger navigation",
+        "Rely on color alone to signal an error",
+        "Nest unrelated options under one parent"
+      ]
+    },
+    "Button Link": {
+      "page": "Button Link",
+      "frame": "3855:54960",
+      "summary": "A button link is a text-only, inline action styled as a link — used for low-emphasis or navigational actions where a full button would be too heavy.",
+      "whenToUse": [
+        "Use for low-emphasis or inline actions within or beside text.",
+        "Use for link-like navigation (go to a page, open a doc).",
+        "Use the Invert variant on dark or colored backgrounds.",
+        "Use Tertiary / Secondary for de-emphasized actions in dense UI."
+      ],
+      "whenNotToUse": [
+        "Don't use for the primary action in a form  →  use Button",
+        "Don't use for an on/off state  →  use Toggle",
+        "Don't use as the only target in a large tap area  →  use Button",
+        "Don't mix with filled buttons in the same action row."
+      ],
+      "do": [
+        "Keep labels short, verb-first, sentence case",
+        "Style links consistently so they're recognizable",
+        "Use Invert only on sufficiently dark surfaces",
+        "Provide a clear focus state for keyboard users"
+      ],
+      "dont": [
+        "Use vague labels like “Click here”",
+        "Style a link identical to body text (not recognizable)",
+        "Use Invert on light backgrounds (low contrast)",
+        "Stack many links where a menu would be clearer"
+      ]
+    },
+    "Radio Button": {
+      "page": "Radio Group",
+      "frame": "4015:62616",
+      "summary": "A radio button lets users choose exactly one option from a set. Options are mutually exclusive — selecting one clears the others in the same group.",
+      "whenToUse": [
+        "Use to pick exactly one option from a short, mutually exclusive set.",
+        "Use when all options should be visible at once (2–6 items).",
+        "Use a subtext to clarify an option without leaving the list.",
+        "Use a default selection when a safe or common choice exists."
+      ],
+      "whenNotToUse": [
+        "Don't use to select multiple options  →  use Checkbox",
+        "Don't use for on/off of one setting  →  use Toggle",
+        "Don't use for long option lists  →  use Select",
+        "Don't leave a group with nothing selectable."
+      ],
+      "do": [
+        "Keep options in one group with a single name",
+        "Order options logically or by frequency",
+        "Keep labels parallel and concise",
+        "Make both the radio and its label clickable"
+      ],
+      "dont": [
+        "Leave nothing selected when a default is expected",
+        "Mix radios from different groups in one list",
+        "Use a radio to trigger an action — it sets state",
+        "Nest a radio group inside another option"
+      ]
+    },
+    "Switch": {
+      "page": "Switch",
+      "frame": "4084:62875",
+      "summary": "A switch toggles a single setting on or off, taking effect immediately. It pairs a sliding control with a label, and supports active, disabled, and error states.",
+      "whenToUse": [
+        "Use to toggle a single, independent setting that takes effect immediately (e.g. Wi-Fi, notifications).",
+        "Use where the result is a binary on/off with no Save step.",
+        "Use a label that states what turning it on does.",
+        "Use the small size in dense rows or compact settings lists."
+      ],
+      "whenNotToUse": [
+        "Don't use when changes need a Save  →  use Checkbox",
+        "Don't use to pick one of several options  →  use Radio",
+        "Don't use to trigger an action  →  use Button",
+        "Don't use for risky changes without a confirm step."
+      ],
+      "do": [
+        "Apply the change instantly when toggled",
+        "Label for what 'on' means, not the action",
+        "Keep the switch and its label on one line",
+        "Show loading or disabled state while pending"
+      ],
+      "dont": [
+        "Require a separate Save after toggling",
+        "Use vague labels that hide what 'on' does",
+        "Use a switch for multi-select lists",
+        "Leave it in an ambiguous in-between state"
+      ]
+    },
+    "Tag": {
+      "page": "Tag",
+      "frame": "4105:63441",
+      "summary": "A tag is a small label that marks an item with a keyword, category, or attribute. It can carry a leading icon and an optional close button to remove it.",
+      "whenToUse": [
+        "Use to label an item with a keyword, category, status, or attribute.",
+        "Use a removable tag (with close) for user-applied filters or selections.",
+        "Use a leading icon to reinforce the tag's type or meaning.",
+        "Use the outline style for a lighter, lower-emphasis label."
+      ],
+      "whenNotToUse": [
+        "Don't use to trigger an action  →  use Button",
+        "Don't use for a standalone status  →  use Badge",
+        "Don't use for navigation between views  →  use Tabs",
+        "Don't use long phrases or sentences as a tag."
+      ],
+      "do": [
+        "Keep labels short (1–2 words), sentence case",
+        "Show the close icon only when the tag is removable",
+        "Group related tags and let them wrap",
+        "Use a consistent variant within one group"
+      ],
+      "dont": [
+        "Pack a long sentence into a tag",
+        "Mix removable and static tags without a cue",
+        "Use color alone to convey meaning",
+        "Use tags as primary navigation"
+      ]
+    },
+    "Tabs": {
+      "page": "Tabs",
+      "frame": "4100:63234",
+      "summary": "Tabs let users switch between related views within the same context, showing one panel at a time. They come in a segmented (pill) style and a line (underline) style.",
+      "whenToUse": [
+        "Use to switch between related views or sections within one page or panel.",
+        "Use when content is peer-level and only one view shows at a time.",
+        "Use the segmented style for a small, fixed set of toggles or filters.",
+        "Use the line style for primary, section-level navigation."
+      ],
+      "whenNotToUse": [
+        "Don't use for sequential steps  →  use a Stepper",
+        "Don't use for page-to-page navigation  →  use a Nav menu",
+        "Don't use to filter many options  →  use Select / Chips",
+        "Don't use when views are unrelated or hierarchical."
+      ],
+      "do": [
+        "Keep exactly one tab selected at all times",
+        "Keep labels short (1–2 words) and parallel",
+        "Keep the visible panel in sync with the active tab",
+        "Limit the count so all tabs fit without scrolling"
+      ],
+      "dont": [
+        "Open a new page or dialog from a tab",
+        "Hide critical content behind a rarely-seen tab",
+        "Use long labels that wrap or truncate",
+        "Nest tabs inside tabs in the same view"
+      ]
+    },
+    "Hint": {
+      "page": "Hint",
+      "frame": "3947:58190",
+      "summary": "A hint is a small notification badge that signals unread or pending items — shown as a plain dot or a count, attached to an icon, tab, or menu item.",
+      "whenToUse": [
+        "Use to flag unread or pending items on an icon, tab, avatar, or menu entry.",
+        "Use the dot type when only presence matters, not the exact count.",
+        "Use a digit type to show a specific count of items.",
+        "Use 99+ to cap large counts and keep the badge narrow."
+      ],
+      "whenNotToUse": [
+        "Don't use to label status or category  →  use Badge",
+        "Don't use as standalone text  →  use a Badge or number",
+        "Don't use as an interactive control  →  use Button",
+        "Don't attach more than one hint to a single target."
+      ],
+      "do": [
+        "Anchor the hint to the top-right of its target",
+        "Keep counts accurate and update them live",
+        "Cap counts at 99+ to keep the width stable",
+        "Announce changes to assistive tech (aria-live)"
+      ],
+      "dont": [
+        "Show a 0 count — hide the hint instead",
+        "Use a dot and a count at the same time",
+        "Obscure the underlying icon or label",
+        "Use it for long or multi-word text"
+      ]
+    },
+    "Separator": {
+      "page": "Separator",
+      "frame": "4045:62753",
+      "summary": "A separator is a thin line that visually divides content into groups — between list items, sections, or side-by-side elements — without adding emphasis.",
+      "whenToUse": [
+        "Use to divide groups of related content (list rows, menu sections, form blocks).",
+        "Use a vertical separator between inline items in a toolbar or stat row.",
+        "Use to set a card or panel header/footer apart from its body.",
+        "Use sparingly — reach for spacing first, lines second."
+      ],
+      "whenNotToUse": [
+        "Don't use just to decorate  →  use spacing",
+        "Don't stack lines for emphasis  →  use a heading",
+        "Don't put a line around every item  →  group with whitespace",
+        "Don't use as a container border  →  use a Card / stroke"
+      ],
+      "do": [
+        "Keep the line thin and low-contrast (1px, neutral)",
+        "Align separators to the content edges",
+        "Prefer whitespace; add a line only when grouping is unclear",
+        "Match the length to the content it divides"
+      ],
+      "dont": [
+        "Use heavy or colored lines for plain division",
+        "Indent separators inconsistently in a list",
+        "Separate every single row in a dense list",
+        "Use a line where a gap would read better"
+      ]
+    },
+    "Accordion": {
+      "page": "Accordion",
+      "frame": "4105:63588",
+      "summary": null,
+      "whenToUse": [
+        "Group related content into collapsible sections — FAQs, settings, long forms — so users scan headings first and expand only what's relevant."
+      ],
+      "whenNotToUse": [
+        "Don't hide critical content users always need — show it inline. Avoid deeply nesting accordions inside one another."
+      ],
+      "do": [
+        "Keep titles short and descriptive. Let panel content reflow naturally. Use subtext to add brief secondary context."
+      ],
+      "dont": [
+        "Don't place primary actions only inside collapsed panels. Don't disable an accordion without a clear reason."
+      ]
+    },
+    "Alert": {
+      "page": "Alert",
+      "frame": "4147:63829",
+      "summary": "Communicate a persistent, in-page message about the status of a page, section, or action.",
+      "summaryFrom": "legacy",
+      "whenToUse": [
+        "Surface a system message tied to a page or section — non-blocking feedback, a validation summary, or a status update that should stay visible."
+      ],
+      "whenNotToUse": [
+        "Transient confirmation (≤5s) → use Toast. Inline field-level error → use Hint. Blocking decision → use Modal."
+      ],
+      "do": [
+        "Match the variant to message severity. Keep the label ≤6 words, sentence case. Show one Alert per scope. Pair errors with a clear next step."
+      ],
+      "dont": [
+        "Don't use error for non-critical messages — it cries wolf. Don't use full paragraphs as the label. Don't stack competing alerts."
+      ]
+    },
+    "Alert Dialog": {
+      "page": "Alert Dialog",
+      "frame": "4147:64224",
+      "summary": null,
+      "whenToUse": [
+        "Use to confirm a consequential or destructive action — delete, discard, sign out — where the user must explicitly decide before proceeding."
+      ],
+      "whenNotToUse": [
+        "Non-blocking message → use Alert or Toast. Complex form or multi-step flow → use Modal / Dialog. Simple inline confirmation → avoid a modal entirely."
+      ],
+      "do": [
+        "State the consequence clearly in the title. Use a verb for the primary button (Delete, Continue). Keep the safe choice as Cancel on the left."
+      ],
+      "dont": [
+        "Don't use vague labels like OK or Yes. Don't make the destructive action the default focus. Don't stack multiple alert dialogs."
+      ]
+    },
+    "Aspect Ratio": {
+      "page": "Aspect Ratio",
+      "frame": "4156:64491",
+      "summary": null,
+      "whenToUse": [
+        "Wrap an image, video, map, or embed that must keep a consistent proportion as the layout resizes — preventing distortion and reflow."
+      ],
+      "whenNotToUse": [
+        "Content with intrinsic, variable height (text blocks, lists). Cases where the exact pixel size is fixed and known — size it directly instead."
+      ],
+      "do": [
+        "Place a single media element in the slot and let it fill. Pick the ratio that matches the source media. Use inside responsive grids and cards."
+      ],
+      "dont": [
+        "Don't put multiple unrelated elements in one Aspect Ratio. Don't override the height manually — let the ratio drive it."
+      ]
+    },
+    "Breadcrumb": {
+      "page": "Breadcrumb",
+      "frame": "4179:64595",
+      "summary": "Show the user's location within a hierarchy and let them navigate back to any ancestor level.",
+      "summaryFrom": "legacy",
+      "whenToUse": [
+        "Use on pages nested two or more levels deep so users can see where they are and jump back to any parent section."
+      ],
+      "whenNotToUse": [
+        "Flat sites with a single level. As primary navigation — breadcrumbs complement, not replace, the main nav. For linear flows → use a Stepper."
+      ],
+      "do": [
+        "Show the full path from home to the current page. Make every level except the current one a link. Collapse long trails with an ellipsis."
+      ],
+      "dont": [
+        "Don't make the current page a link. Don't wrap the trail onto two lines — collapse with the ellipsis instead. Don't omit the home level."
+      ]
+    },
+    "Button Group": {
+      "page": "Button Group",
+      "frame": "4187:64907",
+      "summary": "Group related action buttons horizontally so they share borders and read as one control.",
+      "summaryFrom": "legacy",
+      "whenToUse": [
+        "Present a short, fixed set of related choices or page numbers as one connected control — pagination, view toggles, segmented filters."
+      ],
+      "whenNotToUse": [
+        "A single action → use Button. Many pages (>9) → use Pagination with ellipsis. Unrelated actions that shouldn't read as one control."
+      ],
+      "do": [
+        "Keep the count small and labels short. Group only related items. Mark the active item as selected. Use 9+ for ranges beyond nine."
+      ],
+      "dont": [
+        "Don't mix unrelated actions in one group. Don't exceed nine items — use the 9+ overflow. Don't use it for a page's primary action."
+      ]
+    },
+    "Calendar & Time Picker": {
+      "page": "Calendar & Time Picker",
+      "frame": "4218:66637",
+      "summary": null,
+      "whenToUse": [
+        "Capture a date, date range, or time. Use the desktop Calendar for inline selection; on mobile use the Popup for compact fields or the Drawer for full-width bottom-sheet selection."
+      ],
+      "whenNotToUse": [
+        "A single known date that's faster to type. Avoid a Drawer on desktop or an inline Calendar on small mobile screens — match the picker to the breakpoint."
+      ],
+      "do": [
+        "Match the platform — D- for desktop, M- for mobile. Offer presets for common ranges, and provide a Reset to clear the selection."
+      ],
+      "dont": [
+        "Don't mix desktop and mobile variants in one breakpoint. Don't hide the selected value. Don't omit AM/PM where 12-hour time is expected."
+      ]
+    },
+    "Carousel": {
+      "page": "Carousel",
+      "frame": "4597:11479",
+      "summary": "A carousel displays a set of items in a scrollable horizontal or vertical track, with previous/next navigation buttons and a position indicator. It supports multiple content aspect ratios.",
+      "whenToUse": [
+        "Use to browse a set of related images or cards in a confined space.",
+        "Use Horizontal for wide, gallery-style content; Vertical for stacked feeds.",
+        "Use the aspect ratio that matches the media (16:9 video, 1:1 thumbnails, 9:16 stories).",
+        "Use the indicator so users know their position within the set.",
+        "Use navigation buttons on pointer surfaces where swipe is not available."
+      ],
+      "whenNotToUse": [
+        "Don't mix different aspect ratios within a single carousel.",
+        "Don't hide both the buttons and the indicator at once.",
+        "Don't overload one carousel with too many items.",
+        "Don't use a carousel for primary navigation  →  use Tabs or a List."
+      ],
+      "do": [
+        "Keep slot content uniform in size and aspect ratio.",
+        "Show at least the active plus an adjacent item to hint scrollability.",
+        "Pair the indicator with buttons for accessible navigation.",
+        "Keep one consistent aspect ratio across all slots."
+      ],
+      "dont": [
+        "Mix aspect ratios within one carousel.",
+        "Hide both navigation buttons and the indicator.",
+        "Cram too many items into a single carousel.",
+        "Use it as the only way to reach important content."
+      ]
+    },
+    "Card": {
+      "page": "Card",
+      "frame": "4220:70848",
+      "summary": null,
+      "whenToUse": [
+        "Group related information and actions into a self-contained block — summaries, list items, dashboard tiles, or media previews."
+      ],
+      "whenNotToUse": [
+        "A single line of text or a plain layout container with no grouping purpose. Avoid deeply nesting cards inside cards."
+      ],
+      "do": [
+        "Keep one clear subject per card. Use the footer for the card's primary and secondary actions. Use the Image type for media-led content."
+      ],
+      "dont": [
+        "Don't overload a card with unrelated actions. Don't put more than two footer buttons. Don't stretch the Small type with long content."
+      ]
+    },
+    "Chart": {
+      "page": "Chart",
+      "frame": "4220:71982",
+      "summary": null,
+      "whenToUse": [
+        "Visualize quantitative data — comparisons (bar), trends over time (line), or part-to-whole proportions (pie/doughnut). Wrap in the Chart container for a titled card."
+      ],
+      "whenNotToUse": [
+        "A few values better shown as text or a table. Pie charts for more than ~5 slices or precise comparisons — use a bar chart instead."
+      ],
+      "do": [
+        "Pick the chart type that fits the data question. Keep color usage consistent across series. Add value labels when exact figures matter."
+      ],
+      "dont": [
+        "Don't mix unrelated series in one chart. Don't use 3D or decorative effects. Don't omit axis labels on bar and line charts."
+      ]
+    },
+    "Direction": {
+      "page": "Direction",
+      "frame": "4220:76473",
+      "summary": null,
+      "whenToUse": [
+        "Focus the user on one guided task — a short form, a confirmation, or a step that needs a title, brief instruction, and clear primary / secondary actions."
+      ],
+      "whenNotToUse": [
+        "For long multi-step flows → use a full page or wizard. For passive status messages → use Alert or Toast, not a blocking panel."
+      ],
+      "do": [
+        "Lead with a clear title and one-line subtext. Keep the body slot focused. Make the primary action obvious and the secondary a safe exit."
+      ],
+      "dont": [
+        "Don't cram many fields or steps into one panel. Don't hide the close affordance. Don't make both footer buttons look primary."
+      ]
+    },
+    "Drawer": {
+      "page": "Drawer",
+      "frame": "4258:76893",
+      "summary": null,
+      "whenToUse": [
+        "Show contextual details, forms, or settings without leaving the page — filters, record details, create / edit flows. Right drawer on desktop, bottom sheet on mobile."
+      ],
+      "whenNotToUse": [
+        "For critical confirmations → use Alert Dialog. For full, complex workflows → use a dedicated page. Don't stack multiple drawers on top of each other."
+      ],
+      "do": [
+        "Match the platform — D- right drawer on desktop, M- bottom sheet on mobile. Keep a clear title, a close affordance, and footer actions. Use Wide only when content needs it."
+      ],
+      "dont": [
+        "Don't hide the close affordance. Don't overload a drawer with unrelated content. Don't make the drawer wider than the content needs."
+      ]
+    },
+    "Dropdown List": {
+      "page": "Dropdown List",
+      "frame": "4258:77060",
+      "summary": null,
+      "whenToUse": [
+        "Let users pick from a set of options without taking up persistent space — select fields, filters, action menus, or autocomplete suggestions."
+      ],
+      "whenNotToUse": [
+        "For 2–3 options that fit inline → use Radio or a segmented control. For app navigation → use a Menu or Nav, not a data dropdown."
+      ],
+      "do": [
+        "Keep labels short and scannable. Add search (Combobox) for long lists. Enable scroll past ~7–8 items. Show a clear Not Found state for empty results."
+      ],
+      "dont": [
+        "Don't pack dozens of items without search or scroll. Don't mix unrelated actions and data options. Don't auto-select an item on hover."
+      ]
+    },
+    "Input With Label": {
+      "page": "Input",
+      "frame": "4680:3998",
+      "summary": "A single-line text input with an inline label placed to the left, right, or both sides of the field. It supports icons, validation, and the same interaction states as InputField.",
+      "whenToUse": [
+        "Use when the label must sit inline with the field to save vertical space.",
+        "Use L Label for a leading label (e.g. \"Name:\").",
+        "Use R Label for a trailing label or unit-like suffix.",
+        "Use L R Label when both a leading label and trailing element are needed.",
+        "Use validation text to guide correction inline."
+      ],
+      "whenNotToUse": [
+        "Don't use when the label is long  →  use a stacked InputField with a top label.",
+        "Don't use for choosing from a fixed set  →  use InputDropdown.",
+        "Don't use for dates/times  →  use InputDate / InputTime.",
+        "Don't rely on the placeholder as the label."
+      ],
+      "do": [
+        "Keep inline labels short (one or two words).",
+        "Align label and field baselines.",
+        "Show validation text close to the field, on error.",
+        "Use a consistent 16px icon size."
+      ],
+      "dont": [
+        "Use long sentences as an inline label.",
+        "Use red borders without an explanatory message.",
+        "Mix label positions inconsistently across a form.",
+        "Disable a field without making the reason clear."
+      ]
+    },
+    "Input Field": {
+      "page": "Input",
+      "frame": "4680:3577",
+      "summary": "A single-line text input for collecting short free-form values. It supports leading/trailing icons, validation messaging, and multiple interaction states.",
+      "whenToUse": [
+        "Use to collect short, single-line text such as name, email, or code.",
+        "Use a leading icon to signal the input's purpose (e.g. search, user).",
+        "Use a trailing icon for clear/reveal actions.",
+        "Use validation text to guide correction inline.",
+        "Use the disabled state when the field is not editable in the current context."
+      ],
+      "whenNotToUse": [
+        "Don't use for long, multi-line text  →  use InputTextArea.",
+        "Don't use for choosing from a fixed set  →  use InputDropdown.",
+        "Don't use for dates or times  →  use InputDate / InputTime.",
+        "Don't place critical instructions only in the placeholder."
+      ],
+      "do": [
+        "Always pair the field with a visible Title/label.",
+        "Keep placeholder text as an example, not an instruction.",
+        "Show validation text close to the field, on error.",
+        "Use a consistent icon size (16px) for leading/trailing icons."
+      ],
+      "dont": [
+        "Rely on placeholder alone as the label.",
+        "Use red borders without an explanatory validation message.",
+        "Mix icon sizes or styles across fields.",
+        "Disable a field without making the reason clear."
+      ]
+    },
+    "Input Text Area": {
+      "page": "Input",
+      "frame": "4680:4513",
+      "summary": "A multi-line text input for collecting longer free-form content. It supports a character counter, validation, optional icons, a scrollbar, and the same interaction states as InputField.",
+      "whenToUse": [
+        "Use to collect longer, multi-line text such as notes, descriptions, or comments.",
+        "Use the character counter to communicate a length limit.",
+        "Use validation text to guide correction inline.",
+        "Use the scroll variant when content can exceed the visible area.",
+        "Use the disabled state when the field is not editable."
+      ],
+      "whenNotToUse": [
+        "Don't use for short, single-line values  →  use InputField.",
+        "Don't use for choosing from a fixed set  →  use InputDropdown.",
+        "Don't use for rich/formatted content  →  use InputRichEditor.",
+        "Don't hide the character limit until it is exceeded."
+      ],
+      "do": [
+        "Always pair the field with a visible Title/label.",
+        "Show the character counter when a limit applies.",
+        "Show validation text close to the field, on error.",
+        "Allow vertical resize/scroll for long content."
+      ],
+      "dont": [
+        "Rely on placeholder alone as the label.",
+        "Use red borders without an explanatory message.",
+        "Let content overflow without a scrollbar.",
+        "Disable a field without making the reason clear."
+      ]
+    },
+    "InputRichEditor": {
+      "page": "Input",
+      "frame": "4690:7715",
+      "summary": "A rich-text editor input with a formatting toolbar for entering styled, multi-line content. It supports leading/trailing icons, a scrollbar, validation, and the same interaction states as InputField.",
+      "whenToUse": [
+        "Use to author formatted content (bold, lists, links) such as descriptions or articles.",
+        "Use the toolbar to expose common text-formatting actions.",
+        "Use the scroll variant for long content.",
+        "Use validation text to guide correction inline.",
+        "Use the disabled state when the content is read-only."
+      ],
+      "whenNotToUse": [
+        "Don't use for short plain text  →  use InputField.",
+        "Don't use for unformatted multi-line text  →  use InputTextArea.",
+        "Don't use when markup output is not supported downstream.",
+        "Don't overload the toolbar with rarely-used actions."
+      ],
+      "do": [
+        "Keep the toolbar to the most common formatting actions.",
+        "Show validation text close to the field, on error.",
+        "Allow the editor to grow or scroll for long content.",
+        "Preserve pasted formatting where it is safe to do so."
+      ],
+      "dont": [
+        "Rely on the placeholder alone as the label.",
+        "Use red borders without an explanatory message.",
+        "Let content overflow without a scrollbar.",
+        "Disable the editor without making the reason clear."
+      ]
+    },
+    "InputFieldUnit": {
+      "page": "Input",
+      "frame": "4707:9944",
+      "summary": "A composite input pairing a leading unit selector (dropdown) with a text/number field. Use it for values that carry a unit — e.g. amount + currency, weight + unit. It supports validation and the same interaction states as InputField.",
+      "whenToUse": [
+        "Use for a value plus a selectable unit (e.g. 10 + kg, 100 + USD).",
+        "Use the leading dropdown to choose the unit.",
+        "Use the field for the numeric/text value.",
+        "Use validation text to guide correction inline.",
+        "Use the disabled state when the value is not editable."
+      ],
+      "whenNotToUse": [
+        "Don't use when there is no unit  →  use InputField.",
+        "Don't use for choosing only from a set  →  use InputDropdown.",
+        "Don't put the unit inside the value field as text.",
+        "Don't hide which part is editable."
+      ],
+      "do": [
+        "Keep the unit list short and relevant.",
+        "Align the dropdown and field heights.",
+        "Show validation text close to the field, on error.",
+        "Default the unit to the most common choice."
+      ],
+      "dont": [
+        "Rely on the placeholder alone as the label.",
+        "Use red borders without an explanatory message.",
+        "Mix unrelated units in one selector.",
+        "Disable a field without making the reason clear."
+      ]
+    },
+    "InputSearch": {
+      "page": "Input",
+      "frame": "4713:10535",
+      "summary": "A search input with a leading search icon and an optional clear action. Use it to filter or look up content. It is compact (40px) and supports validation and interaction states.",
+      "summaryCorrection": {
+        "from": "It is compact (40px)",
+        "to": "It is 44px tall",
+        "why": "Known prose error: the InputSearch board is 44px (AGENTS.md section 6)."
+      },
+      "whenToUse": [
+        "Use to filter a list, table, or page of content.",
+        "Use the leading search icon as the affordance.",
+        "Use a trailing clear icon to reset the query.",
+        "Use validation text for query constraints when needed.",
+        "Use the disabled state when search is unavailable."
+      ],
+      "whenNotToUse": [
+        "Don't use for general text entry  →  use InputField.",
+        "Don't use for selecting from a set  →  use InputDropdown.",
+        "Don't remove the search icon affordance.",
+        "Don't hide results behind an extra submit step when live search fits."
+      ],
+      "do": [
+        "Keep the search icon visible as the affordance.",
+        "Show a clear (×) action once a query is entered.",
+        "Debounce live search to avoid excess requests.",
+        "Keep the field compact and inline with content."
+      ],
+      "dont": [
+        "Rely on the placeholder alone as the label where context is unclear.",
+        "Use red borders without an explanatory message.",
+        "Block typing while results load.",
+        "Disable search without making the reason clear."
+      ]
+    },
+    "Kbd": {
+      "page": "Kbd",
+      "frame": "4527:86976",
+      "summary": "A Kbd (keyboard key) is a small inline chip that represents a single physical key or shortcut token — like Ctrl or ⇧ — used to document keyboard shortcuts.",
+      "whenToUse": [
+        "Use to render keyboard keys and shortcuts inline — in menus, tooltips, help text, or command palettes (e.g. Ctrl + K). Combine several Kbd chips for a key combo."
+      ],
+      "whenNotToUse": [
+        "Don't use as an interactive button — it's a display token, not a control. Don't use it for general inline code or labels; use a code style or badge instead."
+      ],
+      "do": [
+        "Use the Icon variant for modifier keys (⇧ ⌘ ⌥) and Text for named keys. Pick Light=No on dark surfaces so the chip stays legible. Match the platform's key conventions."
+      ],
+      "dont": [
+        "Don't cram long words into a single key chip — keep each Kbd to one key or short token. Don't mix Light=Yes and Light=No chips in the same shortcut."
+      ]
+    },
+    "Modal": {
+      "page": "Modal",
+      "frame": "4282:80755",
+      "summary": "A modal is a focused overlay dialog that interrupts the current flow to present information or request a decision, blocking interaction with the page behind it until dismissed. Available for desktop and mobile.",
+      "whenToUse": [
+        "Use a modal for focused, decision-critical tasks that must interrupt the flow: confirmations, short forms, or important information the user must acknowledge before continuing."
+      ],
+      "whenNotToUse": [
+        "Don't use for long forms or multi-step flows — use a dedicated page or drawer. Don't use for non-blocking, dismissible feedback — use a Toast, Alert, or inline message instead."
+      ],
+      "do": [
+        "Lead with a clear title and a primary action. Pick a Size that fits the content (Small for confirmations, Large for richer content). On mobile, stack actions full-width with the primary on top."
+      ],
+      "dont": [
+        "Don't stack multiple modals or remove the close affordance for dismissible dialogs. Don't overflow the modal with content that scrolls excessively — move it to a full page."
+      ]
+    },
+    "Navigation Menu": {
+      "page": "Navigation Menu - Desktop",
+      "frame": "4347:81532",
+      "summary": "The navigation menu is the top-level horizontal bar that anchors a desktop app — pairing the brand logo with primary navigation links and utilities (search, profile) so users can orient and move between sections.",
+      "whenToUse": [
+        "Use as the persistent top-level navigation for a desktop application — anchoring the brand, exposing primary sections, and housing global utilities like search and the user profile."
+      ],
+      "whenNotToUse": [
+        "Don't use for in-page section switching — use Tabs.",
+        "Don't use on mobile layouts — use the mobile navigation pattern (bottom bar or hamburger drawer) instead of this desktop bar."
+      ],
+      "do": [
+        "Keep navigation labels short and stable.",
+        "Highlight the active section clearly.",
+        "Use Tab Style when sections behave like switchable views, and Menu when they are distinct destinations."
+      ],
+      "dont": [
+        "Don't overcrowd the bar with too many top-level links — group secondary items into a menu or slot. Don't hide critical destinations behind search only."
+      ]
+    },
+    "Popover": {
+      "page": "Popover",
+      "frame": "4419:83485",
+      "summary": "A popover is a small floating panel anchored to a trigger, used to surface contextual content — a short form, details, or controls — on click, without navigating away from the current view.",
+      "whenToUse": [
+        "Use to present focused, interactive content next to a trigger — a quick edit form, filters, or extra details — that the user acts on and dismisses without leaving the page."
+      ],
+      "whenNotToUse": [
+        "Don't use for plain text hints — use a Tooltip. Don't use for blocking, decision-critical flows — use a Modal. Don't pack a long, scrolling form into a popover."
+      ],
+      "do": [
+        "Keep the content short and self-contained. Anchor the popover to its trigger and dismiss it on outside click or Esc. Give a clear title when the content needs context."
+      ],
+      "dont": [
+        "Don't stack popovers or open one from inside another. Don't rely on it for content the user must not miss — it dismisses easily and isn't available on touch hover."
+      ]
+    },
+    "Scroll": {
+      "page": "Scrollbar",
+      "frame": "4432:84149",
+      "summary": "The scroll component is the thin scrollbar indicator shown alongside an overflowing container, signalling that more content is available and how far the user has scrolled.",
+      "whenToUse": [
+        "Shown automatically on a scrollable container to indicate overflow and scroll position. Use Vertical for tall content, Horizontal for wide content like tables or carousels."
+      ],
+      "whenNotToUse": [
+        "Don't add a scrollbar to content that fits without overflow. Don't use it as a draggable progress or range control — use a Slider for that."
+      ],
+      "do": [
+        "Keep the bar subtle and let it fade when idle. Size the thumb to reflect the proportion of visible content. Use Mirror for right-to-left layouts or left-edge scrollbars."
+      ],
+      "dont": [
+        "Don't make the bar so thin it's hard to grab, or so prominent it competes with content. Don't hide it entirely where users rely on it to gauge length."
+      ]
+    },
+    "Slider": {
+      "page": "Slider",
+      "frame": "4510:85163",
+      "summary": "A slider lets users select a value or range by dragging a handle along a track, giving direct, continuous control over a bounded numeric input.",
+      "whenToUse": [
+        "Use for selecting a value or range within a known min–max where approximate, visual adjustment is natural — volume, brightness, price range, zoom."
+      ],
+      "whenNotToUse": [
+        "Don't use when an exact number matters — use a number input. Don't use for a small set of discrete options — use a segmented control or radio group."
+      ],
+      "do": [
+        "Show the current value near the handle, and use Range when both a lower and upper bound are needed. Provide a sensible default position."
+      ],
+      "dont": [
+        "Don't use the Destructive variant for routine adjustments — reserve it for values with damaging consequences. Don't make the track so short that precise control is hard."
+      ]
+    },
+    "Toggle": {
+      "page": "Toggle",
+      "frame": "4518:85699",
+      "summary": "A toggle is a two-state button that switches an option on or off. Use it standalone, or grouped in a ToggleGroup for a set of related single- or multi-select options.",
+      "whenToUse": [
+        "Use a single Toggle for an on/off state tied to one option (bold, mute). Use a ToggleGroup for a related set — single-select like a view switcher, or multi-select like text formatting."
+      ],
+      "whenNotToUse": [
+        "Don't use for a binary setting in a form — use a Switch. Don't use for mutually exclusive options that need labels and descriptions — use radio buttons."
+      ],
+      "do": [
+        "Use a clear icon or short label so the toggled option is obvious. Keep the active state visually distinct. Use a consistent Variant and Size across a group."
+      ],
+      "dont": [
+        "Don't mix Default and Outline variants within one group. Don't rely on color alone to show the active state — pair it with the filled background and label weight."
+      ]
+    },
+    "Tooltip": {
+      "page": "Tooltip",
+      "frame": "4527:86149",
+      "summary": "A tooltip is a small dark overlay that appears on hover or focus to give a short, contextual hint about an element, with an arrow pointing back to its trigger.",
+      "whenToUse": [
+        "Use to give a brief, supplementary hint on hover or focus — naming an icon button, clarifying a truncated label, or explaining a control."
+      ],
+      "whenNotToUse": [
+        "Don't use for essential information or actions — it's hidden until hover and unavailable on touch. For rich interactive content use a Popover; for confirmations use a Modal."
+      ],
+      "do": [
+        "Keep it short — a phrase or one sentence. Point the arrow (Variant) toward the trigger and position it so it doesn't cover the element it describes."
+      ],
+      "dont": [
+        "Don't pack paragraphs, multiple actions, or critical controls into a tooltip. Don't trigger it on elements that aren't interactive or focusable."
+      ]
+    },
+    "Tree": {
+      "page": "Tree",
+      "frame": "4527:86644",
+      "summary": "A tree displays hierarchical data as nested, expandable rows — files and folders, categories, or org structures — letting users drill into nested levels while keeping their place.",
+      "whenToUse": [
+        "Use for hierarchical data the user navigates by expanding and collapsing — file explorers, nested categories, org charts, or a settings navigator."
+      ],
+      "whenNotToUse": [
+        "Don't use for flat, non-hierarchical lists — use a List or Table. Don't nest so deeply that rows become unreadable; cap the depth or paginate."
+      ],
+      "do": [
+        "Show a clear expand/collapse affordance on parent rows. Indent consistently per level and keep the selected row highlighted. Use checkboxes only when multi-select is needed."
+      ],
+      "dont": [
+        "Don't mix selection and expansion into one ambiguous click target. Don't hide whether a row has children — always show the chevron when it does."
+      ]
+    }
+  }
+}

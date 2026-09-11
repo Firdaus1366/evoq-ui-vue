@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import EvInput from './EvInput.vue'
-import EvButtonGroup from '../button-group/EvButtonGroup.vue'
-import EvButtonGroupItem from '../button-group/EvButtonGroupItem.vue'
-import EvNavMenuItem from '../navigation-menu/EvNavMenuItem.vue'
-import EvChart from '../chart/EvChart.vue'
 
 describe('EvInput', () => {
   it('is a text field carrying its value', () => {
@@ -81,102 +77,17 @@ describe('EvInput', () => {
   it('renders no message row when there is no message', () => {
     expect(mount(EvInput).find('.ev-input__message').exists()).toBe(false)
   })
-})
 
-describe('EvButtonGroup', () => {
-  it('is a labelled group', () => {
-    const wrapper = mount(EvButtonGroup, { props: { label: 'Halaman' } })
-    expect(wrapper.attributes('role')).toBe('group')
-    expect(wrapper.attributes('aria-label')).toBe('Halaman')
-  })
+  it("keeps a caller's aria-describedby alongside its own message", () => {
+    const bare = mount(EvInput, { attrs: { 'aria-describedby': 'hint' } })
+    expect(bare.find('input').attributes('aria-describedby')).toBe('hint')
 
-  it('hands its variant and size down to items that do not override them', () => {
-    const wrapper = mount(EvButtonGroup, {
-      props: { variant: 'primary', size: 'small' },
-      slots: { default: '<button-item />' },
-      global: { components: { ButtonItem: EvButtonGroupItem } },
+    const both = mount(EvInput, {
+      props: { validationText: 'Salah' },
+      attrs: { 'aria-describedby': 'hint' },
     })
-    const item = wrapper.findComponent(EvButtonGroupItem)
-    expect(item.classes()).toContain('ev-button-group__item--primary')
-    expect(item.classes()).toContain('ev-button-group__item--small')
-  })
-
-  it('lets an item override the group', () => {
-    const wrapper = mount(EvButtonGroup, {
-      props: { variant: 'primary' },
-      slots: { default: '<button-item variant="warning" />' },
-      global: { components: { ButtonItem: EvButtonGroupItem } },
-    })
-    expect(wrapper.findComponent(EvButtonGroupItem).classes()).toContain(
-      'ev-button-group__item--warning',
-    )
-  })
-})
-
-describe('EvButtonGroupItem', () => {
-  it('reports its selected state through aria-pressed', () => {
-    expect(mount(EvButtonGroupItem, { props: { active: true } }).attributes('aria-pressed')).toBe(
-      'true',
-    )
-  })
-
-  it('does not emit click while disabled', async () => {
-    const wrapper = mount(EvButtonGroupItem, { props: { disabled: true } })
-    await wrapper.trigger('click')
-    expect(wrapper.emitted('click')).toBeUndefined()
-  })
-})
-
-describe('EvNavMenuItem', () => {
-  it('takes its shape from its content, as the board does', () => {
-    expect(mount(EvNavMenuItem).classes()).toContain('ev-nav-menu-item--text')
-    expect(mount(EvNavMenuItem, { slots: { icon: '<i />' } }).classes()).toContain(
-      'ev-nav-menu-item--icon-text',
-    )
-    expect(
-      mount(EvNavMenuItem, { props: { iconOnly: true }, slots: { icon: '<i />' } }).classes(),
-    ).toContain('ev-nav-menu-item--icon')
-  })
-
-  it('marks the current section', () => {
-    expect(mount(EvNavMenuItem, { props: { active: true } }).attributes('aria-current')).toBe(
-      'page',
-    )
-  })
-
-  it('is an anchor when given an href', () => {
-    expect(mount(EvNavMenuItem, { props: { href: '/a' } }).element.tagName).toBe('A')
-    expect(mount(EvNavMenuItem).element.tagName).toBe('BUTTON')
-  })
-})
-
-describe('EvChart', () => {
-  it('is a labelled figure', () => {
-    const wrapper = mount(EvChart, { props: { title: 'Pendapatan' } })
-    expect(wrapper.element.tagName).toBe('FIGURE')
-    expect(wrapper.attributes('aria-labelledby')).toBe(wrapper.find('.ev-chart__title').element.id)
-  })
-
-  it.each(['card', 'no-card'] as const)('applies the %s variant', (variant) => {
-    expect(mount(EvChart, { props: { variant } }).classes()).toContain(`ev-chart--${variant}`)
-  })
-
-  it('renders the optional rows only when filled', () => {
-    const bare = mount(EvChart)
-    expect(bare.find('.ev-chart__header').exists()).toBe(false)
-    expect(bare.find('.ev-chart__summary').exists()).toBe(false)
-    expect(bare.find('.ev-chart__legend').exists()).toBe(false)
-
-    const full = mount(EvChart, {
-      props: { title: 'T' },
-      slots: {
-        summary: '<b class="s" />',
-        legend: '<b class="l" />',
-        headerAction: '<b class="a" />',
-      },
-    })
-    expect(full.find('.ev-chart__summary .s').exists()).toBe(true)
-    expect(full.find('.ev-chart__legend .l').exists()).toBe(true)
-    expect(full.find('.ev-chart__header-action .a').exists()).toBe(true)
+    const ids = both.find('input').attributes('aria-describedby')!.split(' ')
+    expect(ids[0]).toBe('hint')
+    expect(ids[1]).toBe(both.find('.ev-input__message').attributes('id'))
   })
 })

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, onBeforeUnmount, onMounted } from 'vue'
+import EvAspectRatio from '../../atoms/aspect-ratio/EvAspectRatio.vue'
 import { CAROUSEL_KEY } from './context'
 
 defineOptions({
@@ -19,46 +20,31 @@ onBeforeUnmount(() => carousel?.unregister(id))
 
 const index = computed(() => carousel?.indexOf(id) ?? 0)
 const isActive = computed(() => carousel?.active.value === index.value)
-
-/** CSS wants `16 / 9`; the design system writes `16:9`. */
-const cssRatio = computed(() => String(carousel?.ratio.value ?? '16:9').replace(':', ' / '))
+const ratio = computed(() => String(carousel?.ratio.value ?? '16:9'))
 </script>
 
 <template>
-  <div
+  <!--
+    node: Aspect Ratio - the board wraps every slide in an instance of it, so
+    the slide is that atom. The ratio comes from the parent, which is what
+    keeps a carousel to one ratio throughout.
+  -->
+  <EvAspectRatio
     v-bind="$attrs"
     class="ev-carousel-slide"
-    :style="{ aspectRatio: cssRatio }"
+    :ratio="ratio"
     role="group"
     :aria-roledescription="'slide'"
     :aria-hidden="!isActive ? 'true' : undefined"
   >
     <slot />
-  </div>
+  </EvAspectRatio>
 </template>
 
 <style lang="scss">
-/*
- * One slot in the carousel track. The board wraps each in the Aspect Ratio
- * component, so the surface and radius here match that component exactly - the
- * ratio itself comes from the parent, which is what keeps a carousel to one
- * ratio throughout.
- */
+/* Only the slide's place in the track; its surface is the Aspect Ratio atom's. */
 .ev-carousel-slide {
-  box-sizing: border-box;
   flex: 0 0 100%;
-  border-radius: var(--ev-radius-md);
-  background-color: var(--ev-bg-secondary);
-  overflow: hidden;
   scroll-snap-align: start;
-
-  > img,
-  > video,
-  > iframe {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
 }
 </style>

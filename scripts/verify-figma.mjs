@@ -702,19 +702,32 @@ section('card', () => {
 // ------------------------------------------------------------ Breadcrumb
 section('breadcrumb', () => {
   check('breadcrumb gap', resolve(rule('.ev-breadcrumb__list').get('gap')), '4px')
-  check('breadcrumb link colour', resolve(rule('.ev-breadcrumb__link').get('color')), '#78829d')
-  check('breadcrumb link font', resolve(rule('.ev-breadcrumb__link').get('font-size')), '0.875rem')
-  check(
-    'breadcrumb current colour',
-    resolve(rule('.ev-breadcrumb__link--current').get('color')),
-    '#071437',
-  )
+  /*
+   * Every crumb is a ButtonLink instance, Variant=Secondary; the page you are
+   * on is its State=Active, which `current` pins. Proven on the atom's rules.
+   */
+  const crumb = merged('.ev-button-link', '.ev-button-link--secondary')
+  check('breadcrumb link colour', resolve(crumb.get('--ev-link-fg'), crumb), '#78829d')
+  check('breadcrumb link font', resolve(crumb.get('font-size')), '0.875rem')
+  check('breadcrumb icon colour', resolve(crumb.get('--ev-link-icon'), crumb), '#99a1b7')
+  const current = merged('.ev-button-link', '.ev-button-link--secondary.ev-button-link--current')
+  check('breadcrumb current colour', resolve(current.get('--ev-link-fg'), current), '#071437')
   check(
     'breadcrumb separator colour',
     resolve(rule('.ev-breadcrumb__separator').get('color')),
     '#99a1b7',
   )
-  check('breadcrumb icon colour', resolve(rule('.ev-breadcrumb__icon').get('color')), '#99a1b7')
+  pass(
+    'breadcrumb does not restyle its links',
+    rule('.ev-breadcrumb__link').size === 0 && rule('.ev-breadcrumb__link--current').size === 0,
+    'EvButtonLink',
+  )
+  // The Ellipsis variant opens a DropdownList instance - proven in its section.
+  pass(
+    'breadcrumb does not redraw the dropdown',
+    rule('.ev-breadcrumb__dropdown-item').size === 0,
+    'EvDropdownList',
+  )
 })
 
 // ------------------------------------------------------------- Accordion
@@ -724,11 +737,11 @@ section('accordion', () => {
   check('accordion header gap', resolve(rule('.ev-accordion__header').get('gap')), '8px')
   check('accordion text gap', resolve(rule('.ev-accordion__text').get('gap')), '4px')
   check('accordion chevron size', rule('.ev-accordion__chevron').get('width'), '20px')
-  check(
-    'accordion rule colour',
-    resolve(rule('.ev-accordion__rule').get('background-color')),
-    '#dbdfe9',
-  )
+  // The rule is a Separator instance (Horizontal).
+  const sep = merged('.ev-separator', '.ev-separator--horizontal')
+  check('accordion rule colour', resolve(sep.get('background-color')), '#dbdfe9')
+  check('accordion rule weight', resolve(sep.get('height')), '1px')
+  pass('accordion does not redraw the rule', rule('.ev-accordion__rule').size === 0, 'EvSeparator')
 
   const def = merged('.ev-accordion')
   checkVar('accordion title', def, '--ev-accordion-title', '#071437')
@@ -1269,15 +1282,15 @@ section('dropdown-list', () => {
     resolve(rule('.ev-dropdown-list__search').get('padding')),
     '8px 12px',
   )
-  check(
-    'dropdown search input pad',
-    resolve(rule('.ev-dropdown-list__search-input').get('padding')),
-    '12px',
-  )
-  check(
-    'dropdown search input radius',
-    resolve(rule('.ev-dropdown-list__search-input').get('border-radius')),
-    '6px',
+  // The search is an InputSearch instance - its box is the atom's.
+  const search = rule('.ev-input-search__field')
+  check('dropdown search input height', search.get('height'), '44px')
+  check('dropdown search input pad', resolve(search.get('padding')), '12px')
+  check('dropdown search input radius', resolve(search.get('border-radius')), '6px')
+  pass(
+    'dropdown does not redraw the search',
+    rule('.ev-dropdown-list__search-input').size === 0,
+    'EvInputSearch',
   )
 
   const item = rule('.ev-dropdown-item')
@@ -1324,13 +1337,35 @@ section('carousel', () => {
   check('carousel container gap', resolve(rule('.ev-carousel__container').get('gap')), '4px')
   check('carousel track gap', resolve(rule('.ev-carousel__track').get('gap')), '4px')
 
-  const button = rule('.ev-carousel__button')
+  /*
+   * The arrows are Button instances (Secondary - Light, Small, Icon Only).
+   * The atom supplies size, fill and border; the instance overrides only its
+   * radius and its chevron colour, which are all the carousel sets.
+   */
+  const button = merged(
+    '.ev-button',
+    '.ev-button--small',
+    '.ev-button--secondary-light',
+    '.ev-button--icon-only.ev-button--small',
+  )
   check('carousel button size', button.get('width'), '32px')
-  check('carousel button pad', resolve(button.get('padding')), '8px')
-  check('carousel button radius', resolve(button.get('border-radius')), '9999px')
+  check('carousel button height', button.get('min-height'), '32px')
   check('carousel button bg', resolve(button.get('background-color')), '#e8f3ff')
-  check('carousel button border', resolve(button.get('border')), '1px solid #a4ceff')
-  check('carousel button icon', resolve(button.get('color')), '#78829d')
+  check('carousel button border', resolve(button.get('border-color')), '#a4ceff')
+  const override = rule('.ev-carousel .ev-carousel__button')
+  check('carousel button radius', resolve(override.get('border-radius')), '9999px')
+  check('carousel button icon', resolve(override.get('color')), '#78829d')
+  pass(
+    'carousel overrides only radius and icon colour',
+    [...override.keys()].every((k) => ['flex-shrink', 'border-radius', 'color'].includes(k)),
+    [...override.keys()].join(', '),
+  )
+  // Each slide is an Aspect Ratio instance - proven in its own section.
+  pass(
+    'carousel slide does not redraw its surface',
+    !rule('.ev-carousel-slide').get('background-color'),
+    'EvAspectRatio',
+  )
 
   check('carousel indicator gap', rule('.ev-carousel__indicator').get('gap'), '1px')
 
@@ -1344,9 +1379,11 @@ section('carousel', () => {
   check('carousel active dot width', active.get('width'), '12px')
   check('carousel active dot colour', resolve(active.get('background-color')), '#1b84ff')
 
-  const slide = rule('.ev-carousel-slide')
+  // Each slide is the Aspect Ratio atom, so its surface is proven on that rule.
+  const slide = rule('.ev-aspect-ratio')
   check('carousel slide radius', resolve(slide.get('border-radius')), '12px')
   check('carousel slide bg', resolve(slide.get('background-color')), '#f9f9f9')
+  check('carousel slide snaps', rule('.ev-carousel-slide').get('scroll-snap-align'), 'start')
 })
 
 // ---------------------------------------------------------------- Avatar
@@ -1715,13 +1752,24 @@ section('calendar', () => {
 
   // node: Frame 19 - the range read-out then Cancel then Apply.
   check('calendar footer gap', resolve(rule('.ev-calendar__footer-row').get('gap')), '8px')
-  const cancel = merged('.ev-calendar__btn', '.ev-calendar__btn--cancel')
+  /*
+   * The footer buttons are the Button atom: desktop renders secondary-grey /
+   * primary at the small size, so the board's values are proven on those rules.
+   */
+  const cancel = merged('.ev-button', '.ev-button--small', '.ev-button--secondary-grey')
+  check('calendar cancel height', cancel.get('min-height'), '32px')
   check('calendar cancel bg', resolve(cancel.get('background-color')), '#f1f1f4')
   check('calendar cancel border', resolve(cancel.get('border-color')), '#dbdfe9')
   check('calendar cancel fg', resolve(cancel.get('color')), '#071437')
-  const apply = merged('.ev-calendar__btn', '.ev-calendar__btn--apply')
+  const apply = merged('.ev-button', '.ev-button--small', '.ev-button--primary')
   check('calendar apply bg', resolve(apply.get('background-color')), '#1b84ff')
   check('calendar apply fg', resolve(apply.get('color')), '#ffffff')
+  // Mobile swaps Cancel to secondary-light at the default 40px size.
+  const mobileCancel = merged('.ev-button', '.ev-button--default', '.ev-button--secondary-light')
+  check('calendar mobile cancel height', mobileCancel.get('min-height'), '40px')
+  check('calendar mobile cancel bg', resolve(mobileCancel.get('background-color')), '#e8f3ff')
+  check('calendar mobile cancel border', resolve(mobileCancel.get('border-color')), '#a4ceff')
+  pass('calendar does not restyle its buttons', rule('.ev-calendar__btn').size === 0, 'EvButton')
 
   /*
    * node: Frame 2 / Frame 8 - the Month and Year grids reuse `.DayCell` at
@@ -1779,10 +1827,18 @@ section('calendar', () => {
     '24px',
   )
 
-  // node: ButtonLink - "Select Time", padded 8 top and bottom.
-  const link = rule('.ev-calendar__time-link')
+  /*
+   * node: ButtonLink (Primary) - "Select Time". The instance overrides its
+   * label colour and its sizing (full width, 8 above and below); the rest is
+   * the atom's.
+   */
+  const link = rule('.ev-calendar .ev-calendar__time-link')
   check('calendar time link pad', resolve(link.get('padding')), '8px 0')
-  check('calendar time link colour', resolve(link.get('color')), '#071437')
+  check('calendar time link colour', resolve(link.get('--ev-link-fg')), '#071437')
+  check('calendar time link width', link.get('width'), '100%')
+  const linkAtom = merged('.ev-button-link', '.ev-button-link--primary')
+  check('calendar time link font', resolve(linkAtom.get('font-size')), '0.875rem')
+  check('calendar time link icon', resolve(linkAtom.get('--ev-link-icon'), linkAtom), '#1b84ff')
 })
 
 // ---------------------------------------------------------- Chart series
@@ -1893,7 +1949,11 @@ section('rich-editor', () => {
   check('rich-editor message font', msg.get('font-size'), '12px')
   check('rich-editor message line-height', msg.get('line-height'), '16px')
   check('rich-editor message colour', resolve(msg.get('color'), scope), '#78829d')
-  check('rich-editor counter align', rule('.ev-rich-editor__message-end').get('text-align'), 'right')
+  check(
+    'rich-editor counter align',
+    rule('.ev-rich-editor__message-end').get('text-align'),
+    'right',
+  )
 
   // States - only the Content stroke and fill move.
   check(
@@ -2107,19 +2167,45 @@ section('input-field-unit', () => {
   pass('input-field-unit row has no radius', !field.get('border-radius'), 'none')
   pass('input-field-unit row has no fill', !field.get('background-color'), 'none')
 
-  for (const part of ['unit-wrap', 'input-wrap']) {
-    const box = rule('.ev-input-field-unit__' + part)
+  /*
+   * `InputDropdown` is drawn here; `InputField` is an instance of the field
+   * atom, so its box is proven on EvInput's own rule and scope - the same six
+   * values the board gives both boxes.
+   */
+  const boxes = [
+    ['unit-wrap', rule('.ev-input-field-unit__unit-wrap'), scope],
+    ['input', rule('.ev-input__field'), merged('.ev-input')],
+  ]
+  for (const [part, box, boxScope] of boxes) {
     check('input-field-unit ' + part + ' height', box.get('min-height'), '44px')
     check('input-field-unit ' + part + ' pad', resolve(box.get('padding')), '12px')
     check('input-field-unit ' + part + ' gap', resolve(box.get('gap')), '8px')
-    check('input-field-unit ' + part + ' radius', resolve(box.get('border-radius'), scope), '6px')
+    check(
+      'input-field-unit ' + part + ' radius',
+      resolve(box.get('border-radius'), boxScope),
+      '6px',
+    )
     check(
       'input-field-unit ' + part + ' border',
-      resolve(box.get('border'), scope),
+      resolve(box.get('border'), boxScope),
       '1px solid #dbdfe9',
     )
-    check('input-field-unit ' + part + ' bg', resolve(box.get('background-color'), scope), '#ffffff')
+    check(
+      'input-field-unit ' + part + ' bg',
+      resolve(box.get('background-color'), boxScope),
+      '#ffffff',
+    )
   }
+  check(
+    'input-field-unit field atom fills the row',
+    rule('.ev-input-field-unit__field>.ev-input').get('flex'),
+    '1',
+  )
+  pass(
+    'input-field-unit does not redraw the field',
+    rule('.ev-input-field-unit__input-wrap').size === 0,
+    'EvInput',
+  )
 })
 
 // ------------------------------------------------------------- Time Picker
@@ -2188,21 +2274,32 @@ section('time-picker', () => {
   const footer = rule('.ev-time-picker__footer')
   check('time-picker footer direction', footer.get('flex-direction'), 'column')
   check('time-picker footer gap', resolve(footer.get('gap')), '8px')
-  const btn = rule('.ev-time-picker__btn')
+  // Both are the Button atom at the default size: primary, then secondary-light.
+  const btn = merged('.ev-button', '.ev-button--default')
   check('time-picker btn height', btn.get('min-height'), '40px')
   check('time-picker btn pad', resolve(btn.get('padding')), '12px 16px')
   check('time-picker btn radius', resolve(btn.get('border-radius')), '6px')
-  const apply = merged('.ev-time-picker__btn', '.ev-time-picker__btn--apply')
+  check('time-picker btn stretches', rule('.ev-button--block').get('width'), '100%')
+  const apply = merged('.ev-button', '.ev-button--default', '.ev-button--primary')
   check('time-picker apply bg', resolve(apply.get('background-color'), scope), '#1b84ff')
   check('time-picker apply fg', resolve(apply.get('color'), scope), '#ffffff')
-  const cancel = merged('.ev-time-picker__btn', '.ev-time-picker__btn--cancel')
+  const cancel = merged('.ev-button', '.ev-button--default', '.ev-button--secondary-light')
   check('time-picker cancel bg', resolve(cancel.get('background-color'), scope), '#e8f3ff')
   check('time-picker cancel border', resolve(cancel.get('border-color'), scope), '#a4ceff')
   check('time-picker cancel fg', resolve(cancel.get('color'), scope), '#1b84ff')
+  pass(
+    'time-picker does not restyle its buttons',
+    rule('.ev-time-picker__btn').size === 0,
+    'EvButton',
+  )
 
   // The board draws neither of these nodes.
   pass('time-picker draws no title', rule('.ev-time-picker__title').size === 0, 'absent')
-  pass('time-picker draws no column caption', rule('.ev-time-picker__col-label').size === 0, 'absent')
+  pass(
+    'time-picker draws no column caption',
+    rule('.ev-time-picker__col-label').size === 0,
+    'absent',
+  )
 })
 
 // ----------------------------------------------------------------- Report

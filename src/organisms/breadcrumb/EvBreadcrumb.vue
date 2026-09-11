@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import EvButtonLink from '../../atoms/button-link/EvButtonLink.vue'
+import EvDropdownItem from '../../atoms/dropdown-item/EvDropdownItem.vue'
+import EvDropdownList from '../../molecules/dropdown-list/EvDropdownList.vue'
 import type { BreadcrumbItem } from '../../types'
 
 defineOptions({
@@ -70,9 +73,8 @@ function onSelect(entry: Extract<Entry, { kind: 'crumb' }>, event: MouseEvent) {
   emit('select', entry.item, entry.index)
 }
 
-function selectHidden(hidden: HiddenCrumb, event: MouseEvent) {
+function selectHidden(hidden: HiddenCrumb) {
   dropdownOpen.value = false
-  if (!hidden.item.href) event.preventDefault()
   emit('select', hidden.item, hidden.index)
 }
 </script>
@@ -109,33 +111,41 @@ function selectHidden(hidden: HiddenCrumb, event: MouseEvent) {
             </svg>
           </button>
 
-          <div
+          <!--
+            node: DropdownList (Variant=List) - a menu of the hidden crumbs,
+            each a real link so it can still be opened in a new tab.
+          -->
+          <EvDropdownList
             v-if="dropdownOpen"
             class="ev-breadcrumb__dropdown"
-            role="menu"
-            aria-label="Langkah tersembunyi"
+            menu
+            label="Langkah tersembunyi"
           >
-            <component
-              :is="hidden.item.href ? 'a' : 'button'"
+            <EvDropdownItem
               v-for="hidden in entry.hiddenItems"
               :key="hidden.index"
               class="ev-breadcrumb__dropdown-item"
               :href="hidden.item.href"
-              role="menuitem"
-              @click="selectHidden(hidden, $event)"
+              @select="selectHidden(hidden)"
             >
               {{ hidden.item.label }}
-            </component>
-          </div>
+            </EvDropdownItem>
+          </EvDropdownList>
         </div>
 
-        <component
-          :is="entry.item.href && !entry.last ? 'a' : 'span'"
+        <!--
+          node: ButtonLink, Variant=Secondary - State=Active on the page you
+          are on. The home crumb hides its label, so its icon is the content
+          and the label becomes the accessible name.
+        -->
+        <EvButtonLink
           v-else
           class="ev-breadcrumb__link"
           :class="{ 'ev-breadcrumb__link--current': entry.last }"
+          variant="secondary"
+          :current="entry.last"
           :href="entry.last ? undefined : entry.item.href"
-          :aria-current="entry.last ? 'page' : undefined"
+          :aria-label="entry.item.icon ? entry.item.label : undefined"
           @click="onSelect(entry, $event)"
         >
           <svg
@@ -154,15 +164,13 @@ function selectHidden(hidden: HiddenCrumb, event: MouseEvent) {
             />
           </svg>
           <template v-else>{{ entry.item.label }}</template>
-        </component>
+        </EvButtonLink>
       </li>
     </ol>
   </nav>
 </template>
 
 <style lang="scss">
-@use '../../styles/typography' as type;
-
 /*
  * Traced from the `Breadcrumb` component set in Figma (Default and Ellipsis).
  *
@@ -186,29 +194,14 @@ function selectHidden(hidden: HiddenCrumb, event: MouseEvent) {
     gap: var(--ev-spacing-xs);
   }
 
-  &__link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--ev-spacing-xs);
-    color: var(--ev-text-secondary);
-    text-decoration: none;
-
-    @include type.style('body/regular');
-
-    &:focus-visible {
-      outline: var(--ev-focus-ring-width) solid var(--ev-focus-ring-color);
-      outline-offset: var(--ev-focus-ring-offset);
-    }
-  }
-
-  &__link--current {
-    color: var(--ev-text-primary);
-  }
-
+  /*
+   * Each crumb is the ButtonLink atom (secondary; `current` pins its Active
+   * look), so colour, type and focus ring all come from there.
+   */
   &__icon {
+    display: block;
     width: 16px;
     height: 16px;
-    color: var(--ev-icon-secondary);
   }
 
   &__separator {
@@ -250,44 +243,15 @@ function selectHidden(hidden: HiddenCrumb, event: MouseEvent) {
     align-items: center;
   }
 
+  /*
+   * The overflow menu is the DropdownList molecule - its panel, rows and
+   * states are its own. Only where it floats is decided here.
+   */
   &__dropdown {
     position: absolute;
     top: calc(100% + var(--ev-spacing-2xs));
     left: 0;
     z-index: 100;
-    display: flex;
-    flex-direction: column;
-    min-width: 140px;
-    padding: var(--ev-spacing-2xs);
-    border: var(--ev-stroke-xs) solid var(--ev-border-primary);
-    border-radius: var(--ev-radius-xs);
-    background-color: var(--ev-bg-primary);
-    box-shadow: 0 4px 12px rgb(var(--ev-shadow-tint) / 0.1);
-  }
-
-  &__dropdown-item {
-    display: flex;
-    align-items: center;
-    padding: var(--ev-spacing-xs) var(--ev-spacing-sm);
-    border: 0;
-    border-radius: var(--ev-radius-2xs);
-    background: none;
-    color: var(--ev-text-secondary);
-    text-decoration: none;
-    text-align: left;
-    cursor: pointer;
-
-    @include type.style('body/small');
-
-    &:hover {
-      background-color: var(--ev-bg-subtler);
-      color: var(--ev-text-primary);
-    }
-
-    &:focus-visible {
-      outline: var(--ev-focus-ring-width) solid var(--ev-focus-ring-color);
-      outline-offset: -1px;
-    }
   }
 }
 </style>

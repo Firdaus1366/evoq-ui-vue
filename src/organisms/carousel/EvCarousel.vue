@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, provide, ref, toRef } from 'vue'
+import EvButton from '../../atoms/button/EvButton.vue'
 import { CAROUSEL_KEY } from './context'
 import type { AspectRatio, CarouselOrientation } from '../../types'
 
@@ -83,25 +84,29 @@ function go(index: number) {
     :aria-roledescription="'carousel'"
     :aria-label="label"
   >
-    <button
+    <EvButton
       v-if="showButtons"
-      type="button"
       class="ev-carousel__button ev-carousel__button--previous"
+      variant="secondary-light"
+      size="small"
+      icon-only
       :aria-label="previousLabel"
       :disabled="active === 0"
       @click="go(active - 1)"
     >
-      <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-        <path
-          d="M10 3.5L5.5 8 10 12.5"
-          stroke="currentColor"
-          stroke-width="1.5"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-    </button>
+      <template #iconLeft>
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path
+            d="M10 3.5L5.5 8 10 12.5"
+            stroke="currentColor"
+            stroke-width="1.5"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </template>
+    </EvButton>
 
     <div class="ev-carousel__container">
       <!--
@@ -129,25 +134,29 @@ function go(index: number) {
       </div>
     </div>
 
-    <button
+    <EvButton
       v-if="showButtons"
-      type="button"
       class="ev-carousel__button ev-carousel__button--next"
+      variant="secondary-light"
+      size="small"
+      icon-only
       :aria-label="nextLabel"
       :disabled="active >= count - 1"
       @click="go(active + 1)"
     >
-      <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-        <path
-          d="M6 3.5L10.5 8 6 12.5"
-          stroke="currentColor"
-          stroke-width="1.5"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-    </button>
+      <template #iconLeft>
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path
+            d="M6 3.5L10.5 8 6 12.5"
+            stroke="currentColor"
+            stroke-width="1.5"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </template>
+    </EvButton>
   </div>
 </template>
 
@@ -193,33 +202,20 @@ function go(index: number) {
   }
 
   /* The board's control: a pill in the subtle brand tint. */
-  &__button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  /*
+   * node: Button (Secondary - Light, Small, Icon Only). The board's instances
+   * override exactly two fields, and only those are set here: the button is
+   * fully round, and its chevron is icon/primary grey instead of brand blue.
+   * Size, fill, border, focus ring and every state are the Button atom's.
+   */
+  & &__button {
     flex-shrink: 0;
-    width: 32px;
-    height: 32px;
-    padding: var(--ev-spacing-sm);
-    border: var(--ev-stroke-xs) solid var(--ev-brand-primary-200);
     border-radius: var(--ev-radius-rd);
-    background-color: var(--ev-brand-primary-subtle);
     color: var(--ev-icon-primary);
-    cursor: pointer;
 
     svg {
       width: 16px;
       height: 16px;
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    &:focus-visible {
-      outline: var(--ev-focus-ring-width) solid var(--ev-focus-ring-color);
-      outline-offset: var(--ev-focus-ring-offset);
     }
   }
 

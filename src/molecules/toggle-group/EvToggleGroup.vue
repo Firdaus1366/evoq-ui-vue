@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, provide } from 'vue'
 import type { ToggleSize, ToggleVariant } from '../../types'
-import { TOGGLE_GROUP_KEY } from './context'
+import { TOGGLE_GROUP_KEY } from '../../atoms/toggle/context'
 
 defineOptions({
   name: 'EvToggleGroup',

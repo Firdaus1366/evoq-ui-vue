@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue'
+import EvSeparator from '../../atoms/separator/EvSeparator.vue'
 import type { AccordionVariant } from '../../types'
 
 defineOptions({
@@ -98,10 +99,10 @@ function toggle() {
     </div>
 
     <!--
-      The `default` variant is separated by a rule beneath it; the `card`
-      variant is separated by its own border, so it has no rule.
+      node: Separator (Horizontal) - the `default` variant is separated by a
+      rule beneath it; the `card` variant by its own border, so it has none.
     -->
-    <span v-if="variant === 'default' && separator" class="ev-accordion__rule" aria-hidden="true" />
+    <EvSeparator v-if="variant === 'default' && separator" class="ev-accordion__rule" decorative />
   </div>
 </template>
 
@@ -173,12 +174,6 @@ function toggle() {
     height: 20px;
     color: var(--ev-accordion-chevron);
     transition: transform var(--ev-duration-fast) var(--ev-easing-standard);
-  }
-
-  &__rule {
-    display: block;
-    height: var(--ev-stroke-xs);
-    background-color: var(--ev-border-primary);
   }
 
   &--expanded &__chevron {
