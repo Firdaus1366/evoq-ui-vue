@@ -174,3 +174,76 @@ export interface UnitOption {
   label: string
   value: string
 }
+
+/** Which brand lockup `EvLogo` draws - the two components on the Figma `Logo` page. */
+export type LogoBrand = 'evoq' | 'datasea'
+
+/**
+ * How much of the lockup `EvLogo` draws: the whole thing, the round mark
+ * alone, or the wordmark alone. The parts are the groups the board nests
+ * inside each lockup.
+ */
+export type LogoVariant = 'lockup' | 'mark' | 'wordmark'
+
+/*
+ * ---------------------------------------------------------------------------
+ * Figma "On Progress" pages
+ *
+ * Everything below is traced from the eleven pages that sit under the
+ * `🚧 On Progress ⬇️` divider in the EVOQ file. They are ported the same way
+ * as the rest - node by node - but the boards are still moving, so expect the
+ * unions here to gain or lose members when a page is signed off. Nothing
+ * above this line depends on them.
+ * ---------------------------------------------------------------------------
+ */
+
+/** `Type` of the Figma `Loading` set. */
+export type LoadingType = 'spinner' | 'pulse' | 'progress-bar' | 'skeleton'
+
+/** `Type` of the Figma `.LabelItem` set - it sizes the caption, not the title. */
+export type LabelItemType = 'default' | 'small' | 'extra-small'
+
+/** `Type` of the Figma `Item` set. */
+export type ItemType = 'default' | 'outline' | 'muted'
+
+/**
+ * `Type` of the Figma `Toast` set. `with-description` is the board's
+ * `WithDescription`; setting a description reaches the same layout, so the
+ * member exists mainly so a caller can name the variant it means.
+ */
+export type ToastVariant = 'default' | 'success' | 'error' | 'warning' | 'info' | 'with-description'
+
+/**
+ * `Variant` of the Figma `Pagination` set. The board's names are
+ * "Pagination Display", "Pagination Step" and "Pagination Number".
+ */
+export type PaginationVariant = 'display' | 'step' | 'number'
+
+/**
+ * `Type` of the Figma `.ItemSidebar` set. `sub-title` and `divider` are rows
+ * rather than controls, which is why they are types and not states.
+ */
+export type SidebarItemType = 'main' | 'submenu' | 'sub-submenu' | 'sub-title' | 'divider'
+
+/**
+ * `Variant` of the Figma `D - Empty State` / `M - Empty State` sets.
+ * `maintenance` is the board's "Under Maintenance"; `no-data` and `no-result`
+ * are its "No Data Table/Card" and "No Result Table/Card".
+ */
+export type EmptyStateVariant =
+  '400' | '401' | '404' | '500' | 'maintenance' | 'no-data' | 'no-result'
+
+/** Which of the two Empty State sets to follow. */
+export type EmptyStateSize = 'desktop' | 'mobile'
+
+/**
+ * `Variant` of the Figma `Data Table` set. `left-fixed` and `right-fixed` are
+ * the Default fills with one column pinned, not fills of their own.
+ */
+export type DataTableVariant = 'default' | 'secondary' | 'no-fill' | 'left-fixed' | 'right-fixed'
+
+/** Which way an `EvDataTableCell` column is sorted. */
+export type DataTableSort = 'none' | 'asc' | 'desc'
+
+/** Horizontal alignment of a data table cell's content. */
+export type TableCellAlign = 'left' | 'center' | 'right'

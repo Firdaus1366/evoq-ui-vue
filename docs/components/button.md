@@ -14,6 +14,9 @@ composes: []
 usedBy:
   - "evoq-ui:calendar"
   - "evoq-ui:carousel"
+  - "evoq-ui:empty-state"
+  - "evoq-ui:pagination"
+  - "evoq-ui:sidebar"
   - "evoq-ui:time-picker"
 seeAlso:
   - "evoq-ui:button-link"
@@ -89,7 +92,7 @@ _The exact snippet the playground simulator copies for this component (`playgrou
 | Relation | Components |
 | --- | --- |
 | Built from | — (renders no other Ev component) |
-| Used by | `evoq-ui:calendar`, `evoq-ui:carousel`, `evoq-ui:time-picker` |
+| Used by | `evoq-ui:calendar`, `evoq-ui:carousel`, `evoq-ui:empty-state`, `evoq-ui:pagination`, `evoq-ui:sidebar`, `evoq-ui:time-picker` |
 | Slot children | — |
 
 ## Design guidance

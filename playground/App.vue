@@ -20,33 +20,52 @@ import {
   EvCarouselSlide,
   EvChart,
   EvCheckbox,
+  EvCommand,
+  EvCommandGroup,
+  EvCommandItem,
+  EvDataTable,
+  EvDataTableCell,
+  EvDataTableRow,
   EvDirection,
   EvDrawer,
   EvDropdownItem,
   EvDropdownList,
+  EvDropdownMenu,
+  EvDropdownMenuItem,
+  EvEmptyState,
   EvHint,
+  EvHoverCard,
   EvInput,
   EvInputWithLabel,
   EvInputSearch,
   EvInputFieldUnit,
   EvRichEditor,
   EvTextarea,
+  EvItem,
   EvKbd,
+  EvLabelItem,
+  EvLoading,
   EvLogo,
   EvModal,
   EvNavMenuItem,
+  EvNavMenuMobileItem,
   EvNavigationMenu,
+  EvNavigationMenuMobile,
+  EvPagination,
   EvPopover,
   EvRadio,
   EvRadioGroup,
   EvScrollArea,
   EvSeparator,
+  EvSidebar,
+  EvSidebarItem,
   EvSlider,
   EvSwitch,
   EvTab,
   EvTabs,
   EvTag,
   EvTagGroup,
+  EvToast,
   EvToggle,
   EvToggleGroup,
   EvTooltip,
@@ -65,6 +84,8 @@ import type {
   AvatarSize,
   AvatarVariant,
   HintSize,
+  DataTableVariant,
+  EmptyStateVariant,
   TagVariant,
   TooltipPlacement,
 } from '../src'
@@ -166,6 +187,28 @@ const categories: CategoryItem[] = [
       { id: 'scroll-area', name: 'Scroll Area', tag: 'EvScrollArea' },
       { id: 'separator', name: 'Separator', tag: 'EvSeparator' },
       { id: 'logo', name: 'Logo', tag: 'EvLogo' },
+    ],
+  },
+  {
+    id: 'on-progress',
+    name: 'On Progress (Figma)',
+    icon: '🚧',
+    components: [
+      { id: 'loading', name: 'Loading', tag: 'EvLoading' },
+      { id: 'item', name: 'Item & Label Item', tag: 'EvItem' },
+      { id: 'toast', name: 'Toast', tag: 'EvToast' },
+      { id: 'hover-card', name: 'Hover Card', tag: 'EvHoverCard' },
+      { id: 'dropdown-menu', name: 'Dropdown Menu', tag: 'EvDropdownMenu' },
+      { id: 'command', name: 'Command Palette', tag: 'EvCommand' },
+      { id: 'pagination', name: 'Pagination', tag: 'EvPagination' },
+      { id: 'data-table', name: 'Data Table', tag: 'EvDataTable' },
+      { id: 'empty-state', name: 'Empty State', tag: 'EvEmptyState' },
+      { id: 'sidebar', name: 'Sidebar', tag: 'EvSidebar' },
+      {
+        id: 'navigation-menu-mobile',
+        name: 'Navigation Menu (Mobile)',
+        tag: 'EvNavigationMenuMobile',
+      },
     ],
   },
 ]
@@ -403,6 +446,62 @@ const pickedRange = ref<[Date | null, Date | null]>([null, null])
 const pickedTime = ref('09:30')
 const pickedTimeSeconds = ref('14:45:30')
 const pickedTimeAmPm = ref('02:15 PM')
+
+// --- On Progress (Figma) demo state -----------------------------------------
+// The eleven pages under the 🚧 divider. They are ported from today's boards,
+// so these sections are the place to eyeball a change once a page is signed off.
+const commandQuery = ref('')
+const sidebarCollapsed = ref(false)
+
+const tableVariants: DataTableVariant[] = [
+  'default',
+  'secondary',
+  'no-fill',
+  'left-fixed',
+  'right-fixed',
+]
+const tableVariant = ref<DataTableVariant>('default')
+const tableRows = [
+  {
+    name: 'Alex Wijaya',
+    division: 'Keuangan',
+    status: 'success' as const,
+    statusLabel: 'Aktif',
+    value: '12.400.000',
+    level: 0 as const,
+    selected: false,
+  },
+  {
+    name: 'Tim Anggaran',
+    division: 'Keuangan',
+    status: 'waiting' as const,
+    statusLabel: 'Review',
+    value: '8.150.000',
+    level: 1 as const,
+    selected: false,
+  },
+  {
+    name: 'PPN',
+    division: 'Pajak',
+    status: 'draft' as const,
+    statusLabel: 'Draf',
+    value: '2.900.000',
+    level: 2 as const,
+    selected: true,
+  },
+  {
+    name: 'Sari Utami',
+    division: 'Operasional',
+    status: 'reject' as const,
+    statusLabel: 'Ditolak',
+    value: '1.250.000',
+    level: 0 as const,
+    selected: false,
+  },
+]
+
+const emptyVariants: EmptyStateVariant[] = ['400', '401', '404', '500', 'maintenance']
+const emptyVariant = ref<EmptyStateVariant>('500')
 
 const salesData = [
   { bulan: 'Jan', realisasi: 120, target: 100 },
@@ -2396,6 +2495,25 @@ import { EvAvatar, EvAvatarGroup } from &apos;evoq-ui&apos;
                   Isi ringkas tanpa footer aksi sesuai spesifikasi Figma.
                 </div>
               </EvCard>
+
+              <EvCard
+                type="image"
+                title="Gunung Sumbing"
+                description="Jawa Tengah - 3.371 mdpl"
+                style="width: 300px"
+              >
+                <template #image>
+                  <img
+                    src="https://kabarbaik.co/wp-content/uploads/2025/01/gunung-sumbing.png"
+                    alt="Puncak Gunung Sumbing"
+                    loading="lazy"
+                  />
+                </template>
+                <div style="font-size: 0.85rem; color: var(--ev-text-secondary)">
+                  Tipe image menempelkan gambar di tepi atas kartu; sudutnya ikut terpotong
+                  mengikuti radius kartu.
+                </div>
+              </EvCard>
             </div>
           </div>
 
@@ -2417,6 +2535,14 @@ import { EvCard, EvButton, EvBadge } from &apos;evoq-ui&apos;
       <EvButton variant="secondary-light" size="small">Batal</EvButton>
       <EvButton size="small">Simpan</EvButton>
     </template>
+  </EvCard>
+
+  &lt;!-- Tipe image: gambar mengisi tepi atas kartu --&gt;
+  <EvCard type="image" title="Gunung Sumbing" description="Jawa Tengah - 3.371 mdpl">
+    <template #image>
+      <img src="/gunung-sumbing.png" alt="Puncak Gunung Sumbing" />
+    </template>
+    <p>Konten kartu di bawah gambar.</p>
   </EvCard>
 </template>'
           />
@@ -2694,7 +2820,7 @@ const items: BreadcrumbItem[] = [
               label="Navigasi Utama"
               style="border: 1px solid var(--ev-border-primary); border-radius: 8px"
             >
-              <template #brand><EvLogo :size="32" /></template>
+              <template #brand><EvLogo :size="32" :tagline="false" /></template>
               <EvNavMenuItem :active="navSection === 'beranda'" @click="navSection = 'beranda'">
                 Beranda
               </EvNavMenuItem>
@@ -2732,7 +2858,7 @@ const activeMenu = ref(&apos;beranda&apos;)
 
 <template>
   <EvNavigationMenu label="Navigasi Utama">
-    <template #brand><EvLogo :size="32" /></template>
+    <template #brand><EvLogo :size="32" :tagline="false" /></template>
     <EvNavMenuItem :active="activeMenu === &apos;beranda&apos;" @click="activeMenu = &apos;beranda&apos;">Beranda</EvNavMenuItem>
     <EvNavMenuItem :active="activeMenu === &apos;data&apos;" @click="activeMenu = &apos;data&apos;">Data</EvNavMenuItem>
     <template #profile><EvAvatar :size="40" variant="teal" label="EV" /></template>
@@ -3591,34 +3717,684 @@ import { EvSeparator } from &apos;evoq-ui&apos;
               <code class="pg-section__import">import { EvLogo } from 'evoq-ui'</code>
             </div>
             <p class="pg-section__desc">
-              Logo resmi sistem desain Evoq UI dalam format vektor SVG dengan berbagai ukuran dan
-              slot label pendamping.
+              Logo resmi dari halaman Logo di Figma, lengkap dengan mark, wordmark, dan tagline.
+              Semua bagian ikut dipaketkan, jadi produk tidak perlu mengambil aset logo dari tempat
+              lain. Isi prop <code>src</code> untuk memakai aset lokal; kalau kosong, logo Figma
+              yang dipakai.
             </p>
           </div>
 
           <div class="pg-section__preview">
             <div class="pg-section__row">
-              <EvLogo :size="24" />
-              <EvLogo :size="36" />
-              <EvLogo :size="48" />
-              <EvLogo :size="40">
-                <span style="font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em"
-                  >EVOQ UI</span
-                >
-              </EvLogo>
+              <EvLogo :size="64" />
+            </div>
+            <div class="pg-section__row">
+              <EvLogo :size="40" :tagline="false" />
+              <EvLogo :size="40" variant="mark" />
+              <EvLogo :size="40" variant="wordmark" />
+            </div>
+            <div class="pg-section__row">
+              <EvLogo :size="48" brand="datasea" />
+              <EvLogo :size="40" brand="datasea" variant="mark" />
+            </div>
+            <div class="pg-section__row">
+              <EvLogo :size="40" src="/vite.svg" label="Logo produk" />
             </div>
           </div>
 
           <PlaygroundCodeSnippet
             code='<script setup lang="ts">
 import { EvLogo } from &apos;evoq-ui&apos;
+import productLogo from &apos;./assets/product-logo.svg&apos;
 </script>
 
 <template>
-  <EvLogo :size="32" />
-  <EvLogo :size="40">
-    <strong>EVOQ UI</strong>
-  </EvLogo>
+  &lt;!-- Lockup penuh dari Figma: mark + wordmark + tagline --&gt;
+  <EvLogo :size="64" />
+
+  &lt;!-- Tanpa tagline, atau satu bagian saja --&gt;
+  <EvLogo :size="40" :tagline="false" />
+  <EvLogo :size="40" variant="mark" />
+
+  &lt;!-- Logo DataSea --&gt;
+  <EvLogo :size="48" brand="datasea" />
+
+  &lt;!-- Aset lokal menggantikan logo Figma --&gt;
+  <EvLogo :size="40" :src="productLogo" label="Logo produk" />
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 36. LOADING -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('loading')" id="sec-loading" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Loading</span>
+                <span class="pg-section__category-badge">On Progress (Figma)</span>
+              </h2>
+              <code class="pg-section__import">import { EvLoading } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Empat tipe dari set <code>Loading</code>: spinner tiga cincin, pulse empat titik,
+              progress bar, dan skeleton. Animasinya diambil dari frame
+              <code>./… Animation</code> di board, jadi CSS di sini yang menjalankannya - bukan
+              empat state statis.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row">
+              <EvLoading type="spinner" />
+              <EvLoading type="pulse" />
+            </div>
+            <div class="pg-section__row pg-section__row--column">
+              <EvLoading type="progress-bar" />
+              <EvLoading type="progress-bar" :value="60" />
+              <EvLoading type="skeleton" />
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<template>
+  <EvLoading type="spinner" />
+  <EvLoading type="pulse" />
+
+  &lt;!-- Tanpa value: indeterminate, seperti frame animasinya --&gt;
+  <EvLoading type="progress-bar" />
+  <EvLoading type="progress-bar" :value="60" />
+
+  <EvLoading type="skeleton" />
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 37. ITEM & LABEL ITEM -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('item')" id="sec-item" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Item & Label Item</span>
+                <span class="pg-section__category-badge">On Progress (Figma)</span>
+              </h2>
+              <code class="pg-section__import">
+                import { EvItem, EvLabelItem } from 'evoq-ui'
+              </code>
+            </div>
+            <p class="pg-section__desc">
+              Baris judul-plus-keterangan yang dipakai ulang di Sidebar dan Command.
+              <code>EvItem</code> menyusun <code>EvLabelItem</code> - persis seperti board yang
+              memasang instance-nya, bukan menggambar ulang.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row pg-section__row--column">
+              <EvItem title="Alex Wijaya" description="alex@example.com">
+                <template #avatar><EvAvatar label="AW" :size="32" /></template>
+                <template #actions>
+                  <EvButton variant="outline" size="small">Kelola</EvButton>
+                </template>
+              </EvItem>
+              <EvItem type="outline" title="Divisi Keuangan" description="12 anggota" />
+              <EvItem type="muted" title="Gudang Pusat" description="Jakarta" trailing="12:04" />
+            </div>
+            <div class="pg-section__row">
+              <EvLabelItem title="Title" description="Description" />
+              <EvLabelItem type="small" title="Title" description="Label" />
+              <EvLabelItem type="extra-small" title="Title" description="Label" />
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<template>
+  <EvItem title="Alex Wijaya" description="alex@example.com"&gt;
+    <template #avatar>&lt;EvAvatar label="AW" :size="32" /&gt;</template>
+    <template #actions>&lt;EvButton variant="outline" size="small"&gt;Kelola&lt;/EvButton&gt;</template>
+  &lt;/EvItem&gt;
+
+  <EvItem type="outline" title="Divisi Keuangan" description="12 anggota" />
+  <EvItem type="muted" title="Gudang Pusat" description="Jakarta" trailing="12:04" />
+
+  <EvLabelItem type="small" title="Title" description="Label" />
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 38. TOAST -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('toast')" id="sec-toast" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Toast</span>
+                <span class="pg-section__category-badge">On Progress (Figma)</span>
+              </h2>
+              <code class="pg-section__import">import { EvToast } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Enam tipe dari set <code>Toast</code>. Varian semantik memakai ikon status; varian
+              <code>WithDescription</code> menaruh tombol di tempat tanda silang - jadi tombolnya
+              slot, bukan komponen yang dipaksakan.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row pg-section__row--column">
+              <EvToast title="Perubahan disimpan" />
+              <EvToast variant="success" title="Faktur berhasil dikirim" />
+              <EvToast variant="error" title="Gagal menyimpan perubahan" />
+              <EvToast variant="warning" title="Kuota hampir habis" />
+              <EvToast variant="info" title="Versi baru tersedia" />
+              <EvToast title="Baris dihapus" description="3 baris dipindah ke arsip">
+                <template #actions>
+                  <EvButton variant="outline" size="small">Urungkan</EvButton>
+                </template>
+              </EvToast>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<template>
+  <EvToast title="Perubahan disimpan" @close="dismiss" />
+  <EvToast variant="success" title="Faktur berhasil dikirim" />
+  <EvToast variant="error" title="Gagal menyimpan perubahan" />
+
+  &lt;!-- WithDescription: tombolnya milik pemanggil --&gt;
+  <EvToast title="Baris dihapus" description="3 baris dipindah ke arsip"&gt;
+    <template #actions>&lt;EvButton variant="outline" size="small"&gt;Urungkan&lt;/EvButton&gt;</template>
+  &lt;/EvToast&gt;
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 39. HOVER CARD -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('hover-card')" id="sec-hover-card" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Hover Card</span>
+                <span class="pg-section__category-badge">On Progress (Figma)</span>
+              </h2>
+              <code class="pg-section__import">import { EvHoverCard } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Kartu yang muncul saat pointer berhenti di pemicunya. Board menahan deskripsi di
+              <code>text/primary</code> dan hanya menurunkan subtext ke <code>text/secondary</code>
+              - itu yang ditiru di sini.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row">
+              <EvHoverCard
+                title="Alex Wijaya"
+                description="Product designer, tim Platform"
+                subtext="Bergabung Maret 2021"
+              >
+                <EvButtonLink>@alex</EvButtonLink>
+              </EvHoverCard>
+              <EvHoverCard placement="right" title="PT Maju Jaya" description="Klien sejak 2019">
+                <EvButtonLink>PT Maju Jaya</EvButtonLink>
+              </EvHoverCard>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<template>
+  <EvHoverCard
+    title="Alex Wijaya"
+    description="Product designer, tim Platform"
+    subtext="Bergabung Maret 2021"
+  &gt;
+    <EvButtonLink>@alex</EvButtonLink>
+  &lt;/EvHoverCard&gt;
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 40. DROPDOWN MENU -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('dropdown-menu')" id="sec-dropdown-menu" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Dropdown Menu</span>
+                <span class="pg-section__category-badge">On Progress (Figma)</span>
+              </h2>
+              <code class="pg-section__import">
+                import { EvDropdownMenu, EvDropdownMenuItem } from 'evoq-ui'
+              </code>
+            </div>
+            <p class="pg-section__desc">
+              Menu aksi - beda dari <code>EvDropdownList</code>, yang adalah listbox pilihan. Enam
+              state <code>.DropdownMenu</code> ada semua: default, hover, error, disabled, heading,
+              dan pemisah.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row">
+              <EvDropdownMenu label="Aksi berkas" style="width: 240px">
+                <EvDropdownMenuItem submenu label="Berkas" />
+                <EvDropdownMenuItem label="Buka" subtext="Di tab baru">
+                  <template #kbd><EvKbd>O</EvKbd></template>
+                </EvDropdownMenuItem>
+                <EvDropdownMenuItem label="Ganti nama" />
+                <EvDropdownMenuItem label="Pindahkan ke" has-chevron />
+                <EvDropdownMenuItem separator />
+                <EvDropdownMenuItem label="Arsipkan" disabled />
+                <EvDropdownMenuItem label="Hapus" error />
+              </EvDropdownMenu>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<template>
+  <EvDropdownMenu label="Aksi berkas"&gt;
+    <EvDropdownMenuItem submenu label="Berkas" />
+    <EvDropdownMenuItem label="Buka" subtext="Di tab baru"&gt;
+      <template #kbd>&lt;EvKbd&gt;O&lt;/EvKbd&gt;</template>
+    &lt;/EvDropdownMenuItem&gt;
+    <EvDropdownMenuItem label="Pindahkan ke" has-chevron />
+    <EvDropdownMenuItem separator />
+    <EvDropdownMenuItem label="Hapus" error />
+  &lt;/EvDropdownMenu&gt;
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 41. COMMAND -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('command')" id="sec-command" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Command</span>
+                <span class="pg-section__category-badge">On Progress (Figma)</span>
+              </h2>
+              <code class="pg-section__import">
+                import { EvCommand, EvCommandGroup, EvCommandItem } from 'evoq-ui'
+              </code>
+            </div>
+            <p class="pg-section__desc">
+              Command palette dari <code>D - Command</code>: kolom pencarian, lalu Section yang
+              dipisah garis. Setiap Section punya baris judul yang - di board - adalah
+              <code>.Menu Item</code> yang sama dengan ikon dan cap dimatikan.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row">
+              <EvCommand v-model="commandQuery" style="width: 420px" :max-height="240">
+                <EvCommandGroup heading="Saran">
+                  <EvCommandItem label="Buat faktur baru" active>
+                    <template #kbd><EvKbd>N</EvKbd></template>
+                  </EvCommandItem>
+                  <EvCommandItem label="Cari pemasok" />
+                  <EvCommandItem label="Impor data" />
+                </EvCommandGroup>
+                <EvCommandGroup heading="Setelan">
+                  <EvCommandItem label="Ganti tema" />
+                  <EvCommandItem label="Kelola tim" has-chevron />
+                  <EvCommandItem label="Hapus ruang kerja" disabled />
+                </EvCommandGroup>
+              </EvCommand>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<template>
+  <EvCommand v-model="query" :max-height="240"&gt;
+    <EvCommandGroup heading="Saran"&gt;
+      <EvCommandItem label="Buat faktur baru" active /&gt;
+      <EvCommandItem label="Cari pemasok" /&gt;
+    &lt;/EvCommandGroup&gt;
+    <EvCommandGroup heading="Setelan"&gt;
+      <EvCommandItem label="Ganti tema" /&gt;
+    &lt;/EvCommandGroup&gt;
+  &lt;/EvCommand&gt;
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 42. PAGINATION -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('pagination')" id="sec-pagination" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Pagination</span>
+                <span class="pg-section__category-badge">On Progress (Figma)</span>
+              </h2>
+              <code class="pg-section__import">
+                import { EvPagination, EvPaginationItem } from 'evoq-ui'
+              </code>
+            </div>
+            <p class="pg-section__desc">
+              Tiga varian dari set <code>Pagination</code>. Semua kontrolnya instance di board, jadi
+              ketiganya menyusun <code>EvButton</code> dan <code>EvPaginationItem</code>. Warna
+              kedua caption-nya <code>#333f47</code>, di luar ramp mana pun - ditulis apa adanya,
+              tidak dibulatkan.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row pg-section__row--column">
+              <EvPagination
+                v-model:page="page"
+                variant="display"
+                :page-count="12"
+                :rows-per-page="10"
+              />
+              <EvPagination v-model:page="page" variant="step" :page-count="5" />
+              <EvPagination v-model:page="page" variant="number" :page-count="12" />
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<template>
+  <EvPagination v-model:page="page" variant="display" :page-count="12" :rows-per-page="10" />
+  <EvPagination v-model:page="page" variant="step" :page-count="5" />
+  <EvPagination v-model:page="page" variant="number" :page-count="12" />
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 43. DATA TABLE -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('data-table')" id="sec-data-table" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Data Table</span>
+                <span class="pg-section__category-badge">On Progress (Figma)</span>
+              </h2>
+              <code class="pg-section__import">
+                import { EvDataTable, EvDataTableRow, EvDataTableCell } from 'evoq-ui'
+              </code>
+            </div>
+            <p class="pg-section__desc">
+              Tabel <code>table</code> sungguhan, bukan grid div. Enam belas Type di
+              <code>.Table Item</code> adalah <em>isi</em> sel - Badge, Checkbox, Field, Toggle -
+              jadi semuanya masuk lewat slot dan selnya tetap sel. Level 1-5 memakai ramp
+              <code>tree/*</code> untuk baris bertingkat.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row pg-section__row--column">
+              <EvDataTable :variant="tableVariant" title="Karyawan">
+                <template #actions>
+                  <EvButton variant="outline" size="small">Ekspor</EvButton>
+                </template>
+                <template #filters>
+                  <EvTag>Divisi: Keuangan</EvTag>
+                  <EvTag>Status: Aktif</EvTag>
+                </template>
+                <template #head>
+                  <EvDataTableRow header>
+                    <EvDataTableCell header sortable>Nama</EvDataTableCell>
+                    <EvDataTableCell header sortable>Divisi</EvDataTableCell>
+                    <EvDataTableCell header>Status</EvDataTableCell>
+                    <EvDataTableCell header align="right">Nilai</EvDataTableCell>
+                  </EvDataTableRow>
+                </template>
+                <EvDataTableRow
+                  v-for="row in tableRows"
+                  :key="row.name"
+                  :level="row.level"
+                  :selected="row.selected"
+                >
+                  <EvDataTableCell>{{ row.name }}</EvDataTableCell>
+                  <EvDataTableCell>{{ row.division }}</EvDataTableCell>
+                  <EvDataTableCell>
+                    <EvBadge :variant="row.status">{{ row.statusLabel }}</EvBadge>
+                  </EvDataTableCell>
+                  <EvDataTableCell align="right">{{ row.value }}</EvDataTableCell>
+                </EvDataTableRow>
+                <template #pagination>
+                  <EvPagination v-model:page="page" variant="display" :page-count="12" />
+                </template>
+              </EvDataTable>
+
+              <div class="pg-section__row">
+                <EvButton
+                  v-for="v in tableVariants"
+                  :key="v"
+                  size="small"
+                  :variant="tableVariant === v ? 'primary' : 'outline'"
+                  @click="tableVariant = v"
+                >
+                  {{ v }}
+                </EvButton>
+              </div>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<template>
+  <EvDataTable variant="default" title="Karyawan"&gt;
+    <template #head>
+      <EvDataTableRow header&gt;
+        <EvDataTableCell header sortable>Nama</EvDataTableCell>
+      &lt;/EvDataTableRow&gt;
+    </template>
+
+    <EvDataTableRow v-for="row in rows" :key="row.id" :level="row.level"&gt;
+      <EvDataTableCell>{{ row.name }}</EvDataTableCell>
+      &lt;!-- Type=Badge di board: isi sel, bukan jenis sel --&gt;
+      <EvDataTableCell>&lt;EvBadge variant="success"&gt;Aktif&lt;/EvBadge&gt;</EvDataTableCell>
+    &lt;/EvDataTableRow&gt;
+
+    <template #pagination>&lt;EvPagination v-model:page="page" /&gt;</template>
+  &lt;/EvDataTable&gt;
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 44. EMPTY STATE -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('empty-state')" id="sec-empty-state" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Empty State</span>
+                <span class="pg-section__category-badge">On Progress (Figma)</span>
+              </h2>
+              <code class="pg-section__import">import { EvEmptyState } from 'evoq-ui'</code>
+            </div>
+            <p class="pg-section__desc">
+              Tujuh varian, dua ukuran. Cincin, badge 22px, ukuran frame, dan seluruh salinan
+              teksnya ditelusuri dari board; gambar tengah tiap varian itu ilustrasi, bukan layout,
+              jadi disediakan sebagai slot <code>illustration</code>.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row">
+              <EvEmptyState variant="404" error-message="Error : System Message" />
+            </div>
+            <div class="pg-section__row">
+              <EvEmptyState variant="no-data" />
+              <EvEmptyState variant="no-result" />
+            </div>
+            <div class="pg-section__row">
+              <EvButton
+                v-for="v in emptyVariants"
+                :key="v"
+                size="small"
+                :variant="emptyVariant === v ? 'primary' : 'outline'"
+                @click="emptyVariant = v"
+              >
+                {{ v }}
+              </EvButton>
+            </div>
+            <div class="pg-section__row">
+              <EvEmptyState :variant="emptyVariant" size="mobile" style="width: 361px" />
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<template>
+  <EvEmptyState variant="404" error-message="Error : System Message" @action="goBack" />
+
+  &lt;!-- Di dalam tabel atau kartu: caption saja, tanpa cincin dan tombol --&gt;
+  <EvEmptyState variant="no-data" />
+
+  &lt;!-- Papan M - Empty State --&gt;
+  <EvEmptyState variant="500" size="mobile" />
+
+  &lt;!-- Ilustrasi asli tiap varian masuk lewat slot --&gt;
+  <EvEmptyState variant="401"&gt;
+    <template #illustration>&lt;MyLockArt /&gt;</template>
+  &lt;/EvEmptyState&gt;
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 45. SIDEBAR -->
+        <!-- =================================================================== -->
+        <section v-if="isVisible('sidebar')" id="sec-sidebar" class="pg-section">
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Sidebar</span>
+                <span class="pg-section__category-badge">On Progress (Figma)</span>
+              </h2>
+              <code class="pg-section__import">
+                import { EvSidebar, EvSidebarItem } from 'evoq-ui'
+              </code>
+            </div>
+            <p class="pg-section__desc">
+              <code>D - Sidebar</code> (Open=Yes / No) dan <code>M - Sidebar</code>. Logo, kolom
+              cari, dan tombolnya instance di board, jadi semuanya disusun - bukan digambar ulang.
+              Lima Type <code>.ItemSidebar</code> lengkap: main, submenu, sub-submenu, sub-title,
+              divider.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row" style="align-items: flex-start">
+              <EvSidebar
+                v-model:collapsed="sidebarCollapsed"
+                style="height: 420px; border: 1px solid var(--ev-border-primary)"
+              >
+                <EvSidebarItem label="Dashboard" active :collapsed="sidebarCollapsed" />
+                <EvSidebarItem type="submenu" label="Explorer" :collapsed="sidebarCollapsed" />
+                <EvSidebarItem
+                  type="sub-submenu"
+                  label="Minimalist"
+                  :collapsed="sidebarCollapsed"
+                />
+                <EvSidebarItem v-if="!sidebarCollapsed" type="sub-title" label="USER" />
+                <EvSidebarItem label="My Account" :collapsed="sidebarCollapsed" />
+                <EvSidebarItem label="Settings" :collapsed="sidebarCollapsed" />
+                <EvSidebarItem type="divider" />
+                <EvSidebarItem label="Network" disabled :collapsed="sidebarCollapsed" />
+              </EvSidebar>
+
+              <EvSidebar mobile style="height: 420px; border: 1px solid var(--ev-border-primary)">
+                <template #header>
+                  <EvItem title="Alex" description="alex@example.com">
+                    <template #avatar><EvAvatar label="A" :size="32" /></template>
+                  </EvItem>
+                </template>
+                <EvSidebarItem label="Dashboard" active />
+                <EvSidebarItem type="sub-title" label="APPS" />
+                <EvSidebarItem label="Store - Client" />
+              </EvSidebar>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<template>
+  <EvSidebar v-model:collapsed="collapsed"&gt;
+    <EvSidebarItem label="Dashboard" active :collapsed="collapsed" /&gt;
+    <EvSidebarItem type="submenu" label="Explorer" :collapsed="collapsed" /&gt;
+    <EvSidebarItem type="sub-title" label="USER" /&gt;
+    <EvSidebarItem type="divider" /&gt;
+  &lt;/EvSidebar&gt;
+
+  &lt;!-- M - Sidebar: baris akun menggantikan logo --&gt;
+  <EvSidebar mobile&gt;
+    <template #header>&lt;EvItem title="Alex" description="alex@example.com" /&gt;</template>
+  &lt;/EvSidebar&gt;
+</template>'
+          />
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- 46. NAVIGATION MENU (MOBILE) -->
+        <!-- =================================================================== -->
+        <section
+          v-if="isVisible('navigation-menu-mobile')"
+          id="sec-navigation-menu-mobile"
+          class="pg-section"
+        >
+          <div class="pg-section__header">
+            <div class="pg-section__title-row">
+              <h2 class="pg-section__title">
+                <span>Navigation Menu (Mobile)</span>
+                <span class="pg-section__category-badge">On Progress (Figma)</span>
+              </h2>
+              <code class="pg-section__import">
+                import { EvNavigationMenuMobile, EvNavMenuMobileItem } from 'evoq-ui'
+              </code>
+            </div>
+            <p class="pg-section__desc">
+              Bar bawah untuk layar ponsel. Properti <code>Size</code> di board itu jumlah item,
+              jadi bukan prop - isi saja slot-nya. Tombol tengahnya <code>#08a94c</code>, hijau yang
+              tidak ada di ramp mana pun, dan ditulis apa adanya.
+            </p>
+          </div>
+
+          <div class="pg-section__preview">
+            <div class="pg-section__row pg-section__row--column">
+              <EvNavigationMenuMobile style="max-width: 393px">
+                <EvNavMenuMobileItem label="Beranda" active />
+                <EvNavMenuMobileItem label="Cari" />
+                <EvNavMenuMobileItem label="Pesanan" />
+                <EvNavMenuMobileItem label="Pesan" />
+                <EvNavMenuMobileItem label="Akun" />
+              </EvNavigationMenuMobile>
+
+              <EvNavigationMenuMobile center-button style="max-width: 393px">
+                <EvNavMenuMobileItem label="Beranda" active />
+                <EvNavMenuMobileItem label="Cari" />
+                <template #after>
+                  <EvNavMenuMobileItem label="Pesan" />
+                  <EvNavMenuMobileItem label="Akun" />
+                </template>
+              </EvNavigationMenuMobile>
+            </div>
+          </div>
+
+          <PlaygroundCodeSnippet
+            code='<template>
+  <EvNavigationMenuMobile&gt;
+    <EvNavMenuMobileItem label="Beranda" active /&gt;
+    <EvNavMenuMobileItem label="Cari" /&gt;
+  &lt;/EvNavigationMenuMobile&gt;
+
+  &lt;!-- CenterButton: slot default kiri, slot after kanan --&gt;
+  <EvNavigationMenuMobile center-button @center-click="compose"&gt;
+    <EvNavMenuMobileItem label="Beranda" active /&gt;
+    <template #after>&lt;EvNavMenuMobileItem label="Akun" /&gt;</template>
+  &lt;/EvNavigationMenuMobile&gt;
 </template>'
           />
         </section>

@@ -61,7 +61,7 @@ _The exact snippet the playground simulator copies for this component (`playgrou
 | `required` | `boolean` | `false` | no | The `Mandatory` boolean on `.InputType`: appends the red asterisk. |
 | `disabled` | `boolean` | `false` | no | — |
 | `readonly` | `boolean` | `false` | no | — |
-| `toolbar` | `RichEditorToolbarType` | `'big'` | no | Which `.RichEditor` type to draw: `big` is the 528px, 19-control bar; `small` is the 360px, 13-control one. |
+| `toolbar` | `'big'` \| `'small'` | `'big'` | no | Which `.RichEditor` type to draw: `big` is the 528px, 19-control bar; `small` is the 360px, 13-control one. |
 | `hasScroll` | `boolean` | `false` | no | Figma's `Has Scroll`: reveals the 2px scrollbar once the body overflows. |
 | `maxlength` | `number` | `2000` | no | — |
 | `showCount` | `boolean` | `true` | no | Figma's `Has Validation Text`: the trailing character counter. |

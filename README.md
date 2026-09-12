@@ -36,6 +36,41 @@ import 'evoq-ui/style.css'
 </template>
 ```
 
+## Typography
+
+The package ships **Inter** - the family every text style in the Figma file is
+set in - and sets it on the page, not only on the components:
+
+```ts
+import 'evoq-ui/style.css' // tokens, components, the font, and `html { font-family }`
+```
+
+That is all the setup there is. The stylesheet pulls in `evoq-ui/fonts.css`,
+which declares four self-hosted `@font-face` rules: latin and latin-ext, each
+roman and italic, as variable fonts covering weight 100-900. Each face keeps
+its `unicode-range`, so a browser fetches latin-ext only when a page actually
+shows a character that needs it.
+
+Self-hosted rather than loaded from Google Fonts on purpose: the library works
+offline and on closed networks, sends no visitor IP to a third party, and
+survives a strict Content-Security-Policy. The files add 427 kB to the package
+(latin roman is the 71 kB a typical Indonesian or English page downloads).
+Inter is under the SIL Open Font License 1.1, shipped as `dist/fonts/OFL.txt`.
+
+**To use a different typeface**, re-point the token from your own stylesheet -
+one line, and both the page and every component follow:
+
+```scss
+// main.scss, loaded anywhere in your app
+:root {
+  --ev-font-family-base: 'Plus Jakarta Sans', sans-serif;
+}
+```
+
+Override the token rather than the `html` rule: components read the same token,
+so this works whichever order the stylesheets happen to load in, and the Inter
+files are then never downloaded - no `@font-face` in the page uses them.
+
 ## Theming
 
 Tokens are scraped from the **EVOQ - Design System** Figma file and layered the way
@@ -98,7 +133,7 @@ npm run extract:props      # regenerate the playground's props catalogue
 
 ### Props simulator
 
-The playground opens on a **Props Simulator**: pick any of the 54 components,
+The playground opens on a **Props Simulator**: pick any of the 74 components,
 drive every prop from a control panel, watch the preview update, and copy the
 exact markup that produced it. Only props that differ from their default are
 printed, so the snippet stays the minimum you need.
@@ -161,13 +196,25 @@ layer, are in [`AGENTS.md` §9](AGENTS.md).
 
 ## Coverage
 
-All 36 "ready" pages of the Figma file are ported. Two are deliberately not
-components:
+All 36 "ready" pages of the Figma file are ported. One is deliberately not a
+component:
 
-| Figma page        | Why not a component                                                                                                                                  |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Slot`            | Its documentation is guidance for **designers** on when to use a Figma slot versus a Variant or Instance Swap. Vue's own `<slot>` is the equivalent. |
-| `Logo` (wordmark) | The full lockup exports to 107KB of SVG - the wordmark is outlined text. `EvLogo` ships the 2.2KB mark; put your own wordmark in its default slot.   |
+| Figma page | Why not a component                                                                                                                                  |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Slot`     | Its documentation is guidance for **designers** on when to use a Figma slot versus a Variant or Instance Swap. Vue's own `<slot>` is the equivalent. |
+
+`EvLogo` ships **both brand lockups in full** - the EVOQ mark, wordmark and
+tagline, and the DataSea mark and wordmark - as five SVG files inlined at build
+time, so a product never has to source the logo from somewhere else. Pass `src`
+(or the default slot) to use a local asset instead, and `:tagline="false"` to
+drop the strap line where it would be too small to read.
+
+They cost 52.6 KB raw / 20.4 KB gzipped, and the tagline is 38.2 KB / 14.8 KB of
+that on its own: it is outlined Playball script, since the font is not shipped
+and a fallback would draw the wrong logo. Those bytes reach every consumer -
+`:tagline="false"` and `src` change what renders, not what ships - because the
+package is built as a single chunk today, so importing one component pulls the
+whole bundle either way.
 
 One more is partial by design:
 
@@ -176,7 +223,49 @@ One more is partial by design:
   dropdown input is this beside `EvDropdownList`. `InputDate` / `InputTime`
   compose it with `EvCalendar`.
 
-The 11 pages after the `🚧 On Progress ⬇️` separator are out of scope.
+### On Progress pages
+
+The 11 pages after the `🚧 On Progress ⬇️` separator are ported too, from the
+boards **as they stand today**. They are built the same way as everything above
+
+- traced node by node, with a `verify:figma` section and a spec of their own -
+  so when a page is signed off the work is a diff against a known baseline rather
+  than a port from scratch.
+
+| Figma page                 | Components                                         |
+| -------------------------- | -------------------------------------------------- |
+| `Loading`                  | `EvLoading`                                        |
+| `Item`                     | `EvItem`, `EvLabelItem`                            |
+| `Toast`                    | `EvToast`                                          |
+| `Hover Card`               | `EvHoverCard`                                      |
+| `Dropdown Menu`            | `EvDropdownMenu`, `EvDropdownMenuItem`             |
+| `Command`                  | `EvCommand`, `EvCommandGroup`, `EvCommandItem`     |
+| `Pagination`               | `EvPagination`, `EvPaginationItem`                 |
+| `Data Table`               | `EvDataTable`, `EvDataTableRow`, `EvDataTableCell` |
+| `Empty`                    | `EvEmptyState`                                     |
+| `Sidebar`                  | `EvSidebar`, `EvSidebarItem`                       |
+| `Navigation Menu - Mobile` | `EvNavigationMenuMobile`, `EvNavMenuMobileItem`    |
+
+What to re-check first when a board changes:
+
+- **Off-system colours.** Pagination's captions are `#333f47` and the mobile
+  nav's centre action is `#08a94c`; neither is in any EVOQ ramp, and both are
+  asserted as literals. The Data Table's header label is `#4b5675` - grey/700
+  in the library ramp, with no semantic token.
+- **The deliberate deviations**, each commented in its component and asserted
+  in its harness section: Toast flattens the board's two different nestings of
+  the close button into one; `EvCommandItem` styles a Disabled state the board
+  drew but never styled; the mobile nav draws its notch as a ring rather than a
+  boolean cut-out; `EvEmptyState` keeps the rings, the badge and the copy and
+  slots the per-variant artwork; the Sidebar's Sub Submenu indent is 24 on all
+  four states, not 24/24/16/16 as drawn.
+- **`EvLoading`'s animation.** The board's `./… Animation` sets are keyframes,
+  not variants, so they are CSS animations here.
+
+The Figma documentation prose for these pages is the usual mix - binding on
+behaviour, unreliable on numbers. Its "Geist", `#292f37`, `#145bc3`, `#dbdde1`,
+`#e7eff9` and the mobile bar's "56px" all disagree with the boards; the boards
+won, as AGENTS.md section 6 requires.
 
 ## Charts
 

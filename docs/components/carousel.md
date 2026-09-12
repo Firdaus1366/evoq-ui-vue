@@ -62,7 +62,7 @@ Its default slot is built to hold `EvCarouselSlide` (`evoq-ui:carousel-slide`).
 | --- | --- | --- | --- | --- |
 | `modelValue` | `number` | `0` | no | Index of the slide in view. |
 | `orientation` | `'horizontal'` \| `'vertical'` | `'horizontal'` | no | — |
-| `ratio` | `AspectRatio \| string` | `'16:9'` | no | Applied to every slide. The usage doc is explicit that one carousel keeps a single ratio throughout, so it lives here rather than on each slide. |
+| `ratio` | `'16:9'` \| `'9:16'` \| `'4:5'` \| `'5:4'` \| `'1:1'` \| `string` | `'16:9'` | no | Applied to every slide. The usage doc is explicit that one carousel keeps a single ratio throughout, so it lives here rather than on each slide. |
 | `showButtons` | `boolean` | `true` | no | Figma's `Need Button`: the previous/next controls. |
 | `showIndicator` | `boolean` | `true` | no | Figma's `Has Indicator Slot`: the position dots. |
 | `previousLabel` | `string` | `'Sebelumnya'` | no | — |

@@ -5,9 +5,9 @@
   "generatedBy": "scripts/build-docs.mjs",
   "figmaFile": "hJ3XmwLptPtF4IFBDlZlpx",
   "layers": {
-    "atom": 24,
-    "molecule": 12,
-    "organism": 18,
+    "atom": 31,
+    "molecule": 17,
+    "organism": 26,
     "pattern": 0
   },
   "components": [
@@ -316,6 +316,13 @@
         {
           "name": "ratio",
           "type": "AspectRatio | string",
+          "options": [
+            "16:9",
+            "9:16",
+            "4:5",
+            "5:4",
+            "1:1"
+          ],
           "default": "'16:9'",
           "required": false,
           "description": "One of the ratios drawn in Figma, or any `w:h` / `w/h` pair."
@@ -841,6 +848,9 @@
       "usedBy": [
         "evoq-ui:calendar",
         "evoq-ui:carousel",
+        "evoq-ui:empty-state",
+        "evoq-ui:pagination",
+        "evoq-ui:sidebar",
         "evoq-ui:time-picker"
       ],
       "seeAlso": [
@@ -1465,6 +1475,13 @@
         {
           "name": "ratio",
           "type": "AspectRatio | string",
+          "options": [
+            "16:9",
+            "9:16",
+            "4:5",
+            "5:4",
+            "1:1"
+          ],
           "default": "'16:9'",
           "required": false,
           "description": "Applied to every slide. The usage doc is explicit that one carousel keeps a single ratio throughout, so it lives here rather than on each slide."
@@ -1738,6 +1755,460 @@
       ]
     },
     {
+      "id": "evoq-ui:command",
+      "name": "EvCommand",
+      "tag": "ev-command",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvCommand } from 'evoq-ui'",
+      "doc": "docs/components/command.md",
+      "source": "src/organisms/command/EvCommand.vue",
+      "summary": "A command palette (⌘K) lets users search and run actions from anywhere — a searchable, keyboard-navigable list of commands grouped into sections.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string",
+          "default": "''",
+          "required": false,
+          "description": "The search field's value."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "default": "'Type a command to search'",
+          "required": false
+        },
+        {
+          "name": "maxHeight",
+          "type": "number | string",
+          "required": false,
+          "description": "Caps the list and lets it scroll. The board draws two 140-tall Sections."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": "'Command'",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "empty"
+      ],
+      "events": [
+        "update:modelValue"
+      ],
+      "partOf": null,
+      "children": [
+        "evoq-ui:command-group"
+      ],
+      "composes": [
+        "evoq-ui:input-search"
+      ],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4220:73205",
+        "sets": [
+          {
+            "name": "D - Command",
+            "id": "2461:2206",
+            "page": "Command"
+          }
+        ]
+      },
+      "keywords": [
+        "command palette",
+        "cmdk",
+        "quick actions",
+        "spotlight",
+        "search actions"
+      ]
+    },
+    {
+      "id": "evoq-ui:command-group",
+      "name": "EvCommandGroup",
+      "tag": "ev-command-group",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvCommandGroup } from 'evoq-ui'",
+      "doc": "docs/components/command-group.md",
+      "source": "src/organisms/command/EvCommandGroup.vue",
+      "summary": "One Section of a Command palette: a muted heading row over its commands, with the rule that separates it from the section above.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "heading",
+          "type": "string",
+          "required": false,
+          "description": "The \"Section Title\" row the board draws at the top of each Section."
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [],
+      "partOf": "evoq-ui:command",
+      "children": [
+        "evoq-ui:command-item"
+      ],
+      "composes": [
+        "evoq-ui:command-item"
+      ],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4220:73205",
+        "sets": []
+      },
+      "keywords": [
+        "command section",
+        "group heading"
+      ]
+    },
+    {
+      "id": "evoq-ui:command-item",
+      "name": "EvCommandItem",
+      "tag": "ev-command-item",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvCommandItem } from 'evoq-ui'",
+      "doc": "docs/components/command-item.md",
+      "source": "src/atoms/command-item/EvCommandItem.vue",
+      "summary": "One command in a Command palette: a leading icon, a label, an optional shortcut cap, and a check when it is the chosen row.",
+      "summarySource": "code",
+      "attrs": "inner",
+      "vModel": [],
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Renders a real link instead of an option button."
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `State=Active`: the row currently chosen, marked with a check."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "heading",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "The board builds its \"Section Title\" rows out of this same node with every icon and cap switched off. A heading is not selectable."
+        },
+        {
+          "name": "hasChevron",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Draws the trailing chevron instead of nothing. Ignored when active."
+        }
+      ],
+      "slots": [
+        "default",
+        "icon",
+        "kbd"
+      ],
+      "events": [
+        "click"
+      ],
+      "partOf": "evoq-ui:command-group",
+      "children": [],
+      "composes": [],
+      "usedBy": [
+        "evoq-ui:command-group"
+      ],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4220:73205",
+        "sets": [
+          {
+            "name": ".Menu Item",
+            "id": "2461:2094",
+            "page": "Command"
+          }
+        ]
+      },
+      "keywords": [
+        "command row",
+        "palette item",
+        "action row"
+      ]
+    },
+    {
+      "id": "evoq-ui:data-table",
+      "name": "EvDataTable",
+      "tag": "ev-data-table",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvDataTable } from 'evoq-ui'",
+      "doc": "docs/components/data-table.md",
+      "source": "src/organisms/data-table/EvDataTable.vue",
+      "summary": "A data table presents structured rows and columns with sortable headers, filters, selection, and pagination — built for scanning, comparing, and acting on large datasets.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "variant",
+          "type": "DataTableVariant",
+          "options": [
+            "default",
+            "secondary",
+            "no-fill",
+            "left-fixed",
+            "right-fixed"
+          ],
+          "default": "'default'",
+          "required": false,
+          "description": "`Variant` of the Figma `Data Table` set."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "description": "The caption above the table."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name, when there is no visible title."
+        }
+      ],
+      "slots": [
+        "head",
+        "default",
+        "actions",
+        "filters",
+        "pagination"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [
+        "evoq-ui:data-table-row"
+      ],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4220:74017",
+        "sets": [
+          {
+            "name": "Data Table",
+            "id": "2373:11585",
+            "page": "Data Table"
+          },
+          {
+            "name": ".Table Title",
+            "id": "2354:2532",
+            "page": "Data Table"
+          }
+        ]
+      },
+      "keywords": [
+        "table",
+        "grid",
+        "datagrid",
+        "rows",
+        "columns",
+        "sortable",
+        "sticky column"
+      ]
+    },
+    {
+      "id": "evoq-ui:data-table-cell",
+      "name": "EvDataTableCell",
+      "tag": "ev-data-table-cell",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvDataTableCell } from 'evoq-ui'",
+      "doc": "docs/components/data-table-cell.md",
+      "source": "src/organisms/data-table/EvDataTableCell.vue",
+      "summary": "One cell of a DataTable - a th in the header with an optional sort control, a td in the body. Whatever the cell holds goes in its slot.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "header",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Renders a `th` in the header row rather than a `td` in the body."
+        },
+        {
+          "name": "sortable",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Draws the sort glyph the board puts on every `.Table Item` in a title row."
+        },
+        {
+          "name": "sort",
+          "type": "DataTableSort",
+          "options": [
+            "none",
+            "asc",
+            "desc"
+          ],
+          "default": "'none'",
+          "required": false,
+          "description": "Which way the column is sorted right now."
+        },
+        {
+          "name": "align",
+          "type": "TableCellAlign",
+          "options": [
+            "left",
+            "center",
+            "right"
+          ],
+          "default": "'left'",
+          "required": false
+        },
+        {
+          "name": "fixed",
+          "type": "'left' | 'right' | false",
+          "default": "false",
+          "required": false,
+          "description": "Pins the column while the table scrolls sideways."
+        },
+        {
+          "name": "offset",
+          "type": "number | string",
+          "default": "0",
+          "required": false,
+          "description": "Distance from the pinned edge, for a second pinned column."
+        }
+      ],
+      "slots": [],
+      "events": [
+        "sort"
+      ],
+      "partOf": "evoq-ui:data-table-row",
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4220:74017",
+        "sets": [
+          {
+            "name": ".Table Item",
+            "id": "2349:2714",
+            "page": "Data Table"
+          }
+        ]
+      },
+      "keywords": [
+        "table cell",
+        "td",
+        "th",
+        "sort",
+        "fixed column"
+      ]
+    },
+    {
+      "id": "evoq-ui:data-table-row",
+      "name": "EvDataTableRow",
+      "tag": "ev-data-table-row",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvDataTableRow } from 'evoq-ui'",
+      "doc": "docs/components/data-table-row.md",
+      "source": "src/organisms/data-table/EvDataTableRow.vue",
+      "summary": "One row of a DataTable: it carries the selected state and, for a tree, the indent level that picks its fill off the tree ramp.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "level",
+          "type": "0 | 1 | 2 | 3 | 4 | 5",
+          "options": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "default": "0",
+          "required": false,
+          "description": "Figma's `State=Level 1` .. `Level 5`: how deep the row sits in a tree, which is what picks its fill off the `tree/*` ramp. 0 is `State=Default`."
+        },
+        {
+          "name": "selected",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `State=Selected`."
+        },
+        {
+          "name": "header",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Renders the row inside `thead` and drops the hover fill."
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [],
+      "partOf": "evoq-ui:data-table",
+      "children": [
+        "evoq-ui:data-table-cell"
+      ],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4220:74017",
+        "sets": [
+          {
+            "name": ".Table Row",
+            "id": "2354:1820",
+            "page": "Data Table"
+          },
+          {
+            "name": ".Table Row no Fill",
+            "id": "2354:2389",
+            "page": "Data Table"
+          }
+        ]
+      },
+      "keywords": [
+        "table row",
+        "tr",
+        "nested row",
+        "level"
+      ]
+    },
+    {
       "id": "evoq-ui:direction",
       "name": "EvDirection",
       "tag": "ev-direction",
@@ -1880,6 +2351,13 @@
           "type": "boolean",
           "default": "true",
           "required": false
+        },
+        {
+          "name": "header",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Draw the header at all. The board's `M- Drawer` hides the whole header frame with its `Header` property - title, subtext and close together."
         }
       ],
       "slots": [
@@ -2104,6 +2582,287 @@
       ]
     },
     {
+      "id": "evoq-ui:dropdown-menu",
+      "name": "EvDropdownMenu",
+      "tag": "ev-dropdown-menu",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvDropdownMenu } from 'evoq-ui'",
+      "doc": "docs/components/dropdown-menu.md",
+      "source": "src/molecules/dropdown-menu/EvDropdownMenu.vue",
+      "summary": "A floating menu of actions opened from a trigger, with an optional search field and a list that scrolls when it outgrows the surface.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [
+        "searchValue"
+      ],
+      "props": [
+        {
+          "name": "searchable",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Search` frame, hidden by default on the board."
+        },
+        {
+          "name": "searchValue",
+          "type": "string",
+          "default": "''",
+          "required": false
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "default": "'Cari...'",
+          "required": false
+        },
+        {
+          "name": "maxHeight",
+          "type": "number | string",
+          "required": false,
+          "description": "Caps the list and lets it scroll. The board's `Scroll` rail is 320 tall."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible name for the menu."
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [
+        "update:searchValue"
+      ],
+      "partOf": null,
+      "children": [
+        "evoq-ui:dropdown-menu-item"
+      ],
+      "composes": [
+        "evoq-ui:input-search"
+      ],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4262:77736",
+        "sets": [
+          {
+            "name": "DropdownMenu",
+            "id": "736:1793",
+            "page": "Dropdown Menu"
+          }
+        ]
+      },
+      "keywords": [
+        "action menu",
+        "context menu",
+        "overflow menu",
+        "kebab menu",
+        "more menu"
+      ]
+    },
+    {
+      "id": "evoq-ui:dropdown-menu-item",
+      "name": "EvDropdownMenuItem",
+      "tag": "ev-dropdown-menu-item",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvDropdownMenuItem } from 'evoq-ui'",
+      "doc": "docs/components/dropdown-menu-item.md",
+      "source": "src/atoms/dropdown-menu-item/EvDropdownMenuItem.vue",
+      "summary": "One row of a DropdownMenu: an action, a destructive action, a group heading, or the rule between two groups.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "subtext",
+          "type": "string",
+          "required": false,
+          "description": "Second line under the label. Figma's `Has Subtext`."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Renders a real link instead of a menu item button."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `State=Error`: a destructive entry, such as Delete."
+        },
+        {
+          "name": "submenu",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `State=Submenu`: the muted 12px row the board uses to head a group of entries. It is a label, not a control."
+        },
+        {
+          "name": "separator",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `State=Separator`: a rule between two groups."
+        },
+        {
+          "name": "hasChevron",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Draws the trailing chevron that says the entry opens a submenu."
+        }
+      ],
+      "slots": [
+        "default",
+        "icon",
+        "kbd"
+      ],
+      "events": [
+        "click"
+      ],
+      "partOf": "evoq-ui:dropdown-menu",
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4262:77736",
+        "sets": [
+          {
+            "name": ".DropdownMenu",
+            "id": "736:1848",
+            "page": "Dropdown Menu"
+          }
+        ]
+      },
+      "keywords": [
+        "menu item",
+        "menu action",
+        "menu separator"
+      ]
+    },
+    {
+      "id": "evoq-ui:empty-state",
+      "name": "EvEmptyState",
+      "tag": "ev-empty-state",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvEmptyState } from 'evoq-ui'",
+      "doc": "docs/components/empty-state.md",
+      "source": "src/organisms/empty-state/EvEmptyState.vue",
+      "summary": "An empty state fills a screen or container when there's no content to show — errors (400 / 401 / 404 / 500), maintenance, or simply no data / no results. It pairs an illustration with a message and an optional recovery action.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "variant",
+          "type": "EmptyStateVariant",
+          "options": [
+            "400",
+            "401",
+            "404",
+            "500",
+            "maintenance",
+            "no-data",
+            "no-result"
+          ],
+          "default": "'404'",
+          "required": false,
+          "description": "`Variant` of the Figma `D - Empty State` / `M - Empty State` sets."
+        },
+        {
+          "name": "size",
+          "type": "EmptyStateSize",
+          "options": [
+            "desktop",
+            "mobile"
+          ],
+          "default": "'desktop'",
+          "required": false,
+          "description": "Which of the two sets to follow: the desktop one or the mobile one."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "description": "Overrides the variant's headline."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "Overrides the variant's supporting line."
+        },
+        {
+          "name": "errorMessage",
+          "type": "string",
+          "required": false,
+          "description": "The third line, which the board fills with a system error code."
+        },
+        {
+          "name": "actionLabel",
+          "type": "string",
+          "required": false,
+          "description": "Overrides the variant's button label. Set to '' to drop the button."
+        }
+      ],
+      "slots": [
+        "illustration",
+        "action"
+      ],
+      "events": [
+        "action"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [
+        "evoq-ui:button"
+      ],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4272:79658",
+        "sets": [
+          {
+            "name": "D - Empty State",
+            "id": "3688:2647",
+            "page": "Empty"
+          },
+          {
+            "name": "M - Empty State",
+            "id": "3730:1710",
+            "page": "Empty"
+          }
+        ]
+      },
+      "keywords": [
+        "404",
+        "401",
+        "500",
+        "error page",
+        "no data",
+        "no result",
+        "blank slate"
+      ]
+    },
+    {
       "id": "evoq-ui:hint",
       "name": "EvHint",
       "tag": "ev-hint",
@@ -2175,6 +2934,110 @@
         "count",
         "unread",
         "badge count"
+      ]
+    },
+    {
+      "id": "evoq-ui:hover-card",
+      "name": "EvHoverCard",
+      "tag": "ev-hover-card",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvHoverCard } from 'evoq-ui'",
+      "doc": "docs/components/hover-card.md",
+      "source": "src/molecules/hover-card/EvHoverCard.vue",
+      "summary": "A hover card is a small overlay that appears when the user hovers over a trigger, surfacing a preview — a title with an optional description and caption — without a click.",
+      "summarySource": "figma",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "placement",
+          "type": "TooltipPlacement",
+          "options": [
+            "top",
+            "bottom",
+            "left",
+            "right"
+          ],
+          "default": "'bottom'",
+          "required": false,
+          "description": "Which side of the trigger the card sits on."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "subtext",
+          "type": "string",
+          "required": false,
+          "description": "The 10px line under the description."
+        },
+        {
+          "name": "openDelay",
+          "type": "number",
+          "default": "200",
+          "required": false,
+          "description": "Milliseconds the pointer has to rest before the card opens."
+        },
+        {
+          "name": "closeDelay",
+          "type": "number",
+          "default": "150",
+          "required": false,
+          "description": "Milliseconds before it closes again, so the pointer can cross the gap."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "content"
+      ],
+      "events": [
+        "update:modelValue"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:popover",
+        "evoq-ui:tooltip"
+      ],
+      "figma": {
+        "doc": "4278:80082",
+        "sets": [
+          {
+            "name": "D - HoverCard",
+            "id": "2065:2405",
+            "page": "Hover Card"
+          }
+        ]
+      },
+      "keywords": [
+        "preview",
+        "hovercard",
+        "peek",
+        "profile card",
+        "mention preview"
       ]
     },
     {
@@ -2509,7 +3372,10 @@
       "children": [],
       "composes": [],
       "usedBy": [
-        "evoq-ui:dropdown-list"
+        "evoq-ui:command",
+        "evoq-ui:dropdown-list",
+        "evoq-ui:dropdown-menu",
+        "evoq-ui:sidebar"
       ],
       "seeAlso": [
         "evoq-ui:input"
@@ -2669,6 +3535,99 @@
       ]
     },
     {
+      "id": "evoq-ui:item",
+      "name": "EvItem",
+      "tag": "ev-item",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvItem } from 'evoq-ui'",
+      "doc": "docs/components/item.md",
+      "source": "src/molecules/item/EvItem.vue",
+      "summary": "An item is a horizontal list row that pairs a leading element (icon, avatar, image) with a title and description, and an optional trailing action — used in lists, menus, and selection groups.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "type",
+          "type": "ItemType",
+          "options": [
+            "default",
+            "outline",
+            "muted"
+          ],
+          "default": "'default'",
+          "required": false,
+          "description": "`Type` of the Figma `Item` set."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "Caption under the title, inside the `.LabelItem` instance."
+        },
+        {
+          "name": "labelType",
+          "type": "LabelItemType",
+          "options": [
+            "default",
+            "small",
+            "extra-small"
+          ],
+          "default": "'default'",
+          "required": false,
+          "description": "Passed straight through to the `.LabelItem` instance."
+        },
+        {
+          "name": "trailing",
+          "type": "string",
+          "required": false,
+          "description": "The trailing caption the board draws as a separate `Description` node."
+        }
+      ],
+      "slots": [
+        "default",
+        "icon",
+        "avatar",
+        "image",
+        "actions",
+        "trailingIcon"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [
+        "evoq-ui:label-item"
+      ],
+      "composes": [
+        "evoq-ui:label-item"
+      ],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:button"
+      ],
+      "figma": {
+        "doc": "4282:80173",
+        "sets": [
+          {
+            "name": "Item",
+            "id": "2056:48",
+            "page": "Item"
+          }
+        ]
+      },
+      "keywords": [
+        "list row",
+        "list item",
+        "media object",
+        "account row"
+      ]
+    },
+    {
       "id": "evoq-ui:kbd",
       "name": "EvKbd",
       "tag": "ev-kbd",
@@ -2727,6 +3686,74 @@
         "shortcut",
         "key",
         "hotkey"
+      ]
+    },
+    {
+      "id": "evoq-ui:label-item",
+      "name": "EvLabelItem",
+      "tag": "ev-label-item",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvLabelItem } from 'evoq-ui'",
+      "doc": "docs/components/label-item.md",
+      "source": "src/atoms/label-item/EvLabelItem.vue",
+      "summary": "A title with a caption under it, at one of three caption sizes. The block Item, Sidebar and Command all reuse for their text.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "type",
+          "type": "LabelItemType",
+          "options": [
+            "default",
+            "small",
+            "extra-small"
+          ],
+          "default": "'default'",
+          "required": false,
+          "description": "`Type` of the Figma `.LabelItem` set - it only changes the caption size."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "Caption under the title. Figma names the node `Description` on Default and `Label` on the two small types; it is one slot here."
+        }
+      ],
+      "slots": [
+        "default",
+        "description"
+      ],
+      "events": [],
+      "partOf": "evoq-ui:item",
+      "children": [],
+      "composes": [],
+      "usedBy": [
+        "evoq-ui:item"
+      ],
+      "seeAlso": [
+        "evoq-ui:button"
+      ],
+      "figma": {
+        "doc": "4282:80173",
+        "sets": [
+          {
+            "name": ".LabelItem",
+            "id": "2050:996",
+            "page": "Item"
+          }
+        ]
+      },
+      "keywords": [
+        "title description",
+        "label caption",
+        "two line label"
       ]
     },
     {
@@ -2828,6 +3855,73 @@
       ]
     },
     {
+      "id": "evoq-ui:loading",
+      "name": "EvLoading",
+      "tag": "ev-loading",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvLoading } from 'evoq-ui'",
+      "doc": "docs/components/loading.md",
+      "source": "src/atoms/loading/EvLoading.vue",
+      "summary": "A loading indicator communicates that content or an action is in progress, reassuring the user that the system is working and reducing perceived wait time.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "type",
+          "type": "LoadingType",
+          "options": [
+            "spinner",
+            "pulse",
+            "progress-bar",
+            "skeleton"
+          ],
+          "default": "'spinner'",
+          "required": false,
+          "description": "`Type` of the Figma `Loading` set."
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "required": false,
+          "description": "Progress from 0 to 100. Leave it unset and the progress bar runs indeterminate, which is what the board's animation frames draw."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": "'Memuat...'",
+          "required": false,
+          "description": "Announced to assistive tech while the indicator is on screen."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4282:80578",
+        "sets": [
+          {
+            "name": "Loading",
+            "id": "3227:400",
+            "page": "Loading"
+          }
+        ]
+      },
+      "keywords": [
+        "spinner",
+        "pulse",
+        "skeleton",
+        "progress bar",
+        "busy",
+        "shimmer"
+      ]
+    },
+    {
       "id": "evoq-ui:logo",
       "name": "EvLogo",
       "tag": "ev-logo",
@@ -2836,24 +3930,59 @@
       "import": "import { EvLogo } from 'evoq-ui'",
       "doc": "docs/components/logo.md",
       "source": "src/atoms/logo/EvLogo.vue",
-      "summary": "The EVOQ brand mark as an inline SVG; put your own wordmark in its default slot to form the full lockup.",
+      "summary": "Both brand lockups from the Figma Logo page, drawn from shipped SVG: the EVOQ mark, wordmark and tagline, and the DataSea mark and wordmark. A local asset can replace them.",
       "summarySource": "code",
       "attrs": "root",
       "vModel": [],
       "props": [
         {
+          "name": "brand",
+          "type": "LogoBrand",
+          "options": [
+            "evoq",
+            "datasea"
+          ],
+          "default": "'evoq'",
+          "required": false,
+          "description": "Which lockup: the EVOQ product logo, or the DataSea company logo."
+        },
+        {
+          "name": "variant",
+          "type": "LogoVariant",
+          "options": [
+            "lockup",
+            "mark",
+            "wordmark"
+          ],
+          "default": "'lockup'",
+          "required": false,
+          "description": "The whole lockup, or one part of it on its own."
+        },
+        {
           "name": "size",
           "type": "number | string",
-          "default": "32",
+          "default": "40",
           "required": false,
-          "description": "Rendered height. The mark is square, so this sets both dimensions."
+          "description": "Rendered height, in px for a number. The width follows the lockup."
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "description": "An image to use instead of the built-in logo - a local asset, or any URL. Leave it unset and the component draws the Figma logo."
         },
         {
           "name": "label",
           "type": "string",
-          "default": "'EVOQ'",
           "required": false,
-          "description": "Accessible name. Set to an empty string for a decorative mark."
+          "description": "Accessible name. Defaults to the brand's name; set it to an empty string for a logo that is purely decorative."
+        },
+        {
+          "name": "tagline",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Draw the \"Procure to Pay Evolution\" line under the wordmark. Only the EVOQ lockup has one; DataSea ignores it."
         }
       ],
       "slots": [
@@ -2863,7 +3992,9 @@
       "partOf": null,
       "children": [],
       "composes": [],
-      "usedBy": [],
+      "usedBy": [
+        "evoq-ui:sidebar"
+      ],
       "seeAlso": [],
       "figma": {
         "doc": null,
@@ -2883,7 +4014,12 @@
       "keywords": [
         "brand",
         "logo",
-        "mark"
+        "mark",
+        "wordmark",
+        "lockup",
+        "evoq",
+        "datasea",
+        "tagline"
       ]
     },
     {
@@ -3058,6 +4194,63 @@
       ]
     },
     {
+      "id": "evoq-ui:nav-menu-mobile-item",
+      "name": "EvNavMenuMobileItem",
+      "tag": "ev-nav-menu-mobile-item",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvNavMenuMobileItem } from 'evoq-ui'",
+      "doc": "docs/components/nav-menu-mobile-item.md",
+      "source": "src/atoms/nav-menu-mobile-item/EvNavMenuMobileItem.vue",
+      "summary": "One destination in the mobile navigation bar: a 24px icon over a 12px label, filling its share of the row.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Marks the current section. Figma models it as the `Active` variant."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Renders an anchor instead of a button."
+        }
+      ],
+      "slots": [],
+      "events": [
+        "click"
+      ],
+      "partOf": "evoq-ui:navigation-menu-mobile",
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4347:82858",
+        "sets": [
+          {
+            "name": ".Menu",
+            "id": "2559:3036",
+            "page": "Navigation Menu - Mobile"
+          }
+        ]
+      },
+      "keywords": [
+        "tab bar item",
+        "bottom nav item"
+      ]
+    },
+    {
       "id": "evoq-ui:navigation-menu",
       "name": "EvNavigationMenu",
       "tag": "ev-navigation-menu",
@@ -3112,6 +4305,279 @@
         "header",
         "top bar",
         "app bar"
+      ]
+    },
+    {
+      "id": "evoq-ui:navigation-menu-mobile",
+      "name": "EvNavigationMenuMobile",
+      "tag": "ev-navigation-menu-mobile",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvNavigationMenuMobile } from 'evoq-ui'",
+      "doc": "docs/components/navigation-menu-mobile.md",
+      "source": "src/organisms/navigation-menu-mobile/EvNavigationMenuMobile.vue",
+      "summary": "The mobile navigation menu is a fixed bottom bar (393px) that holds the app's primary destinations as icon-plus-label tabs. Two styles: a standard bar and a variant with a raised center action button.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "centerButton",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `M - NavigationMenu CenterButton`: a raised round action in the middle of the bar, with a gap in the row where it sits."
+        },
+        {
+          "name": "centerLabel",
+          "type": "string",
+          "default": "'Tambah'",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": "'Navigasi'",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "after",
+        "center"
+      ],
+      "events": [],
+      "partOf": null,
+      "children": [
+        "evoq-ui:nav-menu-mobile-item"
+      ],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4347:82858",
+        "sets": [
+          {
+            "name": "M - NavigationMenu",
+            "id": "2627:2923",
+            "page": "Navigation Menu - Mobile"
+          },
+          {
+            "name": "M - NavigationMenu CenterButton",
+            "id": "2627:2927",
+            "page": "Navigation Menu - Mobile"
+          }
+        ]
+      },
+      "keywords": [
+        "bottom bar",
+        "tab bar",
+        "mobile nav",
+        "fab",
+        "center button"
+      ]
+    },
+    {
+      "id": "evoq-ui:pagination",
+      "name": "EvPagination",
+      "tag": "ev-pagination",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvPagination } from 'evoq-ui'",
+      "doc": "docs/components/pagination.md",
+      "source": "src/molecules/pagination/EvPagination.vue",
+      "summary": "Pagination splits a large set of content or a multi-step flow into discrete pages, giving users controls to move between them and a sense of their position in the whole.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [
+        "page"
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "PaginationVariant",
+          "options": [
+            "display",
+            "step",
+            "number"
+          ],
+          "default": "'display'",
+          "required": false,
+          "description": "`Variant` of the Figma `Pagination` set."
+        },
+        {
+          "name": "page",
+          "type": "number",
+          "default": "1",
+          "required": false,
+          "description": "The page on screen, 1-based."
+        },
+        {
+          "name": "pageCount",
+          "type": "number",
+          "default": "1",
+          "required": false
+        },
+        {
+          "name": "siblingCount",
+          "type": "number",
+          "default": "1",
+          "required": false,
+          "description": "How many pages sit either side of the current one before an ellipsis."
+        },
+        {
+          "name": "rowsPerPage",
+          "type": "number",
+          "default": "10",
+          "required": false,
+          "description": "`Pagination Display`: the number in the rows-per-page button."
+        },
+        {
+          "name": "rowsPerPageLabel",
+          "type": "string",
+          "default": "'Rows per page'",
+          "required": false
+        },
+        {
+          "name": "previousLabel",
+          "type": "string",
+          "default": "'Previous'",
+          "required": false
+        },
+        {
+          "name": "nextLabel",
+          "type": "string",
+          "default": "'Next'",
+          "required": false
+        },
+        {
+          "name": "stepLabel",
+          "type": "string",
+          "required": false,
+          "description": "`Pagination Step`: the caption. Left unset it reads \"Step 2 of 5\"."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": "'Halaman'",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "events": [
+        "update:page",
+        "previous",
+        "next"
+      ],
+      "partOf": null,
+      "children": [
+        "evoq-ui:pagination-item"
+      ],
+      "composes": [
+        "evoq-ui:button",
+        "evoq-ui:pagination-item"
+      ],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:button"
+      ],
+      "figma": {
+        "doc": "4410:83059",
+        "sets": [
+          {
+            "name": "Pagination",
+            "id": "749:2846",
+            "page": "Pagination"
+          }
+        ]
+      },
+      "keywords": [
+        "pager",
+        "page numbers",
+        "rows per page",
+        "next previous",
+        "steps",
+        "wizard"
+      ]
+    },
+    {
+      "id": "evoq-ui:pagination-item",
+      "name": "EvPaginationItem",
+      "tag": "ev-pagination-item",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvPaginationItem } from 'evoq-ui'",
+      "doc": "docs/components/pagination-item.md",
+      "source": "src/atoms/pagination-item/EvPaginationItem.vue",
+      "summary": "One page tile of a Pagination: a 32px square button, or the inert ellipsis standing in for a run of hidden pages.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "page",
+          "type": "number | string",
+          "required": false,
+          "description": "The page this tile jumps to. Rendered as its label."
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Marks the page currently on screen."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "more",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `State=More`: the ellipsis tile standing in for a run of hidden pages. It is inert, so it renders as a span rather than a button."
+        },
+        {
+          "name": "moreLabel",
+          "type": "string",
+          "default": "'Halaman lainnya'",
+          "required": false,
+          "description": "Accessible name of the ellipsis tile."
+        }
+      ],
+      "slots": [],
+      "events": [
+        "click"
+      ],
+      "partOf": "evoq-ui:pagination",
+      "children": [],
+      "composes": [],
+      "usedBy": [
+        "evoq-ui:pagination"
+      ],
+      "seeAlso": [
+        "evoq-ui:button"
+      ],
+      "figma": {
+        "doc": "4410:83059",
+        "sets": [
+          {
+            "name": ".StepNumber",
+            "id": "3007:2442",
+            "page": "Pagination"
+          }
+        ]
+      },
+      "keywords": [
+        "page tile",
+        "page number",
+        "step number",
+        "ellipsis"
       ]
     },
     {
@@ -3512,6 +4978,10 @@
         {
           "name": "toolbar",
           "type": "RichEditorToolbarType",
+          "options": [
+            "big",
+            "small"
+          ],
           "default": "'big'",
           "required": false,
           "description": "Which `.RichEditor` type to draw: `big` is the 528px, 19-control bar; `small` is the 360px, 13-control one."
@@ -3708,6 +5178,203 @@
         "rule",
         "line",
         "hr"
+      ]
+    },
+    {
+      "id": "evoq-ui:sidebar",
+      "name": "EvSidebar",
+      "tag": "ev-sidebar",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvSidebar } from 'evoq-ui'",
+      "doc": "docs/components/sidebar.md",
+      "source": "src/organisms/sidebar/EvSidebar.vue",
+      "summary": "The sidebar is the vertical navigation rail along the edge of an app, holding the brand, search, primary navigation items, and the user account. It can expand or collapse on desktop and appears as a slide-in drawer on mobile. Available for desktop (D) and mobile (M).",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [
+        "collapsed",
+        "searchValue"
+      ],
+      "props": [
+        {
+          "name": "collapsed",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Figma's `Open=No`: the 64px rail that keeps only the icons."
+        },
+        {
+          "name": "mobile",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Follow `M - Sidebar` instead of `D - Sidebar`: an account row and a full-width search where the desktop board puts the logo."
+        },
+        {
+          "name": "searchable",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Figma's `Search` frame."
+        },
+        {
+          "name": "searchValue",
+          "type": "string",
+          "default": "''",
+          "required": false
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "default": "'Search'",
+          "required": false
+        },
+        {
+          "name": "toggleLabel",
+          "type": "string",
+          "default": "'Buka atau tutup sidebar'",
+          "required": false,
+          "description": "The toggle's accessible name."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": "'Sidebar'",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "header",
+        "footer"
+      ],
+      "events": [
+        "update:collapsed",
+        "update:searchValue"
+      ],
+      "partOf": null,
+      "children": [
+        "evoq-ui:sidebar-item"
+      ],
+      "composes": [
+        "evoq-ui:button",
+        "evoq-ui:input-search",
+        "evoq-ui:logo"
+      ],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4446:84476",
+        "sets": [
+          {
+            "name": "D - Sidebar",
+            "id": "2346:3623",
+            "page": "Sidebar"
+          },
+          {
+            "name": "M - Sidebar",
+            "id": "2389:6285",
+            "page": "Sidebar"
+          }
+        ]
+      },
+      "keywords": [
+        "side nav",
+        "nav rail",
+        "app shell",
+        "collapse",
+        "drawer nav"
+      ]
+    },
+    {
+      "id": "evoq-ui:sidebar-item",
+      "name": "EvSidebarItem",
+      "tag": "ev-sidebar-item",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvSidebarItem } from 'evoq-ui'",
+      "doc": "docs/components/sidebar-item.md",
+      "source": "src/atoms/sidebar-item/EvSidebarItem.vue",
+      "summary": "One row of a Sidebar: a destination at main, submenu or sub-submenu depth, or one of the two rows that are not controls - a section heading and a rule.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "type",
+          "type": "SidebarItemType",
+          "options": [
+            "main",
+            "submenu",
+            "sub-submenu",
+            "sub-title",
+            "divider"
+          ],
+          "default": "'main'",
+          "required": false,
+          "description": "`Type` of the Figma `.ItemSidebar` set."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Renders a real link instead of a button."
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Marks the current section. Figma's `State=Active`."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "collapsed",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Collapses the row to a 32px square holding only its icon - what `D - Sidebar` draws in its `Open=No` variant."
+        }
+      ],
+      "slots": [
+        "default",
+        "icon",
+        "trailing"
+      ],
+      "events": [
+        "click"
+      ],
+      "partOf": "evoq-ui:sidebar",
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": "4446:84476",
+        "sets": [
+          {
+            "name": ".ItemSidebar",
+            "id": "159:1729",
+            "page": "Sidebar"
+          }
+        ]
+      },
+      "keywords": [
+        "nav item",
+        "sidebar row",
+        "submenu",
+        "section heading"
       ]
     },
     {
@@ -4466,6 +6133,94 @@
         "clock",
         "hour minute",
         "timepicker"
+      ]
+    },
+    {
+      "id": "evoq-ui:toast",
+      "name": "EvToast",
+      "tag": "ev-toast",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvToast } from 'evoq-ui'",
+      "doc": "docs/components/toast.md",
+      "source": "src/molecules/toast/EvToast.vue",
+      "summary": "A toast is a brief, auto-dismissing notification that appears over the interface to confirm an action or surface a status message without interrupting the user's flow.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [],
+      "props": [
+        {
+          "name": "variant",
+          "type": "ToastVariant",
+          "options": [
+            "default",
+            "success",
+            "error",
+            "warning",
+            "info",
+            "with-description"
+          ],
+          "default": "'default'",
+          "required": false,
+          "description": "`Type` of the Figma `Toast` set."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "Supporting line. The board reaches it through `Type=WithDescription`; setting it here switches the toast to that layout whatever the variant."
+        },
+        {
+          "name": "dismissible",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Renders the dismiss cross and enables the `close` event."
+        },
+        {
+          "name": "closeLabel",
+          "type": "string",
+          "default": "'Tutup'",
+          "required": false
+        }
+      ],
+      "slots": [
+        "default",
+        "description",
+        "actions",
+        "icon"
+      ],
+      "events": [
+        "close"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:alert-dialog"
+      ],
+      "figma": {
+        "doc": "4518:85548",
+        "sets": [
+          {
+            "name": "Toast",
+            "id": "95:101",
+            "page": "Toast"
+          }
+        ]
+      },
+      "keywords": [
+        "notification",
+        "snackbar",
+        "flash message",
+        "undo",
+        "status message"
       ]
     },
     {

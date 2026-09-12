@@ -21,6 +21,7 @@ import process from 'node:process'
 import { pathToFileURL } from 'node:url'
 
 const ROOT = process.cwd()
+let aliasesForLookup = {}
 const OUT = path.join(ROOT, 'playground', 'component-props.ts')
 
 /*
@@ -104,10 +105,27 @@ function literalOptions(type) {
   return options.length >= 2 ? options : null
 }
 
-/** Type aliases from `src/types.ts` that are plain literal unions. */
+/** Every `.ts` under `src`, so an alias declared beside its component counts too. */
+function typeFiles() {
+  const out = []
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) walk(full)
+      else if (entry.name.endsWith('.ts') && !/\.(spec|test)\.ts$/.test(entry.name)) out.push(full)
+    }
+  }
+  walk(path.join(ROOT, 'src'))
+  return out
+}
+
 function readTypeAliases() {
-  // The charts entry keeps its own unions beside it.
-  const files = [path.join(ROOT, 'src', 'types.ts'), path.join(ROOT, 'src', 'charts', 'types.ts')]
+  /*
+   * Unions live wherever their component does - `RichEditorToolbarType` sits in
+   * `rich-editor-toolbar.ts`. Reading only `types.ts` left those props showing a
+   * bare type name, which tells a consumer nothing about the allowed values.
+   */
+  const files = typeFiles()
   const aliases = {}
   const re = /export type (\w+)\s*=\s*([^\n][\s\S]*?)(?=\n\s*\n|\nexport |\n\/\*\*|$)/g
   for (const file of files) {
@@ -201,6 +219,21 @@ function readNamedBlock(script, macro) {
     .filter(Boolean)
 }
 
+/**
+ * `AspectRatio | string` keeps the alias's own values as the known ones: the
+ * prop takes any string, but these are the ratios the board draws, and a doc
+ * that printed only the type name would leave a consumer guessing.
+ */
+function knownValues(type) {
+  const parts = type.split('|').map((p) => p.trim())
+  if (parts.length < 2) return null
+  for (const part of parts) {
+    const options = aliasesForLookup[part]
+    if (options) return options
+  }
+  return null
+}
+
 function controlFor(type, options) {
   if (options) return 'select'
   const bare = type.replace(/\s/g, '')
@@ -234,7 +267,7 @@ function extract(file, aliases) {
           if (!match) continue
           const [, name, optional, rawType] = match
           const type = rawType.replace(/\s+/g, ' ').trim()
-          const options = aliases[type] ?? literalOptions(type)
+          const options = aliases[type] ?? literalOptions(type) ?? knownValues(type)
           const fallback = defaults[name]
           props.push({
             name,
@@ -267,6 +300,7 @@ function extract(file, aliases) {
  */
 export function buildCatalogue() {
   const aliases = readTypeAliases()
+  aliasesForLookup = aliases
   const catalogue = {}
   for (const file of sourceFiles()) {
     const meta = extract(file, aliases)

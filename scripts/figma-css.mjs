@@ -29,7 +29,16 @@ export function readBuiltCss() {
  */
 export function parseRules(css) {
   return [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map((m) => ({
-    sel: m[1].trim().replace(/\s+/g, ' '),
+    /*
+     * A statement at-rule - `@import './fonts.css';` at the top of the file -
+     * has no block of its own, so the regex hands it back glued to the front
+     * of the next selector. Drop anything up to a `;`, which a selector can
+     * never contain, or the first rule in the file stops matching.
+     */
+    sel: m[1]
+      .replace(/[^;{}]*;/g, '')
+      .trim()
+      .replace(/\s+/g, ' '),
     decls: m[2],
   }))
 }

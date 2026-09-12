@@ -55,7 +55,7 @@ keywords:
 
 _The exact snippet the playground simulator copies for this component (`playground/simulator-demos.ts`)._
 
-## Props (8)
+## Props (9)
 
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
@@ -67,6 +67,7 @@ _The exact snippet the playground simulator copies for this component (`playgrou
 | `closable` | `boolean` | `true` | no | — |
 | `closeLabel` | `string` | `'Tutup'` | no | — |
 | `closeOnScrim` | `boolean` | `true` | no | — |
+| `header` | `boolean` | `true` | no | Draw the header at all. The board's `M- Drawer` hides the whole header frame with its `Header` property - title, subtext and close together. |
 
 **Two-way binding:** `v-model`
 

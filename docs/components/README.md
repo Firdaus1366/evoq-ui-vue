@@ -2,11 +2,11 @@
 
 # evoq-ui components
 
-54 components, one document each. Every component has a stable id,
+74 components, one document each. Every component has a stable id,
 `evoq-ui:<name>` - the component name without its `Ev` prefix, in kebab case.
 `manifest.json` holds the same data for machines; `mcp/server.mjs` serves both.
 
-## Atom (24)
+## Atom (31)
 
 | ID | Component | Summary |
 | --- | --- | --- |
@@ -17,17 +17,24 @@
 | [`evoq-ui:button-group-item`](button-group-item.md) | `EvButtonGroupItem` | One segment of a ButtonGroup - a button that takes its variant and size from the group around it. |
 | [`evoq-ui:button-link`](button-link.md) | `EvButtonLink` | A button link is a text-only, inline action styled as a link — used for low-emphasis or navigational actions where a full button would be too heavy. |
 | [`evoq-ui:checkbox`](checkbox.md) | `EvCheckbox` | A checkbox lets users select one or more options from a set, or toggle a single setting on or off. It supports checked, unchecked, indeterminate, disabled, and error states. |
+| [`evoq-ui:command-item`](command-item.md) | `EvCommandItem` | One command in a Command palette: a leading icon, a label, an optional shortcut cap, and a check when it is the chosen row. |
 | [`evoq-ui:dropdown-item`](dropdown-item.md) | `EvDropdownItem` | One row of a DropdownList: an option in a listbox, or a menu item - a real link when given an href - inside a menu. |
+| [`evoq-ui:dropdown-menu-item`](dropdown-menu-item.md) | `EvDropdownMenuItem` | One row of a DropdownMenu: an action, a destructive action, a group heading, or the rule between two groups. |
 | [`evoq-ui:hint`](hint.md) | `EvHint` | A hint is a small notification badge that signals unread or pending items — shown as a plain dot or a count, attached to an icon, tab, or menu item. |
 | [`evoq-ui:input`](input.md) | `EvInput` | A single-line text input for collecting short free-form values. It supports leading/trailing icons, validation messaging, and multiple interaction states. |
 | [`evoq-ui:input-search`](input-search.md) | `EvInputSearch` | A search input with a leading search icon and an optional clear action. Use it to filter or look up content. It is 44px tall and supports validation and interaction states. |
 | [`evoq-ui:input-with-label`](input-with-label.md) | `EvInputWithLabel` | A single-line text input with an inline label placed to the left, right, or both sides of the field. It supports icons, validation, and the same interaction states as InputField. |
 | [`evoq-ui:kbd`](kbd.md) | `EvKbd` | A Kbd (keyboard key) is a small inline chip that represents a single physical key or shortcut token — like Ctrl or ⇧ — used to document keyboard shortcuts. |
-| [`evoq-ui:logo`](logo.md) | `EvLogo` | The EVOQ brand mark as an inline SVG; put your own wordmark in its default slot to form the full lockup. |
+| [`evoq-ui:label-item`](label-item.md) | `EvLabelItem` | A title with a caption under it, at one of three caption sizes. The block Item, Sidebar and Command all reuse for their text. |
+| [`evoq-ui:loading`](loading.md) | `EvLoading` | A loading indicator communicates that content or an action is in progress, reassuring the user that the system is working and reducing perceived wait time. |
+| [`evoq-ui:logo`](logo.md) | `EvLogo` | Both brand lockups from the Figma Logo page, drawn from shipped SVG: the EVOQ mark, wordmark and tagline, and the DataSea mark and wordmark. A local asset can replace them. |
 | [`evoq-ui:nav-menu-item`](nav-menu-item.md) | `EvNavMenuItem` | One destination in a NavigationMenu - a link when given an href, marked as the current section when active. |
+| [`evoq-ui:nav-menu-mobile-item`](nav-menu-mobile-item.md) | `EvNavMenuMobileItem` | One destination in the mobile navigation bar: a 24px icon over a 12px label, filling its share of the row. |
+| [`evoq-ui:pagination-item`](pagination-item.md) | `EvPaginationItem` | One page tile of a Pagination: a 32px square button, or the inert ellipsis standing in for a run of hidden pages. |
 | [`evoq-ui:radio`](radio.md) | `EvRadio` | A radio button lets users choose exactly one option from a set. Options are mutually exclusive — selecting one clears the others in the same group. |
 | [`evoq-ui:scroll-area`](scroll-area.md) | `EvScrollArea` | The scroll component is the thin scrollbar indicator shown alongside an overflowing container, signalling that more content is available and how far the user has scrolled. |
 | [`evoq-ui:separator`](separator.md) | `EvSeparator` | A separator is a thin line that visually divides content into groups — between list items, sections, or side-by-side elements — without adding emphasis. |
+| [`evoq-ui:sidebar-item`](sidebar-item.md) | `EvSidebarItem` | One row of a Sidebar: a destination at main, submenu or sub-submenu depth, or one of the two rows that are not controls - a section heading and a rule. |
 | [`evoq-ui:slider`](slider.md) | `EvSlider` | A slider lets users select a value or range by dragging a handle along a track, giving direct, continuous control over a bounded numeric input. |
 | [`evoq-ui:switch`](switch.md) | `EvSwitch` | A switch toggles a single setting on or off, taking effect immediately. It pairs a sliding control with a label, and supports active, disabled, and error states. |
 | [`evoq-ui:tab`](tab.md) | `EvTab` | One tab in a Tabs strip; its value selects it, and it takes the variant from the Tabs around it. |
@@ -35,7 +42,7 @@
 | [`evoq-ui:textarea`](textarea.md) | `EvTextarea` | A multi-line text input for collecting longer free-form content. It supports a character counter, validation, optional icons, a scrollbar, and the same interaction states as InputField. |
 | [`evoq-ui:toggle`](toggle.md) | `EvToggle` | A toggle is a two-state button that switches an option on or off. Use it standalone, or grouped in a ToggleGroup for a set of related single- or multi-select options. |
 
-## Molecule (12)
+## Molecule (17)
 
 | ID | Component | Summary |
 | --- | --- | --- |
@@ -44,15 +51,20 @@
 | [`evoq-ui:avatar-group`](avatar-group.md) | `EvAvatarGroup` | A labelled, overlapping stack of avatars that share one size. |
 | [`evoq-ui:button-group`](button-group.md) | `EvButtonGroup` | Group related action buttons horizontally so they share borders and read as one control. |
 | [`evoq-ui:dropdown-list`](dropdown-list.md) | `EvDropdownList` | A floating list panel - a listbox of options to choose from, or a menu of actions and links - with optional search, scrolling and an empty state. |
+| [`evoq-ui:dropdown-menu`](dropdown-menu.md) | `EvDropdownMenu` | A floating menu of actions opened from a trigger, with an optional search field and a list that scrolls when it outgrows the surface. |
+| [`evoq-ui:hover-card`](hover-card.md) | `EvHoverCard` | A hover card is a small overlay that appears when the user hovers over a trigger, surfacing a preview — a title with an optional description and caption — without a click. |
 | [`evoq-ui:input-field-unit`](input-field-unit.md) | `EvInputFieldUnit` | A composite input pairing a leading unit selector (dropdown) with a text/number field. Use it for values that carry a unit — e.g. amount + currency, weight + unit. It supports validation and the same interaction states as InputField. |
+| [`evoq-ui:item`](item.md) | `EvItem` | An item is a horizontal list row that pairs a leading element (icon, avatar, image) with a title and description, and an optional trailing action — used in lists, menus, and selection groups. |
+| [`evoq-ui:pagination`](pagination.md) | `EvPagination` | Pagination splits a large set of content or a multi-step flow into discrete pages, giving users controls to move between them and a sense of their position in the whole. |
 | [`evoq-ui:popover`](popover.md) | `EvPopover` | A popover is a small floating panel anchored to a trigger, used to surface contextual content — a short form, details, or controls — on click, without navigating away from the current view. |
 | [`evoq-ui:radio-group`](radio-group.md) | `EvRadioGroup` | Holds a set of radios under one name and one v-model, so exactly one of them is chosen. |
 | [`evoq-ui:tabs`](tabs.md) | `EvTabs` | Tabs let users switch between related views within the same context, showing one panel at a time. They come in a segmented (pill) style and a line (underline) style. |
 | [`evoq-ui:tag-group`](tag-group.md) | `EvTagGroup` | Lays out a set of tags, wrapping or scrolling, and hands them one shared variant. |
+| [`evoq-ui:toast`](toast.md) | `EvToast` | A toast is a brief, auto-dismissing notification that appears over the interface to confirm an action or surface a status message without interrupting the user's flow. |
 | [`evoq-ui:toggle-group`](toggle-group.md) | `EvToggleGroup` | A labelled row of toggles that share one variant and size. |
 | [`evoq-ui:tooltip`](tooltip.md) | `EvTooltip` | A tooltip is a small dark overlay that appears on hover or focus to give a short, contextual hint about an element, with an arrow pointing back to its trigger. |
 
-## Organism (18)
+## Organism (26)
 
 | ID | Component | Summary |
 | --- | --- | --- |
@@ -64,13 +76,21 @@
 | [`evoq-ui:carousel`](carousel.md) | `EvCarousel` | A carousel displays a set of items in a scrollable horizontal or vertical track, with previous/next navigation buttons and a position indicator. It supports multiple content aspect ratios. |
 | [`evoq-ui:carousel-slide`](carousel-slide.md) | `EvCarouselSlide` | One slide of a Carousel, drawn as an Aspect Ratio box at the carousel's ratio. |
 | [`evoq-ui:chart`](chart.md) | `EvChart` | The titled frame a chart sits in: title, subtext, header action, summary and legend around the chart slot. |
+| [`evoq-ui:command`](command.md) | `EvCommand` | A command palette (⌘K) lets users search and run actions from anywhere — a searchable, keyboard-navigable list of commands grouped into sections. |
+| [`evoq-ui:command-group`](command-group.md) | `EvCommandGroup` | One Section of a Command palette: a muted heading row over its commands, with the rule that separates it from the section above. |
+| [`evoq-ui:data-table`](data-table.md) | `EvDataTable` | A data table presents structured rows and columns with sortable headers, filters, selection, and pagination — built for scanning, comparing, and acting on large datasets. |
+| [`evoq-ui:data-table-cell`](data-table-cell.md) | `EvDataTableCell` | One cell of a DataTable - a th in the header with an optional sort control, a td in the body. Whatever the cell holds goes in its slot. |
+| [`evoq-ui:data-table-row`](data-table-row.md) | `EvDataTableRow` | One row of a DataTable: it carries the selected state and, for a tree, the indent level that picks its fill off the tree ramp. |
 | [`evoq-ui:direction`](direction.md) | `EvDirection` | A panel that guides one short task: title and subtext, an optional header action, a body, and confirm / cancel footer slots. |
 | [`evoq-ui:drawer`](drawer.md) | `EvDrawer` | A panel that slides in from the right, left or bottom over a scrim - traps focus, closes on Escape, and restores focus on close. |
+| [`evoq-ui:empty-state`](empty-state.md) | `EvEmptyState` | An empty state fills a screen or container when there's no content to show — errors (400 / 401 / 404 / 500), maintenance, or simply no data / no results. It pairs an illustration with a message and an optional recovery action. |
 | [`evoq-ui:line-chart`](line-chart.md) | `EvLineChart` | A line or area chart for trends over time, drawn in SVG from an array of records. |
 | [`evoq-ui:modal`](modal.md) | `EvModal` | A modal is a focused overlay dialog that interrupts the current flow to present information or request a decision, blocking interaction with the page behind it until dismissed. Available for desktop and mobile. |
 | [`evoq-ui:navigation-menu`](navigation-menu.md) | `EvNavigationMenu` | The navigation menu is the top-level horizontal bar that anchors a desktop app — pairing the brand logo with primary navigation links and utilities (search, profile) so users can orient and move between sections. |
+| [`evoq-ui:navigation-menu-mobile`](navigation-menu-mobile.md) | `EvNavigationMenuMobile` | The mobile navigation menu is a fixed bottom bar (393px) that holds the app's primary destinations as icon-plus-label tabs. Two styles: a standard bar and a variant with a raised center action button. |
 | [`evoq-ui:pie-chart`](pie-chart.md) | `EvPieChart` | A pie or doughnut chart for part-to-whole proportions, drawn in SVG. |
 | [`evoq-ui:rich-editor`](rich-editor.md) | `EvRichEditor` | A rich-text editor input with a formatting toolbar for entering styled, multi-line content. It supports leading/trailing icons, a scrollbar, validation, and the same interaction states as InputField. |
+| [`evoq-ui:sidebar`](sidebar.md) | `EvSidebar` | The sidebar is the vertical navigation rail along the edge of an app, holding the brand, search, primary navigation items, and the user account. It can expand or collapse on desktop and appears as a slide-in drawer on mobile. Available for desktop (D) and mobile (M). |
 | [`evoq-ui:time-picker`](time-picker.md) | `EvTimePicker` | A scrolling wheel for picking a time - 24-hour, with seconds, or AM/PM - with Apply and Cancel. |
 | [`evoq-ui:tree`](tree.md) | `EvTree` | A tree displays hierarchical data as nested, expandable rows — files and folders, categories, or org structures — letting users drill into nested levels while keeping their place. |
 | [`evoq-ui:tree-item`](tree-item.md) | `EvTreeItem` | One row of a Tree: indented by level, with a chevron that expands its children and an optional checkbox for selection. |

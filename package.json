@@ -31,13 +31,14 @@
       "require": "./dist/charts.cjs"
     },
     "./style.css": "./dist/evoq-ui.css",
+    "./fonts.css": "./dist/fonts.css",
     "./package.json": "./package.json",
     "./manifest.json": "./docs/components/manifest.json",
     "./docs/*": "./docs/components/*"
   },
   "scripts": {
     "dev": "node scripts/extract-props.mjs && vite",
-    "build": "npm run typecheck && vite build",
+    "build": "npm run typecheck && vite build && node scripts/bundle-fonts.mjs",
     "preview": "vite preview",
     "typecheck": "vue-tsc --noEmit -p tsconfig.build.json && vue-tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
@@ -52,7 +53,8 @@
     "extract:props": "node scripts/extract-props.mjs",
     "docs:build": "node scripts/build-docs.mjs",
     "docs:check": "node scripts/build-docs.mjs --check",
-    "mcp": "node mcp/server.mjs"
+    "mcp": "node mcp/server.mjs",
+    "build:fonts": "node scripts/bundle-fonts.mjs"
   },
   "peerDependencies": {
     "@unovis/ts": "^1.6.0",

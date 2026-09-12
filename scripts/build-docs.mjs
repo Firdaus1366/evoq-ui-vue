@@ -57,6 +57,9 @@ const VERIFIED_PROSE_PX = new Set([
   '16px', // input icon size - the Input boards' icon frames
   '24px', // smallest Avatar size - the Avatar set's Size variants
   '44px', // InputSearch height - verify:figma "dropdown search input height"
+  // `M - NavigationMenu` and `M - NavigationMenu CenterButton` both measure
+  // 393 wide on the board - the phone frame the mobile pages are drawn in.
+  '393px',
 ])
 
 // ----------------------------------------------------------------- naming
@@ -208,6 +211,21 @@ const esc = (text) =>
     .replace(/\n+/g, ' ')
 const code = (text) => `\`${String(text).replace(/\|/g, '\\|')}\``
 
+/**
+ * The values a prop takes. A prop whose type is wider than its known values -
+ * `AspectRatio | string` - shows both, so nobody reads the list as a limit the
+ * type does not actually impose.
+ */
+function propType(prop) {
+  if (!prop.options) return code(prop.type)
+  const shown = prop.options.map((o) => code(JSON.stringify(o).replace(/"/g, "'")))
+  const open = prop.type
+    .split('|')
+    .map((part) => part.trim())
+    .filter((part) => part === 'string' || part === 'number')
+  return [...shown, ...open.map(code)].join(' \\| ')
+}
+
 function table(header, rows) {
   return [
     `| ${header.join(' | ')} |`,
@@ -319,9 +337,7 @@ function renderDoc(entry, figma, example) {
         ['Prop', 'Type', 'Default', 'Required', 'Description'],
         meta.props.map((p) => [
           code(p.name),
-          p.options
-            ? p.options.map((o) => code(JSON.stringify(o).replace(/"/g, "'"))).join(' \\| ')
-            : code(p.type),
+          propType(p),
           p.default !== undefined ? code(p.default) : '—',
           p.required ? 'yes' : 'no',
           esc(p.description) || '—',

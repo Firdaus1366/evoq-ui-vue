@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { EvLogo } from '../../src'
 
 export interface ComponentEntry {
   id: string
@@ -68,23 +69,7 @@ function handleSelect(id: string) {
   <aside class="pg-sidebar" :class="{ 'pg-sidebar--open': isMobileOpen }">
     <!-- Brand Header -->
     <div class="pg-sidebar__brand">
-      <div class="pg-sidebar__logo-wrapper">
-        <svg width="28" height="28" viewBox="0 0 194 194" fill="none" class="pg-sidebar__logo-icon">
-          <circle cx="97" cy="97" r="97" fill="#3B82F6" />
-          <path
-            d="M98.5 0C75.7 0 53.5 7.3 35.8 21.7C18.1 36.1 6.1 56.2 1.8 78.6C-2.6 101 1.1 124.2 12.2 144.1C23.3 164 41 179.4 62.3 187.6L67.7 127.3L80.5 92.6L96.7 49.3L98.5 0Z"
-            fill="#0EA5E9"
-          />
-          <path
-            d="M122.1 3.3C126.2 26.8 124.6 58.6 105.7 96.5C87.3 133.2 87.5 162.5 91.9 182.2C92.9 186.6 94.1 190.5 95.3 194C95.9 194 96.4 194 97 194C150.6 194 194 150.6 194 97C194 52.1 163.5 14.3 122.1 3.3Z"
-            fill="#F59E0B"
-          />
-        </svg>
-        <div class="pg-sidebar__brand-text">
-          <span class="pg-sidebar__title">Evoq UI</span>
-          <span class="pg-sidebar__subtitle">Design System</span>
-        </div>
-      </div>
+      <EvLogo class="pg-sidebar__logo" :size="48" />
       <span class="pg-sidebar__badge">{{ totalComponents }}</span>
     </div>
 

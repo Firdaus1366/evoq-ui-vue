@@ -15,9 +15,17 @@ import {
   EvButton,
   EvButtonGroupItem,
   EvCarouselSlide,
+  EvCommandGroup,
+  EvCommandItem,
+  EvDataTableCell,
+  EvDataTableRow,
   EvDropdownItem,
+  EvDropdownMenuItem,
+  EvKbd,
   EvNavMenuItem,
+  EvNavMenuMobileItem,
   EvRadio,
+  EvSidebarItem,
   EvTab,
   EvTag,
   EvToggle,
@@ -183,6 +191,11 @@ export const SIMULATOR_DEMOS: Record<string, DemoConfig> = {
     },
   },
   EvKbd: { slots: { default: t('Ctrl') }, slotCode: { default: 'Ctrl' } },
+  EvLogo: {
+    initial: { size: 64 },
+    stage: 'wide',
+    note: 'Semua bagian logo ikut dipaketkan. Isi `src` dengan aset lokal untuk menggantinya.',
+  },
   EvHint: { initial: { value: 8 } },
   EvAvatar: { initial: { label: 'AB', alt: 'Anya Bahar' } },
   EvAvatarGroup: {
@@ -261,7 +274,6 @@ export const SIMULATOR_DEMOS: Record<string, DemoConfig> = {
     slotCode: { default: '<p v-for="n in 12" :key="n">Baris {{ n }}</p>' },
     stage: 'tall',
   },
-  EvLogo: {},
   EvChart: {
     initial: { title: 'Realisasi Anggaran', subtext: 'Jan - Jun 2026' },
     slots: {
@@ -440,6 +452,195 @@ export const SIMULATOR_DEMOS: Record<string, DemoConfig> = {
     initial: { title: 'Lengkapi profil', subtext: 'Tiga isian lagi sebelum bisa mengajukan.' },
     slots: { default: t('Taruh isian formulir di sini.') },
     slotCode: { default: 'Taruh isian formulir di sini.' },
+    stage: 'wide',
+  },
+  // ------------------------------------------------- On Progress (Figma)
+  // The eleven pages under the 🚧 divider. Their boards are still moving, so
+  // these demos are the fastest way to eyeball one against a new version.
+  EvLoading: { initial: { type: 'spinner' } },
+  EvLabelItem: { initial: { title: 'Title', description: 'Description' } },
+  EvItem: {
+    initial: { title: 'Alex Wijaya', description: 'alex@example.com' },
+    stage: 'wide',
+  },
+  EvToast: {
+    initial: { variant: 'success', title: 'Faktur berhasil dikirim' },
+  },
+  EvHoverCard: {
+    initial: {
+      modelValue: true,
+      title: 'Alex Wijaya',
+      description: 'Product designer, tim Platform',
+      subtext: 'Bergabung Maret 2021',
+    },
+    slots: { default: t('@alex') },
+    slotCode: { default: '@alex' },
+    stage: 'tall',
+  },
+  EvDropdownMenuItem: {
+    initial: { label: 'Ganti nama', subtext: 'Ctrl R' },
+    slots: { kbd: () => h(EvKbd, null, () => 'R') },
+    slotCode: { kbd: '<EvKbd>R</EvKbd>' },
+  },
+  EvDropdownMenu: {
+    initial: { label: 'Aksi berkas' },
+    slots: {
+      default: () => [
+        h(EvDropdownMenuItem, { submenu: true, label: 'Berkas' }),
+        h(EvDropdownMenuItem, { label: 'Buka' }),
+        h(EvDropdownMenuItem, { label: 'Pindahkan ke', hasChevron: true }),
+        h(EvDropdownMenuItem, { separator: true }),
+        h(EvDropdownMenuItem, { label: 'Hapus', error: true }),
+      ],
+    },
+    slotCode: {
+      default: [
+        '<EvDropdownMenuItem submenu label="Berkas" />',
+        '<EvDropdownMenuItem label="Buka" />',
+        '<EvDropdownMenuItem label="Pindahkan ke" has-chevron />',
+        '<EvDropdownMenuItem separator />',
+        '<EvDropdownMenuItem label="Hapus" error />',
+      ].join('\n'),
+    },
+  },
+  EvCommandItem: { initial: { label: 'Buat faktur baru', active: true } },
+  EvCommandGroup: {
+    initial: { heading: 'Saran' },
+    slots: {
+      default: () => [
+        h(EvCommandItem, { label: 'Buat faktur baru', active: true }),
+        h(EvCommandItem, { label: 'Cari pemasok' }),
+      ],
+    },
+    slotCode: {
+      default: [
+        '<EvCommandItem label="Buat faktur baru" active />',
+        '<EvCommandItem label="Cari pemasok" />',
+      ].join('\n'),
+    },
+  },
+  EvCommand: {
+    initial: { placeholder: 'Ketik perintah untuk mencari', maxHeight: 220 },
+    slots: {
+      default: () => [
+        h(EvCommandGroup, { heading: 'Saran' }, () => [
+          h(EvCommandItem, { label: 'Buat faktur baru', active: true }),
+          h(EvCommandItem, { label: 'Cari pemasok' }),
+        ]),
+        h(EvCommandGroup, { heading: 'Setelan' }, () => [
+          h(EvCommandItem, { label: 'Ganti tema' }),
+          h(EvCommandItem, { label: 'Hapus ruang kerja', disabled: true }),
+        ]),
+      ],
+    },
+    slotCode: {
+      default: [
+        '<EvCommandGroup heading="Saran">',
+        '  <EvCommandItem label="Buat faktur baru" active />',
+        '  <EvCommandItem label="Cari pemasok" />',
+        '</EvCommandGroup>',
+      ].join('\n'),
+    },
+    stage: 'wide',
+  },
+  EvPaginationItem: { initial: { page: 3, active: true } },
+  EvPagination: { initial: { variant: 'number', page: 3, pageCount: 12 }, stage: 'wide' },
+  EvDataTableCell: {
+    initial: { header: true, sortable: true },
+    slots: { default: t('Nama') },
+    slotCode: { default: 'Nama' },
+    note: 'Selnya harus duduk di dalam baris tabel - lihat bagian Data Table.',
+  },
+  EvDataTableRow: {
+    slots: {
+      default: () => [
+        h(EvDataTableCell, null, () => 'Alex Wijaya'),
+        h(EvDataTableCell, null, () => 'Keuangan'),
+      ],
+    },
+    slotCode: {
+      default: [
+        '<EvDataTableCell>Alex Wijaya</EvDataTableCell>',
+        '<EvDataTableCell>Keuangan</EvDataTableCell>',
+      ].join('\n'),
+    },
+    note: 'Barisnya harus duduk di dalam sebuah tabel - lihat bagian Data Table.',
+  },
+  EvDataTable: {
+    initial: { title: 'Karyawan', variant: 'default' },
+    slots: {
+      head: () =>
+        h(EvDataTableRow, { header: true }, () => [
+          h(EvDataTableCell, { header: true, sortable: true }, () => 'Nama'),
+          h(EvDataTableCell, { header: true }, () => 'Divisi'),
+        ]),
+      default: () => [
+        h(EvDataTableRow, null, () => [
+          h(EvDataTableCell, null, () => 'Alex Wijaya'),
+          h(EvDataTableCell, null, () => 'Keuangan'),
+        ]),
+        h(EvDataTableRow, { level: 1 }, () => [
+          h(EvDataTableCell, null, () => 'Tim Anggaran'),
+          h(EvDataTableCell, null, () => 'Keuangan'),
+        ]),
+      ],
+    },
+    slotCode: {
+      head: [
+        '<EvDataTableRow header>',
+        '  <EvDataTableCell header sortable>Nama</EvDataTableCell>',
+        '</EvDataTableRow>',
+      ].join('\n'),
+      default: [
+        '<EvDataTableRow>',
+        '  <EvDataTableCell>Alex Wijaya</EvDataTableCell>',
+        '</EvDataTableRow>',
+      ].join('\n'),
+    },
+    stage: 'wide',
+  },
+  EvEmptyState: {
+    initial: { variant: '404', errorMessage: 'Error : System Message' },
+    stage: 'tall',
+  },
+  EvSidebarItem: {
+    initial: { label: 'Dashboard', active: true },
+    note: 'Barisnya harus duduk di dalam daftar Sidebar - lihat bagian Sidebar.',
+  },
+  EvSidebar: {
+    slots: {
+      default: () => [
+        h(EvSidebarItem, { label: 'Dashboard', active: true }),
+        h(EvSidebarItem, { type: 'submenu', label: 'Explorer' }),
+        h(EvSidebarItem, { type: 'sub-title', label: 'USER' }),
+        h(EvSidebarItem, { label: 'Settings' }),
+      ],
+    },
+    slotCode: {
+      default: [
+        '<EvSidebarItem label="Dashboard" active />',
+        '<EvSidebarItem type="submenu" label="Explorer" />',
+        '<EvSidebarItem type="sub-title" label="USER" />',
+      ].join('\n'),
+    },
+    stage: 'tall',
+  },
+  EvNavMenuMobileItem: { initial: { label: 'Beranda', active: true } },
+  EvNavigationMenuMobile: {
+    slots: {
+      default: () => [
+        h(EvNavMenuMobileItem, { label: 'Beranda', active: true }),
+        h(EvNavMenuMobileItem, { label: 'Cari' }),
+        h(EvNavMenuMobileItem, { label: 'Pesanan' }),
+        h(EvNavMenuMobileItem, { label: 'Akun' }),
+      ],
+    },
+    slotCode: {
+      default: [
+        '<EvNavMenuMobileItem label="Beranda" active />',
+        '<EvNavMenuMobileItem label="Cari" />',
+      ].join('\n'),
+    },
     stage: 'wide',
   },
 }

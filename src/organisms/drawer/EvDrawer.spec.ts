@@ -77,4 +77,33 @@ describe('EvDrawer', () => {
     openDrawer({}, { footer: '<button>Terapkan</button>' })
     expect(document.querySelector('.ev-drawer__footer button')).not.toBeNull()
   })
+
+  it('orders the header the way the board does: heading, close, then Top Slot', () => {
+    const wrapper = mount(EvDrawer, {
+      props: { modelValue: true, title: 'Filter' },
+      slots: { topSlot: '<span class="extra" />' },
+      attachTo: document.body,
+    })
+
+    const header = document.querySelector('.ev-drawer__header')!
+    expect([...header.children].map((el) => el.className)).toEqual([
+      'ev-drawer__heading',
+      'ev-drawer__close',
+      'extra',
+    ])
+    wrapper.unmount()
+  })
+
+  it('drops the whole header when asked, as the sheet does', () => {
+    const wrapper = mount(EvDrawer, {
+      props: { modelValue: true, title: 'Filter', header: false },
+      attachTo: document.body,
+    })
+
+    expect(document.querySelector('.ev-drawer__header')).toBeNull()
+    expect(document.querySelector('.ev-drawer__close')).toBeNull()
+    // The panel keeps its label only while the header shows the title.
+    expect(document.querySelector('.ev-drawer__panel')!.getAttribute('aria-labelledby')).toBeNull()
+    wrapper.unmount()
+  })
 })

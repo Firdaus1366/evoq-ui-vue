@@ -96,8 +96,8 @@ export const SOURCES = {
     figma: null,
     sets: [s('EVOQ-Logo', '5092:66984', 'Logo'), s('Datasea-Logo', '5092:41618', 'Logo')],
     summary:
-      'The EVOQ brand mark as an inline SVG; put your own wordmark in its default slot to form the full lockup.',
-    keywords: ['brand', 'logo', 'mark'],
+      'Both brand lockups from the Figma Logo page, drawn from shipped SVG: the EVOQ mark, wordmark and tagline, and the DataSea mark and wordmark. A local asset can replace them.',
+    keywords: ['brand', 'logo', 'mark', 'wordmark', 'lockup', 'evoq', 'datasea', 'tagline'],
   },
   EvNavMenuItem: {
     figma: 'Navigation Menu',
@@ -345,6 +345,160 @@ export const SOURCES = {
       'One row of a Tree: indented by level, with a chevron that expands its children and an optional checkbox for selection.',
     partOf: 'EvTree',
     keywords: ['tree row', 'node'],
+  },
+
+  /*
+   * -------------------------------------------------------- On Progress
+   * The eleven pages under the `🚧 On Progress ⬇️` divider in the Figma file.
+   * Ported from the boards as they stand today; the ids below are what to
+   * re-check first when a page is signed off.
+   */
+  EvCommand: {
+    figma: 'Command',
+    sets: [s('D - Command', '2461:2206', 'Command')],
+    children: ['EvCommandGroup'],
+    keywords: ['command palette', 'cmdk', 'quick actions', 'spotlight', 'search actions'],
+  },
+  EvCommandGroup: {
+    figma: 'Command',
+    sets: [],
+    summary:
+      'One Section of a Command palette: a muted heading row over its commands, with the rule that separates it from the section above.',
+    partOf: 'EvCommand',
+    children: ['EvCommandItem'],
+    keywords: ['command section', 'group heading'],
+  },
+  EvCommandItem: {
+    figma: 'Command',
+    sets: [s('.Menu Item', '2461:2094', 'Command')],
+    summary:
+      'One command in a Command palette: a leading icon, a label, an optional shortcut cap, and a check when it is the chosen row.',
+    partOf: 'EvCommandGroup',
+    keywords: ['command row', 'palette item', 'action row'],
+  },
+  EvDataTable: {
+    figma: 'Data Table',
+    sets: [
+      s('Data Table', '2373:11585', 'Data Table'),
+      s('.Table Title', '2354:2532', 'Data Table'),
+    ],
+    children: ['EvDataTableRow'],
+    keywords: ['table', 'grid', 'datagrid', 'rows', 'columns', 'sortable', 'sticky column'],
+  },
+  EvDataTableRow: {
+    figma: 'Data Table',
+    sets: [
+      s('.Table Row', '2354:1820', 'Data Table'),
+      s('.Table Row no Fill', '2354:2389', 'Data Table'),
+    ],
+    summary:
+      'One row of a DataTable: it carries the selected state and, for a tree, the indent level that picks its fill off the tree ramp.',
+    partOf: 'EvDataTable',
+    children: ['EvDataTableCell'],
+    keywords: ['table row', 'tr', 'nested row', 'level'],
+  },
+  EvDataTableCell: {
+    figma: 'Data Table',
+    sets: [s('.Table Item', '2349:2714', 'Data Table')],
+    summary:
+      'One cell of a DataTable - a th in the header with an optional sort control, a td in the body. Whatever the cell holds goes in its slot.',
+    partOf: 'EvDataTableRow',
+    keywords: ['table cell', 'td', 'th', 'sort', 'fixed column'],
+  },
+  EvDropdownMenu: {
+    figma: 'Dropdown Menu',
+    sets: [s('DropdownMenu', '736:1793', 'Dropdown Menu')],
+    summary:
+      'A floating menu of actions opened from a trigger, with an optional search field and a list that scrolls when it outgrows the surface.',
+    children: ['EvDropdownMenuItem'],
+    keywords: ['action menu', 'context menu', 'overflow menu', 'kebab menu', 'more menu'],
+  },
+  EvDropdownMenuItem: {
+    figma: 'Dropdown Menu',
+    sets: [s('.DropdownMenu', '736:1848', 'Dropdown Menu')],
+    summary:
+      'One row of a DropdownMenu: an action, a destructive action, a group heading, or the rule between two groups.',
+    partOf: 'EvDropdownMenu',
+    keywords: ['menu item', 'menu action', 'menu separator'],
+  },
+  EvEmptyState: {
+    figma: 'Empty State',
+    sets: [s('D - Empty State', '3688:2647', 'Empty'), s('M - Empty State', '3730:1710', 'Empty')],
+    keywords: ['404', '401', '500', 'error page', 'no data', 'no result', 'blank slate'],
+  },
+  EvHoverCard: {
+    figma: 'Hover Card',
+    sets: [s('D - HoverCard', '2065:2405', 'Hover Card')],
+    keywords: ['preview', 'hovercard', 'peek', 'profile card', 'mention preview'],
+  },
+  EvItem: {
+    figma: 'Item',
+    sets: [s('Item', '2056:48', 'Item')],
+    children: ['EvLabelItem'],
+    keywords: ['list row', 'list item', 'media object', 'account row'],
+  },
+  EvLabelItem: {
+    figma: 'Item',
+    sets: [s('.LabelItem', '2050:996', 'Item')],
+    summary:
+      'A title with a caption under it, at one of three caption sizes. The block Item, Sidebar and Command all reuse for their text.',
+    partOf: 'EvItem',
+    keywords: ['title description', 'label caption', 'two line label'],
+  },
+  EvLoading: {
+    figma: 'Loading',
+    sets: [s('Loading', '3227:400', 'Loading')],
+    keywords: ['spinner', 'pulse', 'skeleton', 'progress bar', 'busy', 'shimmer'],
+  },
+  EvNavigationMenuMobile: {
+    figma: 'Navigation Menu (Mobile)',
+    sets: [
+      s('M - NavigationMenu', '2627:2923', 'Navigation Menu - Mobile'),
+      s('M - NavigationMenu CenterButton', '2627:2927', 'Navigation Menu - Mobile'),
+    ],
+    children: ['EvNavMenuMobileItem'],
+    keywords: ['bottom bar', 'tab bar', 'mobile nav', 'fab', 'center button'],
+  },
+  EvNavMenuMobileItem: {
+    figma: 'Navigation Menu (Mobile)',
+    sets: [s('.Menu', '2559:3036', 'Navigation Menu - Mobile')],
+    summary:
+      'One destination in the mobile navigation bar: a 24px icon over a 12px label, filling its share of the row.',
+    partOf: 'EvNavigationMenuMobile',
+    keywords: ['tab bar item', 'bottom nav item'],
+  },
+  EvPagination: {
+    figma: 'Pagination',
+    sets: [s('Pagination', '749:2846', 'Pagination')],
+    children: ['EvPaginationItem'],
+    keywords: ['pager', 'page numbers', 'rows per page', 'next previous', 'steps', 'wizard'],
+  },
+  EvPaginationItem: {
+    figma: 'Pagination',
+    sets: [s('.StepNumber', '3007:2442', 'Pagination')],
+    summary:
+      'One page tile of a Pagination: a 32px square button, or the inert ellipsis standing in for a run of hidden pages.',
+    partOf: 'EvPagination',
+    keywords: ['page tile', 'page number', 'step number', 'ellipsis'],
+  },
+  EvSidebar: {
+    figma: 'Sidebar',
+    sets: [s('D - Sidebar', '2346:3623', 'Sidebar'), s('M - Sidebar', '2389:6285', 'Sidebar')],
+    children: ['EvSidebarItem'],
+    keywords: ['side nav', 'nav rail', 'app shell', 'collapse', 'drawer nav'],
+  },
+  EvSidebarItem: {
+    figma: 'Sidebar',
+    sets: [s('.ItemSidebar', '159:1729', 'Sidebar')],
+    summary:
+      'One row of a Sidebar: a destination at main, submenu or sub-submenu depth, or one of the two rows that are not controls - a section heading and a rule.',
+    partOf: 'EvSidebar',
+    keywords: ['nav item', 'sidebar row', 'submenu', 'section heading'],
+  },
+  EvToast: {
+    figma: 'Toast',
+    sets: [s('Toast', '95:101', 'Toast')],
+    keywords: ['notification', 'snackbar', 'flash message', 'undo', 'status message'],
   },
 
   // --------------------------------------------------------- charts entry

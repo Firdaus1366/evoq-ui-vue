@@ -268,24 +268,31 @@ function onBlur(event: FocusEvent) {
 </template>
 
 <style lang="scss">
+@use '../../styles/typography' as type;
+
 /*
- * Values are the literal ones read off the Figma node. Every colour below is
- * also an EVOQ semantic token at the same value - see the note in the PR if
- * this needs to follow `data-ev-theme` / `data-ev-brand`.
+ * Traced from the `InputRichEditor` component set in Figma (7 States) and the
+ * `.RichEditor` toolbar set.
+ *
+ * These values were originally written as the literals read off the node, with
+ * a note deferring the token mapping. They resolve to exactly the same colours,
+ * but through the semantic layer, so the component now follows `data-ev-theme`
+ * and all four `data-ev-brand` themes. `verify:figma` resolves the chain back
+ * to the board's hexes, which is what proves the mapping changed none of them.
  */
 .ev-rich-editor {
   /* Content stroke + fill, by state. */
-  --ev-rich-editor-border: #c4cada;
-  --ev-rich-editor-bg: #ffffff;
-  --ev-rich-editor-fg: #071437;
-  --ev-rich-editor-message: #78829d;
+  --ev-rich-editor-border: var(--ev-border-tertiary);
+  --ev-rich-editor-bg: var(--ev-bg-primary);
+  --ev-rich-editor-fg: var(--ev-text-primary);
+  --ev-rich-editor-message: var(--ev-text-secondary);
 
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
-  gap: 4px;
+  gap: var(--ev-spacing-xs);
   width: 100%;
   height: fit-content;
 
@@ -302,12 +309,12 @@ function onBlur(event: FocusEvent) {
     flex-direction: row;
     align-items: flex-start;
     justify-content: flex-start;
-    gap: 4px;
+    gap: var(--ev-spacing-xs);
     width: 100%;
     height: 80px;
-    padding: 8px;
-    border: 1px solid var(--ev-rich-editor-border);
-    border-radius: 6px;
+    padding: var(--ev-spacing-sm);
+    border: var(--ev-stroke-xs) solid var(--ev-rich-editor-border);
+    border-radius: var(--ev-radius-xs);
     background-color: var(--ev-rich-editor-bg);
   }
 
@@ -318,54 +325,45 @@ function onBlur(event: FocusEvent) {
     overflow-y: hidden;
     outline: none;
     color: var(--ev-rich-editor-fg);
-    font-family:
-      Inter,
-      -apple-system,
-      'Segoe UI',
-      sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 16px;
-    letter-spacing: 0;
+    letter-spacing: var(--ev-letter-spacing-normal);
+
+    @include type.style('body/regular');
   }
 
   /* Figma's `.InputType` sits on top of the body while the field is empty. */
   &__empty {
     position: absolute;
-    top: 8px;
-    left: 8px;
-    right: 8px;
+    top: var(--ev-spacing-sm);
+    left: var(--ev-spacing-sm);
+    right: var(--ev-spacing-sm);
     pointer-events: none;
-    font-family:
-      Inter,
-      -apple-system,
-      'Segoe UI',
-      sans-serif;
-    font-weight: 500;
-    letter-spacing: 0;
+    font-family: var(--ev-font-family-base);
+    font-weight: var(--ev-font-weight-medium);
+    letter-spacing: var(--ev-letter-spacing-normal);
 
     /* Variant=Title */
     &--title {
       display: inline-flex;
       align-items: center;
+      /* Off the spacing scale (8 then 12) - the board draws 10. */
       gap: 10px;
-      font-size: 12px;
-      line-height: 16px;
-      color: #78829d;
+      font-size: var(--ev-font-size-xs);
+      line-height: var(--ev-line-height-xs);
+      color: var(--ev-text-secondary);
     }
 
     /* Variant=Placeholder-default */
     &--placeholder {
-      font-size: 14px;
-      line-height: 16px;
-      color: #c4cada;
+      font-size: var(--ev-font-size-sm);
+      line-height: var(--ev-line-height-xs);
+      color: var(--ev-text-tertiary);
     }
   }
 
   &__required {
-    color: #f82a5b;
-    font-size: 14px;
-    line-height: 16px;
+    color: var(--ev-ext-error);
+    font-size: var(--ev-font-size-sm);
+    line-height: var(--ev-line-height-xs);
   }
 
   /* --------------------------------------------------------- Toolbar */
@@ -374,13 +372,14 @@ function onBlur(event: FocusEvent) {
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    gap: 8px;
+    gap: var(--ev-spacing-sm);
     width: 100%;
     height: 36px;
-    padding: 8px 12px;
-    border: 1px solid #dbdfe9;
+    padding: var(--ev-spacing-sm) var(--ev-spacing-md);
+    border: var(--ev-stroke-xs) solid var(--ev-border-primary);
+    /* Off the radius scale (4 then 6) - the board draws 5 on the toolbar. */
     border-radius: 5px;
-    background-color: #ffffff;
+    background-color: var(--ev-bg-primary);
 
     button {
       display: flex;
@@ -391,7 +390,7 @@ function onBlur(event: FocusEvent) {
       padding: 0;
       border: 0;
       background: none;
-      color: #78829d;
+      color: var(--ev-icon-primary);
       cursor: pointer;
 
       svg {
@@ -406,19 +405,25 @@ function onBlur(event: FocusEvent) {
       }
 
       &:focus-visible {
-        outline: 2px solid #1b84ff;
-        outline-offset: 2px;
-        border-radius: 2px;
+        outline: var(--ev-focus-ring-width) solid var(--ev-focus-ring-color);
+        outline-offset: var(--ev-focus-ring-offset);
+        border-radius: var(--ev-radius-2xs);
       }
     }
   }
 
-  /* node: Separator > Line 1 - a 1px rule, 20px tall. */
+  /*
+   * node: Separator > Line 1 - a 1px rule, 20px tall. Darker than the
+   * EvSeparator atom’s border/primary: the board overrides this instance to
+   * #99a1b7. Read as icon/secondary rather than border/inverse - the two share
+   * that hex in light mode, but border/inverse goes near-white in dark, where
+   * this rule has to stay a mid grey between the icon buttons.
+   */
   &__separator {
     flex: 0 0 auto;
-    width: 1px;
+    width: var(--ev-stroke-xs);
     height: 20px;
-    background-color: #99a1b7;
+    background-color: var(--ev-icon-secondary);
   }
 
   /* -------------------------------------------------- Validation text */
@@ -427,20 +432,14 @@ function onBlur(event: FocusEvent) {
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    gap: 4px;
+    gap: var(--ev-spacing-xs);
     width: 100%;
     height: fit-content;
     margin: 0;
     color: var(--ev-rich-editor-message);
-    font-family:
-      Inter,
-      -apple-system,
-      'Segoe UI',
-      sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 16px;
-    letter-spacing: 0;
+    letter-spacing: var(--ev-letter-spacing-normal);
+
+    @include type.style('body/small');
   }
 
   &__message-start {
@@ -455,25 +454,25 @@ function onBlur(event: FocusEvent) {
 
   /* ----------------------------------------------------------- States */
   &--active {
-    --ev-rich-editor-border: #1b84ff;
+    --ev-rich-editor-border: var(--ev-brand-primary);
   }
 
   &--error {
-    --ev-rich-editor-border: #f82a5b;
-    --ev-rich-editor-fg: #c62249;
-    --ev-rich-editor-message: #f82a5b;
+    --ev-rich-editor-border: var(--ev-ext-error);
+    --ev-rich-editor-fg: var(--ev-text-error);
+    --ev-rich-editor-message: var(--ev-ext-error);
 
     .ev-rich-editor__empty--title {
-      color: #c62249;
+      color: var(--ev-text-error);
     }
   }
 
   &--disabled {
-    --ev-rich-editor-border: #dbdfe9;
-    --ev-rich-editor-bg: #ebedf1;
+    --ev-rich-editor-border: var(--ev-border-primary);
+    --ev-rich-editor-bg: var(--ev-bg-subtle);
 
     .ev-rich-editor__empty--title {
-      color: #071437;
+      color: var(--ev-text-primary);
     }
 
     .ev-rich-editor__body {
@@ -481,24 +480,27 @@ function onBlur(event: FocusEvent) {
     }
   }
 
-  /* Figma's `Has Scroll`: the 2px bar, 1px #dbdfe9 track over #c4cada thumb. */
+  /*
+   * Figma's `Has Scroll`: the 2px bar - a border/primary track under a
+   * border/tertiary thumb, the pair EvScrollArea draws too.
+   */
   &--scroll &__body {
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #c4cada transparent;
+    scrollbar-color: var(--ev-border-tertiary) transparent;
 
     &::-webkit-scrollbar {
       width: 2px;
     }
 
     &::-webkit-scrollbar-track {
-      background-color: #dbdfe9;
-      border-radius: 8px;
+      background-color: var(--ev-border-primary);
+      border-radius: var(--ev-radius-sm);
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: #c4cada;
-      border-radius: 8px;
+      background-color: var(--ev-border-tertiary);
+      border-radius: var(--ev-radius-sm);
     }
   }
 }

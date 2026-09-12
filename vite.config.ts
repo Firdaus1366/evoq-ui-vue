@@ -11,7 +11,7 @@ export default defineConfig({
     vue(),
     dts({
       tsconfigPath: './tsconfig.build.json',
-      include: ['src'],
+      include: ['src', 'env.d.ts'],
       exclude: ['src/**/*.spec.ts', 'src/**/*.test.ts'],
     }),
   ],
@@ -39,7 +39,11 @@ export default defineConfig({
       external: ['vue', '@unovis/vue', '@unovis/ts'],
       output: {
         globals: { vue: 'Vue' },
-        assetFileNames: 'evoq-ui.[ext]',
+        assetFileNames: (asset) => {
+          const name = asset.name ?? asset.names?.[0] ?? ''
+          // The stylesheet keeps its published name; fonts go in a folder.
+          return name.endsWith('.css') ? 'evoq-ui.css' : 'fonts/[name][extname]'
+        },
       },
     },
     cssCodeSplit: false,

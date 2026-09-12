@@ -57,7 +57,7 @@ _The exact snippet the playground simulator copies for this component (`playgrou
 
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `ratio` | `AspectRatio \| string` | `'16:9'` | no | One of the ratios drawn in Figma, or any `w:h` / `w/h` pair. |
+| `ratio` | `'16:9'` \| `'9:16'` \| `'4:5'` \| `'5:4'` \| `'1:1'` \| `string` | `'16:9'` | no | One of the ratios drawn in Figma, or any `w:h` / `w/h` pair. |
 
 ## Slots (1)
 

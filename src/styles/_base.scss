@@ -1,0 +1,22 @@
+///
+/// The only rule this library puts on the page itself.
+///
+/// Importing `evoq-ui/style.css` therefore sets the app's text in Inter -
+/// headings, paragraphs, form controls, everything - not just the components.
+/// That is the point: one design system, one typeface.
+///
+/// It is deliberately a bare `html` selector reading a token, which makes it
+/// the weakest thing on the page to argue with. An app changes the whole
+/// system's typeface from its own stylesheet:
+///
+///   :root {
+///     --ev-font-family-base: 'Plus Jakarta Sans', sans-serif;
+///   }
+///
+/// Overriding the token beats overriding the rule: components read the same
+/// token, so both the page and the components follow, whatever the order the
+/// stylesheets happen to load in.
+///
+html {
+  font-family: var(--ev-font-family-base);
+}

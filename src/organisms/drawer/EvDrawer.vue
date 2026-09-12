@@ -19,6 +19,11 @@ const props = withDefaults(
     closable?: boolean
     closeLabel?: string
     closeOnScrim?: boolean
+    /**
+     * Draw the header at all. The board's `M- Drawer` hides the whole header
+     * frame with its `Header` property - title, subtext and close together.
+     */
+    header?: boolean
   }>(),
   {
     modelValue: false,
@@ -29,6 +34,7 @@ const props = withDefaults(
     closable: true,
     closeLabel: 'Tutup',
     closeOnScrim: true,
+    header: true,
   },
 )
 
@@ -69,14 +75,14 @@ useOverlay({ open: toRef(props, 'modelValue'), panel, onEscape: close })
         :class="`ev-drawer__panel--${size}`"
         role="dialog"
         aria-modal="true"
-        :aria-labelledby="title || $slots.title ? titleId : undefined"
+        :aria-labelledby="header && (title || $slots.title) ? titleId : undefined"
         tabindex="-1"
       >
         <!-- The bottom sheet is dragged by a grab handle rather than closed
              from a corner, which is why it only appears on that placement. -->
         <span v-if="placement === 'bottom'" class="ev-drawer__thumb" aria-hidden="true" />
 
-        <div class="ev-drawer__header">
+        <div v-if="header" class="ev-drawer__header">
           <div class="ev-drawer__heading">
             <p :id="titleId" class="ev-drawer__title">
               <slot name="title">{{ title }}</slot>
@@ -85,8 +91,6 @@ useOverlay({ open: toRef(props, 'modelValue'), panel, onEscape: close })
               <slot name="subtext">{{ subtext }}</slot>
             </p>
           </div>
-
-          <slot name="topSlot" />
 
           <button
             v-if="closable"
@@ -99,6 +103,9 @@ useOverlay({ open: toRef(props, 'modelValue'), panel, onEscape: close })
               <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" fill="none" />
             </svg>
           </button>
+
+          <!-- The board puts Top Slot after the close icon, not before it. -->
+          <slot name="topSlot" />
         </div>
 
         <div class="ev-drawer__content"><slot /></div>
@@ -147,6 +154,16 @@ useOverlay({ open: toRef(props, 'modelValue'), panel, onEscape: close })
   }
 
   /* The shadow points away from the edge the panel is anchored to. */
+  /*
+   * The board's Default drawer stretches both footer buttons across the row
+   * (each `grow 1`: 172px of a 352px row), while Wide lets them hug at 69 and
+   * 109. The bottom sheet stacks them instead, so this is desktop-only.
+   */
+  &--right &__panel--default &__footer > *,
+  &--left &__panel--default &__footer > * {
+    flex: 1 1 0;
+  }
+
   &--right {
     justify-content: flex-end;
 
@@ -174,19 +191,29 @@ useOverlay({ open: toRef(props, 'modelValue'), panel, onEscape: close })
       width: 100%;
       max-width: none;
       max-height: 80vh;
+      /* node: M- Drawer - 24 above the thumb, 48 below for the home bar. */
       padding-top: var(--ev-spacing-xl);
-      border-radius: var(--ev-radius-md) var(--ev-radius-md) 0 0;
+      padding-bottom: var(--ev-spacing-3xl);
+      border-radius: var(--ev-radius-xl) var(--ev-radius-xl) 0 0;
       box-shadow: 0 -4px 24px 0 rgb(var(--ev-shadow-tint) / 0.15);
     }
 
+    /* The sheet drops both rules and pads 16 all round, where desktop uses 24. */
     .ev-drawer__header {
       padding: 0 var(--ev-spacing-lg) var(--ev-spacing-lg);
+      border-bottom: 0;
     }
 
-    .ev-drawer__content,
+    .ev-drawer__content {
+      padding: var(--ev-spacing-lg);
+    }
+
+    /* The board stacks the sheet's buttons full width, primary on top. */
     .ev-drawer__footer {
-      padding-right: var(--ev-spacing-lg);
-      padding-left: var(--ev-spacing-lg);
+      flex-direction: column;
+      align-items: stretch;
+      padding: var(--ev-spacing-lg) var(--ev-spacing-lg) 0;
+      border-top: 0;
     }
   }
 
@@ -276,6 +303,8 @@ useOverlay({ open: toRef(props, 'modelValue'), panel, onEscape: close })
   &__footer {
     display: flex;
     align-items: center;
+    /* node: Footer - MAX on the main axis, so the actions sit to the right. */
+    justify-content: flex-end;
     gap: var(--ev-spacing-sm);
     padding: var(--ev-spacing-lg) var(--ev-spacing-xl) var(--ev-spacing-xl);
     border-top: var(--ev-stroke-xs) solid var(--ev-border-primary);

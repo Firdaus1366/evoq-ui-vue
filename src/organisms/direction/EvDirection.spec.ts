@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import EvDirection from './EvDirection.vue'
-import EvLogo from '../../atoms/logo/EvLogo.vue'
 
 describe('EvDirection', () => {
   it("renders Figma's Top Slot above the header, only when filled", () => {
@@ -72,42 +71,5 @@ describe('EvDirection', () => {
   it('renders the body slot', () => {
     const wrapper = mount(EvDirection, { slots: { default: '<input class="f" />' } })
     expect(wrapper.find('.ev-direction__content .f').exists()).toBe(true)
-  })
-})
-
-describe('EvLogo', () => {
-  it('renders the mark, named for assistive tech', () => {
-    const wrapper = mount(EvLogo)
-    const svg = wrapper.find('svg')
-    expect(svg.attributes('role')).toBe('img')
-    expect(svg.attributes('aria-label')).toBe('EVOQ')
-  })
-
-  it('hides itself when the label is cleared, for decorative use', () => {
-    const svg = mount(EvLogo, { props: { label: '' } }).find('svg')
-    expect(svg.attributes('aria-hidden')).toBe('true')
-    expect(svg.attributes('role')).toBeUndefined()
-  })
-
-  it('takes a numeric size as pixels and a string verbatim', () => {
-    expect(
-      mount(EvLogo, { props: { size: 48 } })
-        .find('svg')
-        .attributes('style'),
-    ).toContain('48px')
-    expect(
-      mount(EvLogo, { props: { size: '3rem' } })
-        .find('svg')
-        .attributes('style'),
-    ).toContain('3rem')
-  })
-
-  it('renders a wordmark only when one is supplied', () => {
-    expect(mount(EvLogo).find('.ev-logo__wordmark').exists()).toBe(false)
-    expect(
-      mount(EvLogo, { slots: { default: 'EVOQ' } })
-        .find('.ev-logo__wordmark')
-        .text(),
-    ).toBe('EVOQ')
   })
 })

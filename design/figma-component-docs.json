@@ -2,9 +2,10 @@
   "source": {
     "file": "EVOQ - Design System",
     "fileKey": "hJ3XmwLptPtF4IFBDlZlpx",
-    "captured": "2026-09-11",
+    "captured": "2026-09-12",
     "how": "Usage section (When to use / When not to use / Do / Don't) and the summary line of each page's newest `Documentation*` frame. Behavioural rules only: the Properties and Guideline sections are left out because they speak in Figma property names and carry prose numbers that disagree with the boards (AGENTS.md section 6).",
-    "legacy": "Alert, Breadcrumb and Button Group have no summary line in their Documentation frame; theirs comes from the older `<Name> - Usage Doc` frame and is marked `summaryFrom: legacy`."
+    "legacy": "Alert, Breadcrumb and Button Group have no summary line in their Documentation frame; theirs comes from the older `<Name> - Usage Doc` frame and is marked `summaryFrom: legacy`.",
+    "onProgress": "The eleven pages under the 🚧 On Progress ⬇️ divider - Command, Data Table, Dropdown Menu, Empty State, Hover Card, Item, Loading, Navigation Menu (Mobile), Pagination, Sidebar and Toast - were captured on 2026-09-12. Their boards are still moving, so re-scrape these before trusting them."
   },
   "docs": {
     "Avatar": {
@@ -906,6 +907,193 @@
       ],
       "dont": [
         "Don't mix selection and expansion into one ambiguous click target. Don't hide whether a row has children — always show the chevron when it does."
+      ]
+    },
+    "Data Table": {
+      "page": "Data Table",
+      "frame": "4220:74017",
+      "summary": "A data table presents structured rows and columns with sortable headers, filters, selection, and pagination — built for scanning, comparing, and acting on large datasets.",
+      "whenToUse": [
+        "Display large, structured datasets that users need to scan, sort, filter, compare, select, and act on — admin lists, records, transactions, reports."
+      ],
+      "whenNotToUse": [
+        "For a handful of items or simple key-value pairs → use a list or description list. For non-tabular content → use Cards. On small mobile screens, prefer stacked cards."
+      ],
+      "do": [
+        "Right-align numeric columns. Keep headers sortable and concise. Freeze key columns (Left/Right Fixed) for wide tables. Provide pagination or virtual scroll for large sets."
+      ],
+      "dont": [
+        "Don't cram too many columns without a fixed/scroll strategy. Don't mix wildly different data types in one column. Don't hide critical actions off-screen."
+      ]
+    },
+    "Command": {
+      "page": "Command",
+      "frame": "4220:73205",
+      "summary": "A command palette (⌘K) lets users search and run actions from anywhere — a searchable, keyboard-navigable list of commands grouped into sections.",
+      "whenToUse": [
+        "Give power users fast keyboard access to actions, navigation, and search across the app — triggered by ⌘K / Ctrl+K from anywhere."
+      ],
+      "whenNotToUse": [
+        "As the only way to reach an action. On simple apps with few commands — a visible menu or buttons are clearer."
+      ],
+      "do": [
+        "Group commands into clear sections. Show keyboard shortcuts (Kbd) for frequent actions. Keep labels action-first (verbs)."
+      ],
+      "dont": [
+        "Don't bury critical actions only here. Don't list hundreds of flat commands without grouping or search."
+      ]
+    },
+    "Dropdown Menu": {
+      "page": "Dropdown Menu",
+      "frame": "4262:77736",
+      "summary": "A dropdown menu is a floating list of actions or commands opened from a trigger. It supports an optional search, a custom content slot, internal scrolling, and up / down scroll affordances.",
+      "whenToUse": [
+        "Group related actions or commands behind a single trigger — row actions, overflow (⋯) menus, contextual commands, or account menus."
+      ],
+      "whenNotToUse": [
+        "To pick a value in a form → use a Dropdown List / Select. For primary page navigation → use a Nav, not an action menu."
+      ],
+      "do": [
+        "Order actions by frequency or group them with dividers. Add search for long menus. Use scroll affordances when the menu exceeds the viewport."
+      ],
+      "dont": [
+        "Don't mix destructive and routine actions without separation. Don't nest deep submenus. Don't exceed what fits without scroll."
+      ]
+    },
+    "Empty State": {
+      "page": "Empty",
+      "frame": "4272:79658",
+      "summary": "An empty state fills a screen or container when there's no content to show — errors (400 / 401 / 404 / 500), maintenance, or simply no data / no results. It pairs an illustration with a message and an optional recovery action.",
+      "whenToUse": [
+        "Whenever a view has nothing to render — failed requests, missing permissions, not-found pages, server errors, maintenance windows, or empty lists / search results."
+      ],
+      "whenNotToUse": [
+        "For transient loading → use a skeleton or spinner. For a single empty field → use an inline Hint, not a full-screen error state."
+      ],
+      "do": [
+        "Match the state to the cause (status code or empty-data). Keep the message human and brief. Offer a clear next step (Reload, Go Back). Use the smaller No Data / No Result variants inside tables and cards."
+      ],
+      "dont": [
+        "Don't show a blank screen with no guidance. Don't blame the user. Don't use a page-level error for an in-table empty result."
+      ]
+    },
+    "Hover Card": {
+      "page": "Hover Card",
+      "frame": "4278:80082",
+      "summary": "A hover card is a small overlay that appears when the user hovers over a trigger, surfacing a preview — a title with an optional description and caption — without a click.",
+      "whenToUse": [
+        "Use a hover card to reveal contextual preview information about a linked entity (user, repository, term) on hover — without forcing the user to navigate away."
+      ],
+      "whenNotToUse": [
+        "Don't use for critical actions or content the user must see — hover is not available on touch devices. Use a Tooltip for short text-only hints, or a Popover for click-triggered interactive content."
+      ],
+      "do": [
+        "Keep the content concise and scannable — a title, a short description, and at most one or two supporting details. Trigger on a meaningful delay to avoid accidental flicker."
+      ],
+      "dont": [
+        "Don't overload the card with long paragraphs, multiple actions, or nested interactive elements. Don't put essential controls inside it, since it dismisses as soon as the pointer leaves."
+      ]
+    },
+    "Item": {
+      "page": "Item",
+      "frame": "4282:80173",
+      "summary": "An item is a horizontal list row that pairs a leading element (icon, avatar, image) with a title and description, and an optional trailing action — used in lists, menus, and selection groups.",
+      "whenToUse": [
+        "Use for rows in lists, menus, settings, or selection groups where each entry pairs a leading visual with a title, supporting text, and an optional action."
+      ],
+      "whenNotToUse": [
+        "Don't use for dense tabular data with many columns — use a Table. Don't use for a single standalone action — use a Button."
+      ],
+      "do": [
+        "Keep one leading element per item and align trailing actions consistently down the list. Keep titles short and let the description carry detail."
+      ],
+      "dont": [
+        "Don't stack multiple leading visuals (avatar + image + icon) in one item. Don't crowd the row with several trailing actions — keep it to one."
+      ]
+    },
+    "Loading": {
+      "page": "Loading",
+      "frame": "4282:80578",
+      "summary": "A loading indicator communicates that content or an action is in progress, reassuring the user that the system is working and reducing perceived wait time.",
+      "whenToUse": [
+        "Show during async waits: spinner/pulse for short indeterminate waits, skeleton while content loads in place, progress bar for measurable tasks, logo for full-page app boot."
+      ],
+      "whenNotToUse": [
+        "Don't show a loader for instant actions (<300ms) — it causes flicker. Don't block the whole screen when only part of it is loading; prefer an inline skeleton."
+      ],
+      "do": [
+        "Match the indicator to the wait: use skeletons that mirror the final layout, and a progress bar when completion can be measured."
+      ],
+      "dont": [
+        "Don't mix multiple loader types in one view, and don't leave a spinner running indefinitely — show an error or timeout if the wait exceeds expectations."
+      ]
+    },
+    "Navigation Menu (Mobile)": {
+      "page": "Navigation Menu - Mobile",
+      "frame": "4347:82858",
+      "summary": "The mobile navigation menu is a fixed bottom bar (393px) that holds the app's primary destinations as icon-plus-label tabs. Two styles: a standard bar and a variant with a raised center action button.",
+      "whenToUse": [
+        "Use as the persistent bottom navigation on mobile for 2–5 primary destinations. Choose the Center Button variant when one action (create, scan, post) is clearly the primary task."
+      ],
+      "whenNotToUse": [
+        "Don't exceed 5 destinations — overflow belongs in a \"More\" menu. Don't use on desktop — use the desktop navigation bar. Don't put secondary actions in the center button."
+      ],
+      "do": [
+        "Keep labels to one word and pair each with a clear icon. Mark the active destination with the brand-blue icon and label. Keep the item count consistent across the app."
+      ],
+      "dont": [
+        "Don't hide the bar on scroll for core flows, and don't change the icon set or order between screens. Don't label the center action ambiguously."
+      ]
+    },
+    "Pagination": {
+      "page": "Pagination",
+      "frame": "4410:83059",
+      "summary": "Pagination splits a large set of content or a multi-step flow into discrete pages, giving users controls to move between them and a sense of their position in the whole.",
+      "whenToUse": [
+        "Use to break long lists or tables into pages (Number / Display), or to step through a bounded sequence such as a wizard or onboarding flow (Step)."
+      ],
+      "whenNotToUse": [
+        "Don't use for continuously streamed feeds — use infinite scroll or a \"Load more\" button. Don't paginate very short lists that fit on one screen."
+      ],
+      "do": [
+        "Always show the current position and total. Keep Previous/Next reachable and disable them at the first/last page. Use the ellipsis (More L/R) to truncate long page ranges."
+      ],
+      "dont": [
+        "Don't show every page number for large sets — collapse the middle with an ellipsis. Don't mix Step and Number patterns in the same flow."
+      ]
+    },
+    "Sidebar": {
+      "page": "Sidebar",
+      "frame": "4446:84476",
+      "summary": "The sidebar is the vertical navigation rail along the edge of an app, holding the brand, search, primary navigation items, and the user account. It can expand or collapse on desktop and appears as a slide-in drawer on mobile. Available for desktop (D) and mobile (M).",
+      "whenToUse": [
+        "Use as the primary navigation for an app with many sections. Collapse it to icons (Open=No) to reclaim space on desktop; present it as a drawer on mobile."
+      ],
+      "whenNotToUse": [
+        "Don't use for a handful of top-level destinations — use a top navigation bar. Don't keep the mobile drawer permanently open over content."
+      ],
+      "do": [
+        "Group related items under section labels (USER, APPS). Keep the active item clearly highlighted. Preserve icon order between expanded and collapsed states."
+      ],
+      "dont": [
+        "Don't nest more than one level of sub-items. Don't hide the collapse control, and don't drop labels in the collapsed state without keeping recognizable icons."
+      ]
+    },
+    "Toast": {
+      "page": "Toast",
+      "frame": "4518:85548",
+      "summary": "A toast is a brief, auto-dismissing notification that appears over the interface to confirm an action or surface a status message without interrupting the user's flow.",
+      "whenToUse": [
+        "Use to confirm an action or report a status non-intrusively — saved changes, errors, sync results. Pick the Type that matches the message’s severity."
+      ],
+      "whenNotToUse": [
+        "Don't use for critical messages that require a decision — use a Modal or Alert Dialog. Don't pack long content or multiple actions into a toast."
+      ],
+      "do": [
+        "Keep the message to one short line. Auto-dismiss after a few seconds, and always allow manual close. Stack multiple toasts rather than overlapping them."
+      ],
+      "dont": [
+        "Don't auto-dismiss error toasts the user must act on — keep them until dismissed. Don't show many toasts at once or place them where they cover key controls."
       ]
     }
   }

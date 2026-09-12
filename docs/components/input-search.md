@@ -12,7 +12,10 @@ partOf: null
 children: []
 composes: []
 usedBy:
+  - "evoq-ui:command"
   - "evoq-ui:dropdown-list"
+  - "evoq-ui:dropdown-menu"
+  - "evoq-ui:sidebar"
 seeAlso:
   - "evoq-ui:input"
 figma:
@@ -83,7 +86,7 @@ _The exact snippet the playground simulator copies for this component (`playgrou
 | Relation | Components |
 | --- | --- |
 | Built from | — (renders no other Ev component) |
-| Used by | `evoq-ui:dropdown-list` |
+| Used by | `evoq-ui:command`, `evoq-ui:dropdown-list`, `evoq-ui:dropdown-menu`, `evoq-ui:sidebar` |
 | Slot children | — |
 
 ## Design guidance

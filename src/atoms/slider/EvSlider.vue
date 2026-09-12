@@ -157,6 +157,7 @@ function emitAt(index: 0 | 1, raw: string) {
   --ev-slider-fill: var(--ev-text-secondary);
   --ev-slider-thumb-bg: var(--ev-bg-primary);
   --ev-slider-thumb-border: var(--ev-border-primary);
+  --ev-slider-pulse: var(--ev-text-secondary);
   --ev-slider-thickness: 4px;
   --ev-slider-thumb: 20px;
 
@@ -208,6 +209,19 @@ function emitAt(index: 0 | 1, raw: string) {
       background-color: var(--ev-slider-thumb-bg);
       cursor: grab;
       pointer-events: auto;
+    }
+
+    /*
+     * `.Thumb` State=Hover: the board's `Pulse` node grows from 20 to 30 behind
+     * the 20px Shape, which reads as a 5px halo. It is drawn at text/secondary
+     * 50% - the same hex the board paints (#78829d) at the node's own opacity.
+     */
+    &:hover::-webkit-slider-thumb {
+      box-shadow: 0 0 0 5px color-mix(in srgb, var(--ev-slider-pulse) 50%, transparent);
+    }
+
+    &:hover::-moz-range-thumb {
+      box-shadow: 0 0 0 5px color-mix(in srgb, var(--ev-slider-pulse) 50%, transparent);
     }
 
     &:focus-visible::-webkit-slider-thumb {

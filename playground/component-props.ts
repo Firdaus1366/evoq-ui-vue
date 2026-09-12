@@ -49,7 +49,14 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "required": false,
         "default": "'16:9'",
         "description": "One of the ratios drawn in Figma, or any `w:h` / `w/h` pair.",
-        "control": "none"
+        "control": "select",
+        "options": [
+          "16:9",
+          "9:16",
+          "4:5",
+          "5:4",
+          "1:1"
+        ]
       }
     ],
     "slots": [
@@ -505,6 +512,77 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
       }
     ]
   },
+  "EvCommandItem": {
+    "tag": "EvCommandItem",
+    "file": "src/atoms/command-item/EvCommandItem.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "href",
+        "type": "string",
+        "required": false,
+        "description": "Renders a real link instead of an option button.",
+        "control": "text"
+      },
+      {
+        "name": "active",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `State=Active`: the row currently chosen, marked with a check.",
+        "control": "boolean"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "heading",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The board builds its \"Section Title\" rows out of this same node with every icon and cap switched off. A heading is not selectable.",
+        "control": "boolean"
+      },
+      {
+        "name": "hasChevron",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Draws the trailing chevron instead of nothing. Ignored when active.",
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      },
+      {
+        "name": "icon",
+        "description": ""
+      },
+      {
+        "name": "kbd",
+        "description": "Keyboard shortcut caps - the board fills this with `Kbd` instances."
+      }
+    ],
+    "emits": [
+      {
+        "name": "click",
+        "description": ""
+      }
+    ]
+  },
   "EvDropdownItem": {
     "tag": "EvDropdownItem",
     "file": "src/atoms/dropdown-item/EvDropdownItem.vue",
@@ -568,6 +646,92 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
     "emits": [
       {
         "name": "select",
+        "description": ""
+      }
+    ]
+  },
+  "EvDropdownMenuItem": {
+    "tag": "EvDropdownMenuItem",
+    "file": "src/atoms/dropdown-menu-item/EvDropdownMenuItem.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "subtext",
+        "type": "string",
+        "required": false,
+        "description": "Second line under the label. Figma's `Has Subtext`.",
+        "control": "text"
+      },
+      {
+        "name": "href",
+        "type": "string",
+        "required": false,
+        "description": "Renders a real link instead of a menu item button.",
+        "control": "text"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `State=Error`: a destructive entry, such as Delete.",
+        "control": "boolean"
+      },
+      {
+        "name": "submenu",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `State=Submenu`: the muted 12px row the board uses to head a group of entries. It is a label, not a control.",
+        "control": "boolean"
+      },
+      {
+        "name": "separator",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `State=Separator`: a rule between two groups.",
+        "control": "boolean"
+      },
+      {
+        "name": "hasChevron",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Draws the trailing chevron that says the entry opens a submenu.",
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      },
+      {
+        "name": "icon",
+        "description": ""
+      },
+      {
+        "name": "kbd",
+        "description": "Keyboard shortcut caps - the board fills this with `Kbd` instances."
+      }
+    ],
+    "emits": [
+      {
+        "name": "click",
         "description": ""
       }
     ]
@@ -986,32 +1150,153 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
     ],
     "emits": []
   },
-  "EvLogo": {
-    "tag": "EvLogo",
-    "file": "src/atoms/logo/EvLogo.vue",
+  "EvLabelItem": {
+    "tag": "EvLabelItem",
+    "file": "src/atoms/label-item/EvLabelItem.vue",
     "layer": "atom",
     "props": [
       {
-        "name": "size",
-        "type": "number | string",
+        "name": "type",
+        "type": "LabelItemType",
         "required": false,
-        "default": "32",
-        "description": "Rendered height. The mark is square, so this sets both dimensions.",
-        "control": "none"
+        "default": "'default'",
+        "description": "`Type` of the Figma `.LabelItem` set - it only changes the caption size.",
+        "control": "select",
+        "options": [
+          "default",
+          "small",
+          "extra-small"
+        ]
       },
       {
-        "name": "label",
+        "name": "title",
         "type": "string",
         "required": false,
-        "default": "'EVOQ'",
-        "description": "Accessible name. Set to an empty string for a decorative mark.",
+        "control": "text"
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false,
+        "description": "Caption under the title. Figma names the node `Description` on Default and `Label` on the two small types; it is one slot here.",
         "control": "text"
       }
     ],
     "slots": [
       {
         "name": "default",
-        "description": "The wordmark beside the mark. Not shipped - see the note in the style block for why - so supply your own asset here when you need it."
+        "description": ""
+      },
+      {
+        "name": "description",
+        "description": ""
+      }
+    ],
+    "emits": []
+  },
+  "EvLoading": {
+    "tag": "EvLoading",
+    "file": "src/atoms/loading/EvLoading.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "type",
+        "type": "LoadingType",
+        "required": false,
+        "default": "'spinner'",
+        "description": "`Type` of the Figma `Loading` set.",
+        "control": "select",
+        "options": [
+          "spinner",
+          "pulse",
+          "progress-bar",
+          "skeleton"
+        ]
+      },
+      {
+        "name": "value",
+        "type": "number",
+        "required": false,
+        "description": "Progress from 0 to 100. Leave it unset and the progress bar runs indeterminate, which is what the board's animation frames draw.",
+        "control": "number"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "'Memuat...'",
+        "description": "Announced to assistive tech while the indicator is on screen.",
+        "control": "text"
+      }
+    ],
+    "slots": [],
+    "emits": []
+  },
+  "EvLogo": {
+    "tag": "EvLogo",
+    "file": "src/atoms/logo/EvLogo.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "brand",
+        "type": "LogoBrand",
+        "required": false,
+        "default": "'evoq'",
+        "description": "Which lockup: the EVOQ product logo, or the DataSea company logo.",
+        "control": "select",
+        "options": [
+          "evoq",
+          "datasea"
+        ]
+      },
+      {
+        "name": "variant",
+        "type": "LogoVariant",
+        "required": false,
+        "default": "'lockup'",
+        "description": "The whole lockup, or one part of it on its own.",
+        "control": "select",
+        "options": [
+          "lockup",
+          "mark",
+          "wordmark"
+        ]
+      },
+      {
+        "name": "size",
+        "type": "number | string",
+        "required": false,
+        "default": "40",
+        "description": "Rendered height, in px for a number. The width follows the lockup.",
+        "control": "none"
+      },
+      {
+        "name": "src",
+        "type": "string",
+        "required": false,
+        "description": "An image to use instead of the built-in logo - a local asset, or any URL. Leave it unset and the component draws the Figma logo.",
+        "control": "text"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Accessible name. Defaults to the brand's name; set it to an empty string for a logo that is purely decorative.",
+        "control": "text"
+      },
+      {
+        "name": "tagline",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Draw the \"Procure to Pay Evolution\" line under the wordmark. Only the EVOQ lockup has one; DataSea ignores it.",
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "Replaces the logo entirely - for a lockup this package does not ship, such as a co-branded one. Takes precedence over `src`."
       }
     ],
     "emits": []
@@ -1055,6 +1340,93 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "description": ""
       }
     ],
+    "emits": [
+      {
+        "name": "click",
+        "description": ""
+      }
+    ]
+  },
+  "EvNavMenuMobileItem": {
+    "tag": "EvNavMenuMobileItem",
+    "file": "src/atoms/nav-menu-mobile-item/EvNavMenuMobileItem.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "active",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks the current section. Figma models it as the `Active` variant.",
+        "control": "boolean"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "href",
+        "type": "string",
+        "required": false,
+        "description": "Renders an anchor instead of a button.",
+        "control": "text"
+      }
+    ],
+    "slots": [],
+    "emits": [
+      {
+        "name": "click",
+        "description": ""
+      }
+    ]
+  },
+  "EvPaginationItem": {
+    "tag": "EvPaginationItem",
+    "file": "src/atoms/pagination-item/EvPaginationItem.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "page",
+        "type": "number | string",
+        "required": false,
+        "description": "The page this tile jumps to. Rendered as its label.",
+        "control": "none"
+      },
+      {
+        "name": "active",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks the page currently on screen.",
+        "control": "boolean"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "more",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `State=More`: the ellipsis tile standing in for a run of hidden pages. It is inert, so it renders as a span rather than a button.",
+        "control": "boolean"
+      },
+      {
+        "name": "moreLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Halaman lainnya'",
+        "description": "Accessible name of the ellipsis tile.",
+        "control": "text"
+      }
+    ],
+    "slots": [],
     "emits": [
       {
         "name": "click",
@@ -1193,6 +1565,84 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
     ],
     "slots": [],
     "emits": []
+  },
+  "EvSidebarItem": {
+    "tag": "EvSidebarItem",
+    "file": "src/atoms/sidebar-item/EvSidebarItem.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "type",
+        "type": "SidebarItemType",
+        "required": false,
+        "default": "'main'",
+        "description": "`Type` of the Figma `.ItemSidebar` set.",
+        "control": "select",
+        "options": [
+          "main",
+          "submenu",
+          "sub-submenu",
+          "sub-title",
+          "divider"
+        ]
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "href",
+        "type": "string",
+        "required": false,
+        "description": "Renders a real link instead of a button.",
+        "control": "text"
+      },
+      {
+        "name": "active",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks the current section. Figma's `State=Active`.",
+        "control": "boolean"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "collapsed",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Collapses the row to a 32px square holding only its icon - what `D - Sidebar` draws in its `Open=No` variant.",
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      },
+      {
+        "name": "icon",
+        "description": ""
+      },
+      {
+        "name": "trailing",
+        "description": "The trailing 16px glyph - a chevron on a row that expands."
+      }
+    ],
+    "emits": [
+      {
+        "name": "click",
+        "description": ""
+      }
+    ]
   },
   "EvSlider": {
     "tag": "EvSlider",
@@ -2200,6 +2650,146 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
       }
     ]
   },
+  "EvDropdownMenu": {
+    "tag": "EvDropdownMenu",
+    "file": "src/molecules/dropdown-menu/EvDropdownMenu.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "searchable",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `Search` frame, hidden by default on the board.",
+        "control": "boolean"
+      },
+      {
+        "name": "searchValue",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "control": "text"
+      },
+      {
+        "name": "searchPlaceholder",
+        "type": "string",
+        "required": false,
+        "default": "'Cari...'",
+        "control": "text"
+      },
+      {
+        "name": "maxHeight",
+        "type": "number | string",
+        "required": false,
+        "description": "Caps the list and lets it scroll. The board's `Scroll` rail is 320 tall.",
+        "control": "none"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Accessible name for the menu.",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "The rows - `EvDropdownMenuItem` instances."
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:searchValue",
+        "description": ""
+      }
+    ]
+  },
+  "EvHoverCard": {
+    "tag": "EvHoverCard",
+    "file": "src/molecules/hover-card/EvHoverCard.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "boolean",
+        "required": false,
+        "control": "boolean"
+      },
+      {
+        "name": "placement",
+        "type": "TooltipPlacement",
+        "required": false,
+        "default": "'bottom'",
+        "description": "Which side of the trigger the card sits on.",
+        "control": "select",
+        "options": [
+          "top",
+          "bottom",
+          "left",
+          "right"
+        ]
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "subtext",
+        "type": "string",
+        "required": false,
+        "description": "The 10px line under the description.",
+        "control": "text"
+      },
+      {
+        "name": "openDelay",
+        "type": "number",
+        "required": false,
+        "default": "200",
+        "description": "Milliseconds the pointer has to rest before the card opens.",
+        "control": "number"
+      },
+      {
+        "name": "closeDelay",
+        "type": "number",
+        "required": false,
+        "default": "150",
+        "description": "Milliseconds before it closes again, so the pointer can cross the gap.",
+        "control": "number"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "The element the pointer rests on."
+      },
+      {
+        "name": "content",
+        "description": "The whole card body, replacing title / description / subtext."
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      }
+    ]
+  },
   "EvInputFieldUnit": {
     "tag": "EvInputFieldUnit",
     "file": "src/molecules/input-field-unit/EvInputFieldUnit.vue",
@@ -2305,6 +2895,192 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
       },
       {
         "name": "clear",
+        "description": ""
+      }
+    ]
+  },
+  "EvItem": {
+    "tag": "EvItem",
+    "file": "src/molecules/item/EvItem.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "type",
+        "type": "ItemType",
+        "required": false,
+        "default": "'default'",
+        "description": "`Type` of the Figma `Item` set.",
+        "control": "select",
+        "options": [
+          "default",
+          "outline",
+          "muted"
+        ]
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false,
+        "description": "Caption under the title, inside the `.LabelItem` instance.",
+        "control": "text"
+      },
+      {
+        "name": "labelType",
+        "type": "LabelItemType",
+        "required": false,
+        "default": "'default'",
+        "description": "Passed straight through to the `.LabelItem` instance.",
+        "control": "select",
+        "options": [
+          "default",
+          "small",
+          "extra-small"
+        ]
+      },
+      {
+        "name": "trailing",
+        "type": "string",
+        "required": false,
+        "description": "The trailing caption the board draws as a separate `Description` node.",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      },
+      {
+        "name": "icon",
+        "description": "Figma's `Has L Icon`."
+      },
+      {
+        "name": "avatar",
+        "description": "Figma's `Has Avatar` - the board puts an `Avatar` instance here."
+      },
+      {
+        "name": "image",
+        "description": "Figma's `Has Image` - a 32px square, radius 8."
+      },
+      {
+        "name": "actions",
+        "description": "Figma's `Has Button`. The board instances a Button; the content is yours."
+      },
+      {
+        "name": "trailingIcon",
+        "description": "Figma's `Has R Icon`."
+      }
+    ],
+    "emits": []
+  },
+  "EvPagination": {
+    "tag": "EvPagination",
+    "file": "src/molecules/pagination/EvPagination.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "variant",
+        "type": "PaginationVariant",
+        "required": false,
+        "default": "'display'",
+        "description": "`Variant` of the Figma `Pagination` set.",
+        "control": "select",
+        "options": [
+          "display",
+          "step",
+          "number"
+        ]
+      },
+      {
+        "name": "page",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "description": "The page on screen, 1-based.",
+        "control": "number"
+      },
+      {
+        "name": "pageCount",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "control": "number"
+      },
+      {
+        "name": "siblingCount",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "description": "How many pages sit either side of the current one before an ellipsis.",
+        "control": "number"
+      },
+      {
+        "name": "rowsPerPage",
+        "type": "number",
+        "required": false,
+        "default": "10",
+        "description": "`Pagination Display`: the number in the rows-per-page button.",
+        "control": "number"
+      },
+      {
+        "name": "rowsPerPageLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Rows per page'",
+        "control": "text"
+      },
+      {
+        "name": "previousLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Previous'",
+        "control": "text"
+      },
+      {
+        "name": "nextLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Next'",
+        "control": "text"
+      },
+      {
+        "name": "stepLabel",
+        "type": "string",
+        "required": false,
+        "description": "`Pagination Step`: the caption. Left unset it reads \"Step 2 of 5\".",
+        "control": "text"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "'Halaman'",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "Figma's `Slot` inside the number row, after the tiles."
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:page",
+        "description": ""
+      },
+      {
+        "name": "previous",
+        "description": ""
+      },
+      {
+        "name": "next",
         "description": ""
       }
     ]
@@ -2540,6 +3316,81 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
       }
     ],
     "emits": []
+  },
+  "EvToast": {
+    "tag": "EvToast",
+    "file": "src/molecules/toast/EvToast.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "variant",
+        "type": "ToastVariant",
+        "required": false,
+        "default": "'default'",
+        "description": "`Type` of the Figma `Toast` set.",
+        "control": "select",
+        "options": [
+          "default",
+          "success",
+          "error",
+          "warning",
+          "info",
+          "with-description"
+        ]
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false,
+        "description": "Supporting line. The board reaches it through `Type=WithDescription`; setting it here switches the toast to that layout whatever the variant.",
+        "control": "text"
+      },
+      {
+        "name": "dismissible",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Renders the dismiss cross and enables the `close` event.",
+        "control": "boolean"
+      },
+      {
+        "name": "closeLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Tutup'",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": ""
+      },
+      {
+        "name": "description",
+        "description": ""
+      },
+      {
+        "name": "actions",
+        "description": "Figma's Button instance on `Type=WithDescription`."
+      },
+      {
+        "name": "icon",
+        "description": ""
+      }
+    ],
+    "emits": [
+      {
+        "name": "close",
+        "description": ""
+      }
+    ]
   },
   "EvToggleGroup": {
     "tag": "EvToggleGroup",
@@ -3117,7 +3968,14 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "required": false,
         "default": "'16:9'",
         "description": "Applied to every slide. The usage doc is explicit that one carousel keeps a single ratio throughout, so it lives here rather than on each slide.",
-        "control": "none"
+        "control": "select",
+        "options": [
+          "16:9",
+          "9:16",
+          "4:5",
+          "5:4",
+          "1:1"
+        ]
       },
       {
         "name": "showButtons",
@@ -3242,6 +4100,255 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
       {
         "name": "legend",
         "description": "The series legend, between the summary and the chart."
+      }
+    ],
+    "emits": []
+  },
+  "EvCommand": {
+    "tag": "EvCommand",
+    "file": "src/organisms/command/EvCommand.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "description": "The search field's value.",
+        "control": "text"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "default": "'Type a command to search'",
+        "control": "text"
+      },
+      {
+        "name": "maxHeight",
+        "type": "number | string",
+        "required": false,
+        "description": "Caps the list and lets it scroll. The board draws two 140-tall Sections.",
+        "control": "none"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "'Command'",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "The `EvCommandGroup` sections."
+      },
+      {
+        "name": "empty",
+        "description": "Shown in place of the list when nothing matches."
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      }
+    ]
+  },
+  "EvCommandGroup": {
+    "tag": "EvCommandGroup",
+    "file": "src/organisms/command/EvCommandGroup.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "heading",
+        "type": "string",
+        "required": false,
+        "description": "The \"Section Title\" row the board draws at the top of each Section.",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "The rows - `EvCommandItem` instances."
+      }
+    ],
+    "emits": []
+  },
+  "EvDataTable": {
+    "tag": "EvDataTable",
+    "file": "src/organisms/data-table/EvDataTable.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "variant",
+        "type": "DataTableVariant",
+        "required": false,
+        "default": "'default'",
+        "description": "`Variant` of the Figma `Data Table` set.",
+        "control": "select",
+        "options": [
+          "default",
+          "secondary",
+          "no-fill",
+          "left-fixed",
+          "right-fixed"
+        ]
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "description": "The caption above the table.",
+        "control": "text"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Accessible name, when there is no visible title.",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "head",
+        "description": "The `thead` rows - `EvDataTableRow header`."
+      },
+      {
+        "name": "default",
+        "description": "The `tbody` rows."
+      },
+      {
+        "name": "actions",
+        "description": "Figma's `Frame 3`: the controls beside the title."
+      },
+      {
+        "name": "filters",
+        "description": "Figma's `Filter` row: the applied-filter Tags and a clear link."
+      },
+      {
+        "name": "pagination",
+        "description": "Figma's `Pagination` instance under the table."
+      }
+    ],
+    "emits": []
+  },
+  "EvDataTableCell": {
+    "tag": "EvDataTableCell",
+    "file": "src/organisms/data-table/EvDataTableCell.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "header",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Renders a `th` in the header row rather than a `td` in the body.",
+        "control": "boolean"
+      },
+      {
+        "name": "sortable",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Draws the sort glyph the board puts on every `.Table Item` in a title row.",
+        "control": "boolean"
+      },
+      {
+        "name": "sort",
+        "type": "DataTableSort",
+        "required": false,
+        "default": "'none'",
+        "description": "Which way the column is sorted right now.",
+        "control": "select",
+        "options": [
+          "none",
+          "asc",
+          "desc"
+        ]
+      },
+      {
+        "name": "align",
+        "type": "TableCellAlign",
+        "required": false,
+        "default": "'left'",
+        "control": "select",
+        "options": [
+          "left",
+          "center",
+          "right"
+        ]
+      },
+      {
+        "name": "fixed",
+        "type": "'left' | 'right' | false",
+        "required": false,
+        "default": "false",
+        "description": "Pins the column while the table scrolls sideways.",
+        "control": "none"
+      },
+      {
+        "name": "offset",
+        "type": "number | string",
+        "required": false,
+        "default": "0",
+        "description": "Distance from the pinned edge, for a second pinned column.",
+        "control": "none"
+      }
+    ],
+    "slots": [],
+    "emits": [
+      {
+        "name": "sort",
+        "description": ""
+      }
+    ]
+  },
+  "EvDataTableRow": {
+    "tag": "EvDataTableRow",
+    "file": "src/organisms/data-table/EvDataTableRow.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "level",
+        "type": "0 | 1 | 2 | 3 | 4 | 5",
+        "required": false,
+        "default": "0",
+        "description": "Figma's `State=Level 1` .. `Level 5`: how deep the row sits in a tree, which is what picks its fill off the `tree/*` ramp. 0 is `State=Default`.",
+        "control": "select",
+        "options": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "name": "selected",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `State=Selected`.",
+        "control": "boolean"
+      },
+      {
+        "name": "header",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Renders the row inside `thead` and drops the hover fill.",
+        "control": "boolean"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "The cells - `EvDataTableCell` instances."
       }
     ],
     "emits": []
@@ -3380,6 +4487,14 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "required": false,
         "default": "true",
         "control": "boolean"
+      },
+      {
+        "name": "header",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Draw the header at all. The board's `M- Drawer` hides the whole header frame with its `Header` property - title, subtext and close together.",
+        "control": "boolean"
       }
     ],
     "slots": [
@@ -3411,6 +4526,86 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
       },
       {
         "name": "close",
+        "description": ""
+      }
+    ]
+  },
+  "EvEmptyState": {
+    "tag": "EvEmptyState",
+    "file": "src/organisms/empty-state/EvEmptyState.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "variant",
+        "type": "EmptyStateVariant",
+        "required": false,
+        "default": "'404'",
+        "description": "`Variant` of the Figma `D - Empty State` / `M - Empty State` sets.",
+        "control": "select",
+        "options": [
+          "400",
+          "401",
+          "404",
+          "500",
+          "maintenance",
+          "no-data",
+          "no-result"
+        ]
+      },
+      {
+        "name": "size",
+        "type": "EmptyStateSize",
+        "required": false,
+        "default": "'desktop'",
+        "description": "Which of the two sets to follow: the desktop one or the mobile one.",
+        "control": "select",
+        "options": [
+          "desktop",
+          "mobile"
+        ]
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "description": "Overrides the variant's headline.",
+        "control": "text"
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false,
+        "description": "Overrides the variant's supporting line.",
+        "control": "text"
+      },
+      {
+        "name": "errorMessage",
+        "type": "string",
+        "required": false,
+        "description": "The third line, which the board fills with a system error code.",
+        "control": "text"
+      },
+      {
+        "name": "actionLabel",
+        "type": "string",
+        "required": false,
+        "description": "Overrides the variant's button label. Set to '' to drop the button.",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "illustration",
+        "description": "The centre of the illustration, inside the board's rings."
+      },
+      {
+        "name": "action",
+        "description": "Replaces the button entirely."
+      }
+    ],
+    "emits": [
+      {
+        "name": "action",
         "description": ""
       }
     ]
@@ -3512,6 +4707,50 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
       }
     ]
   },
+  "EvNavigationMenuMobile": {
+    "tag": "EvNavigationMenuMobile",
+    "file": "src/organisms/navigation-menu-mobile/EvNavigationMenuMobile.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "centerButton",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `M - NavigationMenu CenterButton`: a raised round action in the middle of the bar, with a gap in the row where it sits.",
+        "control": "boolean"
+      },
+      {
+        "name": "centerLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Tambah'",
+        "control": "text"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "'Navigasi'",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "The items left of the centre action - `EvNavMenuMobileItem` instances."
+      },
+      {
+        "name": "after",
+        "description": "The items right of it. Only read when `centerButton` is set."
+      },
+      {
+        "name": "center",
+        "description": "The glyph inside the centre action."
+      }
+    ],
+    "emits": []
+  },
   "EvNavigationMenu": {
     "tag": "EvNavigationMenu",
     "file": "src/organisms/navigation-menu/EvNavigationMenu.vue",
@@ -3607,7 +4846,11 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "required": false,
         "default": "'big'",
         "description": "Which `.RichEditor` type to draw: `big` is the 528px, 19-control bar; `small` is the 360px, 13-control one.",
-        "control": "none"
+        "control": "select",
+        "options": [
+          "big",
+          "small"
+        ]
       },
       {
         "name": "hasScroll",
@@ -3672,6 +4915,90 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
       },
       {
         "name": "attach",
+        "description": ""
+      }
+    ]
+  },
+  "EvSidebar": {
+    "tag": "EvSidebar",
+    "file": "src/organisms/sidebar/EvSidebar.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "collapsed",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Figma's `Open=No`: the 64px rail that keeps only the icons.",
+        "control": "boolean"
+      },
+      {
+        "name": "mobile",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Follow `M - Sidebar` instead of `D - Sidebar`: an account row and a full-width search where the desktop board puts the logo.",
+        "control": "boolean"
+      },
+      {
+        "name": "searchable",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Figma's `Search` frame.",
+        "control": "boolean"
+      },
+      {
+        "name": "searchValue",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "control": "text"
+      },
+      {
+        "name": "searchPlaceholder",
+        "type": "string",
+        "required": false,
+        "default": "'Search'",
+        "control": "text"
+      },
+      {
+        "name": "toggleLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Buka atau tutup sidebar'",
+        "description": "The toggle's accessible name.",
+        "control": "text"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "'Sidebar'",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "default",
+        "description": "The navigation - `EvSidebarItem` instances."
+      },
+      {
+        "name": "header",
+        "description": "Replaces the logo (desktop) or the account row (mobile) in the header."
+      },
+      {
+        "name": "footer",
+        "description": "Figma's `Slot`: the flexible area under the navigation."
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:collapsed",
+        "description": ""
+      },
+      {
+        "name": "update:searchValue",
         "description": ""
       }
     ]
