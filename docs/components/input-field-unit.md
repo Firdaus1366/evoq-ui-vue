@@ -11,10 +11,13 @@ summarySource: "figma"
 partOf: null
 children: []
 composes:
+  - "evoq-ui:dropdown-item"
   - "evoq-ui:input"
+  - "evoq-ui:input-dropdown"
 usedBy: []
 seeAlso:
   - "evoq-ui:input"
+  - "evoq-ui:input-dropdown"
 figma:
   file: "hJ3XmwLptPtF4IFBDlZlpx"
   doc: "4707:9944"
@@ -53,7 +56,7 @@ keywords:
 
 _The exact snippet the playground simulator copies for this component (`playground/simulator-demos.ts`)._
 
-## Props (13)
+## Props (15)
 
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
@@ -62,7 +65,9 @@ _The exact snippet the playground simulator copies for this component (`playgrou
 | `units` | `(string \| UnitOption)[]` | `() => ['IDR', 'USD', 'EUR']` | no | — |
 | `type` | `string` | `'text'` | no | — |
 | `placeholder` | `string` | — | no | — |
-| `label` | `string` | — | no | — |
+| `label` | `string` | — | no | Title of the value field (`InputField`). |
+| `unitLabel` | `string` | — | no | Title of the unit dropdown (`InputDropdown`). |
+| `unitPlaceholder` | `string` | `'Select'` | no | Shown in the dropdown while no unit is chosen - the board's `Select`. |
 | `required` | `boolean` | `false` | no | — |
 | `disabled` | `boolean` | `false` | no | — |
 | `readonly` | `boolean` | `false` | no | — |
@@ -89,7 +94,7 @@ None.
 
 | Relation | Components |
 | --- | --- |
-| Built from | `evoq-ui:input` |
+| Built from | `evoq-ui:dropdown-item`, `evoq-ui:input`, `evoq-ui:input-dropdown` |
 | Used by | — |
 | Slot children | — |
 
@@ -108,7 +113,7 @@ From the Figma page **Input**, frame `4707:9944` (InputFieldUnit). These rules a
 ### When not to use
 
 - Don't use when there is no unit  →  use InputField (`evoq-ui:input`).
-- Don't use for choosing only from a set  →  use InputDropdown.
+- Don't use for choosing only from a set  →  use InputDropdown (`evoq-ui:input-dropdown`).
 - Don't put the unit inside the value field as text.
 - Don't hide which part is editable.
 

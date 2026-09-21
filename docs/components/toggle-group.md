@@ -12,7 +12,8 @@ partOf: null
 children:
   - "evoq-ui:toggle"
 composes: []
-usedBy: []
+usedBy:
+  - "evoq-ui:input-time"
 seeAlso:
   - "evoq-ui:radio-group"
   - "evoq-ui:switch"
@@ -79,7 +80,7 @@ None.
 | Relation | Components |
 | --- | --- |
 | Built from | — (renders no other Ev component) |
-| Used by | — |
+| Used by | `evoq-ui:input-time` |
 | Slot children | `evoq-ui:toggle` |
 
 ## Design guidance

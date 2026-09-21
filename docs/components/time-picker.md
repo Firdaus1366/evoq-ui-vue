@@ -12,7 +12,8 @@ partOf: null
 children: []
 composes:
   - "evoq-ui:button"
-usedBy: []
+usedBy:
+  - "evoq-ui:input-time"
 seeAlso: []
 figma:
   file: "hJ3XmwLptPtF4IFBDlZlpx"
@@ -83,7 +84,7 @@ None.
 | Relation | Components |
 | --- | --- |
 | Built from | `evoq-ui:button` |
-| Used by | — |
+| Used by | `evoq-ui:input-time` |
 | Slot children | — |
 
 ## Design guidance

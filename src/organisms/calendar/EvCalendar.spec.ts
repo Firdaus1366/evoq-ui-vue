@@ -18,17 +18,18 @@ describe('EvCalendar', () => {
     const wrapper = mount(EvCalendar, { props: { month: new Date(2026, 0, 1) } })
     expect(wrapper.find('.ev-calendar__overlay').exists()).toBe(false)
 
-    await wrapper.find('.ev-calendar__month').trigger('click')
+    ;(wrapper.vm as unknown as { toggleMonthOverlay: () => void }).toggleMonthOverlay()
+    await wrapper.vm.$nextTick()
     expect(wrapper.find('.ev-calendar__overlay').exists()).toBe(true)
     expect(wrapper.findAll('.ev-dropdown-item')).toHaveLength(12)
 
-    await wrapper.find('.ev-calendar__month').trigger('click')
+    ;(wrapper.vm as unknown as { toggleMonthOverlay: () => void }).toggleMonthOverlay()
+    await wrapper.vm.$nextTick()
     expect(wrapper.find('.ev-calendar__overlay').exists()).toBe(false)
   })
 
   it('actually pages the month when one is chosen from the overlay', async () => {
-    const wrapper = mount(EvCalendar, { attachTo: document.body })
-    await wrapper.find('.ev-calendar__month').trigger('click')
+    const wrapper = mount(EvCalendar, { attachTo: document.body, props: { monthOpen: true } })
 
     await wrapper.findAll('.ev-dropdown-item')[6]!.trigger('click') // July
     expect(wrapper.find('.ev-calendar__overlay').exists()).toBe(false)
@@ -62,8 +63,7 @@ describe('EvCalendar', () => {
   })
 
   it('dismisses the overlay on a click beyond the calendar', async () => {
-    const wrapper = mount(EvCalendar, { attachTo: document.body })
-    await wrapper.find('.ev-calendar__month').trigger('click')
+    const wrapper = mount(EvCalendar, { attachTo: document.body, props: { monthOpen: true } })
     expect(wrapper.find('.ev-calendar__overlay').exists()).toBe(true)
 
     document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }))
@@ -132,7 +132,7 @@ describe('EvCalendar', () => {
     const wrapper = mount(EvCalendar, { props: { month: new Date(2026, 0, 1) } })
     expect(wrapper.find('.ev-calendar__overlay').exists()).toBe(false)
 
-    await wrapper.find('.ev-calendar__month').trigger('click')
+    ;(wrapper.vm as unknown as { toggleMonthOverlay: () => void }).toggleMonthOverlay()
     expect(wrapper.emitted('update:monthOpen')?.at(-1)).toEqual([true])
 
     const open = mount(EvCalendar, { props: { monthOpen: true, month: new Date(2026, 0, 1) } })
@@ -150,14 +150,92 @@ describe('EvCalendar', () => {
     const overlay = wrapper.find('.ev-calendar__overlay')
     expect(overlay.findAll('.ev-dropdown-item')).toHaveLength(36)
 
-    await overlay.findAll('.ev-dropdown-item')[0]!.trigger('click') // 1991
+    await overlay.findAll('.ev-dropdown-item')[0]!.trigger('click') // 1991: 35 back
     expect((wrapper.emitted('update:month')?.at(-1)?.[0] as Date).getFullYear()).toBe(1991)
     expect(wrapper.emitted('update:yearOpen')?.at(-1)).toEqual([false])
   })
 
+  it('replaces the days with the Month grid when the month is clicked', async () => {
+    const wrapper = mount(EvCalendar, { props: { month: new Date(2026, 8, 1) } })
+    expect(wrapper.find('.ev-calendar__month').text()).toBe('September 2026')
+    expect(wrapper.find('.ev-calendar__days').exists()).toBe(true)
+
+    await wrapper.find('.ev-calendar__month-name').trigger('click')
+    expect(wrapper.find('.ev-calendar__days').exists()).toBe(false)
+    expect(wrapper.findAll('.ev-calendar__cells .ev-calendar__day')).toHaveLength(12)
+    expect(wrapper.find('.ev-calendar__overlay').exists()).toBe(false)
+    expect(wrapper.emitted('update:view')?.at(-1)).toEqual(['month'])
+  })
+
+  it('replaces the days with the Year grid when the year is clicked, and pages it left and right', async () => {
+    // `month` is the host's, so the host writes the page back - as v-model:month does.
+    const wrapper = mount(EvCalendar, {
+      props: {
+        month: new Date(2026, 8, 1),
+        'onUpdate:month': (month: Date) => wrapper.setProps({ month }),
+      },
+    })
+
+    await wrapper.find('.ev-calendar__year-name').trigger('click')
+    expect(wrapper.find('.ev-calendar__days').exists()).toBe(false)
+    expect(wrapper.findAll('.ev-calendar__cells .ev-calendar__day')).toHaveLength(36)
+    expect(wrapper.find('.ev-calendar__month').text()).toBe('1991 - 2026')
+    expect(wrapper.findAll('.ev-calendar__nav')).toHaveLength(2)
+
+    // Forward one block reaches years that have not come yet.
+    await wrapper.findAll('.ev-calendar__nav')[1]!.trigger('click')
+    expect(wrapper.find('.ev-calendar__month').text()).toBe('2027 - 2062')
+    const years = wrapper.findAll('.ev-calendar__cells .ev-calendar__day').map((c) => c.text())
+    expect(years).toContain('2043')
+
+    await wrapper.findAll('.ev-calendar__nav')[0]!.trigger('click')
+    await wrapper.findAll('.ev-calendar__nav')[0]!.trigger('click')
+    expect(wrapper.find('.ev-calendar__month').text()).toBe('1955 - 1990')
+  })
+
+  it('drills Year to Month to day from the header, like the dedicated views', async () => {
+    const wrapper = mount(EvCalendar, { props: { month: new Date(2026, 8, 1) } })
+    const cells = () => wrapper.findAll('.ev-calendar__cells .ev-calendar__day')
+
+    await wrapper.find('.ev-calendar__year-name').trigger('click')
+    await cells()[30]!.trigger('click') // 2021
+    expect(cells()).toHaveLength(12)
+    expect((wrapper.emitted('update:month')?.at(-1)?.[0] as Date).getFullYear()).toBe(2021)
+
+    await cells()[2]!.trigger('click') // March
+    expect(wrapper.find('.ev-calendar__cells').exists()).toBe(false)
+    expect(wrapper.find('.ev-calendar__days').exists()).toBe(true)
+  })
+
+  it("opens the Year grid from the Month grid's year label", async () => {
+    const wrapper = mount(EvCalendar, { props: { view: 'month', month: new Date(2026, 0, 1) } })
+    await wrapper.find('.ev-calendar__year-name').trigger('click')
+    expect(wrapper.find('.ev-calendar__month').text()).toBe('1991 - 2026')
+  })
+
+  it('only makes the first range panel interactive', () => {
+    const wrapper = mount(EvCalendar, { props: { mode: 'range', month: new Date(2026, 0, 1) } })
+    expect(wrapper.findAll('.ev-calendar__year-name')).toHaveLength(1)
+  })
+
+  it('draws no footer on Basic, unless footer is set - then Cancel and Apply act', async () => {
+    expect(mount(EvCalendar).find('.ev-calendar__footer').exists()).toBe(false)
+    const wrapper = mount(EvCalendar, {
+      props: { footer: true, applyLabel: 'Select date', modelValue: new Date(2026, 8, 21) },
+    })
+    expect(wrapper.find('.ev-calendar__btn--cancel').text()).toBe('Cancel')
+    expect(wrapper.find('.ev-calendar__btn--apply').text()).toBe('Select date')
+    // Single date: the board's ButtonLink, not the filled Apply button.
+    expect(wrapper.find('.ev-button-link.ev-calendar__apply-link').exists()).toBe(true)
+    await wrapper.find('.ev-calendar__btn--apply').trigger('click')
+    expect(wrapper.emitted('apply')?.[0]).toEqual([new Date(2026, 8, 21)])
+    await wrapper.find('.ev-calendar__btn--cancel').trigger('click')
+    expect(wrapper.emitted('cancel')).toHaveLength(1)
+  })
+
   it('opens only one overlay at a time', async () => {
     const wrapper = mount(EvCalendar, { props: { yearOpen: true } })
-    await wrapper.find('.ev-calendar__month').trigger('click')
+    ;(wrapper.vm as unknown as { toggleMonthOverlay: () => void }).toggleMonthOverlay()
 
     expect(wrapper.emitted('update:yearOpen')?.at(-1)).toEqual([false])
     expect(wrapper.emitted('update:monthOpen')?.at(-1)).toEqual([true])
@@ -174,13 +252,13 @@ describe('EvCalendar', () => {
     expect(wrapper.findAll('.ev-calendar__day--event')).toHaveLength(0)
   })
 
-  it("renders the board's Year grid: a 36-year block, labelled and unpaged", () => {
+  it("renders the Year grid: the board's 36-year block, labelled, and paged by block", () => {
     const wrapper = mount(EvCalendar, { props: { view: 'year', month: new Date(2026, 0, 1) } })
 
     expect(wrapper.findAll('.ev-calendar__cells .ev-calendar__day')).toHaveLength(36)
     expect(wrapper.find('.ev-calendar__month').text()).toBe('1991 - 2026')
-    // node: Frame 11 carries no chevrons.
-    expect(wrapper.findAll('.ev-calendar__nav')).toHaveLength(0)
+    // DEVIATION: node Frame 11 draws no chevrons; here they page by block.
+    expect(wrapper.findAll('.ev-calendar__nav')).toHaveLength(2)
   })
 
   it('pages the Month grid by year and drops back to the day grid on pick', async () => {

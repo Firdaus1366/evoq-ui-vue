@@ -12,6 +12,7 @@ partOf: null
 children: []
 composes: []
 usedBy:
+  - "evoq-ui:input-multiple-options"
   - "evoq-ui:tree-item"
 seeAlso:
   - "evoq-ui:button"
@@ -87,7 +88,7 @@ _The exact snippet the playground simulator copies for this component (`playgrou
 | Relation | Components |
 | --- | --- |
 | Built from | — (renders no other Ev component) |
-| Used by | `evoq-ui:tree-item` |
+| Used by | `evoq-ui:input-multiple-options`, `evoq-ui:tree-item` |
 | Slot children | — |
 
 ## Design guidance

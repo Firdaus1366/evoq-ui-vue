@@ -49,6 +49,12 @@ const props = withDefaults(
     hasReset?: boolean
     /** The board's `Select Time` link, drawn under the Basic variant. */
     showTimeLink?: boolean
+    /**
+     * Draws the Cancel / Apply footer on the single-date Basic variant, which
+     * the board draws without one. Range, Preset and mobile always have it.
+     * Opt-in, for a calendar hosted in an InputDate slot.
+     */
+    footer?: boolean
     previousLabel?: string
     nextLabel?: string
     cancelLabel?: string
@@ -73,6 +79,7 @@ const props = withDefaults(
     presets: false,
     hasReset: false,
     showTimeLink: false,
+    footer: false,
     previousLabel: 'Bulan sebelumnya',
     nextLabel: 'Bulan berikutnya',
     cancelLabel: 'Cancel',
@@ -200,9 +207,12 @@ const panels = computed(() => {
         ]
       : [viewMonth.value]
 
+  const monthName = new Intl.DateTimeFormat(props.locale, { month: 'long' })
   return months.map((month) => ({
     key: `${month.getFullYear()}-${month.getMonth()}`,
     label: new Intl.DateTimeFormat(props.locale, { month: 'long', year: 'numeric' }).format(month),
+    monthLabel: monthName.format(month),
+    yearLabel: String(month.getFullYear()),
     days: daysFor(month),
   }))
 })
@@ -228,7 +238,6 @@ const monthCells = computed(() => {
 })
 
 /** node: Frame 8 - a 36-year block ending on the year in view, three across. */
-
 const yearCells = computed(() => {
   const end = viewMonth.value.getFullYear()
   const start = end - (YEAR_BLOCK - 1)
@@ -312,8 +321,15 @@ const fullBlocks = computed(() =>
 const isMobile = computed(() => props.platform === 'mobile')
 const footerButtonSize = computed(() => (isMobile.value ? 'default' : 'small'))
 
+/** The opt-in single-date footer ends in the Select link rather than a filled button. */
+const applyAsLink = computed(
+  () => props.footer && props.mode === 'single' && !props.presets && !isMobile.value,
+)
+
 /** Range draws a footer; so do the Preset variants and every mobile board. */
-const hasFooter = computed(() => props.mode === 'range' || props.presets || isMobile.value)
+const hasFooter = computed(
+  () => props.mode === 'range' || props.presets || isMobile.value || props.footer,
+)
 
 /**
  * node: Frame 26 - the mobile boards read the chosen value back above the
@@ -377,9 +393,9 @@ function chooseMonth(date: Date) {
 
 /*
  * The board models both overlays as booleans, so `monthOpen` / `yearOpen` seed
- * and sync them. The header label drives the month one on its own; the year one
- * has no drawn affordance, so it is exposed for a host to open from its own
- * control - or to be driven with `v-model:year-open`.
+ * and sync them. The header's month and year buttons swap the days for the Month
+ * and Year grids instead, so the overlays are opened by a host: from its own
+ * control through these, or with `v-model:month-open` / `v-model:year-open`.
  */
 defineExpose({ toggleMonthOverlay, toggleYearOverlay })
 
@@ -413,6 +429,8 @@ watch(
       document.removeEventListener('keydown', onDocumentKey, true)
     }
   },
+  // An overlay a host opens through its props is open from the first render.
+  { immediate: true },
 )
 
 onBeforeUnmount(() => {
@@ -580,7 +598,9 @@ function onReset() {
           </button>
 
           <span class="ev-calendar__month" aria-live="polite">
-            {{ viewMonth.getFullYear() }}
+            <button type="button" class="ev-calendar__year-name" @click="setView('year')">
+              {{ viewMonth.getFullYear() }}
+            </button>
           </span>
 
           <button
@@ -620,8 +640,48 @@ function onReset() {
 
       <!-- node: Frame 11 + Frame 8 — the Year variant labels a 36-year block -->
       <div v-else-if="activeView === 'year'" class="ev-calendar__panel">
-        <div class="ev-calendar__header ev-calendar__header--plain">
+        <!--
+          DEVIATION: the board's Year header is a bare label. It pages here, by
+          one 36-year block, so years on either side of the block are reachable.
+        -->
+        <div class="ev-calendar__header">
+          <button
+            type="button"
+            class="ev-calendar__nav"
+            :aria-label="previousLabel"
+            @click="shiftYear(-YEAR_BLOCK)"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path
+                d="M14.5 6L9 12l5.5 6"
+                stroke="currentColor"
+                stroke-width="1.6"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+
           <span class="ev-calendar__month" aria-live="polite">{{ yearRangeLabel }}</span>
+
+          <button
+            type="button"
+            class="ev-calendar__nav"
+            :aria-label="nextLabel"
+            @click="shiftYear(YEAR_BLOCK)"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path
+                d="M9.5 6L15 12l-5.5 6"
+                stroke="currentColor"
+                stroke-width="1.6"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
         </div>
 
         <div class="ev-calendar__cells" role="grid">
@@ -701,15 +761,23 @@ function onReset() {
             </button>
 
             <span class="ev-calendar__month-wrap">
-              <button
-                type="button"
-                class="ev-calendar__month"
-                aria-live="polite"
-                :aria-expanded="isMonthOpen || isYearOpen"
-                @click="index === 0 && toggleMonthOverlay()"
-              >
-                {{ panel.label }}
-              </button>
+              <!--
+                DEVIATION: the board draws one "Month YYYY" label. Here the month
+                and the year are two buttons: the month swaps the days for the
+                Month grid and the year for the Year grid (both page left and
+                right). Only the first panel is live.
+              -->
+              <span class="ev-calendar__month" aria-live="polite">
+                <template v-if="index === 0">
+                  <button type="button" class="ev-calendar__month-name" @click="setView('month')">
+                    {{ panel.monthLabel }}</button
+                  >{{ ' '
+                  }}<button type="button" class="ev-calendar__year-name" @click="setView('year')">
+                    {{ panel.yearLabel }}
+                  </button>
+                </template>
+                <template v-else>{{ panel.label }}</template>
+              </span>
 
               <!-- node: DropdownList — Month Open / Year Open float over the header -->
               <EvDropdownList
@@ -857,7 +925,21 @@ function onReset() {
         >
           {{ cancelLabel }}
         </EvButton>
+        <!--
+          `footer` on a single date swaps the filled Apply for the board's own
+          "Select" control: a ButtonLink (Primary), the same one the Basic
+          variant ends with. Range, Preset and mobile keep the Apply button.
+        -->
+        <EvButtonLink
+          v-if="applyAsLink"
+          class="ev-calendar__btn ev-calendar__btn--apply ev-calendar__apply-link"
+          variant="primary"
+          @click="onApply"
+        >
+          {{ applyLabel }}
+        </EvButtonLink>
         <EvButton
+          v-else
           class="ev-calendar__btn ev-calendar__btn--apply"
           :size="footerButtonSize"
           @click="onApply"
@@ -1060,13 +1142,20 @@ function onReset() {
   }
 
   &__month {
+    color: var(--ev-text-primary);
+
+    @include type.style('body/regular');
+  }
+
+  /* The month and the year are separate buttons that read as one label. */
+  &__month-name,
+  &__year-name {
     padding: 0;
     border: 0;
     background: none;
-    color: var(--ev-text-primary);
+    color: inherit;
+    font: inherit;
     cursor: pointer;
-
-    @include type.style('body/regular');
 
     &:focus-visible {
       outline: var(--ev-focus-ring-width) solid var(--ev-focus-ring-color);
@@ -1265,12 +1354,19 @@ function onReset() {
    * reads text/primary, and it spans the grid with 8px above and below.
    * Type, gap, focus ring and states are the ButtonLink atom's.
    */
-  & &__time-link {
+  & &__time-link,
+  & &__apply-link {
     --ev-link-fg: var(--ev-text-primary);
 
     justify-content: center;
     width: 100%;
     padding: var(--ev-spacing-sm) 0;
+  }
+
+  /* Beside Cancel, the Select link takes the rest of the row. */
+  & &__footer-row &__apply-link {
+    flex: 1 1 0%;
+    width: auto;
   }
 }
 </style>

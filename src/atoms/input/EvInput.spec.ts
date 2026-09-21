@@ -90,4 +90,36 @@ describe('EvInput', () => {
     expect(ids[0]).toBe('hint')
     expect(ids[1]).toBe(both.find('.ev-input__message').attributes('id'))
   })
+
+  it('shows an eye toggle on password fields that reveals and hides the value', async () => {
+    const wrapper = mount(EvInput, { props: { type: 'password', modelValue: 'rahasia' } })
+    const input = () => wrapper.find('input')
+    const eye = wrapper.find('.ev-input__reveal')
+    expect(eye.exists()).toBe(true)
+    expect(input().attributes('type')).toBe('password')
+    expect(eye.attributes('aria-pressed')).toBe('false')
+    await eye.trigger('click')
+    expect(input().attributes('type')).toBe('text')
+    expect(eye.attributes('aria-pressed')).toBe('true')
+    await eye.trigger('click')
+    expect(input().attributes('type')).toBe('password')
+  })
+
+  it('draws no eye on other types, when revealable is off, or when disabled', () => {
+    expect(
+      mount(EvInput, { props: { type: 'text' } })
+        .find('.ev-input__reveal')
+        .exists(),
+    ).toBe(false)
+    expect(
+      mount(EvInput, { props: { type: 'password', revealable: false } })
+        .find('.ev-input__reveal')
+        .exists(),
+    ).toBe(false)
+    expect(
+      mount(EvInput, { props: { type: 'password', disabled: true } })
+        .find('.ev-input__reveal')
+        .exists(),
+    ).toBe(false)
+  })
 })

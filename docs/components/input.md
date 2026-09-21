@@ -14,6 +14,9 @@ composes: []
 usedBy:
   - "evoq-ui:input-field-unit"
 seeAlso:
+  - "evoq-ui:input-date"
+  - "evoq-ui:input-dropdown"
+  - "evoq-ui:input-time"
   - "evoq-ui:textarea"
 figma:
   file: "hJ3XmwLptPtF4IFBDlZlpx"
@@ -54,7 +57,7 @@ keywords:
 
 _The exact snippet the playground simulator copies for this component (`playground/simulator-demos.ts`)._
 
-## Props (13)
+## Props (16)
 
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
@@ -71,6 +74,9 @@ _The exact snippet the playground simulator copies for this component (`playgrou
 | `validationTextEnd` | `string` | — | no | Trailing helper text, right-aligned - a counter or a hint. |
 | `clearable` | `boolean` | `false` | no | Shows the clear button once there is something to clear. |
 | `clearLabel` | `string` | `'Bersihkan'` | no | — |
+| `revealable` | `boolean` | `true` | no | For `type="password"`: draws the eye button that shows / hides the value. Not a node on the InputField board - added on request, drawn in the trailing-icon position with the same 20px glyph and colour. |
+| `showLabel` | `string` | `'Tampilkan kata sandi'` | no | — |
+| `hideLabel` | `string` | `'Sembunyikan kata sandi'` | no | — |
 
 **Two-way binding:** `v-model`
 
@@ -111,8 +117,8 @@ From the Figma page **Input**, frame `4680:3577` (Input Field). These rules are 
 ### When not to use
 
 - Don't use for long, multi-line text  →  use InputTextArea (`evoq-ui:textarea`).
-- Don't use for choosing from a fixed set  →  use InputDropdown.
-- Don't use for dates or times  →  use InputDate / InputTime.
+- Don't use for choosing from a fixed set  →  use InputDropdown (`evoq-ui:input-dropdown`).
+- Don't use for dates or times  →  use InputDate (`evoq-ui:input-date`) / InputTime (`evoq-ui:input-time`).
 - Don't place critical instructions only in the placeholder.
 
 ### Do

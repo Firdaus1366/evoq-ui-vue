@@ -1862,7 +1862,9 @@ section('calendar', () => {
   const overlay = rule('.ev-calendar__overlay')
   check('calendar overlay floats', overlay.get('position'), 'absolute')
   check('calendar overlay min width', overlay.get('min-width'), '106px')
-  check('calendar month label is a button', rule('.ev-calendar__month').get('cursor'), 'pointer')
+  // DEVIATION: month and year are two buttons (the board draws one label).
+  check('calendar month button', rule('.ev-calendar__month-name').get('cursor'), 'pointer')
+  check('calendar year button', rule('.ev-calendar__year-name').get('cursor'), 'pointer')
 
   /*
    * node: Frame 26 - the mobile read-out, 14 Bold in the brand colour, and the
@@ -1900,6 +1902,10 @@ section('calendar', () => {
   check('calendar time link pad', resolve(link.get('padding')), '8px 0')
   check('calendar time link colour', resolve(link.get('--ev-link-fg')), '#071437')
   check('calendar time link width', link.get('width'), '100%')
+  // The opt-in single-date footer's Select date is the same ButtonLink override.
+  const applyLink = rule('.ev-calendar .ev-calendar__apply-link')
+  check('calendar apply link pad', resolve(applyLink.get('padding')), '8px 0')
+  check('calendar apply link colour', resolve(applyLink.get('--ev-link-fg')), '#071437')
   const linkAtom = merged('.ev-button-link', '.ev-button-link--primary')
   check('calendar time link font', resolve(linkAtom.get('font-size')), '0.875rem')
   check('calendar time link icon', resolve(linkAtom.get('--ev-link-icon'), linkAtom), '#1b84ff')
@@ -2237,6 +2243,9 @@ section('input-search', () => {
   check('input-search icon color', resolve(icon.get('color'), scope), '#78829d')
   check('input-search icon size', rule('.ev-input-search__icon svg').get('width'), '16px')
   check('input-search clear size', rule('.ev-input-search__clear svg').get('width'), '20px')
+  // Has R Icon is the 16px `fiber_manual_record` instance; the board has no shortcut node.
+  check('input-search R icon size', rule('.ev-input-search__icon svg').get('width'), '16px')
+  pass('input-search draws no shortcut', rule('.ev-input-search__shortcut').size === 0, 'absent')
 
   // The search value is the one 12px field in the family.
   const control = rule('.ev-input-search__control')
@@ -2253,10 +2262,111 @@ section('input-search', () => {
   checkVar('input-search disabled placeholder', dis, '--ev-search-placeholder', '#071437')
 })
 
+// ------------------------------------------- Input Dropdown / Date / Time
+/*
+ * Three sets, one node tree (555:3041, 543:2651, 555:2975), so one loop.
+ * Board: Content 44px (Small 36) - NOT the documentation prose's 48/40 -
+ * pad 12 (Small 8/12), gap 8, r6, stroke #dbdfe9 INSIDE 1. Title is an
+ * ABSOLUTE Label frame at x7 y-7.5 with a 1px mask of the field surface.
+ */
+for (const b of ['input-dropdown', 'input-date', 'input-time']) {
+  section(b, () => {
+    const c = `.ev-${b}`
+    const scope = merged(c)
+    const content = rule(`${c}__content`)
+    check(`${b} min-height`, content.get('min-height'), '44px')
+    check(`${b} pad`, resolve(content.get('padding')), '12px')
+    check(`${b} gap`, resolve(content.get('gap')), '8px')
+    check(`${b} radius`, resolve(content.get('border-radius'), scope), '6px')
+    check(`${b} border`, resolve(content.get('border'), scope), '1px solid #dbdfe9')
+    check(`${b} bg`, resolve(content.get('background-color'), scope), '#ffffff')
+
+    const small = rule(`${c}--small ${c}__content`)
+    check(`${b} small min-height`, small.get('min-height'), '36px')
+    check(`${b} small pad`, resolve(small.get('padding')), '8px 12px')
+
+    const label = rule(`${c}__label`)
+    // Board y -7.5 / x 7 of the outer box; CSS measures inside the 1px border.
+    check(`${b} label top`, label.get('top'), '-8.5px')
+    check(`${b} label left`, label.get('left'), '6px')
+    check(`${b} label pad`, label.get('padding'), '0 3px')
+    checkVar(`${b} title`, scope, '--ev-sf-title', '#78829d')
+    check(`${b} mask height`, rule(`${c}__label:before`).get('height'), '1px')
+
+    checkVar(`${b} placeholder`, scope, '--ev-sf-placeholder', '#c4cada')
+    checkVar(`${b} value`, scope, '--ev-sf-fg', '#071437')
+    checkVar(`${b} icon`, scope, '--ev-sf-icon', '#78829d')
+    check(`${b} glyph size`, rule(`${c}__glyph svg`).get('width'), '20px')
+    check(`${b} lead size`, rule(`${c}__lead svg`).get('width'), '16px')
+
+    const active = merged(c, `${c}--open`)
+    check(
+      `${b} active border`,
+      resolve(merged(`${c}--open ${c}__content`).get('border-color'), active),
+      '#1b84ff',
+    )
+    const err = merged(c, `${c}--error`)
+    checkVar(`${b} error border`, err, '--ev-sf-border', '#f82a5b')
+    checkVar(`${b} error title`, err, '--ev-sf-title', '#c62249')
+    checkVar(`${b} error value`, err, '--ev-sf-fg', '#c62249')
+    checkVar(`${b} error icon`, err, '--ev-sf-icon', '#f82a5b')
+    checkVar(`${b} error message`, err, '--ev-sf-message', '#f82a5b')
+    const dis = merged(c, `${c}--disabled`)
+    checkVar(`${b} disabled bg`, dis, '--ev-sf-bg', '#ebedf1')
+    checkVar(`${b} disabled value`, dis, '--ev-sf-placeholder', '#071437')
+  })
+}
+
+// ------------------------------------------------- Input Multiple Field
+section('input-multiple-field', () => {
+  const c = '.ev-input-multiple-field'
+  const scope = merged(c)
+  const content = rule(`${c}__content`)
+  check('imf pad', resolve(content.get('padding')), '16px 8px')
+  check('imf filled pad', resolve(merged(`${c}--filled ${c}__content`).get('padding-top')), '6px')
+  check('imf gap', resolve(content.get('gap')), '8px')
+  check('imf border', resolve(content.get('border'), scope), '1px solid #dbdfe9')
+  check('imf icon size', rule(`${c}__icon svg`).get('width'), '16px')
+  checkVar('imf title', scope, '--ev-imf-title', '#78829d')
+  checkVar('imf icon', scope, '--ev-imf-icon', '#78829d')
+  check('imf tags gap', resolve(rule(`${c}__tags`).get('gap')), '4px')
+  // The board draws NO notched label on this set.
+  pass('imf draws no notched label', rule(`${c}__label`).size === 0, 'absent')
+  const err = merged(c, `${c}--error`)
+  checkVar('imf error border', err, '--ev-imf-border', '#f82a5b')
+  checkVar('imf error title', err, '--ev-imf-title', '#c62249')
+  const dis = merged(c, `${c}--disabled`)
+  checkVar('imf disabled bg', dis, '--ev-imf-bg', '#ebedf1')
+  checkVar('imf disabled title', dis, '--ev-imf-title', '#071437')
+})
+
+// ------------------------------------ Input Multiple / Single Options
+for (const b of ['input-multiple-options', 'input-single-options']) {
+  const k = b === 'input-multiple-options' ? 'imo' : 'iso'
+  section(b, () => {
+    const c = `.ev-${b}`
+    const scope = merged(c)
+    check(`${b} gap`, resolve(rule(c).get('gap')), '4px')
+    const list = rule(`${c}__list`)
+    check(`${b} list gap`, resolve(list.get('gap')), '8px')
+    check(`${b} list wraps`, list.get('flex-wrap'), 'wrap')
+    checkVar(`${b} title`, scope, `--ev-${k}-title`, '#78829d')
+    checkVar(`${b} message`, scope, `--ev-${k}-message`, '#78829d')
+    const err = merged(c, `${c}--error`)
+    checkVar(`${b} error title`, err, `--ev-${k}-title`, '#c62249')
+    checkVar(`${b} error message`, err, `--ev-${k}-message`, '#f82a5b')
+    checkVar(`${b} disabled title`, merged(c, `${c}--disabled`), `--ev-${k}-title`, '#071437')
+    // The board draws the list on the page: no border, no surface.
+    pass(
+      `${b} draws no box`,
+      rule(c).get('border') === undefined && rule(c).get('background-color') === undefined,
+      'absent',
+    )
+  })
+}
+
 // -------------------------------------------------------- Input Field Unit
 section('input-field-unit', () => {
-  const scope = merged('.ev-input-field-unit')
-
   /*
    * The board draws `Field` as a bare row of two independent inputs with gap 4,
    * NOT one merged box with a grey unit block. The row itself carries no border.
@@ -2268,12 +2378,11 @@ section('input-field-unit', () => {
   pass('input-field-unit row has no fill', !field.get('background-color'), 'none')
 
   /*
-   * `InputDropdown` is drawn here; `InputField` is an instance of the field
-   * atom, so its box is proven on EvInput's own rule and scope - the same six
-   * values the board gives both boxes.
+   * Both boxes are instances (InputDropdown, InputField), so each is proven on
+   * its own atom's rule and scope - the same values the board gives both.
    */
   const boxes = [
-    ['unit-wrap', rule('.ev-input-field-unit__unit-wrap'), scope],
+    ['dropdown', rule('.ev-input-dropdown__content'), merged('.ev-input-dropdown')],
     ['input', rule('.ev-input__field'), merged('.ev-input')],
   ]
   for (const [part, box, boxScope] of boxes) {
@@ -2297,6 +2406,21 @@ section('input-field-unit', () => {
     )
   }
   check(
+    'input-field-unit dropdown hugs',
+    rule('.ev-input-field-unit__field>.ev-input-dropdown').get('flex'),
+    'none',
+  )
+  pass(
+    'input-field-unit draws no native select',
+    rule('.ev-input-field-unit__select').size === 0,
+    'absent',
+  )
+  pass(
+    'input-field-unit draws no unit box of its own',
+    rule('.ev-input-field-unit__unit-wrap').size === 0,
+    'EvInputDropdown',
+  )
+  check(
     'input-field-unit field atom fills the row',
     rule('.ev-input-field-unit__field>.ev-input').get('flex'),
     '1',
@@ -2305,6 +2429,58 @@ section('input-field-unit', () => {
     'input-field-unit does not redraw the field',
     rule('.ev-input-field-unit__input-wrap').size === 0,
     'EvInput',
+  )
+})
+
+// ---------------------------------------------------------- Loading Overlay
+/*
+ * Not a Figma set: ported from the product's UiLoading.vue, so these values are
+ * that file's, asserted to keep the copy exact. The white stroke and the 80%
+ * black scrim are literals on purpose - a blocking scrim reads the same in
+ * light and dark, so it does not follow the theme tokens.
+ */
+section('loading-overlay', () => {
+  const root = rule('.ev-loading-overlay')
+  check('loading-overlay position', root.get('position'), 'fixed')
+  check('loading-overlay inset', root.get('inset'), '0')
+  check('loading-overlay z-index', root.get('z-index'), '9999')
+  check('loading-overlay centres', root.get('justify-content'), 'center')
+  check(
+    'loading-overlay backdrop',
+    rule('.ev-loading-overlay__backdrop').get('background-color'),
+    '#000c', // the minifier's spelling of rgb(0 0 0 / 80%)
+  )
+
+  const logo = rule('.ev-loading-overlay__logo')
+  check('loading-overlay logo width', logo.get('width'), '280px')
+  check('loading-overlay logo max width', logo.get('max-width'), '70vw')
+  check('loading-overlay logo ratio', logo.get('aspect-ratio'), '440.11/106.06')
+
+  const path = rule('.ev-loading-overlay__logo-path')
+  check('loading-overlay stroke', path.get('stroke'), '#ffffff')
+  check('loading-overlay stroke width', path.get('stroke-width'), '4px')
+  check('loading-overlay dash', path.get('stroke-dasharray'), '320 680')
+  check(
+    'loading-overlay trace',
+    path.get('animation'),
+    // Source: `logo-trace 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite`, as the minifier prints it.
+    '2.8s cubic-bezier(.4,0,.2,1) infinite ev-loading-overlay-trace',
+  )
+  const delays = [2, 3, 4, 5].map((n) =>
+    rule(`.ev-loading-overlay__logo-path:nth-child(${n})`).get('animation-delay'),
+  )
+  check('loading-overlay stagger', delays.join(' '), '0.15s 0.3s 0.45s 0.6s')
+
+  // Popup lets the page through; only the card takes the pointer.
+  check(
+    'loading-overlay popup click-through',
+    rule('.ev-loading-overlay--popup').get('pointer-events'),
+    'none',
+  )
+  check(
+    'loading-overlay card pointer',
+    rule('.ev-loading-overlay__card').get('pointer-events'),
+    'auto',
   )
 })
 

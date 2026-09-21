@@ -12,6 +12,9 @@ const props = withDefaults(
     placeholder?: string
     disabled?: boolean
     readonly?: boolean
+    /** Figma's `Has L Icon`: the leading search glyph. On by default. */
+    leftIcon?: boolean
+    /** Figma's `Has R Icon`: the trailing clear action, shown once there is a query. */
     clearable?: boolean
     error?: boolean
     validationText?: string
@@ -21,6 +24,7 @@ const props = withDefaults(
     placeholder: 'Cari sesuatu...',
     disabled: false,
     readonly: false,
+    leftIcon: true,
     clearable: true,
     error: false,
     validationText: undefined,
@@ -34,7 +38,8 @@ const emit = defineEmits<{
 }>()
 
 defineSlots<{
-  shortcut?: () => unknown
+  /** Figma's `Has R Icon` (`R Icon` instance swap): 16px. Yields to the clear action while a query is present. */
+  iconRight?: () => unknown
 }>()
 
 const inputId = `ev-input-search-${useId()}`
@@ -72,7 +77,7 @@ function clear() {
   >
     <div class="ev-input-search__field">
       <!-- Leading Search Icon -->
-      <span class="ev-input-search__icon">
+      <span v-if="leftIcon" class="ev-input-search__icon">
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
           <circle cx="9" cy="9" r="6" />
           <path d="M13.5 13.5L17 17" stroke-linecap="round" />
@@ -107,9 +112,9 @@ function clear() {
         </svg>
       </button>
 
-      <div v-if="$slots.shortcut" class="ev-input-search__shortcut">
-        <slot name="shortcut" />
-      </div>
+      <span v-else-if="$slots.iconRight" class="ev-input-search__icon ev-input-search__icon--right">
+        <slot name="iconRight" />
+      </span>
     </div>
 
     <p v-if="validationText" :id="messageId" class="ev-input-search__message">
@@ -206,12 +211,6 @@ function clear() {
       width: 20px;
       height: 20px;
     }
-  }
-
-  &__shortcut {
-    display: inline-flex;
-    align-items: center;
-    flex-shrink: 0;
   }
 
   &__message {

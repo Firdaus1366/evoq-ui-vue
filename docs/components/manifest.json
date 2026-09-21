@@ -5,9 +5,9 @@
   "generatedBy": "scripts/build-docs.mjs",
   "figmaFile": "hJ3XmwLptPtF4IFBDlZlpx",
   "layers": {
-    "atom": 31,
-    "molecule": 17,
-    "organism": 26,
+    "atom": 32,
+    "molecule": 20,
+    "organism": 29,
     "pattern": 0
   },
   "components": [
@@ -1287,6 +1287,13 @@
           "description": "The board's `Select Time` link, drawn under the Basic variant."
         },
         {
+          "name": "footer",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Draws the Cancel / Apply footer on the single-date Basic variant, which the board draws without one. Range, Preset and mobile always have it. Opt-in, for a calendar hosted in an InputDate slot."
+        },
+        {
           "name": "previousLabel",
           "type": "string",
           "default": "'Bulan sebelumnya'",
@@ -1342,7 +1349,9 @@
         "evoq-ui:dropdown-item",
         "evoq-ui:dropdown-list"
       ],
-      "usedBy": [],
+      "usedBy": [
+        "evoq-ui:input-date"
+      ],
       "seeAlso": [],
       "figma": {
         "doc": "4218:66637",
@@ -1730,6 +1739,7 @@
       "children": [],
       "composes": [],
       "usedBy": [
+        "evoq-ui:input-multiple-options",
         "evoq-ui:tree-item"
       ],
       "seeAlso": [
@@ -2463,7 +2473,8 @@
       "composes": [],
       "usedBy": [
         "evoq-ui:breadcrumb",
-        "evoq-ui:calendar"
+        "evoq-ui:calendar",
+        "evoq-ui:input-field-unit"
       ],
       "seeAlso": [
         "evoq-ui:radio"
@@ -3141,6 +3152,25 @@
           "type": "string",
           "default": "'Bersihkan'",
           "required": false
+        },
+        {
+          "name": "revealable",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "For `type=\"password\"`: draws the eye button that shows / hides the value. Not a node on the InputField board - added on request, drawn in the trailing-icon position with the same 20px glyph and colour."
+        },
+        {
+          "name": "showLabel",
+          "type": "string",
+          "default": "'Tampilkan kata sandi'",
+          "required": false
+        },
+        {
+          "name": "hideLabel",
+          "type": "string",
+          "default": "'Sembunyikan kata sandi'",
+          "required": false
         }
       ],
       "slots": [
@@ -3158,6 +3188,9 @@
         "evoq-ui:input-field-unit"
       ],
       "seeAlso": [
+        "evoq-ui:input-date",
+        "evoq-ui:input-dropdown",
+        "evoq-ui:input-time",
         "evoq-ui:textarea"
       ],
       "figma": {
@@ -3176,6 +3209,311 @@
         "form",
         "textbox",
         "field"
+      ]
+    },
+    {
+      "id": "evoq-ui:input-date",
+      "name": "EvInputDate",
+      "tag": "ev-input-date",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvInputDate } from 'evoq-ui'",
+      "doc": "docs/components/input-date.md",
+      "source": "src/organisms/input-date/EvInputDate.vue",
+      "summary": "A date input with a trailing calendar icon and a date-picker dropdown (slot). It comes in two sizes, supports validation, and shares the same interaction states as InputField.",
+      "summarySource": "figma",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue",
+        "open"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "DateValue",
+          "default": "null",
+          "required": false,
+          "description": "A single date, or a `[from, to]` pair in range mode."
+        },
+        {
+          "name": "mode",
+          "type": "CalendarMode",
+          "options": [
+            "single",
+            "range"
+          ],
+          "default": "'single'",
+          "required": false,
+          "description": "`single` for one date, `range` for a `[from, to]` pair. Set in code."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "The notched Title."
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Appends the board's red asterisk to the Title."
+        },
+        {
+          "name": "size",
+          "type": "SelectFieldSize",
+          "options": [
+            "default",
+            "small"
+          ],
+          "default": "'default'",
+          "required": false,
+          "description": "Figma's `Size`: default (44px) or small (36px)."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Active state - the panel is open."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Switches the field to the error style. Pair it with `validationText`."
+        },
+        {
+          "name": "validationText",
+          "type": "string",
+          "required": false,
+          "description": "Figma's `Has Validation Text`."
+        },
+        {
+          "name": "clearable",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Shows the clear button while open and holding a value."
+        },
+        {
+          "name": "clearLabel",
+          "type": "string",
+          "default": "'Bersihkan'",
+          "required": false
+        },
+        {
+          "name": "hasRightIcon",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Figma's `Has R Icon`: the trailing calendar glyph. On by default."
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "default": "'id-ID'",
+          "required": false,
+          "description": "Locale for the displayed value and the calendar."
+        },
+        {
+          "name": "min",
+          "type": "Date",
+          "required": false
+        },
+        {
+          "name": "max",
+          "type": "Date",
+          "required": false
+        },
+        {
+          "name": "cancelLabel",
+          "type": "string",
+          "default": "'Cancel'",
+          "required": false
+        },
+        {
+          "name": "applyLabel",
+          "type": "string",
+          "default": "'Select date'",
+          "required": false
+        }
+      ],
+      "slots": [
+        "iconRight",
+        "default"
+      ],
+      "events": [
+        "update:modelValue",
+        "update:open",
+        "clear"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [
+        "evoq-ui:calendar"
+      ],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:input",
+        "evoq-ui:input-time"
+      ],
+      "figma": {
+        "doc": "4690:5067",
+        "sets": [
+          {
+            "name": "InputDate",
+            "id": "543:2651",
+            "page": "Input"
+          }
+        ]
+      },
+      "keywords": [
+        "date field",
+        "datepicker input",
+        "calendar field",
+        "birth date"
+      ]
+    },
+    {
+      "id": "evoq-ui:input-dropdown",
+      "name": "EvInputDropdown",
+      "tag": "ev-input-dropdown",
+      "layer": "atom",
+      "entry": "evoq-ui",
+      "import": "import { EvInputDropdown } from 'evoq-ui'",
+      "doc": "docs/components/input-dropdown.md",
+      "source": "src/atoms/input-dropdown/EvInputDropdown.vue",
+      "summary": "A select-style input with a trailing chevron that opens a list of options (slot). It comes in two sizes (44px and 36px), supports a leading icon and validation, and shares the same interaction states as InputField.",
+      "summarySource": "figma",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue",
+        "open"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string",
+          "default": "''",
+          "required": false,
+          "description": "The displayed value. Empty shows the placeholder."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "The notched Title."
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Appends the board's red asterisk to the Title."
+        },
+        {
+          "name": "size",
+          "type": "SelectFieldSize",
+          "options": [
+            "default",
+            "small"
+          ],
+          "default": "'default'",
+          "required": false,
+          "description": "Figma's `Size`: default (44px) or small (36px)."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Active state - the slot is open."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Switches the field to the error style. Pair it with `validationText`."
+        },
+        {
+          "name": "validationText",
+          "type": "string",
+          "required": false,
+          "description": "Figma's `Has Validation Text`."
+        },
+        {
+          "name": "clearable",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Shows the clear button while open and holding a value."
+        },
+        {
+          "name": "clearLabel",
+          "type": "string",
+          "default": "'Bersihkan'",
+          "required": false
+        }
+      ],
+      "slots": [
+        "iconLeft",
+        "default"
+      ],
+      "events": [
+        "update:modelValue",
+        "update:open",
+        "clear"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [],
+      "usedBy": [
+        "evoq-ui:input-field-unit"
+      ],
+      "seeAlso": [
+        "evoq-ui:input",
+        "evoq-ui:input-multiple-options"
+      ],
+      "figma": {
+        "doc": "4690:5935",
+        "sets": [
+          {
+            "name": "InputDropdown",
+            "id": "555:3041",
+            "page": "Input"
+          }
+        ]
+      },
+      "keywords": [
+        "select",
+        "combobox",
+        "choose one",
+        "chevron field"
       ]
     },
     {
@@ -3227,7 +3565,21 @@
         {
           "name": "label",
           "type": "string",
-          "required": false
+          "required": false,
+          "description": "Title of the value field (`InputField`)."
+        },
+        {
+          "name": "unitLabel",
+          "type": "string",
+          "required": false,
+          "description": "Title of the unit dropdown (`InputDropdown`)."
+        },
+        {
+          "name": "unitPlaceholder",
+          "type": "string",
+          "default": "'Select'",
+          "required": false,
+          "description": "Shown in the dropdown while no unit is chosen - the board's `Select`."
         },
         {
           "name": "required",
@@ -3279,11 +3631,14 @@
       "partOf": null,
       "children": [],
       "composes": [
-        "evoq-ui:input"
+        "evoq-ui:dropdown-item",
+        "evoq-ui:input",
+        "evoq-ui:input-dropdown"
       ],
       "usedBy": [],
       "seeAlso": [
-        "evoq-ui:input"
+        "evoq-ui:input",
+        "evoq-ui:input-dropdown"
       ],
       "figma": {
         "doc": "4707:9944",
@@ -3300,6 +3655,211 @@
         "currency",
         "amount",
         "measure"
+      ]
+    },
+    {
+      "id": "evoq-ui:input-multiple-field",
+      "name": "EvInputMultipleField",
+      "tag": "ev-input-multiple-field",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvInputMultipleField } from 'evoq-ui'",
+      "doc": "docs/components/input-multiple-field.md",
+      "source": "src/molecules/input-multiple-field/EvInputMultipleField.vue",
+      "summary": "A multi-select input that displays chosen values as removable tags and opens a list of options (slot). It supports a leading icon, validation, and the same interaction states as InputField.",
+      "summarySource": "figma",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue",
+        "open"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "(string | number)[]",
+          "default": "() => []",
+          "required": false,
+          "description": "Values of the chosen tags."
+        },
+        {
+          "name": "options",
+          "type": "InputOption[]",
+          "default": "() => []",
+          "required": false,
+          "description": "Lets a value render its label; without a match the value itself shows."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "`.Input` Title while nothing is chosen."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "description": "`.Input` Placeholder line above the tags once something is chosen."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Active state - the slot is open."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "validationText",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "clearable",
+          "type": "boolean",
+          "default": "true",
+          "required": false
+        },
+        {
+          "name": "clearLabel",
+          "type": "string",
+          "default": "'Bersihkan'",
+          "required": false
+        },
+        {
+          "name": "removeLabel",
+          "type": "string",
+          "default": "'Hapus'",
+          "required": false
+        }
+      ],
+      "slots": [
+        "iconLeft",
+        "default"
+      ],
+      "events": [
+        "update:modelValue",
+        "update:open",
+        "clear"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [
+        "evoq-ui:tag"
+      ],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:input",
+        "evoq-ui:input-dropdown"
+      ],
+      "figma": {
+        "doc": "4690:6443",
+        "sets": [
+          {
+            "name": "InputMultipleField",
+            "id": "555:4109",
+            "page": "Input"
+          }
+        ]
+      },
+      "keywords": [
+        "multi select",
+        "tags input",
+        "chips field",
+        "choose many"
+      ]
+    },
+    {
+      "id": "evoq-ui:input-multiple-options",
+      "name": "EvInputMultipleOptions",
+      "tag": "ev-input-multiple-options",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvInputMultipleOptions } from 'evoq-ui'",
+      "doc": "docs/components/input-multiple-options.md",
+      "source": "src/molecules/input-multiple-options/EvInputMultipleOptions.vue",
+      "summary": "The multi-select options list (dropdown panel) that lets a user pick several values at once, each row toggled with a checkbox. It is typically mounted in the slot of InputMultipleField and supports validation and interaction states.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "(string | number)[]",
+          "default": "() => []",
+          "required": false,
+          "description": "Values of the ticked rows."
+        },
+        {
+          "name": "options",
+          "type": "InputOption[]",
+          "default": "() => []",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "`.Input` Title."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "validationText",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "slots": [],
+      "events": [
+        "update:modelValue"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [
+        "evoq-ui:checkbox"
+      ],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:input",
+        "evoq-ui:input-single-options"
+      ],
+      "figma": {
+        "doc": "4715:10884",
+        "sets": [
+          {
+            "name": "InputMultipleOptions",
+            "id": "859:2091",
+            "page": "Input"
+          }
+        ]
+      },
+      "keywords": [
+        "checkbox list",
+        "multi select panel",
+        "choose many"
       ]
     },
     {
@@ -3343,10 +3903,18 @@
           "required": false
         },
         {
+          "name": "leftIcon",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Figma's `Has L Icon`: the leading search glyph. On by default."
+        },
+        {
           "name": "clearable",
           "type": "boolean",
           "default": "true",
-          "required": false
+          "required": false,
+          "description": "Figma's `Has R Icon`: the trailing clear action, shown once there is a query."
         },
         {
           "name": "error",
@@ -3361,7 +3929,7 @@
         }
       ],
       "slots": [
-        "shortcut"
+        "iconRight"
       ],
       "events": [
         "update:modelValue",
@@ -3378,7 +3946,8 @@
         "evoq-ui:sidebar"
       ],
       "seeAlso": [
-        "evoq-ui:input"
+        "evoq-ui:input",
+        "evoq-ui:input-dropdown"
       ],
       "figma": {
         "doc": "4713:10535",
@@ -3395,6 +3964,273 @@
         "filter",
         "query",
         "lookup"
+      ]
+    },
+    {
+      "id": "evoq-ui:input-single-options",
+      "name": "EvInputSingleOptions",
+      "tag": "ev-input-single-options",
+      "layer": "molecule",
+      "entry": "evoq-ui",
+      "import": "import { EvInputSingleOptions } from 'evoq-ui'",
+      "doc": "docs/components/input-single-options.md",
+      "source": "src/molecules/input-single-options/EvInputSingleOptions.vue",
+      "summary": "The single-select options list (dropdown panel) that lets a user pick exactly one value from a list. It is typically mounted in the slot of InputDropdown and supports validation and interaction states.",
+      "summarySource": "figma",
+      "attrs": "root",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string | number | null",
+          "default": "null",
+          "required": false,
+          "description": "Value of the selected row."
+        },
+        {
+          "name": "options",
+          "type": "InputOption[]",
+          "default": "() => []",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "`.Input` Title."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "validationText",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "slots": [],
+      "events": [
+        "update:modelValue"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [
+        "evoq-ui:radio"
+      ],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:input",
+        "evoq-ui:input-multiple-options"
+      ],
+      "figma": {
+        "doc": "4690:9331",
+        "sets": [
+          {
+            "name": "InputSingleOptions",
+            "id": "702:3422",
+            "page": "Input"
+          }
+        ]
+      },
+      "keywords": [
+        "radio list",
+        "single select panel",
+        "choose one"
+      ]
+    },
+    {
+      "id": "evoq-ui:input-time",
+      "name": "EvInputTime",
+      "tag": "ev-input-time",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvInputTime } from 'evoq-ui'",
+      "doc": "docs/components/input-time.md",
+      "source": "src/organisms/input-time/EvInputTime.vue",
+      "summary": "A time input with a trailing clock icon and a time-picker dropdown (slot). It comes in two sizes, supports validation, and shares the same interaction states as InputField.",
+      "summarySource": "figma",
+      "attrs": "inner",
+      "vModel": [
+        "modelValue",
+        "format",
+        "open"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string",
+          "default": "''",
+          "required": false,
+          "description": "`14:30` in 24-hour, `02:30 PM` in 12-hour; seconds when the format has them."
+        },
+        {
+          "name": "format",
+          "type": "TimePickerFormat",
+          "options": [
+            "default",
+            "with-seconds",
+            "am-pm",
+            "am-pm-seconds"
+          ],
+          "default": "'default'",
+          "required": false,
+          "description": "The wheel's columns. Follows the 24 / 12 hour switch."
+        },
+        {
+          "name": "hourSwitch",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Shows the 24 jam / 12 jam switch above the wheel."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "The notched Title."
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Appends the board's red asterisk to the Title."
+        },
+        {
+          "name": "size",
+          "type": "SelectFieldSize",
+          "options": [
+            "default",
+            "small"
+          ],
+          "default": "'default'",
+          "required": false,
+          "description": "Figma's `Size`: default (44px) or small (36px)."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Active state - the panel is open."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Switches the field to the error style. Pair it with `validationText`."
+        },
+        {
+          "name": "validationText",
+          "type": "string",
+          "required": false,
+          "description": "Figma's `Has Validation Text`."
+        },
+        {
+          "name": "clearable",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Shows the clear button while open and holding a value."
+        },
+        {
+          "name": "clearLabel",
+          "type": "string",
+          "default": "'Bersihkan'",
+          "required": false
+        },
+        {
+          "name": "hasRightIcon",
+          "type": "boolean",
+          "default": "true",
+          "required": false,
+          "description": "Figma's `Has R Icon`: the trailing clock glyph. On by default."
+        },
+        {
+          "name": "cancelLabel",
+          "type": "string",
+          "default": "'Cancel'",
+          "required": false
+        },
+        {
+          "name": "applyLabel",
+          "type": "string",
+          "default": "'Apply'",
+          "required": false
+        },
+        {
+          "name": "hour24Label",
+          "type": "string",
+          "default": "'24 jam'",
+          "required": false
+        },
+        {
+          "name": "hour12Label",
+          "type": "string",
+          "default": "'12 jam'",
+          "required": false
+        }
+      ],
+      "slots": [
+        "iconRight",
+        "default"
+      ],
+      "events": [
+        "update:modelValue",
+        "update:format",
+        "update:open",
+        "clear"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [
+        "evoq-ui:time-picker",
+        "evoq-ui:toggle",
+        "evoq-ui:toggle-group"
+      ],
+      "usedBy": [],
+      "seeAlso": [
+        "evoq-ui:input",
+        "evoq-ui:input-date"
+      ],
+      "figma": {
+        "doc": "4690:5488",
+        "sets": [
+          {
+            "name": "InputTime",
+            "id": "555:2975",
+            "page": "Input"
+          }
+        ]
+      },
+      "keywords": [
+        "time field",
+        "clock",
+        "hh:mm",
+        "timepicker input"
       ]
     },
     {
@@ -3515,7 +4351,10 @@
       "composes": [],
       "usedBy": [],
       "seeAlso": [
-        "evoq-ui:input"
+        "evoq-ui:input",
+        "evoq-ui:input-date",
+        "evoq-ui:input-dropdown",
+        "evoq-ui:input-time"
       ],
       "figma": {
         "doc": "4680:3998",
@@ -3900,7 +4739,9 @@
       "partOf": null,
       "children": [],
       "composes": [],
-      "usedBy": [],
+      "usedBy": [
+        "evoq-ui:loading-overlay"
+      ],
       "seeAlso": [],
       "figma": {
         "doc": "4282:80578",
@@ -3919,6 +4760,80 @@
         "progress bar",
         "busy",
         "shimmer"
+      ]
+    },
+    {
+      "id": "evoq-ui:loading-overlay",
+      "name": "EvLoadingOverlay",
+      "tag": "ev-loading-overlay",
+      "layer": "organism",
+      "entry": "evoq-ui",
+      "import": "import { EvLoadingOverlay } from 'evoq-ui'",
+      "doc": "docs/components/loading-overlay.md",
+      "source": "src/organisms/loading-overlay/EvLoadingOverlay.vue",
+      "summary": "A full-page loading state. Blocked mode covers the page with the EVOQ wordmark tracing itself over an 80% scrim and stops all interaction; popup mode is a small card with the spinner that leaves the page usable.",
+      "summarySource": "code",
+      "attrs": "root",
+      "vModel": [
+        "modelValue"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Whether the loader is on screen."
+        },
+        {
+          "name": "mode",
+          "type": "LoadingOverlayMode",
+          "options": [
+            "popup",
+            "blocked"
+          ],
+          "default": "'blocked'",
+          "required": false,
+          "description": "`blocked` covers and blocks the page; `popup` is a small card that does not."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": "'Memuat...'",
+          "required": false,
+          "description": "Announced to assistive tech, and shown in the popup card."
+        },
+        {
+          "name": "closeOnEscape",
+          "type": "boolean",
+          "default": "false",
+          "required": false,
+          "description": "Escape turns it off (`update:modelValue` false). Off by default - a blocked loader is meant to stop the user; this is the way out for a playground or a stuck request."
+        }
+      ],
+      "slots": [],
+      "events": [
+        "update:modelValue"
+      ],
+      "partOf": null,
+      "children": [],
+      "composes": [
+        "evoq-ui:loading"
+      ],
+      "usedBy": [],
+      "seeAlso": [],
+      "figma": {
+        "doc": null,
+        "sets": []
+      },
+      "keywords": [
+        "loading",
+        "blocking",
+        "busy",
+        "overlay",
+        "splash",
+        "wait",
+        "full page"
       ]
     },
     {
@@ -4827,7 +5742,9 @@
       "partOf": "evoq-ui:radio-group",
       "children": [],
       "composes": [],
-      "usedBy": [],
+      "usedBy": [
+        "evoq-ui:input-single-options"
+      ],
       "seeAlso": [
         "evoq-ui:checkbox",
         "evoq-ui:toggle"
@@ -5777,7 +6694,9 @@
       "partOf": "evoq-ui:tag-group",
       "children": [],
       "composes": [],
-      "usedBy": [],
+      "usedBy": [
+        "evoq-ui:input-multiple-field"
+      ],
       "seeAlso": [
         "evoq-ui:badge",
         "evoq-ui:button",
@@ -6007,6 +6926,7 @@
       "usedBy": [],
       "seeAlso": [
         "evoq-ui:input",
+        "evoq-ui:input-dropdown",
         "evoq-ui:rich-editor"
       ],
       "figma": {
@@ -6111,7 +7031,9 @@
       "composes": [
         "evoq-ui:button"
       ],
-      "usedBy": [],
+      "usedBy": [
+        "evoq-ui:input-time"
+      ],
       "seeAlso": [],
       "figma": {
         "doc": "4218:66637",
@@ -6282,7 +7204,9 @@
       "partOf": "evoq-ui:toggle-group",
       "children": [],
       "composes": [],
-      "usedBy": [],
+      "usedBy": [
+        "evoq-ui:input-time"
+      ],
       "seeAlso": [
         "evoq-ui:radio-group",
         "evoq-ui:switch"
@@ -6354,7 +7278,9 @@
         "evoq-ui:toggle"
       ],
       "composes": [],
-      "usedBy": [],
+      "usedBy": [
+        "evoq-ui:input-time"
+      ],
       "seeAlso": [
         "evoq-ui:radio-group",
         "evoq-ui:switch"

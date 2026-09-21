@@ -1,10 +1,12 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
+import EvDropdownItem from '../../atoms/dropdown-item/EvDropdownItem.vue'
 import EvInput from '../../atoms/input/EvInput.vue'
+import EvInputDropdown from '../../atoms/input-dropdown/EvInputDropdown.vue'
 import EvInputFieldUnit from './EvInputFieldUnit.vue'
 
 describe('EvInputFieldUnit', () => {
-  it('renders unit select dropdown and input control', () => {
+  it('composes the InputDropdown atom for the unit, as the board instances it', () => {
     const wrapper = mount(EvInputFieldUnit, {
       props: {
         unit: 'USD',
@@ -13,27 +15,50 @@ describe('EvInputFieldUnit', () => {
         label: 'Harga Barang',
       },
     })
+    const unit = wrapper.findComponent(EvInputDropdown)
+    expect(unit.exists()).toBe(true)
+    expect(unit.props('modelValue')).toBe('USD')
+    expect(wrapper.find('select').exists()).toBe(false)
 
-    const select = wrapper.find('select')
-    expect(select.exists()).toBe(true)
-    expect(select.element.value).toBe('USD')
-
-    const input = wrapper.find('input')
-    expect(input.element.value).toBe('1500')
+    expect(wrapper.find('input').element.value).toBe('1500')
     expect(wrapper.text()).toContain('Harga Barang')
   })
 
-  it('emits update:unit when unit is changed', async () => {
-    const wrapper = mount(EvInputFieldUnit, {
-      props: {
-        unit: 'IDR',
-        units: ['IDR', 'USD', 'EUR'],
-      },
-    })
+  it('draws the row as dropdown then field, in board order', () => {
+    const wrapper = mount(EvInputFieldUnit)
+    const row = Array.from(wrapper.find('.ev-input-field-unit__field').element.children).map(
+      (el) => el.className.split(' ')[0],
+    )
+    expect(row).toEqual(['ev-input-dropdown', 'ev-input'])
+  })
 
-    const select = wrapper.find('select')
-    await select.setValue('EUR')
+  it('shows the Select placeholder until a unit is chosen (board State=Default)', () => {
+    const wrapper = mount(EvInputFieldUnit, {
+      props: { units: ['IDR', 'USD'], unitLabel: 'Title' },
+    })
+    const unit = wrapper.findComponent(EvInputDropdown)
+    expect(unit.props('modelValue')).toBe('')
+    expect(unit.find('.ev-input-dropdown__value').text()).toBe('Select')
+    expect(unit.find('.ev-input-dropdown__label').text()).toBe('Title')
+  })
+
+  it('clears the unit from the open dropdown (board State=Active)', async () => {
+    const wrapper = mount(EvInputFieldUnit, { props: { unit: 'IDR', units: ['IDR', 'USD'] } })
+    await wrapper.find('.ev-input-dropdown__content').trigger('click')
+    await wrapper.find('.ev-input-dropdown__clear').trigger('click')
+    expect(wrapper.emitted('update:unit')?.[0]).toEqual([''])
+  })
+
+  it('emits update:unit when an option is chosen, then closes the list', async () => {
+    const wrapper = mount(EvInputFieldUnit, {
+      props: { unit: 'IDR', units: ['IDR', 'USD', 'EUR'] },
+    })
+    await wrapper.find('.ev-input-dropdown__content').trigger('click')
+    const rows = wrapper.findAllComponents(EvDropdownItem)
+    expect(rows).toHaveLength(3)
+    await rows[2]?.trigger('click')
     expect(wrapper.emitted('update:unit')?.[0]).toEqual(['EUR'])
+    expect(wrapper.find('.ev-input-dropdown__slot').exists()).toBe(false)
   })
 
   it('composes the InputField atom for its value box, as the board instances it', () => {

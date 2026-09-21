@@ -77,10 +77,25 @@ export const SOURCES = {
     sets: [s('InputField', '85:2484', 'Input')],
     keywords: ['text field', 'input', 'form', 'textbox', 'field'],
   },
+  EvInputDate: {
+    figma: 'Input Date',
+    sets: [s('InputDate', '543:2651', 'Input')],
+    keywords: ['date field', 'datepicker input', 'calendar field', 'birth date'],
+  },
+  EvInputDropdown: {
+    figma: 'Input Dropdown',
+    sets: [s('InputDropdown', '555:3041', 'Input')],
+    keywords: ['select', 'combobox', 'choose one', 'chevron field'],
+  },
   EvInputSearch: {
     figma: 'InputSearch',
     sets: [s('InputSearch', '750:2949', 'Input')],
     keywords: ['search', 'filter', 'query', 'lookup'],
+  },
+  EvInputTime: {
+    figma: 'Input Time',
+    sets: [s('InputTime', '555:2975', 'Input')],
+    keywords: ['time field', 'clock', 'hh:mm', 'timepicker input'],
   },
   EvInputWithLabel: {
     figma: 'Input With Label',
@@ -197,6 +212,21 @@ export const SOURCES = {
     figma: 'InputFieldUnit',
     sets: [s('InputFieldUnit', '702:3937', 'Input')],
     keywords: ['unit', 'currency', 'amount', 'measure'],
+  },
+  EvInputMultipleField: {
+    figma: 'Input Multiple Field',
+    sets: [s('InputMultipleField', '555:4109', 'Input')],
+    keywords: ['multi select', 'tags input', 'chips field', 'choose many'],
+  },
+  EvInputMultipleOptions: {
+    figma: 'InputMultipleOptions',
+    sets: [s('InputMultipleOptions', '859:2091', 'Input')],
+    keywords: ['checkbox list', 'multi select panel', 'choose many'],
+  },
+  EvInputSingleOptions: {
+    figma: 'InputSingleOptions',
+    sets: [s('InputSingleOptions', '702:3422', 'Input')],
+    keywords: ['radio list', 'single select panel', 'choose one'],
   },
   EvPopover: {
     figma: 'Popover',
@@ -450,6 +480,14 @@ export const SOURCES = {
     sets: [s('Loading', '3227:400', 'Loading')],
     keywords: ['spinner', 'pulse', 'skeleton', 'progress bar', 'busy', 'shimmer'],
   },
+  EvLoadingOverlay: {
+    figma: null,
+    sets: [],
+    summary:
+      'A full-page loading state. Blocked mode covers the page with the EVOQ wordmark tracing itself over an 80% scrim and stops all interaction; popup mode is a small card with the spinner that leaves the page usable.',
+    composes: ['EvLoading'],
+    keywords: ['loading', 'blocking', 'busy', 'overlay', 'splash', 'wait', 'full page'],
+  },
   EvNavigationMenuMobile: {
     figma: 'Navigation Menu (Mobile)',
     sets: [
@@ -558,5 +596,11 @@ export const FIGMA_NAMES = {
   InputTextArea: 'EvTextarea',
   InputRichEditor: 'EvRichEditor',
   InputSearch: 'EvInputSearch',
+  InputDate: 'EvInputDate',
+  InputTime: 'EvInputTime',
+  InputDropdown: 'EvInputDropdown',
+  InputMultipleField: 'EvInputMultipleField',
+  InputMultipleOptions: 'EvInputMultipleOptions',
+  InputSingleOptions: 'EvInputSingleOptions',
   'bar chart': 'EvBarChart',
 }

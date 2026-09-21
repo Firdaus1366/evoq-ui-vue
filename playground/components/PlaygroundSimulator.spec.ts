@@ -105,4 +105,37 @@ describe('PlaygroundSimulator', () => {
       expect(COMPONENT_PROPS[tag], `${tag} has a demo but no catalogue entry`).toBeDefined()
     }
   })
+
+  it('lets the dropdown demo open, pick an option, fill the field and close', async () => {
+    const wrapper = mount(PlaygroundSimulator, { props: { tag: 'EvInputDropdown' } })
+    expect(wrapper.find('.ev-input-dropdown__slot').exists()).toBe(false)
+    await wrapper.find('.ev-input-dropdown__content').trigger('click')
+    const rows = wrapper.findAll('.ev-dropdown-item')
+    expect(rows.length).toBeGreaterThan(0)
+    await rows[1]?.trigger('click')
+    expect(wrapper.find('.ev-input-dropdown__value').text()).toBe('Gudang')
+    expect(wrapper.find('.ev-input-dropdown__slot').exists()).toBe(false)
+    wrapper.unmount()
+  })
+
+  it('mounts its own calendar / time picker in the Date and Time demos once opened', async () => {
+    for (const [tag, picker] of [
+      ['EvInputDate', '.ev-calendar'],
+      ['EvInputTime', '.ev-time-picker'],
+    ] as const) {
+      const wrapper = mount(PlaygroundSimulator, { props: { tag } })
+      await wrapper.find('.ev-input-' + tag.slice(7).toLowerCase() + '__content').trigger('click')
+      expect(wrapper.find(picker).exists(), tag).toBe(true)
+      wrapper.unmount()
+    }
+  })
+
+  it('lets the multi-select demo tick an option into the field', async () => {
+    const wrapper = mount(PlaygroundSimulator, { props: { tag: 'EvInputMultipleField' } })
+    await wrapper.find('.ev-input-multiple-field__content').trigger('click')
+    const before = wrapper.findAll('.ev-tag').length
+    await wrapper.findAll('.ev-input-multiple-options input')[1]?.setValue(true)
+    expect(wrapper.findAll('.ev-tag').length).toBe(before + 1)
+    wrapper.unmount()
+  })
 })

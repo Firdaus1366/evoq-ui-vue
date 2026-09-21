@@ -56,6 +56,7 @@ const VERIFIED_PROSE_PX = new Set([
   '1px', // Separator rule - verify:figma "accordion rule weight" / separator section
   '16px', // input icon size - the Input boards' icon frames
   '24px', // smallest Avatar size - the Avatar set's Size variants
+  '36px', // Small InputDropdown/InputDate/InputTime Content - verify:figma "select-field small height"
   '44px', // InputSearch height - verify:figma "dropdown search input height"
   // `M - NavigationMenu` and `M - NavigationMenu CenterButton` both measure
   // 393 wide on the board - the phone frame the mobile pages are drawn in.

@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, useId } from 'vue'
+import { computed, ref, useId } from 'vue'
+import EvDropdownItem from '../../atoms/dropdown-item/EvDropdownItem.vue'
 import EvInput from '../../atoms/input/EvInput.vue'
+import EvInputDropdown from '../../atoms/input-dropdown/EvInputDropdown.vue'
 
 defineOptions({
   name: 'EvInputFieldUnit',
@@ -19,7 +21,12 @@ const props = withDefaults(
     units?: (string | UnitOption)[]
     type?: string
     placeholder?: string
+    /** Title of the value field (`InputField`). */
     label?: string
+    /** Title of the unit dropdown (`InputDropdown`). */
+    unitLabel?: string
+    /** Shown in the dropdown while no unit is chosen - the board's `Select`. */
+    unitPlaceholder?: string
     required?: boolean
     disabled?: boolean
     readonly?: boolean
@@ -35,6 +42,8 @@ const props = withDefaults(
     type: 'text',
     placeholder: undefined,
     label: undefined,
+    unitLabel: undefined,
+    unitPlaceholder: 'Select',
     required: false,
     disabled: false,
     readonly: false,
@@ -51,7 +60,6 @@ const emit = defineEmits<{
   clear: []
 }>()
 
-const selectId = `ev-input-unit-sel-${useId()}`
 const messageId = `ev-input-unit-msg-${useId()}`
 
 const normalizedUnits = computed<UnitOption[]>(() => {
@@ -60,8 +68,15 @@ const normalizedUnits = computed<UnitOption[]>(() => {
 
 const hasMessage = computed(() => Boolean(props.validationText || props.validationTextEnd))
 
-function onUnitChange(event: Event) {
-  emit('update:unit', (event.target as HTMLSelectElement).value)
+const unitOpen = ref(false)
+const selected = computed(() => props.unit)
+const selectedLabel = computed(
+  () => normalizedUnits.value.find((u) => u.value === selected.value)?.label ?? selected.value,
+)
+
+function chooseUnit(value: string) {
+  emit('update:unit', value)
+  unitOpen.value = false
 }
 </script>
 
@@ -74,26 +89,30 @@ function onUnitChange(event: Event) {
     }"
   >
     <div class="ev-input-field-unit__field">
-      <!-- Leading Unit Selector -->
-      <div class="ev-input-field-unit__unit-wrap">
-        <select
-          :id="selectId"
-          class="ev-input-field-unit__select"
-          :value="unit || (normalizedUnits[0] ? normalizedUnits[0].value : '')"
-          :disabled="disabled || readonly"
-          aria-label="Pilih Satuan"
-          @change="onUnitChange"
-        >
-          <option v-for="opt in normalizedUnits" :key="opt.value" :value="opt.value">
-            {{ opt.label }}
-          </option>
-        </select>
-        <span class="ev-input-field-unit__chevron" aria-hidden="true">
-          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
-            <path d="M6 8l4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </span>
-      </div>
+      <!--
+        node: InputDropdown - an instance of the dropdown atom (Size=Default),
+        hugging its content while the InputField beside it fills the row.
+      -->
+      <EvInputDropdown
+        v-model:open="unitOpen"
+        class="ev-input-field-unit__unit"
+        :model-value="selectedLabel"
+        :label="unitLabel"
+        :placeholder="unitPlaceholder"
+        :disabled="disabled || readonly"
+        :error="error"
+        @update:model-value="emit('update:unit', '')"
+      >
+        <ul class="ev-input-field-unit__options" role="listbox" aria-label="Pilih Satuan">
+          <EvDropdownItem
+            v-for="opt in normalizedUnits"
+            :key="opt.value"
+            :label="opt.label"
+            :active="opt.value === selected"
+            @select="chooseUnit(opt.value)"
+          />
+        </ul>
+      </EvInputDropdown>
 
       <!--
         node: InputField - an instance of the field atom, notched label and
@@ -149,57 +168,19 @@ function onUnitChange(event: Event) {
   &__field {
     box-sizing: border-box;
     display: flex;
-    align-items: stretch;
+    align-items: flex-start;
     gap: var(--ev-spacing-xs);
   }
 
-  &__unit-wrap {
-    position: relative;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    gap: var(--ev-spacing-sm);
-    min-height: 44px;
-    padding: var(--ev-spacing-md);
-    border: var(--ev-stroke-xs) solid var(--ev-input-border);
-    border-radius: var(--ev-radius-xs);
-    background-color: var(--ev-input-bg);
-    transition: border-color var(--ev-duration-fast) var(--ev-easing-standard);
-
-    &:focus-within {
-      border-color: var(--ev-brand-primary);
-    }
+  /* The dropdown hugs its content (board 95px); the field takes the rest. */
+  &__field > .ev-input-dropdown {
+    flex: none;
   }
 
-  &__select {
-    appearance: none;
-    padding: 0 28px 0 12px;
-    height: 100%;
-    border: none;
-    background: transparent;
-    color: var(--ev-text-primary);
-    font-weight: 600;
-    font-size: 0.875rem;
-    cursor: pointer;
-    outline: none;
-
-    &:disabled {
-      cursor: not-allowed;
-    }
-  }
-
-  &__chevron {
-    position: absolute;
-    right: 8px;
-    pointer-events: none;
-    display: inline-flex;
-    align-items: center;
-    color: var(--ev-text-secondary);
-
-    svg {
-      width: 14px;
-      height: 14px;
-    }
+  &__options {
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
   /* The InputField atom takes the rest of the row; its look is its own. */

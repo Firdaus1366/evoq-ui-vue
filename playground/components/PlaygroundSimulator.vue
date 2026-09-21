@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import PlaygroundCodeSnippet from './PlaygroundCodeSnippet.vue'
 import { COMPONENT_PROPS } from '../component-props'
 import { generateCode, initialValues, isDefault } from '../simulator-code'
-import { SIMULATOR_DEMOS } from '../simulator-demos'
+import { SIMULATOR_DEMOS, type SimulatorContext } from '../simulator-demos'
 import * as EvoqComponents from '../../src'
 import * as EvoqCharts from '../../src/charts'
 
@@ -28,10 +28,14 @@ const controllable = computed(() => (meta.value?.props ?? []).filter((p) => p.co
 
 const values = ref<Record<string, unknown>>({})
 
+/** Scratch state for demo slots that is not a prop - see `context` below. */
+const demoState = reactive<Record<string, unknown>>({})
+
 /** Rebuild the panel whenever the simulated component changes. */
 watch(
   () => props.tag,
   () => {
+    for (const key of Object.keys(demoState)) delete demoState[key]
     values.value = meta.value ? initialValues(meta.value, demo.value.initial) : {}
   },
   { immediate: true },
@@ -60,6 +64,19 @@ const listeners = computed(() => {
 })
 
 const slots = computed(() => demo.value.slots ?? {})
+
+/**
+ * What a demo slot may read and write: the panel's prop values, plus a scratch
+ * `state` for things that are not props (the calendar's chosen Date). A picker
+ * in a field's slot uses it to fill the field and close it, as a consumer would.
+ */
+const context = computed<SimulatorContext>(() => ({
+  values: values.value,
+  state: demoState,
+  set: (key, value) => {
+    values.value = { ...values.value, [key]: value }
+  },
+}))
 
 function reset() {
   values.value = meta.value ? initialValues(meta.value, demo.value.initial) : {}
@@ -112,7 +129,7 @@ const visibleProps = computed(() => {
       <div class="pg-sim__stage" :class="`pg-sim__stage--${stage}`">
         <component :is="target" v-bind="{ ...bound, ...listeners }">
           <template v-for="(render, name) in slots" #[name] :key="name">
-            <component :is="render" />
+            <component :is="() => render(context)" />
           </template>
         </component>
       </div>

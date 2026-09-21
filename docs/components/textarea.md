@@ -14,6 +14,7 @@ composes: []
 usedBy: []
 seeAlso:
   - "evoq-ui:input"
+  - "evoq-ui:input-dropdown"
   - "evoq-ui:rich-editor"
 figma:
   file: "hJ3XmwLptPtF4IFBDlZlpx"
@@ -112,7 +113,7 @@ From the Figma page **Input**, frame `4680:4513` (Input Text Area). These rules 
 ### When not to use
 
 - Don't use for short, single-line values  →  use InputField (`evoq-ui:input`).
-- Don't use for choosing from a fixed set  →  use InputDropdown.
+- Don't use for choosing from a fixed set  →  use InputDropdown (`evoq-ui:input-dropdown`).
 - Don't use for rich/formatted content  →  use InputRichEditor (`evoq-ui:rich-editor`).
 - Don't hide the character limit until it is exceeded.
 

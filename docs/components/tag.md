@@ -11,7 +11,8 @@ summarySource: "figma"
 partOf: "evoq-ui:tag-group"
 children: []
 composes: []
-usedBy: []
+usedBy:
+  - "evoq-ui:input-multiple-field"
 seeAlso:
   - "evoq-ui:badge"
   - "evoq-ui:button"
@@ -80,7 +81,7 @@ _The exact snippet the playground simulator copies for this component (`playgrou
 | Relation | Components |
 | --- | --- |
 | Built from | — (renders no other Ev component) |
-| Used by | — |
+| Used by | `evoq-ui:input-multiple-field` |
 | Slot children | — |
 
 ## Design guidance

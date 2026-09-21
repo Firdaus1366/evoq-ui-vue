@@ -133,7 +133,7 @@ npm run extract:props      # regenerate the playground's props catalogue
 
 ### Props simulator
 
-The playground opens on a **Props Simulator**: pick any of the 74 components,
+The playground opens on a **Props Simulator**: pick any of the 81 components,
 drive every prop from a control panel, watch the preview update, and copy the
 exact markup that produced it. Only props that differ from their default are
 printed, so the snippet stays the minimum you need.

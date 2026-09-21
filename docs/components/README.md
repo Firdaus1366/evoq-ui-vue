@@ -2,11 +2,11 @@
 
 # evoq-ui components
 
-74 components, one document each. Every component has a stable id,
+81 components, one document each. Every component has a stable id,
 `evoq-ui:<name>` - the component name without its `Ev` prefix, in kebab case.
 `manifest.json` holds the same data for machines; `mcp/server.mjs` serves both.
 
-## Atom (31)
+## Atom (32)
 
 | ID | Component | Summary |
 | --- | --- | --- |
@@ -22,6 +22,7 @@
 | [`evoq-ui:dropdown-menu-item`](dropdown-menu-item.md) | `EvDropdownMenuItem` | One row of a DropdownMenu: an action, a destructive action, a group heading, or the rule between two groups. |
 | [`evoq-ui:hint`](hint.md) | `EvHint` | A hint is a small notification badge that signals unread or pending items — shown as a plain dot or a count, attached to an icon, tab, or menu item. |
 | [`evoq-ui:input`](input.md) | `EvInput` | A single-line text input for collecting short free-form values. It supports leading/trailing icons, validation messaging, and multiple interaction states. |
+| [`evoq-ui:input-dropdown`](input-dropdown.md) | `EvInputDropdown` | A select-style input with a trailing chevron that opens a list of options (slot). It comes in two sizes (44px and 36px), supports a leading icon and validation, and shares the same interaction states as InputField. |
 | [`evoq-ui:input-search`](input-search.md) | `EvInputSearch` | A search input with a leading search icon and an optional clear action. Use it to filter or look up content. It is 44px tall and supports validation and interaction states. |
 | [`evoq-ui:input-with-label`](input-with-label.md) | `EvInputWithLabel` | A single-line text input with an inline label placed to the left, right, or both sides of the field. It supports icons, validation, and the same interaction states as InputField. |
 | [`evoq-ui:kbd`](kbd.md) | `EvKbd` | A Kbd (keyboard key) is a small inline chip that represents a single physical key or shortcut token — like Ctrl or ⇧ — used to document keyboard shortcuts. |
@@ -42,7 +43,7 @@
 | [`evoq-ui:textarea`](textarea.md) | `EvTextarea` | A multi-line text input for collecting longer free-form content. It supports a character counter, validation, optional icons, a scrollbar, and the same interaction states as InputField. |
 | [`evoq-ui:toggle`](toggle.md) | `EvToggle` | A toggle is a two-state button that switches an option on or off. Use it standalone, or grouped in a ToggleGroup for a set of related single- or multi-select options. |
 
-## Molecule (17)
+## Molecule (20)
 
 | ID | Component | Summary |
 | --- | --- | --- |
@@ -54,6 +55,9 @@
 | [`evoq-ui:dropdown-menu`](dropdown-menu.md) | `EvDropdownMenu` | A floating menu of actions opened from a trigger, with an optional search field and a list that scrolls when it outgrows the surface. |
 | [`evoq-ui:hover-card`](hover-card.md) | `EvHoverCard` | A hover card is a small overlay that appears when the user hovers over a trigger, surfacing a preview — a title with an optional description and caption — without a click. |
 | [`evoq-ui:input-field-unit`](input-field-unit.md) | `EvInputFieldUnit` | A composite input pairing a leading unit selector (dropdown) with a text/number field. Use it for values that carry a unit — e.g. amount + currency, weight + unit. It supports validation and the same interaction states as InputField. |
+| [`evoq-ui:input-multiple-field`](input-multiple-field.md) | `EvInputMultipleField` | A multi-select input that displays chosen values as removable tags and opens a list of options (slot). It supports a leading icon, validation, and the same interaction states as InputField. |
+| [`evoq-ui:input-multiple-options`](input-multiple-options.md) | `EvInputMultipleOptions` | The multi-select options list (dropdown panel) that lets a user pick several values at once, each row toggled with a checkbox. It is typically mounted in the slot of InputMultipleField and supports validation and interaction states. |
+| [`evoq-ui:input-single-options`](input-single-options.md) | `EvInputSingleOptions` | The single-select options list (dropdown panel) that lets a user pick exactly one value from a list. It is typically mounted in the slot of InputDropdown and supports validation and interaction states. |
 | [`evoq-ui:item`](item.md) | `EvItem` | An item is a horizontal list row that pairs a leading element (icon, avatar, image) with a title and description, and an optional trailing action — used in lists, menus, and selection groups. |
 | [`evoq-ui:pagination`](pagination.md) | `EvPagination` | Pagination splits a large set of content or a multi-step flow into discrete pages, giving users controls to move between them and a sense of their position in the whole. |
 | [`evoq-ui:popover`](popover.md) | `EvPopover` | A popover is a small floating panel anchored to a trigger, used to surface contextual content — a short form, details, or controls — on click, without navigating away from the current view. |
@@ -64,7 +68,7 @@
 | [`evoq-ui:toggle-group`](toggle-group.md) | `EvToggleGroup` | A labelled row of toggles that share one variant and size. |
 | [`evoq-ui:tooltip`](tooltip.md) | `EvTooltip` | A tooltip is a small dark overlay that appears on hover or focus to give a short, contextual hint about an element, with an arrow pointing back to its trigger. |
 
-## Organism (26)
+## Organism (29)
 
 | ID | Component | Summary |
 | --- | --- | --- |
@@ -84,7 +88,10 @@
 | [`evoq-ui:direction`](direction.md) | `EvDirection` | A panel that guides one short task: title and subtext, an optional header action, a body, and confirm / cancel footer slots. |
 | [`evoq-ui:drawer`](drawer.md) | `EvDrawer` | A panel that slides in from the right, left or bottom over a scrim - traps focus, closes on Escape, and restores focus on close. |
 | [`evoq-ui:empty-state`](empty-state.md) | `EvEmptyState` | An empty state fills a screen or container when there's no content to show — errors (400 / 401 / 404 / 500), maintenance, or simply no data / no results. It pairs an illustration with a message and an optional recovery action. |
+| [`evoq-ui:input-date`](input-date.md) | `EvInputDate` | A date input with a trailing calendar icon and a date-picker dropdown (slot). It comes in two sizes, supports validation, and shares the same interaction states as InputField. |
+| [`evoq-ui:input-time`](input-time.md) | `EvInputTime` | A time input with a trailing clock icon and a time-picker dropdown (slot). It comes in two sizes, supports validation, and shares the same interaction states as InputField. |
 | [`evoq-ui:line-chart`](line-chart.md) | `EvLineChart` | A line or area chart for trends over time, drawn in SVG from an array of records. |
+| [`evoq-ui:loading-overlay`](loading-overlay.md) | `EvLoadingOverlay` | A full-page loading state. Blocked mode covers the page with the EVOQ wordmark tracing itself over an 80% scrim and stops all interaction; popup mode is a small card with the spinner that leaves the page usable. |
 | [`evoq-ui:modal`](modal.md) | `EvModal` | A modal is a focused overlay dialog that interrupts the current flow to present information or request a decision, blocking interaction with the page behind it until dismissed. Available for desktop and mobile. |
 | [`evoq-ui:navigation-menu`](navigation-menu.md) | `EvNavigationMenu` | The navigation menu is the top-level horizontal bar that anchors a desktop app — pairing the brand logo with primary navigation links and utilities (search, profile) so users can orient and move between sections. |
 | [`evoq-ui:navigation-menu-mobile`](navigation-menu-mobile.md) | `EvNavigationMenuMobile` | The mobile navigation menu is a fixed bottom bar (393px) that holds the app's primary destinations as icon-plus-label tabs. Two styles: a standard bar and a variant with a raised center action button. |

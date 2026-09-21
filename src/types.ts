@@ -247,3 +247,16 @@ export type DataTableSort = 'none' | 'asc' | 'desc'
 
 /** Horizontal alignment of a data table cell's content. */
 export type TableCellAlign = 'left' | 'center' | 'right'
+
+/** `Size` of the Figma `InputDropdown`, `InputDate` and `InputTime` sets: 44px or 36px. */
+export type SelectFieldSize = 'default' | 'small'
+
+/** One row of `EvInputSingleOptions` / `EvInputMultipleOptions`. */
+export interface InputOption {
+  label: string
+  value: string | number
+  disabled?: boolean
+}
+
+/** How `EvLoadingOverlay` presents: a page-blocking logo loader, or a small popup card. */
+export type LoadingOverlayMode = 'popup' | 'blocked'

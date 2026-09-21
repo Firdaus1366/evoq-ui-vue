@@ -11,7 +11,8 @@ summarySource: "figma"
 partOf: "evoq-ui:radio-group"
 children: []
 composes: []
-usedBy: []
+usedBy:
+  - "evoq-ui:input-single-options"
 seeAlso:
   - "evoq-ui:checkbox"
   - "evoq-ui:toggle"
@@ -85,7 +86,7 @@ _The exact snippet the playground simulator copies for this component (`playgrou
 | Relation | Components |
 | --- | --- |
 | Built from | — (renders no other Ev component) |
-| Used by | — |
+| Used by | `evoq-ui:input-single-options` |
 | Slot children | — |
 
 ## Design guidance

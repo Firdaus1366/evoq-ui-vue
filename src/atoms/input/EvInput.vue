@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useAttrs, useId } from 'vue'
+import { computed, ref, useAttrs, useId } from 'vue'
 
 defineOptions({
   name: 'EvInput',
@@ -29,6 +29,14 @@ const props = withDefaults(
     /** Shows the clear button once there is something to clear. */
     clearable?: boolean
     clearLabel?: string
+    /**
+     * For `type="password"`: draws the eye button that shows / hides the value.
+     * Not a node on the InputField board - added on request, drawn in the
+     * trailing-icon position with the same 20px glyph and colour.
+     */
+    revealable?: boolean
+    showLabel?: string
+    hideLabel?: string
   }>(),
   {
     modelValue: '',
@@ -44,6 +52,9 @@ const props = withDefaults(
     validationTextEnd: undefined,
     clearable: false,
     clearLabel: 'Bersihkan',
+    revealable: true,
+    showLabel: 'Tampilkan kata sandi',
+    hideLabel: 'Sembunyikan kata sandi',
   },
 )
 
@@ -61,6 +72,12 @@ defineSlots<{
 
 const inputId = `ev-input-${useId()}`
 const messageId = `ev-input-message-${useId()}`
+
+const revealed = ref(false)
+const canReveal = computed(
+  () => props.type === 'password' && props.revealable && !props.disabled && !props.readonly,
+)
+const controlType = computed(() => (canReveal.value && revealed.value ? 'text' : props.type))
 
 const hasValue = computed(() => props.modelValue !== '' && props.modelValue != null)
 const showClear = computed(
@@ -107,7 +124,7 @@ function clear() {
         :id="inputId"
         v-bind="$attrs"
         class="ev-input__control"
-        :type="type"
+        :type="controlType"
         :value="modelValue"
         :placeholder="placeholder"
         :disabled="disabled"
@@ -128,6 +145,31 @@ function clear() {
         <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
           <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.4" fill="none" />
           <path d="M7.5 7.5l5 5M12.5 7.5l-5 5" stroke="currentColor" stroke-width="1.4" />
+        </svg>
+      </button>
+
+      <button
+        v-if="canReveal"
+        type="button"
+        class="ev-input__clear ev-input__reveal"
+        :aria-label="revealed ? hideLabel : showLabel"
+        :aria-pressed="revealed"
+        @click="revealed = !revealed"
+      >
+        <svg
+          viewBox="0 0 20 20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.4"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M1.5 10S4.5 4.5 10 4.5 18.5 10 18.5 10 15.5 15.5 10 15.5 1.5 10 1.5 10z"
+            stroke-linejoin="round"
+          />
+          <circle cx="10" cy="10" r="2.5" />
+          <path v-if="!revealed" d="M3.5 16.5l13-13" stroke-linecap="round" />
         </svg>
       </button>
 

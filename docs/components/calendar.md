@@ -15,7 +15,8 @@ composes:
   - "evoq-ui:button-link"
   - "evoq-ui:dropdown-item"
   - "evoq-ui:dropdown-list"
-usedBy: []
+usedBy:
+  - "evoq-ui:input-date"
 seeAlso: []
 figma:
   file: "hJ3XmwLptPtF4IFBDlZlpx"
@@ -54,7 +55,7 @@ keywords:
 
 _The exact snippet the playground simulator copies for this component (`playground/simulator-demos.ts`)._
 
-## Props (22)
+## Props (23)
 
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
@@ -74,6 +75,7 @@ _The exact snippet the playground simulator copies for this component (`playgrou
 | `presets` | `boolean` | `false` | no | Figma's `Basic Preset` / `Range Preset`: the quick-select row below the grid. |
 | `hasReset` | `boolean` | `false` | no | Figma's `Has Reset Button` on the footer row. |
 | `showTimeLink` | `boolean` | `false` | no | The board's `Select Time` link, drawn under the Basic variant. |
+| `footer` | `boolean` | `false` | no | Draws the Cancel / Apply footer on the single-date Basic variant, which the board draws without one. Range, Preset and mobile always have it. Opt-in, for a calendar hosted in an InputDate slot. |
 | `previousLabel` | `string` | `'Bulan sebelumnya'` | no | — |
 | `nextLabel` | `string` | `'Bulan berikutnya'` | no | — |
 | `cancelLabel` | `string` | `'Cancel'` | no | — |
@@ -105,7 +107,7 @@ None.
 | Relation | Components |
 | --- | --- |
 | Built from | `evoq-ui:button`, `evoq-ui:button-link`, `evoq-ui:dropdown-item`, `evoq-ui:dropdown-list` |
-| Used by | — |
+| Used by | `evoq-ui:input-date` |
 | Slot children | — |
 
 ## Design guidance

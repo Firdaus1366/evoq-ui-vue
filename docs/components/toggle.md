@@ -11,7 +11,8 @@ summarySource: "figma"
 partOf: "evoq-ui:toggle-group"
 children: []
 composes: []
-usedBy: []
+usedBy:
+  - "evoq-ui:input-time"
 seeAlso:
   - "evoq-ui:radio-group"
   - "evoq-ui:switch"
@@ -82,7 +83,7 @@ _The exact snippet the playground simulator copies for this component (`playgrou
 | Relation | Components |
 | --- | --- |
 | Built from | — (renders no other Ev component) |
-| Used by | — |
+| Used by | `evoq-ui:input-time` |
 | Slot children | — |
 
 ## Design guidance

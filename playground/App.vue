@@ -39,12 +39,19 @@ import {
   EvInputWithLabel,
   EvInputSearch,
   EvInputFieldUnit,
+  EvInputDropdown,
+  EvInputDate,
+  EvInputTime,
+  EvInputMultipleField,
+  EvInputMultipleOptions,
+  EvInputSingleOptions,
   EvRichEditor,
   EvTextarea,
   EvItem,
   EvKbd,
   EvLabelItem,
   EvLoading,
+  EvLoadingOverlay,
   EvLogo,
   EvModal,
   EvNavMenuItem,
@@ -432,6 +439,29 @@ const domainName = ref('mycompany')
 const websiteUrl = ref('google')
 const unitPrice = ref('25000000')
 const selectedCurrency = ref('IDR')
+const pgOptions = [
+  { label: 'Pengadaan', value: 'pengadaan' },
+  { label: 'Gudang', value: 'gudang' },
+  { label: 'Keuangan', value: 'keuangan' },
+  { label: 'Legal', value: 'legal' },
+]
+const pgDropdown = ref<string | number | null>(null)
+const pgDropdownOpen = ref(false)
+const pgDropdownLabel = computed(
+  () => pgOptions.find((o) => o.value === pgDropdown.value)?.label ?? '',
+)
+const pgMulti = ref<(string | number)[]>(['pengadaan', 'legal'])
+const pgMultiOpen = ref(false)
+const pgDate = ref<Date | [Date | null, Date | null] | null>(null)
+const pgDateOpen = ref(false)
+const pgTime = ref('')
+const loadingOpen = ref(false)
+const loadingMode = ref<'popup' | 'blocked'>('popup')
+function showLoading(mode: 'popup' | 'blocked') {
+  loadingMode.value = mode
+  loadingOpen.value = true
+}
+const pgTimeOpen = ref(false)
 const calendarMonthOpen = ref(false)
 const calendarDrawerOpen = ref(false)
 const richContentSmall = ref('')
@@ -1330,7 +1360,7 @@ const filterAktif = ref(true)
               >
             </div>
             <p class="pg-section__desc">
-              Ekosistem input formulir terlengkap: InputField (44px/32px), InputSearch (40px),
+              Ekosistem input formulir terlengkap: InputField (44px/32px), InputSearch (44px),
               InputWithLabel (addon inline), InputFieldUnit (pemilih unit), InputTextarea
               (multi-baris), dan InputRichEditor (editor teks kaya dengan toolbar format).
             </p>
@@ -1380,16 +1410,9 @@ const filterAktif = ref(true)
                 InputSearch & InputWithLabel (Prefix / Suffix Addons)
               </h3>
               <div class="pg-section__row pg-section__row--top" style="gap: 1.5rem">
-                <!-- Dedicated 40px InputSearch -->
+                <!-- InputSearch, 44px -->
                 <div style="width: 280px">
-                  <EvInputSearch
-                    v-model="searchInput"
-                    placeholder="Cari transaksi (InputSearch 40px)..."
-                    clearable
-                  >
-                    <template #shortcut>
-                      <EvKbd variant="text">⌘K</EvKbd>
-                    </template>
+                  <EvInputSearch v-model="searchInput" placeholder="Cari transaksi..." clearable>
                   </EvInputSearch>
                 </div>
 
@@ -1423,6 +1446,7 @@ const filterAktif = ref(true)
                     v-model="unitPrice"
                     v-model:unit="selectedCurrency"
                     :units="['IDR', 'USD', 'EUR', 'SGD']"
+                    unit-label="Satuan"
                     label="Total Anggaran"
                     required
                     clearable
@@ -1433,8 +1457,72 @@ const filterAktif = ref(true)
                     model-value="150"
                     unit="kg"
                     :units="['kg', 'gram', 'ton', 'meter']"
+                    unit-label="Satuan"
                     label="Berat Muatan"
                   />
+                </div>
+              </div>
+            </div>
+
+            <!-- Subsection 3b: select-style fields and option lists -->
+            <div class="pg-section__subsection">
+              <h3 class="pg-section__subsection-title">
+                InputDropdown / InputDate / InputTime (44px &amp; 36px)
+              </h3>
+              <div
+                class="pg-section__row pg-section__row--top"
+                style="gap: 1.5rem; flex-wrap: wrap"
+              >
+                <div style="width: 300px">
+                  <EvInputDropdown
+                    v-model:open="pgDropdownOpen"
+                    :model-value="pgDropdownLabel"
+                    label="Kategori"
+                    placeholder="Select"
+                  >
+                    <EvInputSingleOptions v-model="pgDropdown" :options="pgOptions" />
+                  </EvInputDropdown>
+                </div>
+                <div style="width: 300px">
+                  <EvInputDate
+                    v-model="pgDate"
+                    v-model:open="pgDateOpen"
+                    label="Tanggal jatuh tempo"
+                    placeholder="Select"
+                  />
+                </div>
+                <div style="width: 300px">
+                  <EvInputTime
+                    v-model="pgTime"
+                    v-model:open="pgTimeOpen"
+                    label="Jam"
+                    placeholder="Select"
+                  />
+                </div>
+                <div style="width: 300px">
+                  <EvInputDropdown
+                    label="Kategori"
+                    placeholder="Select"
+                    error
+                    validation-text="Validation Text"
+                  />
+                </div>
+              </div>
+              <h3 class="pg-section__subsection-title">InputMultipleField + Options</h3>
+              <div
+                class="pg-section__row pg-section__row--top"
+                style="gap: 1.5rem; flex-wrap: wrap"
+              >
+                <div style="width: 320px">
+                  <EvInputMultipleField
+                    v-model="pgMulti"
+                    v-model:open="pgMultiOpen"
+                    :options="pgOptions"
+                    label="Title"
+                    placeholder="Placeholder"
+                  >
+                    <EvInputMultipleOptions v-model="pgMulti" :options="pgOptions" />
+                  </EvInputMultipleField>
                 </div>
               </div>
             </div>
@@ -3795,6 +3883,20 @@ import productLogo from &apos;./assets/product-logo.svg&apos;
               <EvLoading type="progress-bar" :value="60" />
               <EvLoading type="skeleton" />
             </div>
+
+            <h3 class="pg-section__subsection-title">
+              LoadingOverlay — mode popup &amp; blocked (Esc untuk menutup)
+            </h3>
+            <div class="pg-section__row">
+              <EvButton variant="secondary-grey" @click="showLoading('popup')"> Popup </EvButton>
+              <EvButton @click="showLoading('blocked')">Blocked</EvButton>
+            </div>
+            <EvLoadingOverlay
+              v-model="loadingOpen"
+              :mode="loadingMode"
+              close-on-escape
+              label="Memuat data..."
+            />
           </div>
 
           <PlaygroundCodeSnippet

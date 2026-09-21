@@ -59,12 +59,8 @@ const slots = defineSlots<{
 const inputId = `ev-input-label-${useId()}`
 const messageId = `ev-input-label-msg-${useId()}`
 
-const showLeft = computed(
-  () => (props.placement === 'left' || props.placement === 'both') && (props.prefixLabel || true),
-)
-const showRight = computed(
-  () => (props.placement === 'right' || props.placement === 'both') && (props.suffixLabel || true),
-)
+const showLeft = computed(() => props.placement === 'left' || props.placement === 'both')
+const showRight = computed(() => props.placement === 'right' || props.placement === 'both')
 
 /*
  * The board pads Content on whichever side has no addon, so the addon can sit

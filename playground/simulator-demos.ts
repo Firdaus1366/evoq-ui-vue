@@ -20,7 +20,9 @@ import {
   EvDataTableCell,
   EvDataTableRow,
   EvDropdownItem,
+  EvDropdownList,
   EvDropdownMenuItem,
+  EvInputMultipleOptions,
   EvKbd,
   EvNavMenuItem,
   EvNavMenuMobileItem,
@@ -33,11 +35,19 @@ import {
 } from '../src'
 import { EvBarChart } from '../src/charts'
 
+/** What a demo slot may read and write - see PlaygroundSimulator. */
+export interface SimulatorContext {
+  values: Record<string, unknown>
+  /** Scratch state that is not a prop, reset when the component changes. */
+  state: Record<string, unknown>
+  set: (key: string, value: unknown) => void
+}
+
 export interface DemoConfig {
   /** Prop values the simulator starts from, on top of the component's own. */
   initial?: Record<string, unknown>
   /** Rendered into the preview. */
-  slots?: Record<string, () => VNode | VNode[] | string>
+  slots?: Record<string, (ctx: SimulatorContext) => VNode | VNode[] | string>
   /** How each slot prints in the generated snippet. */
   slotCode?: Record<string, string>
   /** Extra room, a dark surface, or a fixed frame for the preview stage. */
@@ -47,6 +57,9 @@ export interface DemoConfig {
 }
 
 const t = (value: string) => () => value
+
+const CATEGORIES = ['Pengadaan', 'Gudang', 'Keuangan', 'Legal']
+const CATEGORY_OPTIONS = CATEGORIES.map((label) => ({ label, value: label.toLowerCase() }))
 
 /** A 16px placeholder glyph, for the icon slots every component exposes. */
 const icon = (): VNode =>
@@ -116,6 +129,90 @@ export const SIMULATOR_DEMOS: Record<string, DemoConfig> = {
   EvInputSearch: { initial: { placeholder: 'Cari dokumen...' } },
   EvInputWithLabel: {
     initial: { prefixLabel: 'https://', placeholder: 'domain-anda' },
+  },
+  EvInputDropdown: {
+    initial: { label: 'Kategori', placeholder: 'Select' },
+    stage: 'tall',
+    slots: {
+      default: ({ values, set }) =>
+        h(EvDropdownList, null, () =>
+          CATEGORIES.map((label) =>
+            h(
+              EvDropdownItem,
+              {
+                label,
+                active: values.modelValue === label,
+                onSelect: () => {
+                  set('modelValue', label)
+                  set('open', false)
+                },
+              },
+              undefined,
+            ),
+          ),
+        ),
+    },
+    slotCode: {
+      default: [
+        '<EvDropdownList>',
+        '  <EvDropdownItem label="Pengadaan" @select="pilih(&quot;Pengadaan&quot;)" />',
+        '  <EvDropdownItem label="Gudang" @select="pilih(&quot;Gudang&quot;)" />',
+        '</EvDropdownList>',
+      ].join('\n'),
+    },
+  },
+  // Date and Time mount EvCalendar / EvTimePicker themselves - no slot to fill.
+  EvInputDate: {
+    initial: { label: 'Tanggal jatuh tempo', placeholder: 'Select' },
+    stage: 'tall',
+  },
+  EvInputTime: {
+    initial: { label: 'Jam', placeholder: 'Select' },
+    stage: 'tall',
+  },
+  EvInputMultipleField: {
+    initial: {
+      label: 'Title',
+      placeholder: 'Placeholder',
+      modelValue: ['pengadaan'],
+      options: CATEGORY_OPTIONS,
+    },
+    stage: 'tall',
+    slots: {
+      default: ({ values, set }) =>
+        h(EvInputMultipleOptions, {
+          modelValue: (values.modelValue as (string | number)[]) ?? [],
+          options: CATEGORY_OPTIONS,
+          'onUpdate:modelValue': (value: (string | number)[]) => set('modelValue', value),
+        }),
+    },
+    slotCode: {
+      default: '<EvInputMultipleOptions v-model="dipilih" :options="opsi" />',
+    },
+  },
+  EvInputMultipleOptions: {
+    initial: {
+      label: 'Title',
+      options: [
+        { label: 'Pengadaan', value: 'pengadaan' },
+        { label: 'Gudang', value: 'gudang' },
+        { label: 'Keuangan', value: 'keuangan' },
+      ],
+    },
+  },
+  EvInputSingleOptions: {
+    initial: {
+      label: 'Title',
+      options: [
+        { label: 'Pengadaan', value: 'pengadaan' },
+        { label: 'Gudang', value: 'gudang' },
+        { label: 'Keuangan', value: 'keuangan' },
+      ],
+    },
+  },
+  EvLoadingOverlay: {
+    initial: { modelValue: false, mode: 'popup', label: 'Memuat data...', closeOnEscape: true },
+    note: 'Mode "blocked" menutupi dan memblokir seluruh layar - tekan Esc untuk mematikannya (closeOnEscape aktif di simulator).',
   },
   EvInputFieldUnit: { initial: { label: 'Nilai kontrak', placeholder: '0' } },
   EvTextarea: { initial: { label: 'Catatan pengadaan', showCount: true, maxlength: 200 } },

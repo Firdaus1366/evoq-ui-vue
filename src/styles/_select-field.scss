@@ -1,0 +1,188 @@
+@use './typography' as type;
+
+/// The box shared by `InputDropdown`, `InputDate` and `InputTime`.
+///
+/// Figma draws these three sets with one identical node tree - only the
+/// trailing glyph and the leading-icon toggle differ - so the rules live here
+/// once and each component emits them under its own BEM block.
+///
+///   State=<x>, Size=<x>  VERTICAL gap 4 w FILL
+///   +-- Content          HORIZONTAL gap 8 pad 12 (Small 8/12) r6 stroke INSIDE 1
+///   |   +-- Label        ABSOLUTE x7 y-7.5 pad 0/3 - notched Title + 1px mask
+///   |   +-- icon 16      [Has L Icon]
+///   |   +-- .InputType   value or placeholder, 14/Medium
+///   |   +-- cancel 20    Active only
+///   |   +-- glyph 20     down / up / calendar / time
+///   +-- Slot             HORIZONTAL gap 4 [Has Slot]
+///   +-- .ValidationText  HORIZONTAL gap 4 [Has Validation Text]
+@mixin select-field($block) {
+  .#{$block} {
+    --ev-sf-bg: var(--ev-bg-primary);
+    --ev-sf-border: var(--ev-border-primary);
+    --ev-sf-title: var(--ev-text-secondary);
+    --ev-sf-fg: var(--ev-text-primary);
+    --ev-sf-placeholder: var(--ev-text-tertiary);
+    --ev-sf-icon: var(--ev-icon-primary);
+    --ev-sf-message: var(--ev-text-secondary);
+
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ev-spacing-xs);
+
+    &__content {
+      position: relative;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      gap: var(--ev-spacing-sm);
+      min-height: 44px;
+      padding: var(--ev-spacing-md);
+      border: var(--ev-stroke-xs) solid var(--ev-sf-border);
+      border-radius: var(--ev-radius-xs);
+      background-color: var(--ev-sf-bg);
+      cursor: pointer;
+      transition: border-color var(--ev-duration-fast) var(--ev-easing-standard);
+
+      &:focus-visible {
+        outline: none;
+        border-color: var(--ev-brand-primary);
+      }
+    }
+
+    &--small &__content {
+      min-height: 36px;
+      padding: var(--ev-spacing-sm) var(--ev-spacing-md);
+    }
+
+    &--open &__content {
+      border-color: var(--ev-brand-primary);
+    }
+
+    /* The board's Label frame is absolute at x7 y-7.5 of the outer box, 32x16
+       hugging the Title, with a 1px mask of the field's own surface laid over
+       the border it interrupts. CSS measures from the padding edge - inside the
+       1px border - so the offsets shift by that border: -8.5 / 6. */
+    &__label {
+      position: absolute;
+      top: -8.5px;
+      left: 6px;
+      display: flex;
+      align-items: center;
+      padding: 0 3px;
+      color: var(--ev-sf-title);
+      pointer-events: none;
+
+      @include type.style('body/small');
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 7.5px;
+        height: 1px;
+        background-color: var(--ev-sf-bg);
+      }
+
+      > span {
+        position: relative;
+      }
+    }
+
+    &__required {
+      margin-left: 2px;
+      color: var(--ev-ext-error);
+    }
+
+    &__lead {
+      display: inline-flex;
+      flex-shrink: 0;
+      color: var(--ev-sf-icon);
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    &__value {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--ev-sf-fg);
+
+      @include type.style('body/regular');
+
+      &--placeholder {
+        color: var(--ev-sf-placeholder);
+      }
+    }
+
+    &__clear,
+    &__glyph {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: var(--ev-sf-icon);
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    &__clear {
+      cursor: pointer;
+
+      &:focus-visible {
+        outline: var(--ev-focus-ring-width) solid var(--ev-focus-ring-color);
+        outline-offset: 1px;
+        border-radius: var(--ev-radius-rd);
+      }
+    }
+
+    &__slot {
+      display: flex;
+      gap: var(--ev-spacing-xs);
+    }
+
+    &__message {
+      margin: 0;
+      color: var(--ev-sf-message);
+
+      @include type.style('body/small');
+    }
+
+    &--error {
+      --ev-sf-border: var(--ev-ext-error);
+      --ev-sf-title: var(--ev-ext-error-bold);
+      --ev-sf-fg: var(--ev-ext-error-bold);
+      --ev-sf-placeholder: var(--ev-ext-error-bold);
+      --ev-sf-icon: var(--ev-ext-error);
+      --ev-sf-message: var(--ev-ext-error);
+    }
+
+    &--error &__content:focus-visible,
+    &--error#{&}--open &__content {
+      border-color: var(--ev-ext-error);
+    }
+
+    /* Disabled greys the surface and keeps the resting border. */
+    &--disabled {
+      --ev-sf-bg: var(--ev-bg-subtle);
+      --ev-sf-border: var(--ev-border-primary);
+      --ev-sf-placeholder: var(--ev-text-primary);
+    }
+
+    &--disabled &__content {
+      cursor: not-allowed;
+    }
+  }
+}

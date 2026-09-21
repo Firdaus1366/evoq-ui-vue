@@ -18,6 +18,7 @@ usedBy:
   - "evoq-ui:sidebar"
 seeAlso:
   - "evoq-ui:input"
+  - "evoq-ui:input-dropdown"
 figma:
   file: "hJ3XmwLptPtF4IFBDlZlpx"
   doc: "4713:10535"
@@ -53,7 +54,7 @@ keywords:
 
 _The exact snippet the playground simulator copies for this component (`playground/simulator-demos.ts`)._
 
-## Props (7)
+## Props (8)
 
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
@@ -61,7 +62,8 @@ _The exact snippet the playground simulator copies for this component (`playgrou
 | `placeholder` | `string` | `'Cari sesuatu...'` | no | — |
 | `disabled` | `boolean` | `false` | no | — |
 | `readonly` | `boolean` | `false` | no | — |
-| `clearable` | `boolean` | `true` | no | — |
+| `leftIcon` | `boolean` | `true` | no | Figma's `Has L Icon`: the leading search glyph. On by default. |
+| `clearable` | `boolean` | `true` | no | Figma's `Has R Icon`: the trailing clear action, shown once there is a query. |
 | `error` | `boolean` | `false` | no | — |
 | `validationText` | `string` | — | no | — |
 
@@ -71,7 +73,7 @@ _The exact snippet the playground simulator copies for this component (`playgrou
 
 | Slot | Description |
 | --- | --- |
-| `shortcut` | — |
+| `iconRight` | Figma's `Has R Icon` (`R Icon` instance swap): 16px. Yields to the clear action while a query is present. |
 
 ## Events (3)
 
@@ -104,7 +106,7 @@ From the Figma page **Input**, frame `4713:10535` (InputSearch). These rules are
 ### When not to use
 
 - Don't use for general text entry  →  use InputField (`evoq-ui:input`).
-- Don't use for selecting from a set  →  use InputDropdown.
+- Don't use for selecting from a set  →  use InputDropdown (`evoq-ui:input-dropdown`).
 - Don't remove the search icon affordance.
 - Don't hide results behind an extra submit step when live search fits.
 

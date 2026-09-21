@@ -14,6 +14,9 @@ composes: []
 usedBy: []
 seeAlso:
   - "evoq-ui:input"
+  - "evoq-ui:input-date"
+  - "evoq-ui:input-dropdown"
+  - "evoq-ui:input-time"
 figma:
   file: "hJ3XmwLptPtF4IFBDlZlpx"
   doc: "4680:3998"
@@ -112,8 +115,8 @@ From the Figma page **Input**, frame `4680:3998` (Input With Label). These rules
 ### When not to use
 
 - Don't use when the label is long  →  use a stacked InputField (`evoq-ui:input`) with a top label.
-- Don't use for choosing from a fixed set  →  use InputDropdown.
-- Don't use for dates/times  →  use InputDate / InputTime.
+- Don't use for choosing from a fixed set  →  use InputDropdown (`evoq-ui:input-dropdown`).
+- Don't use for dates/times  →  use InputDate (`evoq-ui:input-date`) / InputTime (`evoq-ui:input-time`).
 - Don't rely on the placeholder as the label.
 
 ### Do

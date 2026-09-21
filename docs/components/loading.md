@@ -11,7 +11,8 @@ summarySource: "figma"
 partOf: null
 children: []
 composes: []
-usedBy: []
+usedBy:
+  - "evoq-ui:loading-overlay"
 seeAlso: []
 figma:
   file: "hJ3XmwLptPtF4IFBDlZlpx"
@@ -71,7 +72,7 @@ None.
 | Relation | Components |
 | --- | --- |
 | Built from | — (renders no other Ev component) |
-| Used by | — |
+| Used by | `evoq-ui:loading-overlay` |
 | Slot children | — |
 
 ## Design guidance

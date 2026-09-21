@@ -1095,6 +1095,201 @@
       "dont": [
         "Don't auto-dismiss error toasts the user must act on — keep them until dismissed. Don't show many toasts at once or place them where they cover key controls."
       ]
+    },
+    "Input Date": {
+      "page": "Input",
+      "frame": "4690:5067",
+      "summary": "A date input with a leading calendar icon and a date-picker dropdown (slot). It comes in two sizes, supports validation, and shares the same interaction states as InputField.",
+      "summaryCorrection": {
+        "from": "a leading calendar icon",
+        "to": "a trailing calendar icon",
+        "why": "The board draws the calendar as the 20px trailing glyph; Has R Icon toggles it. Sizes are 44px / 36px, not the prose's 48 / 40."
+      },
+      "whenToUse": [
+        "Use to collect a single calendar date (e.g. birth date, due date).",
+        "Use the Small size in dense forms or tables.",
+        "Use the calendar slot to let users pick a date visually.",
+        "Use validation text to guide correction inline.",
+        "Use the disabled state when the date is not editable."
+      ],
+      "whenNotToUse": [
+        "Don't use for free-form text  →  use InputField.",
+        "Don't use for time of day  →  use InputTime.",
+        "Don't use for a date range in one field if both ends need separate validation.",
+        "Don't hide the expected date format from the user."
+      ],
+      "do": [
+        "Show the expected format (e.g. DD MMM YYYY) in the placeholder.",
+        "Keep the calendar icon visible as an affordance.",
+        "Show validation text close to the field, on error.",
+        "Use one consistent size within a form."
+      ],
+      "dont": [
+        "Rely on the placeholder alone as the label.",
+        "Use red borders without an explanatory message.",
+        "Mix Default and Small sizes in the same form.",
+        "Disable a field without making the reason clear."
+      ]
+    },
+    "Input Time": {
+      "page": "Input",
+      "frame": "4690:5488",
+      "summary": "A time input with a leading clock icon and a time-picker dropdown (slot). It comes in two sizes, supports validation, and shares the same interaction states as InputField.",
+      "summaryCorrection": {
+        "from": "a leading clock icon",
+        "to": "a trailing clock icon",
+        "why": "The board draws the clock as the 20px trailing glyph. Sizes are 44px / 36px, not the prose's 48 / 40."
+      },
+      "whenToUse": [
+        "Use to collect a time of day (e.g. hh:mm).",
+        "Use the Small size in dense forms or tables.",
+        "Use the time-picker slot for visual selection.",
+        "Use validation text to guide correction inline.",
+        "Use the disabled state when the time is not editable."
+      ],
+      "whenNotToUse": [
+        "Don't use for free-form text  →  use InputField.",
+        "Don't use for a calendar date  →  use InputDate.",
+        "Don't use for a duration if start/end need separate validation.",
+        "Don't hide the expected time format from the user."
+      ],
+      "do": [
+        "Show the expected format (e.g. hh:mm) in the placeholder.",
+        "Keep the clock icon visible as an affordance.",
+        "Show validation text close to the field, on error.",
+        "Use one consistent size within a form."
+      ],
+      "dont": [
+        "Rely on the placeholder alone as the label.",
+        "Use red borders without an explanatory message.",
+        "Mix Default and Small sizes in the same form.",
+        "Disable a field without making the reason clear."
+      ]
+    },
+    "Input Dropdown": {
+      "page": "Input",
+      "frame": "4690:5935",
+      "summary": "A select-style input with a trailing chevron that opens a list of options (slot). It comes in two sizes, supports a leading icon and validation, and shares the same interaction states as InputField.",
+      "summaryCorrection": {
+        "from": "It comes in two sizes",
+        "to": "It comes in two sizes (44px and 36px)",
+        "why": "Prose says Default (48) / Small (40); the InputDropdown board's Content frames are 44 and 36 (AGENTS.md section 6)."
+      },
+      "whenToUse": [
+        "Use to choose a single value from a fixed set of options.",
+        "Use the Small size in dense forms or tables.",
+        "Use a leading icon to signal the field's purpose.",
+        "Use the options slot to mount the dropdown list.",
+        "Use validation text to guide correction inline."
+      ],
+      "whenNotToUse": [
+        "Don't use for free-form text  →  use InputField.",
+        "Don't use for multi-select  →  use InputMultipleOptions.",
+        "Don't use for very long option lists without search  →  add a searchable list.",
+        "Don't hide the chevron affordance."
+      ],
+      "do": [
+        "Keep option labels short and scannable.",
+        "Keep the chevron visible as an open affordance.",
+        "Show validation text close to the field, on error.",
+        "Use one consistent size within a form."
+      ],
+      "dont": [
+        "Rely on the placeholder alone as the label.",
+        "Use red borders without an explanatory message.",
+        "Mix Default and Small sizes in the same form.",
+        "Disable a field without making the reason clear."
+      ]
+    },
+    "Input Multiple Field": {
+      "page": "Input",
+      "frame": "4690:6443",
+      "summary": "A multi-select input that displays chosen values as removable tags and opens a list of options (slot). It supports a leading icon, validation, and the same interaction states as InputField.",
+      "whenToUse": [
+        "Use to select multiple values from a set, shown as tags.",
+        "Use a leading icon to signal the field's purpose.",
+        "Use the options slot to mount the selectable list.",
+        "Use validation text to guide correction inline.",
+        "Use the disabled state when the selection is locked."
+      ],
+      "whenNotToUse": [
+        "Don't use for a single choice  →  use InputDropdown.",
+        "Don't use for free-form text  →  use InputField.",
+        "Don't use when only one value is ever valid.",
+        "Don't hide how to remove a selected tag."
+      ],
+      "do": [
+        "Make each tag removable with a clear close affordance.",
+        "Wrap tags to a new line when they overflow.",
+        "Show validation text close to the field, on error.",
+        "Keep the chevron visible as an open affordance."
+      ],
+      "dont": [
+        "Rely on the placeholder alone as the label.",
+        "Use red borders without an explanatory message.",
+        "Truncate tags so the value becomes unreadable.",
+        "Disable a field without making the reason clear."
+      ]
+    },
+    "InputMultipleOptions": {
+      "page": "Input",
+      "frame": "4715:10884",
+      "summary": "The multi-select options list (dropdown panel) that lets a user pick several values at once, each row toggled with a checkbox. It is typically mounted in the slot of InputMultipleField and supports validation and interaction states.",
+      "whenToUse": [
+        "Use as the dropdown panel for a multi-choice selection.",
+        "Use with InputMultipleField via its options slot.",
+        "Use checkboxes so multiple rows can be selected.",
+        "Use the active state to highlight the focused row.",
+        "Use validation text to explain a selection constraint."
+      ],
+      "whenNotToUse": [
+        "Don't use for a single choice  →  use InputSingleOptions.",
+        "Don't use for free-form text  →  use InputField.",
+        "Don't show more options than are scannable without search.",
+        "Don't hide how many items are selected."
+      ],
+      "do": [
+        "Show a checkbox state on every row.",
+        "Keep option labels short and scannable.",
+        "Reflect the selection count in the field.",
+        "Make the whole row a toggle target."
+      ],
+      "dont": [
+        "Limit selection to one row.",
+        "Use red styling without an explanatory message.",
+        "Truncate labels so options become ambiguous.",
+        "Disable the list without making the reason clear."
+      ]
+    },
+    "InputSingleOptions": {
+      "page": "Input",
+      "frame": "4690:9331",
+      "summary": "The single-select options list (dropdown panel) that lets a user pick exactly one value from a list. It is typically mounted in the slot of InputDropdown and supports validation and interaction states.",
+      "whenToUse": [
+        "Use as the dropdown panel for a single-choice selection.",
+        "Use with InputDropdown via its options slot.",
+        "Use the active state to highlight the focused/selected row.",
+        "Use validation text to explain a selection constraint.",
+        "Use the disabled state when options are not selectable."
+      ],
+      "whenNotToUse": [
+        "Don't use for choosing multiple values  →  use InputMultipleOptions.",
+        "Don't use for free-form text  →  use InputField.",
+        "Don't show more options than are scannable without search.",
+        "Don't allow more than one row to look selected."
+      ],
+      "do": [
+        "Highlight the currently selected row clearly.",
+        "Keep option labels short and scannable.",
+        "Show validation text close to the list, on error.",
+        "Make the whole row a click target."
+      ],
+      "dont": [
+        "Allow more than one selected row at a time.",
+        "Use red styling without an explanatory message.",
+        "Truncate labels so options become ambiguous.",
+        "Disable the list without making the reason clear."
+      ]
     }
   }
 }

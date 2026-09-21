@@ -14,6 +14,7 @@ composes: []
 usedBy:
   - "evoq-ui:breadcrumb"
   - "evoq-ui:calendar"
+  - "evoq-ui:input-field-unit"
 seeAlso:
   - "evoq-ui:radio"
 figma:
@@ -83,7 +84,7 @@ _The exact snippet the playground simulator copies for this component (`playgrou
 | Relation | Components |
 | --- | --- |
 | Built from | — (renders no other Ev component) |
-| Used by | `evoq-ui:breadcrumb`, `evoq-ui:calendar` |
+| Used by | `evoq-ui:breadcrumb`, `evoq-ui:calendar`, `evoq-ui:input-field-unit` |
 | Slot children | — |
 
 ## Design guidance

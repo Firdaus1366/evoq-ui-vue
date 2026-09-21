@@ -780,6 +780,123 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
     "slots": [],
     "emits": []
   },
+  "EvInputDropdown": {
+    "tag": "EvInputDropdown",
+    "file": "src/atoms/input-dropdown/EvInputDropdown.vue",
+    "layer": "atom",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "description": "The displayed value. Empty shows the placeholder.",
+        "control": "text"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "The notched Title.",
+        "control": "text"
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Appends the board's red asterisk to the Title.",
+        "control": "boolean"
+      },
+      {
+        "name": "size",
+        "type": "SelectFieldSize",
+        "required": false,
+        "default": "'default'",
+        "description": "Figma's `Size`: default (44px) or small (36px).",
+        "control": "select",
+        "options": [
+          "default",
+          "small"
+        ]
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Active state - the slot is open.",
+        "control": "boolean"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Switches the field to the error style. Pair it with `validationText`.",
+        "control": "boolean"
+      },
+      {
+        "name": "validationText",
+        "type": "string",
+        "required": false,
+        "description": "Figma's `Has Validation Text`.",
+        "control": "text"
+      },
+      {
+        "name": "clearable",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Shows the clear button while open and holding a value.",
+        "control": "boolean"
+      },
+      {
+        "name": "clearLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Bersihkan'",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "iconLeft",
+        "description": "Figma's `Has L Icon` - the 16px leading icon."
+      },
+      {
+        "name": "default",
+        "description": "Figma's `Slot`: the options list (EvDropdownList), drawn below the field."
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      },
+      {
+        "name": "update:open",
+        "description": ""
+      },
+      {
+        "name": "clear",
+        "description": ""
+      }
+    ]
+  },
   "EvInputSearch": {
     "tag": "EvInputSearch",
     "file": "src/atoms/input-search/EvInputSearch.vue",
@@ -814,10 +931,19 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "control": "boolean"
       },
       {
+        "name": "leftIcon",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Figma's `Has L Icon`: the leading search glyph. On by default.",
+        "control": "boolean"
+      },
+      {
         "name": "clearable",
         "type": "boolean",
         "required": false,
         "default": "true",
+        "description": "Figma's `Has R Icon`: the trailing clear action, shown once there is a query.",
         "control": "boolean"
       },
       {
@@ -836,8 +962,8 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
     ],
     "slots": [
       {
-        "name": "shortcut",
-        "description": ""
+        "name": "iconRight",
+        "description": "Figma's `Has R Icon` (`R Icon` instance swap): 16px. Yields to the clear action while a query is present."
       }
     ],
     "emits": [
@@ -1092,6 +1218,28 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "type": "string",
         "required": false,
         "default": "'Bersihkan'",
+        "control": "text"
+      },
+      {
+        "name": "revealable",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "For `type=\"password\"`: draws the eye button that shows / hides the value. Not a node on the InputField board - added on request, drawn in the trailing-icon position with the same 20px glyph and colour.",
+        "control": "boolean"
+      },
+      {
+        "name": "showLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Tampilkan kata sandi'",
+        "control": "text"
+      },
+      {
+        "name": "hideLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Sembunyikan kata sandi'",
         "control": "text"
       }
     ],
@@ -2833,6 +2981,22 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "name": "label",
         "type": "string",
         "required": false,
+        "description": "Title of the value field (`InputField`).",
+        "control": "text"
+      },
+      {
+        "name": "unitLabel",
+        "type": "string",
+        "required": false,
+        "description": "Title of the unit dropdown (`InputDropdown`).",
+        "control": "text"
+      },
+      {
+        "name": "unitPlaceholder",
+        "type": "string",
+        "required": false,
+        "default": "'Select'",
+        "description": "Shown in the dropdown while no unit is chosen - the board's `Select`.",
         "control": "text"
       },
       {
@@ -2895,6 +3059,228 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
       },
       {
         "name": "clear",
+        "description": ""
+      }
+    ]
+  },
+  "EvInputMultipleField": {
+    "tag": "EvInputMultipleField",
+    "file": "src/molecules/input-multiple-field/EvInputMultipleField.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "(string | number)[]",
+        "required": false,
+        "default": "() => []",
+        "description": "Values of the chosen tags.",
+        "control": "none"
+      },
+      {
+        "name": "options",
+        "type": "InputOption[]",
+        "required": false,
+        "default": "() => []",
+        "description": "Lets a value render its label; without a match the value itself shows.",
+        "control": "none"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "`.Input` Title while nothing is chosen.",
+        "control": "text"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "description": "`.Input` Placeholder line above the tags once something is chosen.",
+        "control": "text"
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Active state - the slot is open.",
+        "control": "boolean"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "validationText",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "clearable",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "control": "boolean"
+      },
+      {
+        "name": "clearLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Bersihkan'",
+        "control": "text"
+      },
+      {
+        "name": "removeLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Hapus'",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "iconLeft",
+        "description": "Figma's `Has L Icon` - the 16px leading icon."
+      },
+      {
+        "name": "default",
+        "description": "Figma's `Slot`: the options list (EvInputMultipleOptions), below the field."
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      },
+      {
+        "name": "update:open",
+        "description": ""
+      },
+      {
+        "name": "clear",
+        "description": ""
+      }
+    ]
+  },
+  "EvInputMultipleOptions": {
+    "tag": "EvInputMultipleOptions",
+    "file": "src/molecules/input-multiple-options/EvInputMultipleOptions.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "(string | number)[]",
+        "required": false,
+        "default": "() => []",
+        "description": "Values of the ticked rows.",
+        "control": "none"
+      },
+      {
+        "name": "options",
+        "type": "InputOption[]",
+        "required": false,
+        "default": "() => []",
+        "control": "none"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "`.Input` Title.",
+        "control": "text"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "validationText",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      }
+    ],
+    "slots": [],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      }
+    ]
+  },
+  "EvInputSingleOptions": {
+    "tag": "EvInputSingleOptions",
+    "file": "src/molecules/input-single-options/EvInputSingleOptions.vue",
+    "layer": "molecule",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "string | number | null",
+        "required": false,
+        "default": "null",
+        "description": "Value of the selected row.",
+        "control": "none"
+      },
+      {
+        "name": "options",
+        "type": "InputOption[]",
+        "required": false,
+        "default": "() => []",
+        "control": "none"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "`.Input` Title.",
+        "control": "text"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "validationText",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      }
+    ],
+    "slots": [],
+    "emits": [
+      {
+        "name": "update:modelValue",
         "description": ""
       }
     ]
@@ -3798,6 +4184,14 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
         "control": "boolean"
       },
       {
+        "name": "footer",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Draws the Cancel / Apply footer on the single-date Basic variant, which the board draws without one. Range, Preset and mobile always have it. Opt-in, for a calendar hosted in an InputDate slot.",
+        "control": "boolean"
+      },
+      {
         "name": "previousLabel",
         "type": "string",
         "required": false,
@@ -4606,6 +5000,406 @@ export const COMPONENT_PROPS: Record<string, ComponentMeta> = {
     "emits": [
       {
         "name": "action",
+        "description": ""
+      }
+    ]
+  },
+  "EvInputDate": {
+    "tag": "EvInputDate",
+    "file": "src/organisms/input-date/EvInputDate.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "DateValue",
+        "required": false,
+        "default": "null",
+        "description": "A single date, or a `[from, to]` pair in range mode.",
+        "control": "none"
+      },
+      {
+        "name": "mode",
+        "type": "CalendarMode",
+        "required": false,
+        "default": "'single'",
+        "description": "`single` for one date, `range` for a `[from, to]` pair. Set in code.",
+        "control": "select",
+        "options": [
+          "single",
+          "range"
+        ]
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "The notched Title.",
+        "control": "text"
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Appends the board's red asterisk to the Title.",
+        "control": "boolean"
+      },
+      {
+        "name": "size",
+        "type": "SelectFieldSize",
+        "required": false,
+        "default": "'default'",
+        "description": "Figma's `Size`: default (44px) or small (36px).",
+        "control": "select",
+        "options": [
+          "default",
+          "small"
+        ]
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Active state - the panel is open.",
+        "control": "boolean"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Switches the field to the error style. Pair it with `validationText`.",
+        "control": "boolean"
+      },
+      {
+        "name": "validationText",
+        "type": "string",
+        "required": false,
+        "description": "Figma's `Has Validation Text`.",
+        "control": "text"
+      },
+      {
+        "name": "clearable",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Shows the clear button while open and holding a value.",
+        "control": "boolean"
+      },
+      {
+        "name": "clearLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Bersihkan'",
+        "control": "text"
+      },
+      {
+        "name": "hasRightIcon",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Figma's `Has R Icon`: the trailing calendar glyph. On by default.",
+        "control": "boolean"
+      },
+      {
+        "name": "locale",
+        "type": "string",
+        "required": false,
+        "default": "'id-ID'",
+        "description": "Locale for the displayed value and the calendar.",
+        "control": "text"
+      },
+      {
+        "name": "min",
+        "type": "Date",
+        "required": false,
+        "control": "none"
+      },
+      {
+        "name": "max",
+        "type": "Date",
+        "required": false,
+        "control": "none"
+      },
+      {
+        "name": "cancelLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Cancel'",
+        "control": "text"
+      },
+      {
+        "name": "applyLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Select date'",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "iconRight",
+        "description": "Replaces the default glyph (Figma's `R Icon` instance swap)."
+      },
+      {
+        "name": "default",
+        "description": "Figma's `Slot`: replaces the built-in calendar panel."
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      },
+      {
+        "name": "update:open",
+        "description": ""
+      },
+      {
+        "name": "clear",
+        "description": ""
+      }
+    ]
+  },
+  "EvInputTime": {
+    "tag": "EvInputTime",
+    "file": "src/organisms/input-time/EvInputTime.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "string",
+        "required": false,
+        "default": "''",
+        "description": "`14:30` in 24-hour, `02:30 PM` in 12-hour; seconds when the format has them.",
+        "control": "text"
+      },
+      {
+        "name": "format",
+        "type": "TimePickerFormat",
+        "required": false,
+        "default": "'default'",
+        "description": "The wheel's columns. Follows the 24 / 12 hour switch.",
+        "control": "select",
+        "options": [
+          "default",
+          "with-seconds",
+          "am-pm",
+          "am-pm-seconds"
+        ]
+      },
+      {
+        "name": "hourSwitch",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Shows the 24 jam / 12 jam switch above the wheel.",
+        "control": "boolean"
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "control": "text"
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "The notched Title.",
+        "control": "text"
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Appends the board's red asterisk to the Title.",
+        "control": "boolean"
+      },
+      {
+        "name": "size",
+        "type": "SelectFieldSize",
+        "required": false,
+        "default": "'default'",
+        "description": "Figma's `Size`: default (44px) or small (36px).",
+        "control": "select",
+        "options": [
+          "default",
+          "small"
+        ]
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Active state - the panel is open.",
+        "control": "boolean"
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "control": "boolean"
+      },
+      {
+        "name": "error",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Switches the field to the error style. Pair it with `validationText`.",
+        "control": "boolean"
+      },
+      {
+        "name": "validationText",
+        "type": "string",
+        "required": false,
+        "description": "Figma's `Has Validation Text`.",
+        "control": "text"
+      },
+      {
+        "name": "clearable",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Shows the clear button while open and holding a value.",
+        "control": "boolean"
+      },
+      {
+        "name": "clearLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Bersihkan'",
+        "control": "text"
+      },
+      {
+        "name": "hasRightIcon",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Figma's `Has R Icon`: the trailing clock glyph. On by default.",
+        "control": "boolean"
+      },
+      {
+        "name": "cancelLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Cancel'",
+        "control": "text"
+      },
+      {
+        "name": "applyLabel",
+        "type": "string",
+        "required": false,
+        "default": "'Apply'",
+        "control": "text"
+      },
+      {
+        "name": "hour24Label",
+        "type": "string",
+        "required": false,
+        "default": "'24 jam'",
+        "control": "text"
+      },
+      {
+        "name": "hour12Label",
+        "type": "string",
+        "required": false,
+        "default": "'12 jam'",
+        "control": "text"
+      }
+    ],
+    "slots": [
+      {
+        "name": "iconRight",
+        "description": "Replaces the default glyph (Figma's `R Icon` instance swap)."
+      },
+      {
+        "name": "default",
+        "description": "Figma's `Slot`: replaces the built-in time picker panel."
+      }
+    ],
+    "emits": [
+      {
+        "name": "update:modelValue",
+        "description": ""
+      },
+      {
+        "name": "update:format",
+        "description": ""
+      },
+      {
+        "name": "update:open",
+        "description": ""
+      },
+      {
+        "name": "clear",
+        "description": ""
+      }
+    ]
+  },
+  "EvLoadingOverlay": {
+    "tag": "EvLoadingOverlay",
+    "file": "src/organisms/loading-overlay/EvLoadingOverlay.vue",
+    "layer": "organism",
+    "props": [
+      {
+        "name": "modelValue",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the loader is on screen.",
+        "control": "boolean"
+      },
+      {
+        "name": "mode",
+        "type": "LoadingOverlayMode",
+        "required": false,
+        "default": "'blocked'",
+        "description": "`blocked` covers and blocks the page; `popup` is a small card that does not.",
+        "control": "select",
+        "options": [
+          "popup",
+          "blocked"
+        ]
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "'Memuat...'",
+        "description": "Announced to assistive tech, and shown in the popup card.",
+        "control": "text"
+      },
+      {
+        "name": "closeOnEscape",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Escape turns it off (`update:modelValue` false). Off by default - a blocked loader is meant to stop the user; this is the way out for a playground or a stuck request.",
+        "control": "boolean"
+      }
+    ],
+    "slots": [],
+    "emits": [
+      {
+        "name": "update:modelValue",
         "description": ""
       }
     ]

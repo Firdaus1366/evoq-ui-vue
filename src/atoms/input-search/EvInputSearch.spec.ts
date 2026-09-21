@@ -44,4 +44,35 @@ describe('EvInputSearch', () => {
     await input.trigger('keydown', { key: 'Enter' })
     expect(wrapper.emitted('search')?.[0]).toEqual(['monitor 4k'])
   })
+
+  it('drops the leading glyph when leftIcon is off (Figma: Has L Icon)', () => {
+    const wrapper = mount(EvInputSearch, { props: { leftIcon: false, modelValue: 'x' } })
+    expect(wrapper.find('.ev-input-search__icon').exists()).toBe(false)
+    // "Clear only (R)": the trailing action stays.
+    expect(wrapper.find('.ev-input-search__clear').exists()).toBe(true)
+  })
+
+  it('draws "None" with neither glyph', () => {
+    const wrapper = mount(EvInputSearch, {
+      props: { leftIcon: false, clearable: false, modelValue: 'x' },
+    })
+    expect(wrapper.find('.ev-input-search__icon').exists()).toBe(false)
+    expect(wrapper.find('.ev-input-search__clear').exists()).toBe(false)
+  })
+
+  it('draws the trailing R icon, and yields it to the clear action while a query is present', async () => {
+    const wrapper = mount(EvInputSearch, {
+      props: { modelValue: '' },
+      slots: { iconRight: '<i class="r" />' },
+    })
+    expect(wrapper.find('.ev-input-search__icon--right .r').exists()).toBe(true)
+    await wrapper.setProps({ modelValue: 'x' })
+    expect(wrapper.find('.ev-input-search__icon--right').exists()).toBe(false)
+    expect(wrapper.find('.ev-input-search__clear').exists()).toBe(true)
+  })
+
+  it('draws no shortcut slot - the board has none', () => {
+    const wrapper = mount(EvInputSearch, { slots: { shortcut: '<i class="k" />' } })
+    expect(wrapper.find('.k').exists()).toBe(false)
+  })
 })
