@@ -13,6 +13,11 @@
  * - `children` components the default slot is built to hold
  * - `partOf`  the parent a part component is used inside
  * - `keywords` extra search terms for `search_components`
+ * - `usage`   only where `figma` is null - there is no board to hold binding
+ *             rules. `{ whenToUse, whenNotToUse, do, dont }`, each an array of
+ *             strings, hand-written from the component's own implementation
+ *             (never invented) and marked "hand-written - no Figma page" in
+ *             the doc, exactly the way a Figma-sourced doc marks its board.
  */
 
 const s = (name, id, page) => ({ name, id, page })
@@ -112,6 +117,28 @@ export const SOURCES = {
     sets: [s('EVOQ-Logo', '5092:66984', 'Logo'), s('Datasea-Logo', '5092:41618', 'Logo')],
     summary:
       'Both brand lockups from the Figma Logo page, drawn from shipped SVG: the EVOQ mark, wordmark and tagline, and the DataSea mark and wordmark. A local asset can replace them.',
+    usage: {
+      whenToUse: [
+        "Use it for EVOQ's or DataSea's own brand mark - a header, a sidebar, a splash or login screen.",
+        'Use `variant="mark"` on its own in a tight space, such as a collapsed sidebar rail or an avatar-sized tile.',
+        'Use `size` to scale the whole lockup from one number - it sets the font-size every part is drawn in, so nothing goes out of ratio.',
+        'Use `src`, or the default slot, for a co-branded or white-label logo this package does not ship - the slot replaces the built-in logo entirely, `src` replaces it with an image.',
+      ],
+      whenNotToUse: [
+        "Don't recolour it with theme tokens - its colours are literal hexes on purpose, so it never re-themes with the brand or with dark mode.",
+        "Don't use it as a generic picture - for any other image, use a plain `<img>`.",
+        "Don't expect the tagline on the DataSea lockup - `tagline` only draws on the EVOQ lockup; DataSea ignores it.",
+        "Don't scale it with a CSS transform - use `size`, which keeps the lockup's own aspect ratio.",
+      ],
+      do: [
+        'Set `label` (or `label=""` for a purely decorative placement) whenever the surrounding content does not already name the brand, so assistive tech announces it correctly.',
+        'Keep one `brand` per instance - `evoq` and `datasea` are two separate lockups, not variants of the same mark.',
+      ],
+      dont: [
+        "Don't rely on the default `size` (40) for a hero placement - set it for the context you're in.",
+        'Don\'t expect the built-in `role="img"` / `aria-label` wiring once you use the default slot - it only applies to the shipped logo (with or without `src`); a slot override needs its own accessible name.',
+      ],
+    },
     keywords: ['brand', 'logo', 'mark', 'wordmark', 'lockup', 'evoq', 'datasea', 'tagline'],
   },
   EvNavMenuItem: {
@@ -485,6 +512,27 @@ export const SOURCES = {
     sets: [],
     summary:
       'A full-page loading state. Blocked mode covers the page with the EVOQ wordmark tracing itself over an 80% scrim and stops all interaction; popup mode is a small card with the spinner that leaves the page usable.',
+    usage: {
+      whenToUse: [
+        'Use `mode="blocked"` for something the user must wait out - app boot, a save that has to finish before anything else can happen. It stops every interaction behind it.',
+        'Use `mode="popup"` for a background operation the user does not need to wait on - the page behind it stays clickable, because the layer takes no pointer events of its own.',
+        'Drive it with `v-model` - it renders nothing, and mounts nothing into `<body>`, while the value is false.',
+        "Set `label` to say what is loading - `blocked` speaks it as the loader's accessible name, `popup` also prints it beside the spinner.",
+      ],
+      whenNotToUse: [
+        'Don\'t use `blocked` for something the user is not actually forced to wait for - use `mode="popup"`, or EvLoading inline.',
+        "Don't use it for one field or button's own busy state - use that control's own loading state (e.g. EvButton's `loading`).",
+        "Don't leave `closeOnEscape` on for a `blocked` loader guarding a write that truly has not finished - it lets the user dismiss the loader before the operation is done.",
+      ],
+      do: [
+        'Turn `closeOnEscape` on only where dismissing early is safe - a demo, or a request stuck with no other way out.',
+        'Keep it mounted on real async state (a pending flag), not a fixed timeout - a full-page block that outlives its cause traps the user on the page.',
+      ],
+      dont: [
+        "Don't put a scrim of your own behind it - `blocked` already draws its own 80% black backdrop; a second one only doubles the darkening.",
+        "Don't open two at once - each instance `Teleport`s to `<body>` on its own, so two blocked overlays stack invisibly on top of each other rather than replacing one another.",
+      ],
+    },
     composes: ['EvLoading'],
     keywords: ['loading', 'blocking', 'busy', 'overlay', 'splash', 'wait', 'full page'],
   },

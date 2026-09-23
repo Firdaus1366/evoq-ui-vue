@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const m=require\\('./docs/components/manifest.json'\\); console.log\\(m.name, m.version\\);\")",
+      "Bash(npm version *)"
+    ]
+  }
+}

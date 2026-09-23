@@ -505,7 +505,47 @@ the board.
 
 ---
 
-## 11. Rules of thumb
+## 11. Docs are part of every component change
+
+**This is not only for a brand-new component.** Adding a prop, renaming an
+event, changing a default, adding a slot, changing what a component composes,
+or touching its behaviour in any way that makes an existing line in its doc
+wrong — every one of these is a docs change too, in the same commit, not a
+follow-up. `docs/components/<name>.md` is what `mcp/server.mjs` hands an agent
+through `get_component`; a stale doc is a wrong answer the agent has no way to
+know is wrong.
+
+1. **Run `npm run docs:build` before you call the work done** — on a new
+   component and on a changed one alike. Props, slots, events and the example
+   regenerate from the SFC and the playground simulator; nothing about that is
+   automatic until the script actually runs.
+2. **Update the hand-kept half in `scripts/component-sources.mjs` when the
+   change makes it wrong**, not only when adding a component: `summary` if it
+   no longer describes the component, `keywords` for a new way someone would
+   search for it, `children` / `partOf` if composition changed, and — for a
+   component with no Figma page (`figma: null`) — the `usage` block (see that
+   file's own header comment). A behaviour change that makes a `usage` bullet
+   false (a new prop that changes when to use it, a default that flips a Do
+   into a Don't) is a docs bug the moment it ships, not later.
+3. **Re-scrape `design/figma-component-docs.json` only when the Figma
+   documentation frame itself changed** — a code-only change never edits this
+   file; the binding rules stay whatever the board says until the board does.
+4. **`npm run docs:check` must pass before the change is done.** It is the
+   objective test that the committed docs are not stale — treat it exactly
+   like a failing test or a failing `verify:figma` run, not as an optional
+   last step.
+5. **Never hand-edit `docs/components/*.md` or `manifest.json`.** A generated
+   file with a manual fix in it drifts back out of sync the next time
+   `docs:build` runs and silently overwrites the fix. Fix the source
+   `docs:build` reads instead: the SFC, the simulator demo, or
+   `component-sources.mjs`.
+
+A component is not done — new or changed — until `npm run docs:build` has run
+against it and `npm run docs:check` passes.
+
+---
+
+## 12. Rules of thumb
 
 - **Read the node before you write the CSS.** Not the screenshot, not the doc.
 - **Structure first, colour second.** Colour errors get caught; structure errors ship.
@@ -519,3 +559,5 @@ the board.
   deviation.
 - **State what you verified and how.** "875 values pass" means the built CSS
   matches the stored spec — it does not mean the spec matches Figma today.
+- **A component change ships with its doc change, always** (§11) — adding a
+  prop and forgetting `docs:build` is the same defect as forgetting a test.

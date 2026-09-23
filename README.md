@@ -333,11 +333,11 @@ component name without its `Ev` prefix, in kebab case — `EvButton` is
 change when a component moves between atomic layers, so an agent or an
 aggregator can hold on to it.
 
-| Path                                  | What it is                                                                   |
-| ------------------------------------- | ---------------------------------------------------------------------------- |
-| [`docs/components/`](docs/components) | one Markdown doc per component, plus an index by layer                       |
-| `docs/components/manifest.json`       | the same data as JSON — also importable as `evoq-ui/manifest.json`           |
-| [`mcp/server.mjs`](mcp/server.mjs)    | an MCP server (stdio, no dependencies) that serves exactly those files by id |
+| Path                                  | What it is                                                                |
+| ------------------------------------- | ------------------------------------------------------------------------- |
+| [`docs/components/`](docs/components) | one Markdown doc per component, plus an index by layer                    |
+| `docs/components/manifest.json`       | the same data as JSON — also importable as `evoq-ui/manifest.json`        |
+| [`mcp/server.mjs`](mcp/server.mjs)    | an MCP server (Express, HTTP + SSE) that serves exactly those files by id |
 
 Each doc carries the import line, every prop with its type, allowed values and
 default, the slots, events and `v-model`s, where non-prop attributes land, what
@@ -356,12 +356,57 @@ fails when the committed docs are stale, and runs before every publish.
 
 ### Using the MCP server
 
-In this repo, [`.mcp.json`](.mcp.json) registers it for any MCP client that
-reads project config; `npm run mcp` starts it by hand. In an app that installed
-`evoq-ui`, add it to that app's MCP config:
+Transport is **MCP over HTTP with Server-Sent Events**, on Express: the server
+runs once — locally or deployed publicly — and any number of clients connect
+to it, instead of each client spawning its own stdio process. Start it first:
+
+```bash
+npm run mcp                # in this repo — reads mcp/.env if present
+npx evoq-ui-mcp             # in an app that installed evoq-ui
+```
+
+It listens on `http://0.0.0.0:4001` by default (`PORT` / `HOST`), and prints
+its endpoints on startup. `cp mcp/.env.example mcp/.env` to set `PORT`, `HOST`,
+an `API_KEY` for the server to require, or `DOCS_DIR` to point it at a
+different doc set — every value is also a plain environment variable, which
+always wins over `.env`. `API_KEY` is empty out of the box: the server runs
+with **no authentication** until you set one.
+
+| Endpoint              | Method | Auth                                 | What it does                                             |
+| --------------------- | ------ | ------------------------------------ | -------------------------------------------------------- |
+| `/health`             | GET    | none                                 | `{ status, name, version, components, auth }`            |
+| `/sse`                | GET    | `x-api-key` header **or** `?apiKey=` | opens the event stream, announces `/messages?sessionId=` |
+| `/messages?sessionId` | POST   | `x-api-key` header only              | one JSON-RPC 2.0 request or notification per call        |
+
+The query-string key is accepted on `/sse` only, for clients that cannot set a
+header on an SSE connection — `/messages` always needs the header.
+
+```bash
+curl http://localhost:4001/health
+
+curl -N -H "x-api-key: <your-key>" http://localhost:4001/sse
+# -> event: endpoint
+#    data: /messages?sessionId=<session-id>
+
+curl -X POST "http://localhost:4001/messages?sessionId=<session-id>" \
+  -H "Content-Type: application/json" -H "x-api-key: <your-key>" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}'
+# -> 202 Accepted; the actual reply arrives on the open /sse stream
+```
+
+In this repo, [`.mcp.json`](.mcp.json) registers the running server for any
+MCP client that reads project config. In an app that installed `evoq-ui`, or
+for a server deployed elsewhere, add it to that app's MCP config the same way:
 
 ```json
-{ "mcpServers": { "evoq-ui": { "command": "npx", "args": ["evoq-ui-mcp"] } } }
+{
+  "mcpServers": {
+    "evoq-ui": {
+      "url": "http://your-host:4001/sse",
+      "headers": { "x-api-key": "your-secret-api-key" }
+    }
+  }
+}
 ```
 
 | Tool                | Use it to                                                                                                               |
@@ -384,7 +429,49 @@ Resources: `evoq-ui://manifest`, `evoq-ui://components` (the index) and
 
 ## Publishing
 
+The package starts at **`1.0.0`** as its first stable release, and follows
+[Semantic Versioning](https://semver.org/) from there: `MAJOR.MINOR.PATCH`.
+Bumping a segment always resets everything to its right to `0` - `npm version
+minor` on `1.2.5` gives `1.3.0`, `npm version major` on `1.3.0` gives `2.0.0`.
+
+### Choosing a version bump
+
+| Bump  | Command             | Example           | When                                                                                                                                                                   |
+| ----- | ------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Patch | `npm version patch` | `1.0.0` → `1.0.1` | A bug fix, or a styling/visual tweak that changes no prop, slot, event or exported type - nothing a consumer's code has to react to.                                   |
+| Minor | `npm version minor` | `1.0.0` → `1.1.0` | A backward-compatible addition - a new component, a new prop/slot/event, a new optional variant. Existing consumer code keeps working.                                 |
+| Major | `npm version major` | `1.0.0` → `2.0.0` | A breaking change - a prop/slot/event/exported type removed or changed incompatibly, a changed default that alters existing output, or a component removed or renamed. |
+
+When in doubt, ask: "does code that already imports this package still compile
+and render the same way after this update?" Yes → patch or minor depending on
+whether anything was added. No → major.
+
+[`.github/workflows/publish.yml`](.github/workflows/publish.yml) publishes to
+npm automatically on every merge to `main`:
+
+1. Bump the version as part of your change (or in a follow-up merge), picking
+   the bump from the table above:
+   ```bash
+   npm version patch   # or minor / major
+   ```
+2. Merge to `main`. The workflow runs the full verification suite - typecheck,
+   build, `verify:figma`, tests, lint, `docs:check`, `build:playground` -
+   exactly as in [Development](#development) above.
+3. If that version is not already on the registry, it publishes with
+   provenance and pushes a `vX.Y.Z` tag. **A merge that does not bump the
+   version still runs the suite, then simply skips the publish step** - it is
+   always safe to merge to `main` without releasing.
+
+It needs a repository secret `NPM_TOKEN` - an npm **Automation** token (so it
+publishes with no interactive 2FA/OTP prompt), added under the repo's
+**Settings → Secrets and variables → Actions**. Never commit a token or paste
+one into an issue, PR or chat; if one is ever exposed that way, revoke it on
+npmjs.com immediately and issue a new one.
+
+Publishing by hand still works the same way it always has, for a one-off
+release outside CI:
+
 ```bash
 npm version patch   # or minor / major
-npm publish         # `prepublishOnly` runs typecheck + build
+npm publish         # `prepublishOnly` runs typecheck + build + docs:check
 ```

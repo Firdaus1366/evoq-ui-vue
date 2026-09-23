@@ -1,9 +1,11 @@
 {
   "mcpServers": {
     "evoq-ui": {
-      "type": "stdio",
-      "command": "node",
-      "args": ["mcp/server.mjs"]
+      "type": "sse",
+      "url": "http://127.0.0.1:4001/sse",
+      "headers": {
+        "x-api-key": ""
+      }
     }
   }
 }

@@ -84,6 +84,33 @@ None.
 | Used by | — |
 | Slot children | — |
 
+## Usage guidance
+
+This component has no Figma page - it is not on any board. The rules below are hand-written from its own implementation (`scripts/component-sources.mjs`), not traced to a design frame; treat them as guidance, not as binding as a Figma-sourced section.
+
+### When to use
+
+- Use `mode="blocked"` for something the user must wait out - app boot, a save that has to finish before anything else can happen. It stops every interaction behind it.
+- Use `mode="popup"` for a background operation the user does not need to wait on - the page behind it stays clickable, because the layer takes no pointer events of its own.
+- Drive it with `v-model` - it renders nothing, and mounts nothing into `<body>`, while the value is false.
+- Set `label` to say what is loading - `blocked` speaks it as the loader's accessible name, `popup` also prints it beside the spinner.
+
+### When not to use
+
+- Don't use `blocked` for something the user is not actually forced to wait for - use `mode="popup"`, or EvLoading inline.
+- Don't use it for one field or button's own busy state - use that control's own loading state (e.g. EvButton's `loading`).
+- Don't leave `closeOnEscape` on for a `blocked` loader guarding a write that truly has not finished - it lets the user dismiss the loader before the operation is done.
+
+### Do
+
+- Turn `closeOnEscape` on only where dismissing early is safe - a demo, or a request stuck with no other way out.
+- Keep it mounted on real async state (a pending flag), not a fixed timeout - a full-page block that outlives its cause traps the user on the page.
+
+### Don't
+
+- Don't put a scrim of your own behind it - `blocked` already draws its own 80% black backdrop; a second one only doubles the darkening.
+- Don't open two at once - each instance `Teleport`s to `<body>` on its own, so two blocked overlays stack invisibly on top of each other rather than replacing one another.
+
 ## Contract
 
 - Only the props, slots and events above exist on `EvLoadingOverlay`; anything not listed is not part of its API.

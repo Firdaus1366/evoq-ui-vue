@@ -83,6 +83,34 @@ None.
 | Used by | `evoq-ui:sidebar` |
 | Slot children | — |
 
+## Usage guidance
+
+This component has no Figma page - it is not on any board. The rules below are hand-written from its own implementation (`scripts/component-sources.mjs`), not traced to a design frame; treat them as guidance, not as binding as a Figma-sourced section.
+
+### When to use
+
+- Use it for EVOQ's or DataSea's own brand mark - a header, a sidebar, a splash or login screen.
+- Use `variant="mark"` on its own in a tight space, such as a collapsed sidebar rail or an avatar-sized tile.
+- Use `size` to scale the whole lockup from one number - it sets the font-size every part is drawn in, so nothing goes out of ratio.
+- Use `src`, or the default slot, for a co-branded or white-label logo this package does not ship - the slot replaces the built-in logo entirely, `src` replaces it with an image.
+
+### When not to use
+
+- Don't recolour it with theme tokens - its colours are literal hexes on purpose, so it never re-themes with the brand or with dark mode.
+- Don't use it as a generic picture - for any other image, use a plain `<img>`.
+- Don't expect the tagline on the DataSea lockup - `tagline` only draws on the EVOQ lockup; DataSea ignores it.
+- Don't scale it with a CSS transform - use `size`, which keeps the lockup's own aspect ratio.
+
+### Do
+
+- Set `label` (or `label=""` for a purely decorative placement) whenever the surrounding content does not already name the brand, so assistive tech announces it correctly.
+- Keep one `brand` per instance - `evoq` and `datasea` are two separate lockups, not variants of the same mark.
+
+### Don't
+
+- Don't rely on the default `size` (40) for a hero placement - set it for the context you're in.
+- Don't expect the built-in `role="img"` / `aria-label` wiring once you use the default slot - it only applies to the shipped logo (with or without `src`); a slot override needs its own accessible name.
+
 ## Contract
 
 - Only the props, slots and events above exist on `EvLogo`; anything not listed is not part of its API.

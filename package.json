@@ -1,6 +1,6 @@
 {
   "name": "evoq-ui",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Evoq design system components for Vue 3",
   "type": "module",
   "license": "MIT",
@@ -55,6 +55,9 @@
     "docs:check": "node scripts/build-docs.mjs --check",
     "mcp": "node mcp/server.mjs",
     "build:fonts": "node scripts/bundle-fonts.mjs"
+  },
+  "dependencies": {
+    "express": "^4.22.3"
   },
   "peerDependencies": {
     "@unovis/ts": "^1.6.0",

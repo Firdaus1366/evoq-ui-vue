@@ -1,0 +1,106 @@
+name: Publish to npm
+
+# Runs on every push to main - i.e. every merge into it. Publishing itself is
+# gated on the package.json version not already being on the registry, so a
+# merge that does not bump the version runs the full verification suite and
+# then simply skips the publish step - it is always safe to merge to main.
+#
+# To actually release: bump `version` in package.json as part of the change
+# that lands on main (or in a follow-up merge). That version is what gets
+# published, with the exact same commit `npm run build` produced in `verify`.
+#
+# Requires a repository secret `NPM_TOKEN`: an npm Automation token (Access
+# Tokens -> Generate New Token -> Automation, so it works without 2FA/OTP from
+# CI), added under Settings -> Secrets and variables -> Actions. Never put the
+# token itself in this file or in any commit.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {} # manual re-run from the Actions tab, e.g. after a flaky run
+
+concurrency:
+  group: publish-npm
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '20.19.0' # the floor promised by "engines" in package.json
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.pkg.outputs.version }}
+      already-published: ${{ steps.registry.outputs.already-published }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      # The same loop AGENTS.md §8.2 asks a human or an agent to run by hand -
+      # CI is the one place it always actually happens before anything ships.
+      - run: npm run typecheck
+      - run: npm run build
+      - run: npm run verify:figma
+      - run: npm test
+      - run: npm run lint
+      - run: npm run docs:check
+      - run: npm run build:playground
+
+      - id: pkg
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - id: registry
+        name: Check whether this version is already on npm
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION="${{ steps.pkg.outputs.version }}"
+          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
+            echo "already-published=true" >> "$GITHUB_OUTPUT"
+            echo "$NAME@$VERSION is already published - this merge did not bump the version, so publish will be skipped."
+          else
+            echo "already-published=false" >> "$GITHUB_OUTPUT"
+            echo "$NAME@$VERSION is new - publish will run."
+          fi
+
+  publish:
+    name: Publish
+    needs: verify
+    if: needs.verify.outputs.already-published == 'false'
+    runs-on: ubuntu-latest
+    environment: npm # optional protection rule (required reviewers, etc.) - configure under Settings -> Environments
+    permissions:
+      contents: write # to push the `vX.Y.Z` tag below
+      id-token: write # required for npm provenance
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - run: npm ci
+
+      # `prepublishOnly` (build + docs:check) runs again here as npm's own
+      # final gate; `verify` above is what actually decides whether we get
+      # this far.
+      - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Tag the release commit
+        run: |
+          VERSION="${{ needs.verify.outputs.version }}"
+          git tag "v$VERSION"
+          git push origin "v$VERSION"

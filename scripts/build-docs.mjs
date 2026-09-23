@@ -18,6 +18,13 @@
  * | design guidance, summary     | `design/figma-component-docs.json` (Figma)     |
  * | Figma sets, nesting, keywords| `scripts/component-sources.mjs`                |
  *
+ * One deliberate exception: a component with `figma: null` in
+ * `scripts/component-sources.mjs` (it renders no Figma board - `EvLogo`,
+ * `EvLoadingOverlay`) takes its "Usage guidance" from that file's `usage`
+ * field instead, hand-written from the component's own implementation. The
+ * doc says so under its own "Usage guidance" heading, never under "Design
+ * guidance" - that heading stays reserved for a rule actually traced to a board.
+ *
  * The run fails - rather than printing a guess - when any of those disagree:
  * a component with no source entry, a Figma key that does not exist, a parent
  * that is not a component, or a pixel value in the Figma prose that has not
@@ -180,6 +187,45 @@ function figmaGuidance(tag) {
 }
 
 /**
+ * The rules for a component with no Figma page (`figma: null`) - there is no
+ * board to trace them from, so `SOURCES[tag].usage` holds them instead,
+ * hand-written from the component's own implementation. Same shape as
+ * `figmaGuidance`'s `sections`, checked the same way, but rendered under its
+ * own heading so it is never mistaken for a binding, board-traced rule.
+ */
+function manualGuidance(tag) {
+  const usage = SOURCES[tag].usage
+  if (!usage) return null
+  const sections = {
+    whenToUse: usage.whenToUse ?? [],
+    whenNotToUse: usage.whenNotToUse ?? [],
+    do: usage.do ?? [],
+    dont: usage.dont ?? [],
+  }
+  for (const [name, lines] of Object.entries(sections)) {
+    for (const line of lines) checkProsePx(`${tag} usage.${name}`, line)
+  }
+  return { sections }
+}
+
+/** Shared by both guidance sources - the four headed bullet lists. */
+function pushGuidanceSections(lines, sections) {
+  const heads = {
+    whenToUse: 'When to use',
+    whenNotToUse: 'When not to use',
+    do: 'Do',
+    dont: "Don't",
+  }
+  for (const [k, head] of Object.entries(heads)) {
+    const items = sections[k]
+    if (!items.length) continue
+    lines.push(`### ${head}`, '')
+    for (const item of items) lines.push(`- ${item}`)
+    lines.push('')
+  }
+}
+
+/**
  * Tag every component the prose recommends ("→ use Toggle", "use a Popover")
  * with its id, so an agent can jump straight to it. Only names that follow a
  * recommendation are tagged - "Don't nest a Button inside another Button"
@@ -257,7 +303,7 @@ function yaml(value, indent = '') {
   return ` ${JSON.stringify(value)}`
 }
 
-function renderDoc(entry, figma, example) {
+function renderDoc(entry, figma, manual, example) {
   const { tag, meta } = entry
   const lines = []
   const front = {
@@ -401,7 +447,7 @@ function renderDoc(entry, figma, example) {
     '',
   )
 
-  // Figma guidance
+  // Design guidance - from the Figma board, or hand-written where there is none.
   if (figma) {
     lines.push('## Design guidance', '')
     lines.push(
@@ -409,19 +455,16 @@ function renderDoc(entry, figma, example) {
         "These rules are binding. Names in them are Figma's - the Vue API is the tables above.",
       '',
     )
-    const heads = {
-      whenToUse: 'When to use',
-      whenNotToUse: 'When not to use',
-      do: 'Do',
-      dont: "Don't",
-    }
-    for (const [k, head] of Object.entries(heads)) {
-      const items = figma.sections[k]
-      if (!items.length) continue
-      lines.push(`### ${head}`, '')
-      for (const item of items) lines.push(`- ${item}`)
-      lines.push('')
-    }
+    pushGuidanceSections(lines, figma.sections)
+  } else if (manual) {
+    lines.push('## Usage guidance', '')
+    lines.push(
+      'This component has no Figma page - it is not on any board. The rules below are ' +
+        'hand-written from its own implementation (`scripts/component-sources.mjs`), not traced ' +
+        'to a design frame; treat them as guidance, not as binding as a Figma-sourced section.',
+      '',
+    )
+    pushGuidanceSections(lines, manual.sections)
   }
 
   // Contract
@@ -512,11 +555,16 @@ async function main() {
       const meta = catalogue[tag]
       const src = SOURCES[tag]
       const figma = figmaGuidance(tag)
+      const manual = figma ? null : manualGuidance(tag)
       const isChart = meta.file.startsWith('src/charts/')
       const entry = isChart ? `${PKG.name}/charts` : PKG.name
       const seeAlso = new Set()
       if (figma) {
         figma.sections.whenNotToUse = figma.sections.whenNotToUse.map((l) => linkAdvice(l, seeAlso))
+      } else if (manual) {
+        manual.sections.whenNotToUse = manual.sections.whenNotToUse.map((l) =>
+          linkAdvice(l, seeAlso),
+        )
       }
       // A hand-written summary exists only where the Figma one describes a
       // different component (a Group sharing its item's page), so it wins.
@@ -525,6 +573,7 @@ async function main() {
         tag,
         meta,
         figma,
+        manual,
         slug: slugOf(tag),
         id: idOf(tag),
         kebab: `ev-${slugOf(tag)}`,
@@ -552,7 +601,7 @@ async function main() {
     })
 
   const files = {}
-  for (const e of entries) files[`${e.slug}.md`] = renderDoc(e, e.figma, examples[e.tag])
+  for (const e of entries) files[`${e.slug}.md`] = renderDoc(e, e.figma, e.manual, examples[e.tag])
   files['README.md'] = renderIndex(entries)
   files['manifest.json'] =
     JSON.stringify(
